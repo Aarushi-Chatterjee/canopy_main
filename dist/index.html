@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CANOPY — Where Builders & Problems Find Each Other</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2226%22>🌱</text></svg>">
+  <script type="module" crossorigin src="/assets/index-MEBk-Dvv.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-C5_PrBRl.css">
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+    <a class="logo" href="#top" aria-label="Canopy home">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
+      CANOPY
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="#audience">Who it's For</a>
+      <a href="#steps">How it Works</a>
+      <a href="#marketplace">Marketplace</a>
+      <a href="#keychain">Sandbox</a>
+      <a href="#connect">Connect</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn btn-leaf-icon btn-sm" id="openLeafForm" title="Canvas Intake Form">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A9 9 0 0 0 20 11V3h-8a9 9 0 0 0-9 9 9 9 0 0 0 8 8z"/><path d="M11 20v-7"/></svg>
+        <span>Apply</span>
+      </button>
+      <button class="btn btn-ghost btn-sm" id="openApplyGhost">Post Call</button>
+      <button class="btn btn-stamp btn-sm" id="openApply">Join the Canopy</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MAIN CONTENT & VINE SCROLL TRACK ============ -->
+<main id="top">
+  
+  <!-- ============ SCENE 1: HERO - THE SEED AND THE WATER ============ -->
+  <section class="hero" id="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-content reveal in-view">
+        <span class="eyebrow">✎ a field application sandbox</span>
+        <h1>If we can find love online,<br>why not <em>teammates?</em></h1>
+        <p class="hero-sub">CANOPY is where builders, problem holders, and enablers find each other and turn ideas into shipped solutions.</p>
+        
+        <!-- Floating tag 1: Lab -->
+        <div class="vine-tag-badge inline-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>Lab</span>
+        </div>
+
+        <div class="hero-ctas">
+          <button class="btn btn-stamp" id="heroApply">🌱 Join the Canopy</button>
+          <a class="btn btn-ghost" href="#audience">Scroll to grow ↓</a>
+        </div>
+      </div>
+
+      <div class="scene hero-sapling-scene reveal in-view">
+        <div class="pot-card">
+          <svg viewBox="0 0 200 220" aria-hidden="true" class="sapling-hero-svg">
+            <!-- watering can, tilted in a gentle pour -->
+            <g class="can-wobble">
+              <rect x="118" y="18" width="52" height="34" rx="10" fill="var(--twine)"/>
+              <rect x="96" y="30" width="26" height="8" rx="4" fill="var(--twine)"/>
+              <circle cx="180" cy="26" r="9" fill="var(--twine)"/>
+              <circle cx="144" cy="24" r="3" fill="var(--sun-soft)"/>
+              <path d="M100 33 C88 33 84 40 84 40" stroke="var(--twine)" stroke-width="6" fill="none" stroke-linecap="round"/>
+            </g>
+            <!-- tiny sapling sitting in soil mound -->
+            <g class="sapling-grow" id="heroSaplingGroup">
+              <!-- pot -->
+              <path d="M68 208 L132 208 L124 168 L76 168 Z" fill="var(--forest-deep)"/>
+              <rect x="64" y="160" width="72" height="13" rx="4" fill="var(--forest)"/>
+              <!-- soil mound -->
+              <ellipse cx="100" cy="164" rx="28" ry="6" fill="#3a2c1c"/>
+              <path d="M70 168 q3 -10 6 0" stroke="var(--leaf)" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M126 168 q4 -9 7 -1" stroke="var(--leaf)" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <!-- stem -->
+              <path id="saplingStem" d="M100 164 C 100 150 99 138 100 126" stroke="var(--forest)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+              <!-- small leaves -->
+              <path class="sapling-leaf l1" d="M100 142 C 78 136 70 116 80 102 C 100 110 103 128 100 142Z" fill="var(--leaf)"/>
+              <path class="sapling-leaf l2" d="M100 132 C 122 126 130 108 121 94 C 100 102 97 120 100 132Z" fill="var(--leaf-bright)"/>
+              <path class="sapling-leaf l3" d="M100 120 C 89 112 88 97 96 88 C 108 94 110 110 100 120Z" fill="var(--forest)"/>
+            </g>
+          </svg>
+          <div class="stream"></div>
+          <div class="droplet" style="left:43.5%;animation-delay:0s;"></div>
+          <div class="droplet" style="left:44.5%;animation-delay:.3s;"></div>
+          <div class="droplet" style="left:45.5%;animation-delay:.6s;"></div>
+          <div class="splash" style="left:43.5%;animation-delay:0s;"></div>
+          <div class="splash" style="left:44.5%;animation-delay:.3s;"></div>
+          <div class="splash" style="left:45.5%;animation-delay:.6s;"></div>
+          <div class="soil-glisten"></div>
+          <span class="stake-tag">day 1 🌱</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GROWTH TRACK CONTAINER (DYNAMIC VINE CANVAS) ============ -->
+  <div class="growth-track" id="growthTrack">
+    <canvas id="vineCanvas" aria-hidden="true"></canvas>
+
+    <!-- ============ SCENE 2: THE CLIMBER BEGINS - AUDIENCE EXPLANATION ============ -->
+    <section class="section" id="audience">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker">the climber begins · target audience</span>
+          <h2>A single place for every kind of builder.</h2>
+        </div>
+
+        <div class="audience-card paper-card torn reveal">
+          <p class="audience-text">
+            <span class="role-highlight">An ML engineer</span> has skills but no clear problem.
+            <span class="role-highlight">A designer</span> craves a real project.
+            <span class="role-highlight">A hardware engineer</span> searches for a cause.
+            <span class="role-highlight">A founder</span> has an idea but no tech co-builder.
+            <span class="role-highlight">A researcher</span> holds a plan but no execution path.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCENE 3: THREE STEPS - MATCH, MINGLE, SHIP ============ -->
+    <section class="section" id="steps">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker">three deliberate steps</span>
+          <h2>Match. Mingle. Ship.</h2>
+          <p class="lede">The vine branches into three tendrils, guiding each step from discovery to momentum.</p>
+        </div>
+
+        <div class="steps-grid">
+          <!-- Card 1: Match -->
+          <div class="step-card paper-card torn reveal">
+            <div class="step-icon-wrap">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2"><path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.234-.706 1.704l-1.568 1.569c-.23.23-.338.556-.289.878.118.774-.012 1.588-.47 2.046-.458.458-1.272.588-2.046.47-.322-.049-.648.059-.878.289l-1.569 1.568c-.47.47-1.087.706-1.704.706s-1.234-.235-1.704-.706l-1.568-1.568c-.23-.23-.556-.338-.878-.289-.774.118-1.588-.012-2.046-.47-.458-.458-.588-1.272-.47-2.046.049-.322-.059-.648-.289-.878l-1.568-1.569c-.47-.47-.706-1.087-.706-1.704s.235-1.234.706-1.704l1.568-1.568c.23-.23.338-.556.289-.878-.118-.774.012-1.588.47-2.046.458-.458 1.272-.588 2.046-.47.322.049.648-.059.878-.289l1.568-1.568c.47-.47 1.087-.706 1.704-.706s1.234.235 1.704.706l1.569 1.568c.23.23.556.338.878.289.774-.118 1.588.012 2.046.47.458.458.588 1.272.47 2.046z"/></svg>
+            </div>
+            <div class="vine-tag-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>Match</span>
+            </div>
+            <h3>1. Match</h3>
+            <p class="step-lead"><strong>Find your people.</strong></p>
+            <p>Build a profile with your domain expertise, skills, and style. Browse Build Calls and find complementary collaborators.</p>
+          </div>
+
+          <!-- Card 2: Mingle -->
+          <div class="step-card paper-card torn reveal">
+            <div class="step-icon-wrap">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="vine-tag-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span>Sprint</span>
+            </div>
+            <h3>2. Mingle</h3>
+            <p class="step-lead"><strong>Respond with what you bring.</strong></p>
+            <p>High-context notes instead of resume spam. Posters connect directly with builders ready to start immediately.</p>
+          </div>
+
+          <!-- Card 3: Ship -->
+          <div class="step-card paper-card torn reveal">
+            <div class="step-icon-wrap">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--forest)" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-3.05 11a22.35 22.35 0 0 1-3.95 2z"/></svg>
+            </div>
+            <h3>3. Ship</h3>
+            <p class="step-lead"><strong>Ship in a sprint.</strong></p>
+            <p>Enter a 2-4 week sprint workspace with shared goals, sample datasets, and structured execution momentum.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCENE 4: PROBLEM STATEMENT PLACEHOLDER - TICK / CROSS DESIGN ============ -->
+    <section class="section" id="marketplace">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker">deliberate picks only</span>
+          <h2>Problem Marketplace — Tick / Cross Design</h2>
+          <p class="lede">Review real-world challenges posted by partners. Decide if you grab a shovel or pass for now.</p>
+        </div>
+
+        <div class="tick-cross-container paper-card torn reveal">
+          <div class="tick-cross-strip">
+            <!-- Left Column: Checkmark -->
+            <div class="tc-col tc-check">
+              <div class="tc-icon-badge check-badge">✓</div>
+              <div class="tc-card">
+                <span class="tc-tag">Problem Statement</span>
+                <h4>Detecting illegal fishing from SAR satellite data.</h4>
+                <p>Build a model to cross-reference AIS signals with synthetic aperture radar images.</p>
+              </div>
+            </div>
+
+            <!-- Right Column: Cross Mark -->
+            <div class="tc-col tc-cross">
+              <div class="tc-icon-badge cross-badge">✕</div>
+              <div class="tc-card">
+                <span class="tc-tag">Decision</span>
+                <h4>Not for me – next.</h4>
+                <p>Pass on this challenge to inspect the next available problem in the marketplace.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="tc-interactive-row">
+            <button class="deck-btn cross" id="deckCross" aria-label="Pass for now">✕ Pass</button>
+            <div class="tc-meta">
+              <span><b id="tickCount">0</b> grabbed a shovel</span>
+              <span class="sep">•</span>
+              <span><b id="crossCount">0</b> passed</span>
+            </div>
+            <button class="deck-btn check" id="deckCheck" aria-label="Grab a shovel">✓ Grab Shovel</button>
+          </div>
+
+          <p class="tc-subcaption">No swipes. Deliberate picks only.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCENE 5: ACQUISITION CHANNEL - THE KEY CHAIN ANALOGY ============ -->
+    <section class="section keychain-section" id="keychain">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker">acquisition channel · interlocking rings</span>
+          <h2>A sandbox for builders of all kinds.</h2>
+          <p class="lede">Interlocking key chain rings connecting every role in the Canopy ecosystem.</p>
+        </div>
+
+        <div class="keychain-wrapper reveal">
+          <div class="keychain-chain">
+            <!-- ML Engineer -->
+            <div class="key-ring-item paper-card" data-charm>
+              <div class="ring-hole"></div>
+              <div class="ring-avatar">🧠</div>
+              <div class="ring-title">ML Engineer</div>
+              <div class="looks-for">Has model skills. Looking for a real dataset and founder with field context.</div>
+            </div>
+            <div class="ring-stem"></div>
+
+            <!-- Product Designer -->
+            <div class="key-ring-item paper-card" data-charm>
+              <div class="ring-hole"></div>
+              <div class="ring-avatar">🎨</div>
+              <div class="ring-title">Designer</div>
+              <div class="looks-for">Craving a real project. Looking for a technical co-builder to design for.</div>
+            </div>
+            <div class="ring-stem"></div>
+
+            <!-- Domain Expert -->
+            <div class="key-ring-item paper-card" data-charm>
+              <div class="ring-hole"></div>
+              <div class="ring-avatar">🌍</div>
+              <div class="ring-title">Domain Expert</div>
+              <div class="looks-for">Holds data & context. Looking for engineers to turn ideas into systems.</div>
+            </div>
+            <div class="ring-stem"></div>
+
+            <!-- Hardware Engineer -->
+            <div class="key-ring-item paper-card" data-charm>
+              <div class="ring-hole"></div>
+              <div class="ring-avatar">🔌</div>
+              <div class="ring-title">Hardware Eng.</div>
+              <div class="looks-for">Ready to build prototypes. Looking for a cause and execution-minded team.</div>
+            </div>
+            <div class="ring-stem"></div>
+
+            <!-- Founder -->
+            <div class="key-ring-item paper-card" data-charm>
+              <div class="ring-hole"></div>
+              <div class="ring-avatar">🚀</div>
+              <div class="ring-title">Founder</div>
+              <div class="looks-for">Has vision & problem. Looking for technical co-builders to execute in sprints.</div>
+            </div>
+          </div>
+
+          <p class="keychain-caption script">"A sandbox for builders of all kinds."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCENE 6: PROBLEM STATEMENT INFO - WRAPPED TEXT ============ -->
+    <section class="section" id="problem-info">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="kicker">sample problem statement</span>
+          <h2>High-Context Problem Card</h2>
+        </div>
+
+        <div class="problem-info-card paper-card torn reveal">
+          <div class="dappled-light-overlay" aria-hidden="true"></div>
+          
+          <div class="vine-tag-badge floating-notebook-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>Notebook</span>
+          </div>
+
+          <div class="prob-header">
+            <span class="prob-label">Challenge #042</span>
+            <h3>Build a low-cost water contamination sensor.</h3>
+          </div>
+
+          <div class="prob-skills">
+            <span class="prob-skills-title">Skills Needed:</span>
+            <div class="chips-row">
+              <span class="chip">Embedded Systems</span>
+              <span class="chip">Data Viz</span>
+              <span class="chip">Domain: Water</span>
+            </div>
+          </div>
+
+          <div class="prob-reward">
+            <span class="reward-icon">🎁</span>
+            <div>
+              <strong>Reward:</strong>
+              <span>Paid pilot with NGO partner + Field Deployment Grant</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCENE 7: FINAL CTA - CONNECT MODAL / FINALE ============ -->
+    <section class="section finale" id="connect">
+      <div class="wrap">
+        <div class="canopy-overlay-container reveal">
+          <!-- Sapling canopy overhead -->
+          <svg class="finale-canopy-svg" viewBox="0 0 220 180" aria-hidden="true">
+            <path d="M110 180 L110 80" stroke="var(--forest)" stroke-width="8" stroke-linecap="round"/>
+            <path d="M110 120 C 30 110 10 50 45 10 C 100 30 118 90 110 120Z" fill="var(--leaf)"/>
+            <path d="M110 100 C 190 86 210 30 178 0 C 112 14 100 70 110 100Z" fill="var(--leaf-bright)"/>
+            <path d="M110 80 C 76 56 74 14 100 -6 C 130 10 132 56 110 80Z" fill="var(--forest)"/>
+          </svg>
+
+          <div class="connect-modal-box paper-card torn">
+            <h2>Ready to connect?</h2>
+            <p class="lede">The sapling stands fully grown. Connect with co-builders or post your problem statement to get started.</p>
+
+            <div class="connect-btn-row">
+              <button class="btn btn-stamp" id="finaleApply">🌱 Join the Canopy</button>
+              <button class="btn btn-ghost" id="finaleProblem">🏢 I have a problem</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /growth-track -->
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="logo" style="color:var(--paper);margin-bottom:14px;">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--sun)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--sun)"/></svg>
+        CANOPY
+      </div>
+      <p class="founder-quote">"Closing the gap between ideas and shipped solutions — one team at a time."<cite>— Canopy Team</cite></p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a href="#audience">Who it's For</a>
+      <a href="#steps">How it Works</a>
+      <a href="#marketplace">Marketplace</a>
+      <a href="#keychain">Sandbox</a>
+    </div>
+    <div>
+      <h5>Say Hello</h5>
+      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="#connect">Join the Canopy</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>Canopy — Connect. Collaborate. Ship.</span>
+    <span>© 2026 Canopy. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- ============ INTAKE / APPLY MODAL ============ -->
+<dialog id="applyModal">
+  <div class="modal-head">
+    <div>
+      <h3>Canvas Intake Form — Sandbox</h3>
+      <p>A short intake to match your skills with real problems.</p>
+    </div>
+    <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
+  </div>
+  <form class="apply-form" id="applyForm">
+    <div class="field">
+      <label for="fName">Name</label>
+      <input type="text" id="fName" name="name" placeholder="What should we call you?" required>
+    </div>
+    <div class="field">
+      <label for="fProject">Projects you're interested in</label>
+      <input type="text" id="fProject" name="project" placeholder="e.g. water sensor, satellite ML, rural solar">
+    </div>
+    <div class="field">
+      <label>Domain you care about</label>
+      <div class="pill-group" data-group="domain">
+        <button type="button" class="pill" aria-pressed="false">Energy</button>
+        <button type="button" class="pill" aria-pressed="false">Water</button>
+        <button type="button" class="pill" aria-pressed="false">Ocean</button>
+        <button type="button" class="pill" aria-pressed="false">Biodiversity</button>
+        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
+        <button type="button" class="pill" aria-pressed="false">Hardware</button>
+        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Skill level</label>
+      <div class="pill-group" data-group="skill" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">Beginner</button>
+        <button type="button" class="pill" aria-pressed="false">Intermediate</button>
+        <button type="button" class="pill" aria-pressed="false">Expert</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>What are you looking for?</label>
+      <div class="pill-group" data-group="lookingfor" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">Build</button>
+        <button type="button" class="pill" aria-pressed="false">Join</button>
+        <button type="button" class="pill" aria-pressed="false">Mentor</button>
+      </div>
+    </div>
+    <div class="form-foot">
+      <span class="hint-small">No account required — sandbox preview</span>
+      <button type="submit" class="btn btn-stamp btn-sm">Plant Application</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast">🌱 Application planted — welcome to Canopy!</div>
+
+</body>
+</html>

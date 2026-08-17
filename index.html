@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canopy</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2226%22>🌱</text></svg>">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+    <a class="logo" href="#top" aria-label="Canopy home">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
+      CANOPY
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="#problem">The Gap</a>
+      <a href="#solution">How it Works</a>
+      <a href="#for">Who it's For</a>
+      <a href="#connect">Connect</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn btn-ghost btn-sm" id="openApplyGhost">Post a Build Call</button>
+      <button class="btn btn-stamp btn-sm" id="openApply">Apply to Canopy</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal in-view">
+      <span class="eyebrow">✎ a field application sandbox</span>
+      <h1>If we can find love online,<br>why not <em>teammates?</em></h1>
+      <p class="hero-sub">CANOPY is where builders, problem holders, and enablers find each other and turn ideas into shipped solutions — across AI, hardware, design, research, and everything between. No swipes. No noise. Just real people building real things.</p>
+      <div class="hero-hook">We solved the problem of finding a romantic partner online. We still haven't solved the problem of finding the right teammate to build something meaningful with. That's the gap Canopy exists to close.</div>
+      <div class="hero-ctas">
+        <button class="btn btn-stamp" id="heroApply">Join the Canopy</button>
+        <a class="btn btn-ghost" href="#solution">See how it grows ↓</a>
+      </div>
+    </div>
+
+    <div class="scene reveal in-view">
+      <div class="pot-card">
+        <svg viewBox="0 0 200 220" aria-hidden="true">
+          <!-- watering can, tilted in a slow, gentle pour -->
+          <g class="can-wobble">
+            <rect x="118" y="18" width="52" height="34" rx="10" fill="var(--twine)"/>
+            <rect x="96" y="30" width="26" height="8" rx="4" fill="var(--twine)"/>
+            <circle cx="180" cy="26" r="9" fill="var(--twine)"/>
+            <circle cx="144" cy="24" r="3" fill="var(--sun-soft)"/>
+            <path d="M100 33 C88 33 84 40 84 40" stroke="var(--twine)" stroke-width="6" fill="none" stroke-linecap="round"/>
+          </g>
+          <!-- tiny sapling, freshly planted -->
+          <g class="sapling-grow">
+            <!-- pot -->
+            <path d="M68 208 L132 208 L124 168 L76 168 Z" fill="var(--forest-deep)"/>
+            <rect x="64" y="160" width="72" height="13" rx="4" fill="var(--forest)"/>
+            <!-- soil -->
+            <ellipse cx="100" cy="164" rx="28" ry="6" fill="#3a2c1c"/>
+            <!-- little grass tufts, just for cuteness -->
+            <path d="M70 168 q3 -10 6 0" stroke="var(--leaf)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M126 168 q4 -9 7 -1" stroke="var(--leaf)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- stem, still short -->
+            <path d="M100 164 C 100 150 99 138 100 126" stroke="var(--forest)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+            <!-- small leaves -->
+            <path class="sapling-leaf l1" d="M100 142 C 78 136 70 116 80 102 C 100 110 103 128 100 142Z" fill="var(--leaf)"/>
+            <path class="sapling-leaf l2" d="M100 132 C 122 126 130 108 121 94 C 100 102 97 120 100 132Z" fill="var(--leaf-bright)"/>
+            <path class="sapling-leaf l3" d="M100 120 C 89 112 88 97 96 88 C 108 94 110 110 100 120Z" fill="var(--forest)"/>
+          </g>
+        </svg>
+        <div class="stream"></div>
+        <div class="droplet" style="left:42%;animation-delay:0s;"></div>
+        <div class="droplet" style="left:43%;animation-delay:.3s;"></div>
+        <div class="droplet" style="left:44%;animation-delay:.6s;"></div>
+        <div class="splash" style="left:42%;animation-delay:0s;"></div>
+        <div class="splash" style="left:43%;animation-delay:.3s;"></div>
+        <div class="splash" style="left:44%;animation-delay:.6s;"></div>
+        <div class="soil-glisten"></div>
+        <span class="stake-tag">day 1 🌱</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap hero-caption-row">
+    <div class="snapshot alone reveal in-view">
+      <b>Alone in the tab maze</b>
+      one more DM into the void, one more brilliant idea with nobody to build it with.
+    </div>
+    <div class="snapshot together reveal in-view">
+      <b>Surrounded, and shipping</b>
+      the same builder, three sprints later — a team, a prototype, and a deadline that actually mattered.
+    </div>
+  </div>
+</section>
+
+<!-- ============ GROWTH TRACK WRAPS: PROBLEM → FINALE ============ -->
+<div class="growth-track" id="growthTrack">
+<canvas id="vineCanvas" aria-hidden="true"></canvas>
+
+<!-- ---- PROBLEM ---- -->
+<section class="section" id="problem">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">everyone's stuck in the same gap</span>
+      <h2>Finding who to build it with is harder than the idea ever was.</h2>
+      <p class="lede">People are scattered across LinkedIn DMs, Discord servers, university networks, and random Slack groups. There's no structured way to post a project, find complementary skills, form a team, and actually ship. The result: endless scrolling, half-started ideas, and brilliant people staying stuck.</p>
+    </div>
+
+    <div class="vine-notes">
+      <div class="vine-note paper-card torn" data-note>
+        <div class="role">ML Engineer</div>
+        <p>"I've got strong skills. I just don't have a clear problem to point them at."</p>
+      </div>
+      <div class="vine-note paper-card torn" data-note>
+        <div class="role">Designer</div>
+        <p>"I'm craving a real project — not another fake case study for my portfolio."</p>
+      </div>
+      <div class="vine-note paper-card torn" data-note>
+        <div class="role">Hardware Engineer</div>
+        <p>"I want a cause, and a team that actually values the craft of building physical things."</p>
+      </div>
+      <div class="vine-note paper-card torn" data-note>
+        <div class="role">Founder</div>
+        <p>"The idea is vivid. What's missing is a technical co-builder to bring it to life."</p>
+      </div>
+      <div class="vine-note paper-card torn" data-note>
+        <div class="role">Researcher</div>
+        <p>"I'm holding deep contextual data and a sharp plan — with no execution path."</p>
+      </div>
+      <div class="vine-note paper-card torn" data-note>
+        <div class="role">NGO / Lab / Company</div>
+        <p>"We have real, pressing problems and no fast way to tap skilled, mission-driven teams."</p>
+      </div>
+    </div>
+
+    <p class="lede reveal" style="margin-top:56px;max-width:620px;">Talk to any of them and you'll hear the same shape of frustration. Everyone is searching. No one has a single place to meet.</p>
+  </div>
+</section>
+
+<!-- ---- SOLUTION / THREE STEPS ---- -->
+<section class="section" id="solution">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">a living ecosystem, three layers deep</span>
+      <h2>Match. Sprint. Notebook. That's the whole loop.</h2>
+      <p class="lede">Loose intent becomes shipped work through three deliberate steps: you match with intent, commit to a real deadline, and walk away with something you can point to.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step-card paper-card torn reveal">
+        <div class="step-num">Step 01</div>
+        <h3>Match</h3>
+        <span class="step-tag script">grab a shovel, not a swipe</span>
+        <p>Build a profile with your domains, skills, and collaboration style, and get a generative avatar — a visual fingerprint of your building identity, not a photo. Browse Build Calls and people, and respond with a short note on what you'd bring. The poster actually reads it before choosing who joins, which is what makes the match feel human instead of automated.</p>
+      </div>
+      <div class="step-card paper-card torn reveal">
+        <div class="step-num">Step 02</div>
+        <h3>Sprint</h3>
+        <span class="step-tag script">the mingle becomes a team</span>
+        <p>Once a team forms, everyone enters a shared workspace: a starter repo, sample data, and a clear two-to-four week deadline. A living sprint clock keeps the gentle pressure of shared momentum on, so the rhythm stays building, checking in, adjusting — the kind of progress a month-long email chain never quite manages.</p>
+      </div>
+      <div class="step-card paper-card torn reveal">
+        <div class="step-num">Step 03</div>
+        <h3>Notebook</h3>
+        <span class="step-tag script">document the digging, not just the win</span>
+        <p>Ship a prototype, a dashboard, or a write-up, then log the process in the open. What worked, what failed, what's next. It grows the Library, grows your presence, and becomes the proof point that attracts the next teammate, funder, or challenge.</p>
+      </div>
+    </div>
+
+    <!-- tick / cross deck -->
+    <div class="deck-wrap">
+      <div class="deck-side reveal">
+        <span class="kicker">the mingle, in practice</span>
+        <h3>Every problem gets a straight answer.</h3>
+        <p>This is the Problem Marketplace — real challenges posted by companies, NGOs, and labs, each with context, data, and a reward. Swipe through with a tick or a cross: an honest read on which problems are worth your next sprint, never a blind match on the people behind them.</p>
+        <div class="deck-meta">
+          <span><b id="tickCount">0</b> grabbed a shovel</span>
+          <span><b id="crossCount">0</b> passed for now</span>
+        </div>
+      </div>
+      <div class="deck">
+        <div class="deck-card paper-card torn" id="deckCard">
+          <div>
+            <span class="tag" id="deckTagLabel">Domain · Water</span>
+            <h4 id="deckTitle">Build a low-cost sensor to flag groundwater contamination in real time.</h4>
+          </div>
+          <div>
+            <p class="reward" id="deckReward">Reward: ₹150,000 pilot budget + open dataset access</p>
+            <div class="deck-actions">
+              <button class="deck-btn cross" id="deckCross" aria-label="Pass on this problem">✕</button>
+              <button class="deck-btn check" id="deckCheck" aria-label="Grab a shovel for this problem">✓</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---- WHO / KEYCHAIN ---- -->
+<section class="section keychain-section" id="for">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="kicker">a sandbox for builders of every stream</span>
+      <h2>One keyring, and everyone on it is missing a different piece.</h2>
+      <p class="lede">Every builder here is missing a different piece: an ML engineer looking for a project finds a founder with a vision; the founder needs a designer; the designer needs a domain expert; the domain expert needs a hardware engineer ready to prototype. Click a tag to see who they're looking for.</p>
+    </div>
+
+    <div class="keychain reveal" id="keychain">
+      <div class="ring" aria-hidden="true"></div>
+      <div class="chain-link" aria-hidden="true"></div>
+      <div class="charm paper-card" tabindex="0" role="button" style="--rot:-4deg;" data-charm>
+        <div class="charm-hole"></div>
+        <div class="role">Builder</div>
+        <h4>ML Engineer</h4>
+        <span class="hint">tap to open ↓</span>
+        <div class="looks-for">Has the skills. Looking for: a founder or NGO with a real dataset and a problem worth pointing a model at.</div>
+      </div>
+      <div class="chain-link" aria-hidden="true"></div>
+      <div class="charm paper-card" tabindex="0" role="button" style="--rot:3deg;" data-charm>
+        <div class="charm-hole"></div>
+        <div class="role">Builder</div>
+        <h4>Product Designer</h4>
+        <span class="hint">tap to open ↓</span>
+        <div class="looks-for">Craving a real project. Looking for: a technical co-builder who needs an interface people will actually trust.</div>
+      </div>
+      <div class="chain-link" aria-hidden="true"></div>
+      <div class="charm paper-card" tabindex="0" role="button" style="--rot:-2deg;" data-charm>
+        <div class="charm-hole"></div>
+        <div class="role">Builder</div>
+        <h4>Domain Expert</h4>
+        <span class="hint">tap to open ↓</span>
+        <div class="looks-for">Holds the field knowledge and the data. Looking for: an engineer who can turn context into a working system.</div>
+      </div>
+      <div class="chain-link" aria-hidden="true"></div>
+      <div class="charm paper-card" tabindex="0" role="button" style="--rot:4deg;" data-charm>
+        <div class="charm-hole"></div>
+        <div class="role">Builder</div>
+        <h4>Hardware Engineer</h4>
+        <span class="hint">tap to open ↓</span>
+        <div class="looks-for">Ready to build a prototype. Looking for: a cause and a team that values the craft, not just the demo.</div>
+      </div>
+      <div class="chain-link" aria-hidden="true"></div>
+      <div class="charm paper-card" tabindex="0" role="button" style="--rot:-3deg;" data-charm>
+        <div class="charm-hole"></div>
+        <div class="role">Problem Holder</div>
+        <h4>NGO / Company</h4>
+        <span class="hint">tap to open ↓</span>
+        <div class="looks-for">Has the challenge and no time to spare. Looking for: a curated team that can turn a scoped problem into a shipped prototype inside a few weeks.</div>
+      </div>
+      <div class="chain-link" aria-hidden="true"></div>
+      <div class="charm paper-card" tabindex="0" role="button" style="--rot:2deg;" data-charm>
+        <div class="charm-hole"></div>
+        <div class="role">Enabler</div>
+        <h4>Impact Investor</h4>
+        <span class="hint">tap to open ↓</span>
+        <div class="looks-for">Wants deal flow grounded in proof. Looking for: a deck with a shipped prototype standing behind it.</div>
+      </div>
+    </div>
+
+    <div class="for-tabs" role="tablist" aria-label="Who Canopy is for">
+      <button class="tab-btn" role="tab" aria-selected="true" data-tab="builders">For Builders</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="holders">For Problem Holders</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="enablers">For Enablers</button>
+    </div>
+    <div class="tab-panel" data-panel="builders" data-active="true">
+      <p>You have skills, and you want to use them on something real. Post a Build Call for your own idea, or browse challenges that need your exact skills. Smart matching suggests collaborators by skill, domain, and intent — so you stop waiting for the right project to find you, and start shipping instead.</p>
+    </div>
+    <div class="tab-panel" data-panel="holders">
+      <p>You have a real problem and need fresh, motivated teams. Post it in the Problem Marketplace with context, data, and a reward — a cash prize, a paid pilot, or open-source credit. Get rapid prototypes without procurement overhead, from a curated pool of builders who've already demonstrated they ship.</p>
+    </div>
+    <div class="tab-panel" data-panel="enablers">
+      <p>You want to invest in people who actually execute. Browse the Library for shipped proof, scout teams before they raise, and sponsor challenges or mentorship for early access to high-performing teams — a working prototype tells you more than a forecast slide ever will.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ---- FINALE ---- -->
+<section class="section finale" id="connect">
+  <div class="wrap">
+    <svg class="finale-canopy reveal" viewBox="0 0 220 200" aria-hidden="true">
+      <path d="M110 195 L110 90" stroke="var(--forest)" stroke-width="8" stroke-linecap="round"/>
+      <path d="M110 130 C 40 120 20 60 55 20 C 110 40 118 100 110 130Z" fill="var(--leaf)"/>
+      <path d="M110 110 C 180 96 200 40 168 8 C 112 22 100 80 110 110Z" fill="var(--leaf-bright)"/>
+      <path d="M110 90 C 76 66 74 24 100 4 C 130 20 132 66 110 90Z" fill="var(--forest)"/>
+      <path d="M110 70 C 150 56 158 20 138 0 C 108 12 100 46 110 70Z" fill="var(--forest-deep)"/>
+    </svg>
+    <h2>It grew this far because someone kept watering it. Want in?</h2>
+    <p class="lede">The next Build Call, the next sprint, the next shipped prototype — it starts with one honest note about what you'd bring.</p>
+
+    <div class="connect-card paper-card torn reveal">
+      <p class="script" style="font-size:1.3rem;color:var(--forest);">so — are you building, or holding a problem?</p>
+      <div class="connect-row">
+        <button class="btn btn-stamp" id="finaleApply">Yes, plant me in</button>
+        <button class="btn btn-ghost" id="notYet">Not yet, just looking</button>
+      </div>
+      <p class="hint-small" style="margin-top:16px;text-align:center;">mockup only — no account is created here</p>
+    </div>
+  </div>
+</section>
+</div><!-- /growth-track -->
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="logo" style="color:var(--paper);margin-bottom:14px;">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--sun)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--sun)"/></svg>
+        CANOPY
+      </div>
+      <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a href="#for">About</a>
+      <a href="#for">For Builders</a>
+      <a href="#for">For Problem Holders</a>
+      <a href="#for">For Enablers</a>
+    </div>
+    <div>
+      <h5>The Loop</h5>
+      <a href="#solution">Match</a>
+      <a href="#solution">Sprint</a>
+      <a href="#solution">Lab Notebook</a>
+      <a href="#problem">The Gap</a>
+    </div>
+    <div>
+      <h5>Say hello</h5>
+      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="#connect">LinkedIn</a>
+      <a href="#connect">Twitter</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>Canopy — Connect. Collaborate. Ship things that matter.</span>
+    <span>© 2026 Canopy. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- ============ APPLY MODAL ============ -->
+<dialog id="applyModal">
+  <div class="modal-head">
+    <div>
+      <h3>Field Application — Sandbox Intake</h3>
+      <p>A few honest lines beat a long resume. Takes about ninety seconds.</p>
+    </div>
+    <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
+  </div>
+  <form class="apply-form" id="applyForm">
+    <div class="field">
+      <label for="fName">Name</label>
+      <input type="text" id="fName" name="name" placeholder="What should we call you?" required>
+    </div>
+    <div class="field">
+      <label for="fProject">Project you're circling (or the one you're building)</label>
+      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or 'still looking'">
+    </div>
+    <div class="field">
+      <label>Domain you care about</label>
+      <div class="pill-group" data-group="domain">
+        <button type="button" class="pill" aria-pressed="false">Climate</button>
+        <button type="button" class="pill" aria-pressed="false">Health</button>
+        <button type="button" class="pill" aria-pressed="false">Education</button>
+        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
+        <button type="button" class="pill" aria-pressed="false">Hardware</button>
+        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+        <button type="button" class="pill" aria-pressed="false">Design</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Skill level</label>
+      <div class="pill-group" data-group="skill" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">Just starting</button>
+        <button type="button" class="pill" aria-pressed="false">Comfortable</button>
+        <button type="button" class="pill" aria-pressed="false">Advanced</button>
+        <button type="button" class="pill" aria-pressed="false">Domain expert</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>What are you looking for</label>
+      <div class="pill-group" data-group="lookingfor" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">A team</button>
+        <button type="button" class="pill" aria-pressed="false">A co-founder</button>
+        <button type="button" class="pill" aria-pressed="false">A problem to solve</button>
+        <button type="button" class="pill" aria-pressed="false">Mentorship</button>
+      </div>
+    </div>
+    <div class="form-foot">
+      <span class="hint-small">no account created — this is a design mockup</span>
+      <button type="submit" class="btn btn-stamp btn-sm">Plant this application</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast">🌱 Application planted — we'll be in touch soon.</div>
+
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
