@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Match — Canopy</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2226%22>🌱</text></svg>">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+<!-- icon sprite: the sprout mark is the logo's own leaf silhouette, reused
+     as a small line/fill icon instead of an emoji glyph -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-sprout" viewBox="0 0 32 32">
+    <path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor"/>
+    <path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+    <a class="logo" href="index.html" aria-label="Canopy home">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
+      CANOPY
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="index.html#problem">The Gap</a>
+      <a href="index.html#solution">How it Works</a>
+      <a href="match.html" aria-current="page">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="index.html#for">Who it's For</a>
+      <a href="index.html#connect">Connect</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn btn-ghost btn-sm" id="openApplyGhost">Post a Build Call</button>
+      <button class="btn btn-stamp btn-sm" id="openApply">Apply to Canopy</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="stage">
+  <div class="stage-head reveal">
+    <h1>Finding the right teammate shouldn't feel like swiping through strangers.</h1>
+    <p class="lede">It should feel like meeting someone at a workshop, realizing you both care about the same problem, and deciding to build together — high-context, not high-volume. Not a photo, not a swipe: a written note, read by a real person, who chooses.</p>
+  </div>
+
+  <!-- ---- your profile ---- -->
+  <div class="profile-strip elevated-card reveal" data-domain="design">
+    <div class="avatar lg" data-seed="you" aria-hidden="true"></div>
+    <div class="who">
+      <span class="label">Your Match Profile</span>
+      <h3>A generative avatar, not a photo — a fingerprint of your building identity.</h3>
+      <div class="chips">
+        <span class="tag-chip skill">Product Design</span>
+        <span class="tag-chip skill">Systems Thinker</span>
+        <span class="tag-chip skill">Open to: a team</span>
+      </div>
+    </div>
+    <button class="btn btn-ghost btn-sm shovel-btn" style="border:1.5px solid var(--ink);padding:11px 22px;">Edit profile</button>
+  </div>
+
+  <!-- ---- build calls ---- -->
+  <div class="stage-section">
+    <div class="stage-section-head">
+      <h2>Build Calls that fit your profile</h2>
+      <span class="count" id="callCount">6 open</span>
+    </div>
+    <p class="lede" style="margin-top:-10px;margin-bottom:20px;">Each card is the problem in one line, the skills it needs, and a sprout if it's open to new collaborators. Reacting isn't a swipe — it's a short note about what you'd bring.</p>
+
+    <div class="filter-row" data-filters-for="#callGrid" aria-label="Filter Build Calls by domain">
+      <button type="button" class="filter-chip" data-domain="climate" aria-pressed="false">Climate</button>
+      <button type="button" class="filter-chip" data-domain="health" aria-pressed="false">Health</button>
+      <button type="button" class="filter-chip" data-domain="education" aria-pressed="false">Education</button>
+      <button type="button" class="filter-chip" data-domain="civic" aria-pressed="false">Civic Tech</button>
+      <button type="button" class="filter-chip" data-domain="hardware" aria-pressed="false">Hardware</button>
+      <button type="button" class="filter-chip" data-domain="ai" aria-pressed="false">AI / ML</button>
+    </div>
+
+    <div class="match-grid" id="callGrid">
+      <article class="elevated-card interactive match-card reveal" data-domain="climate" tabindex="0">
+        <div class="head-row">
+          <div class="avatar" data-seed="groundwater-sensor" aria-hidden="true"></div>
+          <div class="head-title">
+            <div class="name">Groundwater contamination sensor</div>
+            <div class="sub">posted by a regional water NGO</div>
+          </div>
+          <span class="sprout" title="open to new collaborators"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg></span>
+        </div>
+        <p class="line">Build a low-cost sensor that flags contamination in real time. Pilot budget and an open dataset are already secured.</p>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="climate">Climate</span>
+          <span class="tag-chip skill">Hardware</span>
+          <span class="tag-chip skill">Embedded</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">2 builders in, 1 spot open</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="ai" tabindex="0">
+        <div class="head-row">
+          <div class="avatar" data-seed="deforestation-tracker" aria-hidden="true"></div>
+          <div class="head-title">
+            <div class="name">Deforestation tracker from satellite feeds</div>
+            <div class="sub">posted by an independent researcher</div>
+          </div>
+          <span class="sprout" title="open to new collaborators"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg></span>
+        </div>
+        <p class="line">"I need a computer vision engineer to help me turn public satellite imagery into a weekly change-detection map."</p>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="ai">AI / ML</span>
+          <span class="tag-chip skill">Computer Vision</span>
+          <span class="tag-chip skill">Python</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">solo so far</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="health" tabindex="0">
+        <div class="head-row">
+          <div class="avatar" data-seed="clinic-triage" aria-hidden="true"></div>
+          <div class="head-title">
+            <div class="name">Offline-first triage tool for rural clinics</div>
+            <div class="sub">posted by a public health fellow</div>
+          </div>
+        </div>
+        <p class="line">A scoped problem with real clinic partners lined up — needs someone who's shipped for low-connectivity Android before.</p>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="health">Health</span>
+          <span class="tag-chip skill">Android</span>
+          <span class="tag-chip skill">Offline sync</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">team full — accepting notes for the next cycle</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="civic" tabindex="0">
+        <div class="head-row">
+          <div class="avatar" data-seed="civic-budget" aria-hidden="true"></div>
+          <div class="head-title">
+            <div class="name">A plain-language city budget explorer</div>
+            <div class="sub">posted by a civic tech collective</div>
+          </div>
+          <span class="sprout" title="open to new collaborators"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg></span>
+        </div>
+        <p class="line">Municipal budget data is public but unreadable. Wants a designer and a data person to make it legible.</p>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="civic">Civic Tech</span>
+          <span class="tag-chip skill">Data Viz</span>
+          <span class="tag-chip skill">Design</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">1 builder in, 2 spots open</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="education" tabindex="0">
+        <div class="head-row">
+          <div class="avatar" data-seed="reading-tutor" aria-hidden="true"></div>
+          <div class="head-title">
+            <div class="name">Adaptive reading tutor for grade 3–5</div>
+            <div class="sub">posted by a former teacher, now founder</div>
+          </div>
+        </div>
+        <p class="line">"The idea is vivid. What's missing is a technical co-builder to bring it to life." Looking for a full-stack partner.</p>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="education">Education</span>
+          <span class="tag-chip skill">Full-stack</span>
+          <span class="tag-chip skill">Co-founder fit</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">solo so far</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="hardware" tabindex="0">
+        <div class="head-row">
+          <div class="avatar" data-seed="solar-microgrid" aria-hidden="true"></div>
+          <div class="head-title">
+            <div class="name">Fault detection for village solar microgrids</div>
+            <div class="sub">posted by a hardware collective</div>
+          </div>
+          <span class="sprout" title="open to new collaborators"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg></span>
+        </div>
+        <p class="line">Field-tested hardware, no software layer yet. Wants an ML engineer ready to work from real sensor logs.</p>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="hardware">Hardware</span>
+          <span class="tag-chip skill">ML</span>
+          <span class="tag-chip skill">Time Series</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">3 builders in, 1 spot open</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+        </div>
+      </article>
+    </div>
+
+    <div class="empty-state" role="status">
+      <p>No Build Calls match that combination of domains right now.</p>
+      <button type="button" class="btn btn-ghost btn-sm">Clear filters</button>
+    </div>
+  </div>
+
+  <!-- ---- people ---- -->
+  <div class="stage-section">
+    <div class="stage-section-head">
+      <h2>People building nearby</h2>
+      <span class="count">recommended from overlapping domains</span>
+    </div>
+    <p class="lede" style="margin-top:-10px;margin-bottom:20px;">Tap a card to read their recent Lab Notebook entries before you decide to reach out.</p>
+    <div class="match-grid" id="peopleGrid">
+      <article class="elevated-card interactive match-card reveal" data-domain="ai" tabindex="0">
+        <div class="head-row">
+          <div class="avatar" data-seed="Priya Nandan" aria-hidden="true"></div>
+          <div class="head-title">
+            <div class="name">Priya Nandan</div>
+            <div class="sub">ML Engineer</div>
+          </div>
+        </div>
+        <p class="line">"I've got strong skills. I just don't have a clear problem to point them at." Looking for a Build Call with real data behind it.</p>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="ai">AI / ML</span>
+          <span class="tag-chip skill">PyTorch</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">3 Lab Notebook entries</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note</button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="design" tabindex="0">
+        <div class="head-row">
+          <div class="avatar" data-seed="Marcus Webb" aria-hidden="true"></div>
+          <div class="head-title">
+            <div class="name">Marcus Webb</div>
+            <div class="sub">Product Designer</div>
+          </div>
+        </div>
+        <p class="line">"I'm craving a real project — not another fake case study for my portfolio." Wants a technical co-builder to pair with.</p>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="design">Design</span>
+          <span class="tag-chip skill">Prototyping</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">5 Lab Notebook entries</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note</button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="hardware" tabindex="0">
+        <div class="head-row">
+          <div class="avatar" data-seed="Ines Falk" aria-hidden="true"></div>
+          <div class="head-title">
+            <div class="name">Ines Falk</div>
+            <div class="sub">Hardware Engineer</div>
+          </div>
+        </div>
+        <p class="line">"I want a cause, and a team that actually values the craft of building physical things." Ready to prototype now.</p>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="hardware">Hardware</span>
+          <span class="tag-chip skill">PCB Design</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">2 Lab Notebook entries</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note</button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="stage-cta elevated-card reveal">
+    <h2>Update your match profile. Browse Build Calls. Write a note.</h2>
+    <p class="lede">Grab a shovel — the next good match is closer than a swipe.</p>
+    <div class="connect-row">
+      <button class="btn btn-stamp" id="openApplyMatch">Open my match profile</button>
+      <a class="btn btn-ghost" href="index.html#solution">See the whole loop</a>
+    </div>
+    <p class="hint-small">mockup only — no account is created here</p>
+  </div>
+</div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="logo" style="color:var(--paper);margin-bottom:14px;">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--sun)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--sun)"/></svg>
+        CANOPY
+      </div>
+      <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a href="index.html#for">About</a>
+      <a href="index.html#for">For Builders</a>
+      <a href="index.html#for">For Problem Holders</a>
+      <a href="index.html#for">For Enablers</a>
+    </div>
+    <div>
+      <h5>The Loop</h5>
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="index.html#problem">The Gap</a>
+    </div>
+    <div>
+      <h5>Say hello</h5>
+      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="index.html#connect">LinkedIn</a>
+      <a href="index.html#connect">Twitter</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>Canopy — Connect. Collaborate. Ship things that matter.</span>
+    <span>© 2026 Canopy. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- ============ APPLY MODAL ============ -->
+<dialog id="applyModal">
+  <span class="tape modal-tape" aria-hidden="true"></span>
+  <div class="modal-head">
+    <div>
+      <h3>Sandbox intake form</h3>
+      <p>A few honest lines beat a long resume. Takes about ninety seconds.</p>
+    </div>
+    <div class="modal-meta">
+      <span class="form-tag">FORM 01 · CANOPY</span>
+      <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
+    </div>
+  </div>
+  <form class="apply-form" id="applyForm">
+    <div class="field">
+      <label for="fName">Name / handle</label>
+      <input type="text" id="fName" name="name" placeholder="e.g. Elena R." required>
+    </div>
+    <div class="field">
+      <label for="fProject">Project you're circling</label>
+      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or &ldquo;still looking&rdquo;">
+    </div>
+    <div class="field">
+      <label>Domain you care about</label>
+      <div class="pill-group" data-group="domain">
+        <button type="button" class="pill" aria-pressed="false">Climate</button>
+        <button type="button" class="pill" aria-pressed="false">Health</button>
+        <button type="button" class="pill" aria-pressed="false">Education</button>
+        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
+        <button type="button" class="pill" aria-pressed="false">Hardware</button>
+        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+        <button type="button" class="pill" aria-pressed="false">Design</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Skill level</label>
+      <div class="pill-group" data-group="skill" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">Just starting</button>
+        <button type="button" class="pill" aria-pressed="false">Comfortable</button>
+        <button type="button" class="pill" aria-pressed="false">Advanced</button>
+        <button type="button" class="pill" aria-pressed="false">Domain expert</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="fLink">Link to something you've built or written</label>
+      <input type="text" id="fLink" name="link" placeholder="URL, optional">
+    </div>
+    <div class="field">
+      <label>What are you looking for</label>
+      <div class="pill-group" data-group="lookingfor" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">A team</button>
+        <button type="button" class="pill" aria-pressed="false">A co-founder</button>
+        <button type="button" class="pill" aria-pressed="false">A problem to solve</button>
+        <button type="button" class="pill" aria-pressed="false">Mentorship</button>
+      </div>
+    </div>
+    <div class="form-foot">
+      <span class="hint-small">no account created — this is a design mockup</span>
+      <button type="submit" class="btn btn-stamp btn-sm">Plant this application</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast">🌱 Application planted — we'll be in touch soon.</div>
+
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

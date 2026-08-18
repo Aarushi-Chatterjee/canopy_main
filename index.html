@@ -20,6 +20,9 @@
     <nav class="primary-nav" aria-label="Primary">
       <a href="#problem">The Gap</a>
       <a href="#solution">How it Works</a>
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
       <a href="#for">Who it's For</a>
       <a href="#connect">Connect</a>
     </nav>
@@ -102,7 +105,7 @@
 
 <!-- ============ GROWTH TRACK WRAPS: PROBLEM → FINALE ============ -->
 <div class="growth-track" id="growthTrack">
-<canvas id="vineCanvas" aria-hidden="true"></canvas>
+<svg id="vineSvg" class="vine-svg" aria-hidden="true" focusable="false"></svg>
 
 <!-- ---- PROBLEM ---- -->
 <section class="section" id="problem">
@@ -221,7 +224,7 @@
         <div class="role">Builder</div>
         <h4>ML Engineer</h4>
         <span class="hint">tap to open ↓</span>
-        <div class="looks-for">Has the skills. Looking for: a founder or NGO with a real dataset and a problem worth pointing a model at.</div>
+        <div class="looks-for"><span>Has the skills. Looking for: a founder or NGO with a real dataset and a problem worth pointing a model at.</span></div>
       </div>
       <div class="chain-link" aria-hidden="true"></div>
       <div class="charm paper-card" tabindex="0" role="button" style="--rot:3deg;" data-charm>
@@ -229,7 +232,7 @@
         <div class="role">Builder</div>
         <h4>Product Designer</h4>
         <span class="hint">tap to open ↓</span>
-        <div class="looks-for">Craving a real project. Looking for: a technical co-builder who needs an interface people will actually trust.</div>
+        <div class="looks-for"><span>Craving a real project. Looking for: a technical co-builder who needs an interface people will actually trust.</span></div>
       </div>
       <div class="chain-link" aria-hidden="true"></div>
       <div class="charm paper-card" tabindex="0" role="button" style="--rot:-2deg;" data-charm>
@@ -237,7 +240,7 @@
         <div class="role">Builder</div>
         <h4>Domain Expert</h4>
         <span class="hint">tap to open ↓</span>
-        <div class="looks-for">Holds the field knowledge and the data. Looking for: an engineer who can turn context into a working system.</div>
+        <div class="looks-for"><span>Holds the field knowledge and the data. Looking for: an engineer who can turn context into a working system.</span></div>
       </div>
       <div class="chain-link" aria-hidden="true"></div>
       <div class="charm paper-card" tabindex="0" role="button" style="--rot:4deg;" data-charm>
@@ -245,7 +248,7 @@
         <div class="role">Builder</div>
         <h4>Hardware Engineer</h4>
         <span class="hint">tap to open ↓</span>
-        <div class="looks-for">Ready to build a prototype. Looking for: a cause and a team that values the craft, not just the demo.</div>
+        <div class="looks-for"><span>Ready to build a prototype. Looking for: a cause and a team that values the craft, not just the demo.</span></div>
       </div>
       <div class="chain-link" aria-hidden="true"></div>
       <div class="charm paper-card" tabindex="0" role="button" style="--rot:-3deg;" data-charm>
@@ -253,7 +256,7 @@
         <div class="role">Problem Holder</div>
         <h4>NGO / Company</h4>
         <span class="hint">tap to open ↓</span>
-        <div class="looks-for">Has the challenge and no time to spare. Looking for: a curated team that can turn a scoped problem into a shipped prototype inside a few weeks.</div>
+        <div class="looks-for"><span>Has the challenge and no time to spare. Looking for: a curated team that can turn a scoped problem into a shipped prototype inside a few weeks.</span></div>
       </div>
       <div class="chain-link" aria-hidden="true"></div>
       <div class="charm paper-card" tabindex="0" role="button" style="--rot:2deg;" data-charm>
@@ -261,7 +264,7 @@
         <div class="role">Enabler</div>
         <h4>Impact Investor</h4>
         <span class="hint">tap to open ↓</span>
-        <div class="looks-for">Wants deal flow grounded in proof. Looking for: a deck with a shipped prototype standing behind it.</div>
+        <div class="looks-for"><span>Wants deal flow grounded in proof. Looking for: a deck with a shipped prototype standing behind it.</span></div>
       </div>
     </div>
 
@@ -270,14 +273,16 @@
       <button class="tab-btn" role="tab" aria-selected="false" data-tab="holders">For Problem Holders</button>
       <button class="tab-btn" role="tab" aria-selected="false" data-tab="enablers">For Enablers</button>
     </div>
-    <div class="tab-panel" data-panel="builders" data-active="true">
-      <p>You have skills, and you want to use them on something real. Post a Build Call for your own idea, or browse challenges that need your exact skills. Smart matching suggests collaborators by skill, domain, and intent — so you stop waiting for the right project to find you, and start shipping instead.</p>
-    </div>
-    <div class="tab-panel" data-panel="holders">
-      <p>You have a real problem and need fresh, motivated teams. Post it in the Problem Marketplace with context, data, and a reward — a cash prize, a paid pilot, or open-source credit. Get rapid prototypes without procurement overhead, from a curated pool of builders who've already demonstrated they ship.</p>
-    </div>
-    <div class="tab-panel" data-panel="enablers">
-      <p>You want to invest in people who actually execute. Browse the Library for shipped proof, scout teams before they raise, and sponsor challenges or mentorship for early access to high-performing teams — a working prototype tells you more than a forecast slide ever will.</p>
+    <div class="tab-panels">
+      <div class="tab-panel" data-panel="builders" data-active="true">
+        <p>You have skills, and you want to use them on something real. Post a Build Call for your own idea, or browse challenges that need your exact skills. Smart matching suggests collaborators by skill, domain, and intent — so you stop waiting for the right project to find you, and start shipping instead.</p>
+      </div>
+      <div class="tab-panel" data-panel="holders">
+        <p>You have a real problem and need fresh, motivated teams. Post it in the Problem Marketplace with context, data, and a reward — a cash prize, a paid pilot, or open-source credit. Get rapid prototypes without procurement overhead, from a curated pool of builders who've already demonstrated they ship.</p>
+      </div>
+      <div class="tab-panel" data-panel="enablers">
+        <p>You want to invest in people who actually execute. Browse the Library for shipped proof, scout teams before they raise, and sponsor challenges or mentorship for early access to high-performing teams — a working prototype tells you more than a forecast slide ever will.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -327,9 +332,9 @@
     </div>
     <div>
       <h5>The Loop</h5>
-      <a href="#solution">Match</a>
-      <a href="#solution">Sprint</a>
-      <a href="#solution">Lab Notebook</a>
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
       <a href="#problem">The Gap</a>
     </div>
     <div>
@@ -347,21 +352,25 @@
 
 <!-- ============ APPLY MODAL ============ -->
 <dialog id="applyModal">
+  <span class="tape modal-tape" aria-hidden="true"></span>
   <div class="modal-head">
     <div>
-      <h3>Field Application — Sandbox Intake</h3>
+      <h3>Sandbox intake form</h3>
       <p>A few honest lines beat a long resume. Takes about ninety seconds.</p>
     </div>
-    <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
+    <div class="modal-meta">
+      <span class="form-tag">FORM 01 · CANOPY</span>
+      <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
+    </div>
   </div>
   <form class="apply-form" id="applyForm">
     <div class="field">
-      <label for="fName">Name</label>
-      <input type="text" id="fName" name="name" placeholder="What should we call you?" required>
+      <label for="fName">Name / handle</label>
+      <input type="text" id="fName" name="name" placeholder="e.g. Elena R." required>
     </div>
     <div class="field">
-      <label for="fProject">Project you're circling (or the one you're building)</label>
-      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or 'still looking'">
+      <label for="fProject">Project you're circling</label>
+      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or &ldquo;still looking&rdquo;">
     </div>
     <div class="field">
       <label>Domain you care about</label>
@@ -383,6 +392,10 @@
         <button type="button" class="pill" aria-pressed="false">Advanced</button>
         <button type="button" class="pill" aria-pressed="false">Domain expert</button>
       </div>
+    </div>
+    <div class="field">
+      <label for="fLink">Link to something you've built or written</label>
+      <input type="text" id="fLink" name="link" placeholder="URL, optional">
     </div>
     <div class="field">
       <label>What are you looking for</label>

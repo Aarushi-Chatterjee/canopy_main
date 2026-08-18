@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprints — Canopy</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2226%22>🌱</text></svg>">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+<!-- icon sprite: sprout is the logo's own leaf silhouette; bell matches its
+     stroke weight — both replace emoji glyphs for a consistent icon system -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-sprout" viewBox="0 0 32 32">
+    <path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor"/>
+    <path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-bell" viewBox="0 0 16 16">
+    <path d="M8 1.5c-.4 0-.7.3-.7.7v.6C5 3.2 3.3 5 3.3 7.3v2.4c0 .5-.2 1-.6 1.4L2 12h12l-.7-1c-.4-.4-.6-.9-.6-1.4V7.3c0-2.3-1.7-4.1-4-4.5v-.6c0-.4-.3-.7-.7-.7Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none"/>
+    <path d="M6.3 13.2a1.8 1.8 0 0 0 3.4 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+  </symbol>
+</svg>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+    <a class="logo" href="index.html" aria-label="Canopy home">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
+      CANOPY
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="index.html#problem">The Gap</a>
+      <a href="index.html#solution">How it Works</a>
+      <a href="match.html">Match</a>
+      <a href="sprint.html" aria-current="page">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="index.html#for">Who it's For</a>
+      <a href="index.html#connect">Connect</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn btn-ghost btn-sm" id="openApplyGhost">Post a Build Call</button>
+      <button class="btn btn-stamp btn-sm" id="openApply">Apply to Canopy</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="stage">
+  <div class="stage-head reveal">
+    <h1>A sprint is where an idea becomes something you can point to.</h1>
+    <p class="lede">Two to four weeks, start to shipped. A team forms around one specific Build Call, works against a visible clock instead of an open-ended timeline, and walks away with a prototype, a dataset, a dashboard, or a write-up added to the public Library — no month-long email chains, just a team, a problem, and a date on the calendar.</p>
+  </div>
+
+  <div class="board">
+    <div class="board-col" data-stage="forming">
+      <div class="board-col-head">
+        <span class="dot"></span>
+        <h3>Forming</h3>
+        <span class="n">2</span>
+      </div>
+      <div class="board-col-body">
+        <article class="elevated-card sprint-card reveal" data-domain="civic">
+          <h4>A plain-language city budget explorer</h4>
+          <p class="line" style="color:var(--ink-soft);font-size:.9rem;">Municipal budget data is public but unreadable — the team is still coming together before the clock starts.</p>
+          <div class="team-row">
+            <div class="avatar sm" data-seed="civic-budget-1" aria-hidden="true"></div>
+            <span class="plus">+2</span>
+          </div>
+          <div class="chip-row"><span class="tag-chip skill">Data Viz</span><span class="tag-chip skill">Design</span></div>
+          <div class="card-foot">
+            <span class="hint-small">1 of 3 spots filled</span>
+            <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+          </div>
+        </article>
+        <article class="elevated-card sprint-card reveal" data-domain="education">
+          <h4>Adaptive reading tutor for grade 3–5</h4>
+          <p class="line" style="color:var(--ink-soft);font-size:.9rem;">"The idea is vivid. What's missing is a technical co-builder to bring it to life."</p>
+          <div class="team-row">
+            <div class="avatar sm" data-seed="reading-tutor-1" aria-hidden="true"></div>
+          </div>
+          <div class="chip-row"><span class="tag-chip skill">Full-stack</span></div>
+          <div class="card-foot">
+            <span class="hint-small">solo so far</span>
+            <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="board-col" data-stage="building">
+      <div class="board-col-head">
+        <span class="dot"></span>
+        <h3>Building</h3>
+        <span class="n">3</span>
+      </div>
+      <div class="board-col-body">
+        <article class="elevated-card sprint-card reveal" data-domain="climate">
+          <h4>Groundwater contamination sensor</h4>
+          <div class="clock-row">
+            <svg class="clock-ring" viewBox="0 0 36 36" data-pct="64" aria-hidden="true">
+              <circle class="track" cx="18" cy="18" r="15"/>
+              <circle class="fill" cx="18" cy="18" r="15"/>
+            </svg>
+            <span class="clock-label"><b>9 of 14</b> days left</span>
+          </div>
+          <div class="team-row">
+            <div class="avatar sm" data-seed="gw-1" aria-hidden="true"></div>
+            <div class="avatar sm" data-seed="gw-2" aria-hidden="true"></div>
+            <div class="avatar sm" data-seed="gw-3" aria-hidden="true"></div>
+          </div>
+          <div class="chip-row"><span class="tag-chip" data-domain="climate">Climate</span><span class="tag-chip skill">Hardware</span></div>
+          <div class="card-foot">
+            <span class="hint-small">team locked for this cycle</span>
+            <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
+          </div>
+        </article>
+        <article class="elevated-card sprint-card reveal" data-domain="ai">
+          <h4>Deforestation tracker from satellite feeds</h4>
+          <div class="clock-row">
+            <svg class="clock-ring" viewBox="0 0 36 36" data-pct="24" aria-hidden="true">
+              <circle class="track" cx="18" cy="18" r="15"/>
+              <circle class="fill" cx="18" cy="18" r="15"/>
+            </svg>
+            <span class="clock-label"><b>5 of 21</b> days left</span>
+          </div>
+          <div class="team-row">
+            <div class="avatar sm" data-seed="dfr-1" aria-hidden="true"></div>
+            <div class="avatar sm" data-seed="dfr-2" aria-hidden="true"></div>
+          </div>
+          <div class="chip-row"><span class="tag-chip" data-domain="ai">AI / ML</span><span class="tag-chip skill">Computer Vision</span></div>
+          <div class="card-foot">
+            <span class="hint-small">team locked for this cycle</span>
+            <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
+          </div>
+        </article>
+        <article class="elevated-card sprint-card reveal" data-domain="hardware">
+          <h4>Fault detection for village solar microgrids</h4>
+          <div class="clock-row">
+            <svg class="clock-ring" viewBox="0 0 36 36" data-pct="83" aria-hidden="true">
+              <circle class="track" cx="18" cy="18" r="15"/>
+              <circle class="fill" cx="18" cy="18" r="15"/>
+            </svg>
+            <span class="clock-label"><b>15 of 18</b> days left</span>
+          </div>
+          <div class="team-row">
+            <div class="avatar sm" data-seed="solar-1" aria-hidden="true"></div>
+            <div class="avatar sm" data-seed="solar-2" aria-hidden="true"></div>
+            <div class="avatar sm" data-seed="solar-3" aria-hidden="true"></div>
+            <div class="avatar sm" data-seed="solar-4" aria-hidden="true"></div>
+          </div>
+          <div class="chip-row"><span class="tag-chip" data-domain="hardware">Hardware</span><span class="tag-chip skill">ML</span></div>
+          <div class="card-foot">
+            <span class="hint-small">team locked for this cycle</span>
+            <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="board-col" data-stage="shipped">
+      <div class="board-col-head">
+        <span class="dot"></span>
+        <h3>Shipped</h3>
+        <span class="n">2</span>
+      </div>
+      <div class="board-col-body">
+        <article class="elevated-card sprint-card shipped reveal" data-domain="climate">
+          <span class="shipped-badge">✓ Added to the Library</span>
+          <h4>Water-quality dashboard for 40 rural wells</h4>
+          <div class="team-row">
+            <div class="avatar sm" data-seed="wq-1" aria-hidden="true"></div>
+            <div class="avatar sm" data-seed="wq-2" aria-hidden="true"></div>
+          </div>
+          <div class="chip-row"><span class="tag-chip" data-domain="climate">Climate</span><span class="tag-chip skill">Dashboards</span></div>
+          <div class="card-foot">
+            <span class="hint-small">shipped in 3 weeks</span>
+            <a class="shovel-btn" href="index.html#for" style="text-decoration:none;">View in the Library →</a>
+          </div>
+        </article>
+        <article class="elevated-card sprint-card shipped reveal" data-domain="education">
+          <span class="shipped-badge">✓ Added to the Library</span>
+          <h4>Peer-tutoring matcher for after-school programs</h4>
+          <div class="team-row">
+            <div class="avatar sm" data-seed="pt-1" aria-hidden="true"></div>
+            <div class="avatar sm" data-seed="pt-2" aria-hidden="true"></div>
+            <div class="avatar sm" data-seed="pt-3" aria-hidden="true"></div>
+          </div>
+          <div class="chip-row"><span class="tag-chip" data-domain="education">Education</span><span class="tag-chip skill">Full-stack</span></div>
+          <div class="card-foot">
+            <span class="hint-small">shipped in 2 weeks</span>
+            <a class="shovel-btn" href="index.html#for" style="text-decoration:none;">View in the Library →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage-cta elevated-card reveal">
+    <h2>Start a sprint, or join one that's already growing.</h2>
+    <p class="lede">The next deadline is closer than you think.</p>
+    <div class="connect-row">
+      <button class="btn btn-stamp" id="openApplySprint">Start a sprint</button>
+      <a class="btn btn-ghost" href="index.html#solution">See the whole loop</a>
+    </div>
+    <p class="hint-small">mockup only — no account is created here</p>
+  </div>
+</div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="logo" style="color:var(--paper);margin-bottom:14px;">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--sun)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--sun)"/></svg>
+        CANOPY
+      </div>
+      <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a href="index.html#for">About</a>
+      <a href="index.html#for">For Builders</a>
+      <a href="index.html#for">For Problem Holders</a>
+      <a href="index.html#for">For Enablers</a>
+    </div>
+    <div>
+      <h5>The Loop</h5>
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="index.html#problem">The Gap</a>
+    </div>
+    <div>
+      <h5>Say hello</h5>
+      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="index.html#connect">LinkedIn</a>
+      <a href="index.html#connect">Twitter</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>Canopy — Connect. Collaborate. Ship things that matter.</span>
+    <span>© 2026 Canopy. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- ============ APPLY MODAL ============ -->
+<dialog id="applyModal">
+  <span class="tape modal-tape" aria-hidden="true"></span>
+  <div class="modal-head">
+    <div>
+      <h3>Sandbox intake form</h3>
+      <p>A few honest lines beat a long resume. Takes about ninety seconds.</p>
+    </div>
+    <div class="modal-meta">
+      <span class="form-tag">FORM 01 · CANOPY</span>
+      <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
+    </div>
+  </div>
+  <form class="apply-form" id="applyForm">
+    <div class="field">
+      <label for="fName">Name / handle</label>
+      <input type="text" id="fName" name="name" placeholder="e.g. Elena R." required>
+    </div>
+    <div class="field">
+      <label for="fProject">Project you're circling</label>
+      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or &ldquo;still looking&rdquo;">
+    </div>
+    <div class="field">
+      <label>Domain you care about</label>
+      <div class="pill-group" data-group="domain">
+        <button type="button" class="pill" aria-pressed="false">Climate</button>
+        <button type="button" class="pill" aria-pressed="false">Health</button>
+        <button type="button" class="pill" aria-pressed="false">Education</button>
+        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
+        <button type="button" class="pill" aria-pressed="false">Hardware</button>
+        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+        <button type="button" class="pill" aria-pressed="false">Design</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Skill level</label>
+      <div class="pill-group" data-group="skill" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">Just starting</button>
+        <button type="button" class="pill" aria-pressed="false">Comfortable</button>
+        <button type="button" class="pill" aria-pressed="false">Advanced</button>
+        <button type="button" class="pill" aria-pressed="false">Domain expert</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="fLink">Link to something you've built or written</label>
+      <input type="text" id="fLink" name="link" placeholder="URL, optional">
+    </div>
+    <div class="field">
+      <label>What are you looking for</label>
+      <div class="pill-group" data-group="lookingfor" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">A team</button>
+        <button type="button" class="pill" aria-pressed="false">A co-founder</button>
+        <button type="button" class="pill" aria-pressed="false">A problem to solve</button>
+        <button type="button" class="pill" aria-pressed="false">Mentorship</button>
+      </div>
+    </div>
+    <div class="form-foot">
+      <span class="hint-small">no account created — this is a design mockup</span>
+      <button type="submit" class="btn btn-stamp btn-sm">Plant this application</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast">🌱 Application planted — we'll be in touch soon.</div>
+
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab Notebook — Canopy</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2226%22>🌱</text></svg>">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+    <a class="logo" href="index.html" aria-label="Canopy home">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
+      CANOPY
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="index.html#problem">The Gap</a>
+      <a href="index.html#solution">How it Works</a>
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html" aria-current="page">Lab Notebook</a>
+      <a href="index.html#for">Who it's For</a>
+      <a href="index.html#connect">Connect</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn btn-ghost btn-sm" id="openApplyGhost">Post a Build Call</button>
+      <button class="btn btn-stamp btn-sm" id="openApply">Apply to Canopy</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="stage">
+  <div class="stage-head reveal">
+    <h1>The Lab Notebook is where process lives.</h1>
+    <p class="lede">Not polished marketing, not a finished product page — the raw record of how you build: the half-baked idea, the dataset that surprised you, the model that failed, the small fix that finally worked. It doesn't have to be perfect. It just has to be real, and it's a quiet, powerful credential to the people deciding whether to build with you.</p>
+  </div>
+
+  <div class="feed-toolbar">
+    <button type="button" class="compose-trigger">
+      <span class="plus-badge">+</span>
+      Write what you did, what you learned, what's next…
+    </button>
+  </div>
+
+  <div class="filter-row" data-filters-for="#entryGrid" aria-label="Filter entries by domain">
+    <button type="button" class="filter-chip" data-domain="climate" aria-pressed="false">Climate</button>
+    <button type="button" class="filter-chip" data-domain="health" aria-pressed="false">Health</button>
+    <button type="button" class="filter-chip" data-domain="education" aria-pressed="false">Education</button>
+    <button type="button" class="filter-chip" data-domain="civic" aria-pressed="false">Civic Tech</button>
+    <button type="button" class="filter-chip" data-domain="hardware" aria-pressed="false">Hardware</button>
+    <button type="button" class="filter-chip" data-domain="ai" aria-pressed="false">AI / ML</button>
+  </div>
+
+  <div class="feed-grid" id="entryGrid">
+    <article class="elevated-card interactive entry-card reveal" data-domain="climate" tabindex="0">
+      <div class="entry-top">
+        <div class="avatar sm" data-seed="Priya Nandan" aria-hidden="true"></div>
+        <span class="name">Priya Nandan</span>
+        <span class="when">2 days ago</span>
+      </div>
+      <h4>Why my groundwater model kept overfitting on rainy days</h4>
+      <p class="snippet">Turns out three sensors were miscalibrated after the last storm and I was training on noise. Here's how I caught it.</p>
+      <div class="teaser"><span>rmse_by_weather.py:14 → std(residual | rain) &gt;&gt; std(residual | dry)</span></div>
+      <div class="entry-bottom">
+        <span class="tag-chip" data-domain="climate">Climate</span>
+        <span class="tag-chip skill">post-mortem</span>
+      </div>
+    </article>
+
+    <article class="elevated-card interactive entry-card reveal" data-domain="hardware" tabindex="0">
+      <div class="entry-top">
+        <div class="avatar sm" data-seed="Ines Falk" aria-hidden="true"></div>
+        <span class="name">Ines Falk</span>
+        <span class="when">4 days ago</span>
+      </div>
+      <h4>First failed prototype of the fault-detection board</h4>
+      <p class="snippet">The enclosure trapped heat and cooked the sensor by hour six. Redesigned the vent pattern — full teardown photos inside.</p>
+      <div class="teaser"><span>thermal_log.csv → 84°C at t+6h, spec max 65°C</span></div>
+      <div class="entry-bottom">
+        <span class="tag-chip" data-domain="hardware">Hardware</span>
+        <span class="tag-chip skill">teardown</span>
+      </div>
+    </article>
+
+    <article class="elevated-card interactive entry-card reveal" data-domain="civic" tabindex="0">
+      <div class="entry-top">
+        <div class="avatar sm" data-seed="Deshi Osei" aria-hidden="true"></div>
+        <span class="name">Deshi Osei</span>
+        <span class="when">5 days ago</span>
+      </div>
+      <h4>A dataset that surprised me: the line-items don't sum to the total</h4>
+      <p class="snippet">The city's published budget PDF and its "open data" export disagree by 4%. Wrote a reconciliation script before touching any UI.</p>
+      <div class="teaser"><span>reconcile.js → drift: +$2.3M unattributed</span></div>
+      <div class="entry-bottom">
+        <span class="tag-chip" data-domain="civic">Civic Tech</span>
+        <span class="tag-chip skill">data cleaning</span>
+      </div>
+    </article>
+
+    <article class="elevated-card interactive entry-card reveal" data-domain="education" tabindex="0">
+      <div class="entry-top">
+        <div class="avatar sm" data-seed="Marcus Webb" aria-hidden="true"></div>
+        <span class="name">Marcus Webb</span>
+        <span class="when">1 week ago</span>
+      </div>
+      <h4>The small fix that made the tutor usable on a cracked screen</h4>
+      <p class="snippet">Touch targets were fine in the simulator and unusable on the actual donated classroom tablets. One line, huge difference.</p>
+      <div class="teaser"><span>tutor.css:212 → min-height: 44px !important;</span></div>
+      <div class="entry-bottom">
+        <span class="tag-chip" data-domain="education">Education</span>
+        <span class="tag-chip skill">field-testing</span>
+      </div>
+    </article>
+
+    <article class="elevated-card interactive entry-card reveal" data-domain="health" tabindex="0">
+      <div class="entry-top">
+        <div class="avatar sm" data-seed="Rohan Malhotra" aria-hidden="true"></div>
+        <span class="name">Rohan Malhotra</span>
+        <span class="when">1 week ago</span>
+      </div>
+      <h4>Post-mortem: our offline sync merge conflicts</h4>
+      <p class="snippet">Two clinics editing the same patient record offline, no server to arbitrate. Landed on last-write-wins plus a visible conflict flag.</p>
+      <div class="teaser"><span>sync.md → conflicts/day: 40 → 3 after v2</span></div>
+      <div class="entry-bottom">
+        <span class="tag-chip" data-domain="health">Health</span>
+        <span class="tag-chip skill">architecture</span>
+      </div>
+    </article>
+
+    <article class="elevated-card interactive entry-card reveal" data-domain="ai" tabindex="0">
+      <div class="entry-top">
+        <div class="avatar sm" data-seed="Priya Nandan" aria-hidden="true"></div>
+        <span class="name">Priya Nandan</span>
+        <span class="when">2 weeks ago</span>
+      </div>
+      <h4>Sketch: what a fair matching algorithm could look like</h4>
+      <p class="snippet">Half-baked, not shipped anywhere yet — thinking out loud about weighting "note quality" over raw skill overlap.</p>
+      <div class="teaser"><span>match_weights.md → draft, unscored</span></div>
+      <div class="entry-bottom">
+        <span class="tag-chip" data-domain="ai">AI / ML</span>
+        <span class="tag-chip skill">idea</span>
+      </div>
+    </article>
+  </div>
+
+  <div class="empty-state" role="status">
+    <p>No entries match that combination of domains yet.</p>
+    <button type="button" class="btn btn-ghost btn-sm">Clear filters</button>
+  </div>
+
+  <div class="stage-cta elevated-card reveal">
+    <h2>Open your notebook. Share your process.</h2>
+    <p class="lede">Let others learn from your digging — "grow this entry" grows the library, your presence, and the community's knowledge with it.</p>
+    <div class="connect-row">
+      <button class="btn btn-stamp" id="openApplyNotebook">Open your notebook</button>
+      <a class="btn btn-ghost" href="index.html#solution">See the whole loop</a>
+    </div>
+    <p class="hint-small">mockup only — no account is created here</p>
+  </div>
+</div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="logo" style="color:var(--paper);margin-bottom:14px;">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--sun)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--sun)"/></svg>
+        CANOPY
+      </div>
+      <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a href="index.html#for">About</a>
+      <a href="index.html#for">For Builders</a>
+      <a href="index.html#for">For Problem Holders</a>
+      <a href="index.html#for">For Enablers</a>
+    </div>
+    <div>
+      <h5>The Loop</h5>
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="index.html#problem">The Gap</a>
+    </div>
+    <div>
+      <h5>Say hello</h5>
+      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="index.html#connect">LinkedIn</a>
+      <a href="index.html#connect">Twitter</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>Canopy — Connect. Collaborate. Ship things that matter.</span>
+    <span>© 2026 Canopy. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- ============ APPLY MODAL ============ -->
+<dialog id="applyModal">
+  <span class="tape modal-tape" aria-hidden="true"></span>
+  <div class="modal-head">
+    <div>
+      <h3>Sandbox intake form</h3>
+      <p>A few honest lines beat a long resume. Takes about ninety seconds.</p>
+    </div>
+    <div class="modal-meta">
+      <span class="form-tag">FORM 01 · CANOPY</span>
+      <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
+    </div>
+  </div>
+  <form class="apply-form" id="applyForm">
+    <div class="field">
+      <label for="fName">Name / handle</label>
+      <input type="text" id="fName" name="name" placeholder="e.g. Elena R." required>
+    </div>
+    <div class="field">
+      <label for="fProject">Project you're circling</label>
+      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or &ldquo;still looking&rdquo;">
+    </div>
+    <div class="field">
+      <label>Domain you care about</label>
+      <div class="pill-group" data-group="domain">
+        <button type="button" class="pill" aria-pressed="false">Climate</button>
+        <button type="button" class="pill" aria-pressed="false">Health</button>
+        <button type="button" class="pill" aria-pressed="false">Education</button>
+        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
+        <button type="button" class="pill" aria-pressed="false">Hardware</button>
+        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+        <button type="button" class="pill" aria-pressed="false">Design</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Skill level</label>
+      <div class="pill-group" data-group="skill" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">Just starting</button>
+        <button type="button" class="pill" aria-pressed="false">Comfortable</button>
+        <button type="button" class="pill" aria-pressed="false">Advanced</button>
+        <button type="button" class="pill" aria-pressed="false">Domain expert</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="fLink">Link to something you've built or written</label>
+      <input type="text" id="fLink" name="link" placeholder="URL, optional">
+    </div>
+    <div class="field">
+      <label>What are you looking for</label>
+      <div class="pill-group" data-group="lookingfor" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">A team</button>
+        <button type="button" class="pill" aria-pressed="false">A co-founder</button>
+        <button type="button" class="pill" aria-pressed="false">A problem to solve</button>
+        <button type="button" class="pill" aria-pressed="false">Mentorship</button>
+      </div>
+    </div>
+    <div class="form-foot">
+      <span class="hint-small">no account created — this is a design mockup</span>
+      <button type="submit" class="btn btn-stamp btn-sm">Plant this application</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast">🌱 Application planted — we'll be in touch soon.</div>
+
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

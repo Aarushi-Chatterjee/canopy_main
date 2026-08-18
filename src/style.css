@@ -38,6 +38,10 @@
      themes, so the text on it needs to stay near-black in both too — the
      theme-swapped --forest-deep token fails contrast on it in dark mode. */
   --pill-active-ink:#12240f;
+  /* strong custom curves for UI feedback — built-in ease/ease-out are too
+     weak to feel intentional on presses and card lifts. */
+  --ease-out: cubic-bezier(.23,1,.32,1);
+  --ease-in-out: cubic-bezier(.77,0,.175,1);
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark){
@@ -118,7 +122,13 @@ body::before{
   opacity:.25;
 }
 
-h1,h2,h3,.display{
+/* tracking is size-specific, never one fixed value across the whole scale
+   (Apple, WWDC20 "The Details of UI Typography") — the base rule covers the
+   mid-size tier (~1.3-1.6rem: step-card/modal h3s); h4 card titles get a
+   lighter value since they sit close to body size, and the large display
+   sizes below (hero h1, section/finale h2, stage-head h1) override with
+   progressively more negative tracking as they grow. */
+h1,h2,h3,h4,.display{
   font-family:'Fraunces Var', 'Iowan Old Style', Georgia, serif;
   font-weight:600;
   font-variation-settings:'opsz' 40, 'wght' 600;
@@ -127,6 +137,7 @@ h1,h2,h3,.display{
   margin:0;
   color:var(--ink);
 }
+h4{ letter-spacing:-.005em; }
 .script{
   font-family:'Caveat Var', 'Segoe Print', cursive;
   font-variation-settings:'wght' 600;
@@ -198,27 +209,32 @@ nav.primary-nav a{
 nav.primary-nav a:hover{ color:var(--forest); }
 nav.primary-nav a::after{
   content:""; position:absolute; left:0; bottom:-2px; width:100%; height:2px; background:var(--leaf);
-  transform:scaleX(0); transform-origin:left; transition:transform .25s ease;
+  transform:scaleX(0); transform-origin:left; transition:transform .25s var(--ease-out);
 }
 nav.primary-nav a:hover::after{ transform:scaleX(1); }
+nav.primary-nav a[aria-current="page"]{ color:var(--forest); }
+nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:var(--forest); }
 
 .btn{
   border:none; cursor:pointer; font-weight:600; font-size:.95rem;
   padding:11px 22px; border-radius:3px;
-  transition:transform .18s ease, box-shadow .18s ease;
+  transition:transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background-color .18s var(--ease-out), color .18s var(--ease-out);
   display:inline-flex; align-items:center; gap:8px;
 }
 .btn:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; }
+.btn:active{ transform:scale(.97); }
 .btn-stamp{
   background:var(--forest); color:var(--paper);
   box-shadow: 3px 3px 0 var(--ink);
   transform:rotate(-1deg);
 }
 .btn-stamp:hover{ transform:rotate(-1deg) translate(-2px,-2px); box-shadow:5px 5px 0 var(--ink); }
+.btn-stamp:active{ transform:rotate(-1deg) scale(.97); box-shadow:2px 2px 0 var(--ink); }
 .btn-ghost{
   background:transparent; color:var(--ink); border:1.5px solid var(--ink);
 }
 .btn-ghost:hover{ background:var(--ink); color:var(--paper); }
+.btn-ghost:active{ transform:scale(.97); }
 .btn-sm{ padding:8px 16px; font-size:.85rem; }
 .menu-toggle{ display:none; background:none; border:none; cursor:pointer; padding:6px; }
 .menu-toggle:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; border-radius:3px; }
@@ -237,7 +253,7 @@ nav.primary-nav a:hover::after{ transform:scaleX(1); }
   color:var(--coral); font-size:1.35rem; display:inline-flex; align-items:center; gap:8px;
   transform:rotate(-2deg); margin-bottom:6px;
 }
-.hero h1{ font-size:clamp(2.4rem, 4.6vw, 3.7rem); line-height:1.06; }
+.hero h1{ font-size:clamp(2.4rem, 4.6vw, 3.7rem); line-height:1.06; letter-spacing:-.025em; }
 .hero h1 em{ font-style:italic; color:var(--forest); }
 .hero-sub{
   margin-top:20px; font-size:1.12rem; color:var(--ink-soft); max-width:52ch;
@@ -333,11 +349,65 @@ nav.primary-nav a:hover::after{ transform:scaleX(1); }
 .snapshot.together{ background: color-mix(in srgb, var(--leaf) 14%, var(--card)); border:1px dashed var(--forest); }
 .snapshot b{ display:block; color:var(--ink); font-family:'Fraunces Var',serif; font-weight:600; margin-bottom:4px; }
 
-/* ---------- growth vine track ---------- */
+/* ---------- growth vine track ----------
+   one continuous SVG path spans the whole track (built in main.js) — not a
+   canvas, not a vine per section. It lives in its own layer behind the
+   content (.section sits at z-index:1 above it), so it can run underneath
+   headings and cards without needing to dodge them. */
 .growth-track{ position:relative; }
-#vineCanvas{
+.vine-svg{
   position:absolute; top:0; left:0; width:100%; height:100%;
-  pointer-events:none; z-index:0;
+  pointer-events:none; z-index:0; overflow:visible;
+}
+/* stroke-width and stroke color are set per-stage inline (--w custom
+   property + a direct `stroke` value) by renderVineDOM — five stages taper
+   thin/pale near the top to thick/deep near the bottom, so var(--w) here is
+   just the shared mechanism, not a fixed value. */
+.vine-stem{
+  fill:none; stroke-width:var(--w, 3); stroke-linecap:round; stroke-linejoin:round;
+}
+.vine-branch{
+  fill:none; stroke:var(--leaf); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;
+}
+/* tendrils are a distinct, thinner mark from a branch — a curl, not a limb —
+   and lean toward the deeper, more mature color since they only start
+   appearing once the plant is past its "emerging" stage. */
+.vine-tendril{
+  stroke:var(--forest); stroke-width:1.3; opacity:.85;
+}
+/* leaves grow from a small vestigial scale rather than nothing (never
+   scale(0)) and fade in together — both driven by one CSS transition on
+   `transform`, toggled by the .grown class main.js adds as scroll progress
+   passes each leaf's position. transform-origin is pinned to the leaf's own
+   anchor point (--tx/--ty, the same values its translate uses) so rotation
+   and scale happen around where it meets the stem, not the SVG's origin.
+
+   Slower and eased both ways (--ease-in-out) rather than the site's usual
+   punchy UI --ease-out: this is a scroll-linked growth moment, not a button
+   responding to a click, so it should read as an unhurried, ambient morph —
+   Emil's marketing/explanatory tier explicitly allows a duration beyond the
+   UI 300ms ceiling for exactly this reason. --o (opacity) varies per leaf
+   for a subtle painterly front/back depth cue rather than every leaf
+   sitting at a flat, identical 100%. A thin dark stroke on the fill gives
+   the leaf an illustrated outline instead of a flat cutout silhouette. */
+.vine-leaf{
+  transform-box: view-box;
+  transform-origin: var(--tx) var(--ty);
+  transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(.4);
+  opacity: 0;
+  stroke: rgba(0,0,0,.15); stroke-width: .6;
+  transition: transform .65s var(--ease-in-out), opacity .55s var(--ease-in-out);
+}
+.vine-leaf.grown{
+  transform: translate(var(--tx), var(--ty)) rotate(var(--tr)) scale(var(--s, 1));
+  opacity: var(--o, 1);
+}
+@media (max-width:760px){
+  .vine-branch{ stroke-width:1.5; }
+  .vine-tendril{ stroke-width:1; }
+}
+@media (prefers-reduced-motion: reduce){
+  .vine-leaf{ transition:none; }
 }
 .section{
   position:relative; padding:100px 0; z-index:1;
@@ -348,7 +418,7 @@ nav.primary-nav a:hover::after{ transform:scaleX(1); }
   font-family:'Caveat Var',cursive; font-variation-settings:'wght' 650;
   color:var(--forest); font-size:1.3rem; transform:rotate(-1.5deg); display:inline-block;
 }
-.section h2{ font-size:clamp(1.9rem,3.2vw,2.6rem); margin-top:6px; }
+.section h2{ font-size:clamp(1.9rem,3.2vw,2.6rem); margin-top:6px; letter-spacing:-.02em; }
 .lede{ margin-top:14px; color:var(--ink-soft); font-size:1.06rem; max-width:60ch; }
 
 /* climbing note cards */
@@ -421,12 +491,13 @@ nav.primary-nav a:hover::after{ transform:scaleX(1); }
 .deck-btn{
   width:52px; height:52px; border-radius:50%; border:2px solid; cursor:pointer;
   display:flex; align-items:center; justify-content:center; background:var(--card);
-  transition:transform .15s ease, background .15s ease;
+  transition:transform .15s var(--ease-out), background .15s var(--ease-out);
 }
 .deck-btn.cross{ border-color:var(--coral); color:var(--coral); }
 .deck-btn.check{ border-color:var(--forest); color:var(--forest); }
 .deck-btn:hover.cross{ background:var(--coral); color:var(--paper); transform:scale(1.08); }
 .deck-btn:hover.check{ background:var(--forest); color:var(--paper); transform:scale(1.08); }
+.deck-btn:active{ transform:scale(.95); }
 .deck-btn:focus-visible{ outline:3px solid var(--sun); outline-offset:3px; }
 .deck-meta{ display:flex; gap:22px; margin-top:14px; font-size:.82rem; color:var(--ink-faint); }
 .deck-meta b{ color:var(--ink); font-variant-numeric:tabular-nums; }
@@ -453,18 +524,33 @@ nav.primary-nav a:hover::after{ transform:scaleX(1); }
   --rot:0deg;
   width:150px; padding:14px 14px 18px; border-radius:4px; margin:0 -6px;
   transform:rotate(var(--rot));
-  transition:transform .25s ease, box-shadow .25s ease;
+  transition:transform .25s var(--ease-out), box-shadow .25s var(--ease-out);
   cursor:pointer; position:relative;
 }
-.charm:hover, .charm:focus-visible{ transform:rotate(0deg) translateY(-6px); z-index:5; }
+.charm:focus-visible{ transform:rotate(0deg) translateY(-6px); z-index:5; }
+@media (hover:hover) and (pointer:fine){
+  .charm:hover{ transform:rotate(0deg) translateY(-6px); z-index:5; }
+}
+.charm:active{ transform:rotate(0deg) translateY(-6px) scale(.97); }
 .charm .role{ font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--forest); font-weight:700; }
 .charm h4{ font-family:'Fraunces Var',serif; font-size:1.02rem; margin-top:6px; font-weight:600; }
+/* collapses via grid-template-rows (0fr -> 1fr), not the height/margin JS
+   tween this used to run — height and margin are layout properties, so the
+   old version repainted every frame instead of compositing on the GPU. */
 .charm .looks-for{
-  font-size:.8rem; color:var(--ink-soft); margin-top:0;
-  height:0; overflow:hidden; opacity:0;
+  font-size:.8rem; color:var(--ink-soft);
+  display:grid; grid-template-rows:minmax(0,0fr); opacity:0;
+  transition:grid-template-rows .28s var(--ease-out), opacity .22s var(--ease-out);
 }
-/* fallback for no-JS/no-anime: instant show, no smooth height measurement needed */
-.charm.open .looks-for{ height:auto; opacity:1; margin-top:8px; }
+/* the 8px gap lives on the inner span's padding, not the outer element's
+   margin — a collapsed row clips it away entirely when closed, so no
+   explicit open/closed margin toggle is needed (the trick behind
+   .entry-card .teaser too). minmax(0, …fr) is load-bearing: a bare 0fr row
+   still sizes to its child's content height in every browser tested here —
+   grid's automatic-minimum "auto" keyword wins over overflow:hidden on the
+   child unless the track's minimum is pinned to 0 explicitly. */
+.charm .looks-for > span{ overflow:hidden; display:block; padding-top:8px; }
+.charm.open .looks-for{ grid-template-rows:minmax(0,1fr); opacity:1; }
 .charm .hint{ font-size:.72rem; color:var(--ink-faint); margin-top:8px; font-style:italic; }
 .charm.open .hint{ display:none; }
 .charm-hole{
@@ -476,18 +562,31 @@ nav.primary-nav a:hover::after{ transform:scaleX(1); }
 .tab-btn{
   padding:9px 18px; border-radius:999px; border:1.5px solid var(--line); background:var(--card);
   cursor:pointer; font-size:.88rem; font-weight:600; color:var(--ink-soft);
+  transition:transform .12s var(--ease-out), background .18s var(--ease-out), color .18s var(--ease-out), border-color .18s var(--ease-out);
 }
+.tab-btn:active{ transform:scale(.96); }
 .tab-btn[aria-selected="true"]{ background:var(--forest); border-color:var(--forest); color:var(--paper); }
 .tab-btn:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; }
-.tab-panel{ display:none; padding:26px 0 4px; }
-.tab-panel[data-active="true"]{ display:block; }
+/* the three panels share one grid cell and cross-fade via opacity instead
+   of an instant display:none/block swap — grid-stacking also means the
+   container reserves the tallest panel's height, so switching tabs never
+   jumps the layout underneath it. */
+.tab-panels{ display:grid; }
+.tab-panel{
+  grid-area:1/1; padding:26px 0 4px; opacity:0; pointer-events:none;
+  transition:opacity .16s var(--ease-out);
+}
+.tab-panel[data-active="true"]{ opacity:1; pointer-events:auto; }
+@media (prefers-reduced-motion: reduce){
+  .tab-panel{ transition:none; }
+}
 .tab-panel p{ color:var(--ink-soft); max-width:70ch; font-size:1rem; }
 
 /* ---------- final CTA ---------- */
 .finale{
   padding:110px 0 60px; text-align:center; position:relative;
 }
-.finale h2{ font-size:clamp(2rem,4vw,2.9rem); max-width:16ch; margin:0 auto; }
+.finale h2{ font-size:clamp(2rem,4vw,2.9rem); max-width:16ch; margin:0 auto; letter-spacing:-.02em; }
 .finale .lede{ margin:18px auto 0; text-align:center; }
 .connect-card{
   max-width:460px; margin:44px auto 0; padding:34px 30px; border-radius:8px;
@@ -495,6 +594,265 @@ nav.primary-nav a:hover::after{ transform:scaleX(1); }
 }
 .connect-row{ display:flex; gap:14px; justify-content:center; margin-top:22px; flex-wrap:wrap; }
 .finale-canopy{ width:220px; margin:0 auto 10px; display:block; }
+
+/* ==========================================================================
+   WORKSPACE SYSTEM — Match, Sprint, Lab Notebook
+   ==========================================================================
+   The homepage is a storybook: paper, torn edges, tape, a vine that grows as
+   you scroll. These three pages are the actual tools underneath the story —
+   a browse screen, a board, a feed — so they evolve the same palette and
+   type into a calmer, denser, product-shaped language: elevated cards with
+   real shadow instead of paper texture, a domain color system instead of
+   hand-drawn accents, generative avatars instead of illustration. Same
+   ink, same forest, same Fraunces/Jost/Caveat — different material. */
+
+.stage{
+  max-width:1180px; margin:0 auto;
+  padding:52px clamp(18px,5vw,56px) 110px;
+}
+.stage-head{ max-width:760px; margin-bottom:44px; }
+.stage-head h1{ font-size:clamp(2rem,3.6vw,2.85rem); line-height:1.08; letter-spacing:-.02em; }
+.stage-head .lede{ margin-top:16px; font-size:1.08rem; }
+
+/* ---- domain color system ---- */
+/* every domain gets one accent used consistently for tag chips, card top
+   bars, and avatar palettes, so the same word reads as the same color
+   everywhere on these three pages. */
+[data-domain="climate"]{ --domain: var(--leaf); --domain-ink: var(--pill-active-ink); }
+[data-domain="health"]{ --domain: var(--coral); --domain-ink: #2b1109; }
+[data-domain="education"]{ --domain: var(--sun); --domain-ink: #2b2007; }
+[data-domain="civic"]{ --domain: var(--twine); --domain-ink: #241a0a; }
+[data-domain="hardware"]{ --domain: var(--forest); --domain-ink: var(--paper); }
+[data-domain="ai"]{ --domain: var(--forest-deep); --domain-ink: var(--paper); }
+[data-domain="design"]{ --domain: var(--leaf-bright); --domain-ink: var(--pill-active-ink); }
+
+.tag-chip{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:5px 12px; border-radius:999px; font-size:.76rem; font-weight:600;
+  background: color-mix(in srgb, var(--domain, var(--ink-faint)) 18%, var(--card));
+  color: var(--ink);
+  border:1px solid color-mix(in srgb, var(--domain, var(--ink-faint)) 40%, transparent);
+}
+.tag-chip::before{
+  content:""; width:6px; height:6px; border-radius:50%; background:var(--domain, var(--ink-faint)); flex:0 0 auto;
+}
+.tag-chip.skill{
+  background:var(--card); border-color:var(--card-edge); color:var(--ink-soft); font-weight:500;
+}
+.tag-chip.skill::before{ display:none; }
+
+/* ---- elevated card: the workspace's base surface ---- */
+.elevated-card{
+  background:var(--card);
+  border:1px solid var(--card-edge);
+  border-radius:18px;
+  box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 18px 34px -22px var(--shadow);
+  position:relative; overflow:hidden;
+  transition:transform .22s cubic-bezier(.16,1,.3,1), box-shadow .22s cubic-bezier(.16,1,.3,1);
+}
+.elevated-card::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:4px;
+  background:var(--domain, var(--forest));
+}
+a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer; }
+.elevated-card.interactive:focus-visible{
+  transform:translateY(-5px);
+  box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 26px 44px -20px var(--shadow);
+}
+/* gated: touch fires hover on tap, which would leave cards permanently
+   "lifted" after the finger moves away — this lift is decorative feedback
+   for a pointer that can actually hover. */
+@media (hover:hover) and (pointer:fine){
+  .elevated-card.interactive:hover{
+    transform:translateY(-5px);
+    box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 26px 44px -20px var(--shadow);
+  }
+}
+.elevated-card:focus-visible{ outline:3px solid var(--sun); outline-offset:3px; }
+
+/* ---- generative avatar ----
+   an authored set of 6 organic blob silhouettes x 6 two-tone conic palettes;
+   JS (avatarSeed in main.js) hashes a name string to pick a stable
+   combination, so the same person always renders the same "fingerprint"
+   without needing an actual generative-art pipeline for a static mockup. */
+.avatar{
+  --a1: var(--leaf); --a2: var(--forest-deep);
+  width:44px; height:44px; flex:0 0 auto;
+  background: conic-gradient(from var(--a-angle,120deg), var(--a1), var(--a2), var(--a1));
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--a1) 50%, white 10%);
+}
+.avatar.blob-1{ border-radius:58% 42% 63% 37% / 41% 55% 45% 59%; }
+.avatar.blob-2{ border-radius:41% 59% 37% 63% / 63% 40% 60% 37%; }
+.avatar.blob-3{ border-radius:66% 34% 44% 56% / 32% 58% 42% 68%; }
+.avatar.blob-4{ border-radius:34% 66% 56% 44% / 58% 32% 68% 42%; }
+.avatar.blob-5{ border-radius:50% 50% 68% 32% / 46% 62% 38% 54%; }
+.avatar.blob-6{ border-radius:62% 38% 50% 50% / 54% 46% 62% 38%; }
+.avatar.lg{ width:76px; height:76px; }
+.avatar.sm{ width:30px; height:30px; }
+
+/* ---- profile strip (Match) ---- */
+.profile-strip{
+  display:flex; align-items:center; gap:22px; padding:24px 28px;
+  margin-bottom:40px; flex-wrap:wrap;
+}
+.profile-strip .who{ flex:1 1 260px; min-width:0; }
+.profile-strip .who .label{
+  font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-faint); font-weight:600;
+}
+.profile-strip .who h3{ font-size:1.18rem; margin-top:4px; }
+.profile-strip .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+
+/* ---- match grid ---- */
+.stage-section{ margin-top:52px; }
+.stage-section-head{
+  display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:20px; flex-wrap:wrap;
+}
+.stage-section-head h2{ font-size:1.5rem; }
+.stage-section-head .count{ font-size:.85rem; color:var(--ink-faint); }
+.filter-row{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
+.filter-chip{
+  padding:7px 14px; border-radius:999px; border:1.4px solid var(--line); background:var(--card);
+  cursor:pointer; font-size:.82rem; font-weight:600; color:var(--ink-soft);
+  transition:transform .12s var(--ease-out), background .18s var(--ease-out), color .18s var(--ease-out), border-color .18s var(--ease-out);
+}
+.filter-chip:active{ transform:scale(.95); }
+.filter-chip[aria-pressed="true"]{ background:var(--forest); border-color:var(--forest); color:var(--paper); }
+.filter-chip:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; }
+
+.match-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.match-card{ padding:22px 22px 20px; display:flex; flex-direction:column; gap:14px; text-align:left; width:100%; border:1px solid var(--card-edge); }
+.match-card .head-row{ display:flex; align-items:flex-start; gap:14px; }
+.match-card .head-row .avatar{ margin-top:2px; }
+.match-card .head-title{ min-width:0; }
+.match-card .head-title .name{ font-family:'Fraunces Var',serif; font-weight:600; font-size:1.02rem; }
+.match-card .head-title .sub{ font-size:.8rem; color:var(--ink-faint); margin-top:2px; }
+.match-card .sprout{ margin-left:auto; flex:0 0 auto; color:var(--leaf); }
+/* one small drawn-icon system (sourced from the logo's own leaf mark, plus a
+   matching-weight bell) instead of emoji — emoji render inconsistently
+   across platforms/fonts and carry no shared stroke language with the rest
+   of the site's hand-drawn SVG marks. */
+.icon{ width:1em; height:1em; display:inline-block; vertical-align:-.15em; flex:0 0 auto; }
+.match-card p.line{ color:var(--ink-soft); font-size:.92rem; line-height:1.5; }
+.match-card .chip-row{ display:flex; gap:6px; flex-wrap:wrap; }
+.match-card .card-foot{ margin-top:auto; padding-top:12px; border-top:1px solid var(--card-edge); display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.shovel-btn{
+  background:none; border:none; cursor:pointer; color:var(--forest); font-weight:600; font-size:.85rem;
+  display:inline-flex; align-items:center; gap:6px; padding:4px 2px;
+  transition:transform .12s var(--ease-out), color .18s var(--ease-out);
+}
+.shovel-btn:hover{ color:var(--forest-deep); }
+.shovel-btn:active{ transform:scale(.96); }
+.shovel-btn:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; border-radius:3px; }
+
+.empty-state{
+  padding:44px 30px; text-align:center; border:1.5px dashed var(--line); border-radius:18px;
+  color:var(--ink-faint); font-size:.94rem; display:none;
+}
+.empty-state.show{ display:block; }
+.empty-state button{ margin-top:12px; }
+
+/* ---- sprint board ---- */
+.board{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start; }
+.board-col-head{
+  display:flex; align-items:center; gap:10px; margin-bottom:16px; padding:0 4px;
+}
+.board-col-head .dot{ width:9px; height:9px; border-radius:50%; }
+.board-col-head h3{ font-size:1.02rem; font-weight:600; }
+.board-col-head .n{ margin-left:auto; font-size:.8rem; color:var(--ink-faint); font-variant-numeric:tabular-nums; }
+.board-col[data-stage="forming"] .dot{ background:var(--sun); }
+.board-col[data-stage="building"] .dot{ background:var(--forest); }
+.board-col[data-stage="shipped"] .dot{ background:var(--twine); }
+.board-col-body{ display:flex; flex-direction:column; gap:16px; }
+
+.sprint-card{ padding:20px 20px 18px; display:flex; flex-direction:column; gap:12px; }
+.sprint-card h4{ font-family:'Fraunces Var',serif; font-size:1.04rem; font-weight:600; line-height:1.3; }
+.sprint-card .clock-row{ display:flex; align-items:center; gap:12px; }
+.clock-ring{ width:36px; height:36px; flex:0 0 auto; }
+.clock-ring circle.track{ fill:none; stroke:var(--card-edge); stroke-width:3; }
+.clock-ring circle.fill{ fill:none; stroke:var(--domain,var(--forest)); stroke-width:3; stroke-linecap:round; transform-origin:50% 50%; transform:rotate(-90deg); }
+.clock-ring text{ font-family:'Jost Var',sans-serif; font-size:9px; font-weight:600; fill:var(--ink); text-anchor:middle; }
+.sprint-card .clock-label{ font-size:.78rem; color:var(--ink-faint); }
+.sprint-card .clock-label b{ color:var(--ink); font-weight:600; }
+.team-row{ display:flex; align-items:center; }
+.team-row .avatar{ margin-left:-10px; border:2px solid var(--card); }
+.team-row .avatar:first-child{ margin-left:0; }
+.team-row .plus{
+  width:30px; height:30px; border-radius:50%; margin-left:-10px; border:2px dashed var(--line);
+  display:flex; align-items:center; justify-content:center; font-size:.72rem; color:var(--ink-faint); background:var(--card);
+}
+.sprint-card.shipped{ opacity:.92; }
+.sprint-card.shipped h4{ text-decoration:line-through; text-decoration-color:var(--card-edge); text-decoration-thickness:1.5px; }
+.shipped-badge{
+  align-self:flex-start; font-size:.72rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--twine); display:inline-flex; align-items:center; gap:5px;
+}
+
+/* ---- lab notebook feed ---- */
+.feed-toolbar{
+  display:flex; align-items:center; gap:14px; margin-bottom:28px; flex-wrap:wrap;
+}
+.compose-trigger{
+  flex:1 1 320px; min-width:0; text-align:left; padding:16px 20px; border-radius:14px;
+  border:1.5px dashed var(--line); background:var(--card); cursor:pointer;
+  color:var(--ink-faint); font-size:.92rem; font-family:inherit;
+  display:flex; align-items:center; gap:10px;
+  transition:border-color .18s var(--ease-out), color .18s var(--ease-out), transform .12s var(--ease-out);
+}
+.compose-trigger:active{ transform:scale(.99); }
+.compose-trigger:hover, .compose-trigger:focus-visible{ border-color:var(--forest); color:var(--ink-soft); }
+.compose-trigger:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; }
+.compose-trigger .plus-badge{
+  width:26px; height:26px; border-radius:50%; background:var(--forest); color:var(--paper);
+  display:flex; align-items:center; justify-content:center; font-size:1rem; flex:0 0 auto;
+}
+
+.feed-grid{ columns:3 260px; column-gap:20px; }
+.entry-card{
+  break-inside:avoid; margin-bottom:20px; padding:0; display:block; width:100%; text-align:left;
+}
+.entry-card .entry-top{ padding:20px 20px 0; display:flex; align-items:center; gap:10px; }
+.entry-card .entry-top .name{ font-size:.84rem; font-weight:600; color:var(--ink-soft); }
+.entry-card .entry-top .when{ margin-left:auto; font-size:.74rem; color:var(--ink-faint); }
+.entry-card h4{ padding:12px 20px 0; font-family:'Fraunces Var',serif; font-size:1.06rem; line-height:1.35; }
+.entry-card p.snippet{ padding:10px 20px 0; color:var(--ink-soft); font-size:.88rem; line-height:1.55; }
+/* collapses via grid-template-rows (0fr -> 1fr) rather than max-height, so
+   the reveal animates on the compositor without triggering layout/reflow
+   on every frame; the inner span's fixed padding never needs to change. */
+.entry-card .teaser{
+  margin:14px 20px 0; border-radius:10px; background:var(--paper-deep);
+  font-family:ui-monospace,'SF Mono','Cascadia Code',Consolas,monospace; font-size:.76rem; color:var(--ink-soft);
+  display:grid; grid-template-rows:minmax(0,0fr); opacity:0;
+  transition:grid-template-rows .3s cubic-bezier(.16,1,.3,1), opacity .25s ease;
+}
+.entry-card .teaser > span{ overflow:hidden; padding:12px 14px; display:block; }
+.entry-card.interactive:focus-visible .teaser{
+  grid-template-rows:minmax(0,1fr); opacity:1;
+}
+@media (hover:hover) and (pointer:fine){
+  .entry-card.interactive:hover .teaser{ grid-template-rows:minmax(0,1fr); opacity:1; }
+}
+.entry-card .entry-bottom{ padding:14px 20px 20px; display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
+
+/* ---- shared closing CTA (evolves .connect-card for the workspace pages) ---- */
+.stage-cta{
+  margin-top:70px; padding:48px clamp(24px,5vw,64px); text-align:center;
+  --domain: var(--forest);
+}
+.stage-cta h2{ font-size:clamp(1.5rem,2.8vw,2.05rem); max-width:26ch; margin:0 auto; }
+.stage-cta .lede{ margin:12px auto 0; text-align:center; }
+.stage-cta .connect-row{ margin-top:26px; }
+.stage-cta .hint-small{ margin-top:16px; }
+
+@media (max-width:980px){
+  .match-grid{ grid-template-columns:repeat(2,1fr); }
+  .board{ grid-template-columns:1fr; }
+  .feed-grid{ columns:2 220px; }
+}
+@media (max-width:640px){
+  .match-grid{ grid-template-columns:1fr; }
+  .feed-grid{ columns:1; }
+  .profile-strip{ flex-direction:column; align-items:flex-start; }
+}
 
 /* ---------- footer ---------- */
 footer{
@@ -520,34 +878,80 @@ footer a:hover{ color:var(--sun); }
 }
 
 /* ---------- modal (intake form) ---------- */
+/* styled like a physical index card — a piece of tape holding it down, a
+   form-tracking stamp in the corner, underline-only fields — rather than a
+   generic boxed web form, matching the paper-cutout language used everywhere
+   else on the page. */
 dialog#applyModal{
-  border:none; border-radius:10px; padding:0; max-width:560px; width:92vw;
+  border:none; border-radius:2px; padding:0; max-width:560px; width:92vw;
   background:var(--card); color:var(--ink);
   box-shadow: 0 30px 70px -20px rgba(0,0,0,.5);
+  position:relative;
+  overflow:visible;
+  /* entrance/exit via JS-toggled classes (.is-open / .closing) rather than
+     the native open/close snap — modals get standard animation (200-500ms),
+     scale from .95+opacity (never scale(0)), centered origin since a modal
+     isn't anchored to a trigger. */
+  transform:rotate(-.4deg) scale(.95);
+  opacity:0;
+  transition:transform 220ms var(--ease-out), opacity 180ms var(--ease-out);
 }
-dialog#applyModal::backdrop{ background:rgba(15,20,14,.55); backdrop-filter:blur(2px); }
+dialog#applyModal.is-open{ transform:rotate(-.4deg) scale(1); opacity:1; }
+dialog#applyModal.closing{
+  transform:rotate(-.4deg) scale(.97); opacity:0;
+  transition:transform 160ms var(--ease-out), opacity 140ms var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce){
+  dialog#applyModal{ transition:none; transform:rotate(-.4deg) scale(1); opacity:1; }
+}
+dialog#applyModal::backdrop{
+  background:rgba(15,20,14,.55); backdrop-filter:blur(2px);
+  opacity:0; transition:opacity 200ms var(--ease-out);
+}
+dialog#applyModal.is-open::backdrop{ opacity:1; }
+@media (prefers-reduced-motion: reduce){
+  dialog#applyModal::backdrop{ transition:none; }
+}
+.modal-tape{
+  top:-13px; left:50%; transform:translateX(-50%) rotate(-1.5deg);
+}
 .modal-head{
-  padding:22px 26px; border-bottom:1px solid var(--line);
+  padding:28px 26px 20px; border-bottom:1px dashed var(--line);
   display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
 }
-.modal-head h3{ font-size:1.35rem; }
+.modal-head h3{ font-size:1.4rem; }
 .modal-head p{ color:var(--ink-soft); font-size:.88rem; margin-top:6px; }
+.modal-meta{ display:flex; flex-direction:column; align-items:flex-end; gap:10px; flex-shrink:0; }
+.form-tag{
+  font-family:ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace;
+  font-size:.68rem; letter-spacing:.08em; color:var(--ink-faint); white-space:nowrap;
+}
 .modal-close{
   background:none; border:none; font-size:1.4rem; line-height:1; cursor:pointer; color:var(--ink-soft);
-  padding:2px 6px;
+  padding:2px 6px; transition:transform .12s var(--ease-out);
 }
-form.apply-form{ padding:22px 26px 26px; display:flex; flex-direction:column; gap:18px; max-height:65vh; overflow:auto; }
-.field label{ display:block; font-size:.82rem; font-weight:600; margin-bottom:7px; color:var(--ink); }
+.modal-close:active{ transform:scale(.9); }
+form.apply-form{ padding:24px 26px 26px; display:flex; flex-direction:column; gap:20px; max-height:65vh; overflow:auto; }
+.field label{
+  display:block; margin-bottom:9px; color:var(--ink-faint);
+  font-family:ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace;
+  font-size:.68rem; letter-spacing:.08em; text-transform:uppercase;
+}
 .field input[type=text]{
-  width:100%; padding:10px 12px; border-radius:5px; border:1.4px solid var(--line);
-  background:var(--paper); color:var(--ink); font-family:inherit; font-size:.94rem;
+  width:100%; padding:7px 2px 9px; border:none; border-bottom:1.5px solid var(--line);
+  border-radius:0; background:transparent; color:var(--ink); font-family:inherit; font-size:1rem;
+  transition:border-color .15s ease;
 }
-.field input:focus-visible{ outline:2px solid var(--forest); outline-offset:1px; }
+.field input[type=text]::placeholder{ color:var(--ink-faint); font-style:italic; }
+.field input[type=text]:hover{ border-bottom-color:var(--ink-faint); }
+.field input:focus-visible{ outline:none; border-bottom-color:var(--forest); border-bottom-width:2px; }
 .pill-group{ display:flex; flex-wrap:wrap; gap:8px; }
 .pill{
   padding:8px 14px; border-radius:999px; border:1.4px solid var(--line); cursor:pointer;
   font-size:.83rem; background:var(--paper); color:var(--ink-soft); user-select:none;
+  transition:transform .12s var(--ease-out), background .15s var(--ease-out), border-color .15s var(--ease-out);
 }
+.pill:active{ transform:scale(.95); }
 .pill[aria-pressed="true"]{ background:var(--leaf); border-color:var(--forest); color:var(--pill-active-ink); font-weight:600; }
 .pill:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; }
 .form-foot{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:6px; }
@@ -557,7 +961,7 @@ form.apply-form{ padding:22px 26px 26px; display:flex; flex-direction:column; ga
   position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px);
   background:var(--forest); color:var(--paper); padding:14px 22px; border-radius:8px;
   font-size:.92rem; box-shadow:0 14px 30px -10px rgba(0,0,0,.4);
-  opacity:0; pointer-events:none; transition:opacity .3s ease, transform .3s ease; z-index:80;
+  opacity:0; pointer-events:none; transition:opacity .3s var(--ease-out), transform .3s var(--ease-out); z-index:80;
 }
 .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
