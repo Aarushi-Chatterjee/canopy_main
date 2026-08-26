@@ -7,3 +7,6 @@ dist/
 npm-debug.log*
 .DS_Store
 Thumbs.db
+skills/
+.impeccable/
+*.mp4

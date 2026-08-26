@@ -31,6 +31,10 @@
   --sun-soft:#f2d99a;
   --coral:#cf5f45;
   --twine:#a68955;
+  --teal:#7eaab3;
+  --teal-soft:#b8d5da;
+  --amber:#d4a373;
+  --amber-soft:#eddcca;
   --line: rgba(38,36,26,.16);
   --shadow: rgba(38,32,16,.22);
   --accent: var(--forest);
@@ -42,6 +46,10 @@
      weak to feel intentional on presses and card lifts. */
   --ease-out: cubic-bezier(.23,1,.32,1);
   --ease-in-out: cubic-bezier(.77,0,.175,1);
+  --ease-drawer: cubic-bezier(.32,.72,0,1);
+  --dur-press: 120ms;
+  --dur-micro: 200ms;
+  --dur-element: 400ms;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark){
@@ -61,6 +69,10 @@
     --sun-soft:#8a6f34;
     --coral:#e9836a;
     --twine:#c8a876;
+    --teal:#96c8d1;
+    --teal-soft:#244047;
+    --amber:#e5b88a;
+    --amber-soft:#3d2f21;
     --line: rgba(238,233,214,.14);
     --shadow: rgba(0,0,0,.45);
     color-scheme: dark;
@@ -82,6 +94,10 @@
   --sun-soft:#8a6f34;
   --coral:#e9836a;
   --twine:#c8a876;
+  --teal:#96c8d1;
+  --teal-soft:#244047;
+  --amber:#e5b88a;
+  --amber-soft:#3d2f21;
   --line: rgba(238,233,214,.14);
   --shadow: rgba(0,0,0,.45);
   color-scheme: dark;
@@ -196,11 +212,19 @@ header{
   gap:16px;
 }
 .logo{
-  display:flex; align-items:center; gap:10px;
-  font-family:'Fraunces Var',serif; font-weight:700; font-size:1.5rem;
-  letter-spacing:-.02em;
+  display:flex; flex-direction:column; gap:0; text-decoration:none;
 }
-.logo svg{ width:30px; height:30px; }
+.logo-main{
+  display:flex; align-items:center; gap:10px;
+  font-family:'Fraunces Var',serif; font-weight:700; font-size:1.45rem;
+  letter-spacing:-.02em; line-height:1.1; color:var(--ink);
+}
+.logo-main svg{ width:28px; height:28px; }
+.logo-tagline{
+  font-family:'Jost Var',sans-serif; font-size:0.62rem; font-weight:600;
+  letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint);
+  margin-left:38px; margin-top:2px;
+}
 nav.primary-nav{ display:flex; gap:28px; align-items:center; }
 nav.primary-nav a{
   text-decoration:none; color:var(--ink-soft); font-size:.95rem; font-weight:500;
@@ -269,73 +293,38 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
 .scene{
   position:relative; width:100%; aspect-ratio:1/1; max-width:360px; margin:0 auto;
 }
-.pot-card{
-  position:absolute; inset:6%; border-radius:10px;
+/* hero dynamic plant container — replicates DALL·E video plant growth flow in native code */
+.scene{
+  position:relative; width:100%; aspect-ratio:1/1; max-width:400px; margin:0 auto;
+}
+.hero-plant-card{
+  position:absolute; inset:4%; border-radius:14px;
   background: var(--card); border:1px solid var(--card-edge);
-  box-shadow: 0 20px 44px -20px var(--shadow), 0 2px 0 var(--card-edge);
+  box-shadow: 0 24px 48px -20px var(--shadow), 0 2px 0 var(--card-edge);
   transform:rotate(1.2deg);
-  display:flex; align-items:flex-end; justify-content:center; overflow:hidden;
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
   container-type:size;
 }
-.pot-card svg{ width:70%; height:82%; }
+.hero-plant-svg{
+  width:92%; height:92%; overflow:visible;
+}
+.hero-plant-stem{
+  fill:none; stroke:var(--forest); stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round;
+}
+.hero-plant-branch{
+  fill:none; stroke:var(--leaf); stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;
+}
+.hero-plant-leaf{
+  stroke:rgba(0,0,0,.15); stroke-width:.6; transform-box:view-box;
+  transition:transform .4s var(--ease-out), opacity .35s var(--ease-out);
+}
 
 .stake-tag{
-  position:absolute; right:9%; bottom:11%; transform:rotate(-6deg);
+  position:absolute; right:8%; bottom:8%; transform:rotate(-4deg);
   font-family:'Caveat Var',cursive; font-variation-settings:'wght' 650;
   color:var(--forest); font-size:.95rem; background:var(--sun-soft);
-  padding:2px 10px 4px; border-radius:2px; box-shadow:0 2px 5px var(--shadow);
-}
-
-/* everything below moves on transform/opacity only, and the choreography
-   (timing, easing, stagger) is owned by anime.js — see initPourTimeline() —
-   so the can, stream and drops read as one continuous, physically-eased pour
-   instead of independent CSS keyframe loops drifting against each other.
-   These rules only set each element's resting frame: what it looks like
-   before JS runs, and what it falls back to under reduced-motion. */
-/* the spout's tip, measured against the can's actual pour-tilt rotation
-   (getScreenCTM on the spout path at rotate(-16deg)), sits at ~43% / 43cqh of
-   the pot card — not the can's resting position. every water element anchors
-   there so it visibly leaves the jug instead of appearing above/beside it. */
-.stream{
-  position:absolute; left:43%; top:43cqh; width:3px; height:35cqh;
-  border-radius:0 0 3px 3px;
-  background:linear-gradient(180deg,
-    color-mix(in srgb, var(--forest) 55%, #bfe3ff 45%) 0%,
-    color-mix(in srgb, var(--forest) 70%, #bfe3ff 30%) 100%);
-  transform-origin:top center;
-  transform:scaleY(0);
-  opacity:0;
-  will-change:transform, opacity;
-}
-.droplet{
-  position:absolute; left:43%; top:43cqh; width:5px; height:7px;
-  border-radius:50% 50% 50% 0; margin-left:-2.5px;
-  background: color-mix(in srgb, var(--forest) 72%, #bfe3ff 28%);
-  opacity:0; will-change:transform, opacity;
-  transform:translate(0,0) rotate(45deg) scale(.5);
-}
-.splash{
-  position:absolute; left:45%; top:77cqh; width:18px; height:6px; margin-left:-9px;
-  border-radius:50%; border:1.4px solid var(--forest); opacity:0;
-  will-change:transform, opacity;
-}
-.soil-glisten{
-  position:absolute; left:31%; top:73cqh; width:38%; height:5cqh;
-  border-radius:50%;
-  background:radial-gradient(ellipse at center, color-mix(in srgb, var(--forest) 40%, #bfe3ff 30%) 0%, transparent 70%);
-  opacity:0; will-change:opacity;
-}
-.can-wobble{ transform-origin:82% 32%; will-change:transform; transform:rotate(-4deg); }
-.sapling-grow{ transform-origin:100px 160px; will-change:transform; }
-.sapling-leaf{ transform-origin:bottom center; will-change:transform; animation:sway 5.6s ease-in-out infinite; }
-.sapling-leaf.l2{ animation-delay:.4s; }
-.sapling-leaf.l3{ animation-delay:.9s; }
-@keyframes sway{
-  0%,100%{ transform:rotate(-3deg); }
-  50%{ transform:rotate(3deg); }
-}
-@media (prefers-reduced-motion: reduce){
-  .sapling-leaf{ animation:none !important; }
+  padding:3px 12px 5px; border-radius:3px; box-shadow:0 2px 6px var(--shadow);
+  z-index:2;
 }
 
 .hero-caption-row{
@@ -349,47 +338,21 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
 .snapshot.together{ background: color-mix(in srgb, var(--leaf) 14%, var(--card)); border:1px dashed var(--forest); }
 .snapshot b{ display:block; color:var(--ink); font-family:'Fraunces Var',serif; font-weight:600; margin-bottom:4px; }
 
-/* ---------- growth vine track ----------
-   one continuous SVG path spans the whole track (built in main.js) — not a
-   canvas, not a vine per section. It lives in its own layer behind the
-   content (.section sits at z-index:1 above it), so it can run underneath
-   headings and cards without needing to dodge them. */
+/* ---------- growth vine track ---------- */
 .growth-track{ position:relative; }
 .vine-svg{
   position:absolute; top:0; left:0; width:100%; height:100%;
   pointer-events:none; z-index:0; overflow:visible;
 }
-/* stroke-width and stroke color are set per-stage inline (--w custom
-   property + a direct `stroke` value) by renderVineDOM — five stages taper
-   thin/pale near the top to thick/deep near the bottom, so var(--w) here is
-   just the shared mechanism, not a fixed value. */
 .vine-stem{
   fill:none; stroke-width:var(--w, 3); stroke-linecap:round; stroke-linejoin:round;
 }
 .vine-branch{
   fill:none; stroke:var(--leaf); stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;
 }
-/* tendrils are a distinct, thinner mark from a branch — a curl, not a limb —
-   and lean toward the deeper, more mature color since they only start
-   appearing once the plant is past its "emerging" stage. */
 .vine-tendril{
   stroke:var(--forest); stroke-width:1.3; opacity:.85;
 }
-/* leaves grow from a small vestigial scale rather than nothing (never
-   scale(0)) and fade in together — both driven by one CSS transition on
-   `transform`, toggled by the .grown class main.js adds as scroll progress
-   passes each leaf's position. transform-origin is pinned to the leaf's own
-   anchor point (--tx/--ty, the same values its translate uses) so rotation
-   and scale happen around where it meets the stem, not the SVG's origin.
-
-   Slower and eased both ways (--ease-in-out) rather than the site's usual
-   punchy UI --ease-out: this is a scroll-linked growth moment, not a button
-   responding to a click, so it should read as an unhurried, ambient morph —
-   Emil's marketing/explanatory tier explicitly allows a duration beyond the
-   UI 300ms ceiling for exactly this reason. --o (opacity) varies per leaf
-   for a subtle painterly front/back depth cue rather than every leaf
-   sitting at a flat, identical 100%. A thin dark stroke on the fill gives
-   the leaf an illustrated outline instead of a flat cutout silhouette. */
 .vine-leaf{
   transform-box: view-box;
   transform-origin: var(--tx) var(--ty);
@@ -421,24 +384,34 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
 .section h2{ font-size:clamp(1.9rem,3.2vw,2.6rem); margin-top:6px; letter-spacing:-.02em; }
 .lede{ margin-top:14px; color:var(--ink-soft); font-size:1.06rem; max-width:60ch; }
 
-/* climbing note cards */
-.vine-notes{ display:flex; flex-direction:column; gap:64px; margin-top:20px; }
+/* climbing note cards — side-by-side 3-column responsive grid */
+.vine-notes{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; margin-top:30px;
+}
 .vine-note{
-  max-width:440px; padding:22px 24px 30px; border-radius:2px;
-  opacity:0; transform:translateY(24px);
+  padding:24px 22px 28px; border-radius:3px;
+  opacity:0; transform:translateY(20px) rotate(var(--tilt, 0deg));
+  transition:transform .5s var(--ease-out), opacity .5s var(--ease-out);
 }
-.vine-note.in-view{ opacity:1; transform:translateY(0); }
-.vine-note:nth-child(odd){ align-self:flex-start; margin-left:2%; }
-.vine-note:nth-child(even){ align-self:flex-end; margin-right:2%; }
+.vine-note:nth-child(1){ --tilt:-2deg; }
+.vine-note:nth-child(2){ --tilt:1.5deg; }
+.vine-note:nth-child(3){ --tilt:-1.2deg; }
+.vine-note:nth-child(4){ --tilt:2.2deg; }
+.vine-note:nth-child(5){ --tilt:-2.5deg; }
+.vine-note:nth-child(6){ --tilt:1.8deg; }
+.vine-note.in-view{ opacity:1; transform:translateY(0) rotate(var(--tilt, 0deg)); }
 .vine-note .role{
-  font-size:.72rem; text-transform:uppercase; letter-spacing:.12em; color:var(--forest);
-  font-weight:600; margin-bottom:8px;
+  font-size:.74rem; text-transform:uppercase; letter-spacing:.12em; color:var(--teal);
+  font-weight:700; margin-bottom:10px; display:inline-flex; align-items:center; gap:6px;
 }
-.vine-note p{ color:var(--ink-soft); font-size:.98rem; }
-.vine-note:nth-child(odd){ transform:translateY(24px) rotate(-1.2deg); }
-.vine-note:nth-child(even){ transform:translateY(24px) rotate(1.2deg); }
-.vine-note.in-view:nth-child(odd){ transform:translateY(0) rotate(-1.2deg); }
-.vine-note.in-view:nth-child(even){ transform:translateY(0) rotate(1.2deg); }
+.vine-note p{ color:var(--ink-soft); font-size:.96rem; line-height:1.5; font-style:italic; }
+
+@media (max-width:980px){
+  .vine-notes{ grid-template-columns:repeat(2, 1fr); }
+}
+@media (max-width:640px){
+  .vine-notes{ grid-template-columns:1fr; }
+}
 
 .audience-row{
   display:flex; flex-wrap:wrap; gap:12px; margin-top:36px;
@@ -461,17 +434,21 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
 .step-card:nth-child(1){ --tilt:-1.4deg; }
 .step-card:nth-child(2){ --tilt:0.8deg; }
 .step-card:nth-child(3){ --tilt:-0.6deg; }
+.step-icon-wrap{
+  width:44px; height:44px; border-radius:10px; background:color-mix(in srgb, var(--forest) 12%, var(--card));
+  display:flex; align-items:center; justify-content:center; color:var(--forest); margin-bottom:14px;
+}
+.step-icon-wrap svg{ width:22px; height:22px; }
 .step-num{
   font-family:'Fraunces Var',serif; font-size:.85rem; color:var(--forest); font-weight:600;
   letter-spacing:.06em; text-transform:uppercase;
 }
-.step-card h3{ font-size:1.4rem; margin-top:8px; }
+.step-card h3{ font-size:1.4rem; margin-top:6px; }
 .step-tag{
-  font-family:'Caveat Var',cursive; font-variation-settings:'wght' 650; color:var(--coral);
-  font-size:1.15rem; display:block; margin-top:2px;
+  font-family:'Caveat Var',cursive; font-variation-settings:'wght' 650; color:var(--forest);
+  font-size:1.2rem; display:block; margin-top:4px;
 }
-.step-card p{ margin-top:12px; color:var(--ink-soft); font-size:.94rem; }
-.step-icon{ width:44px; height:44px; margin-bottom:6px; }
+.step-card p{ margin-top:12px; color:var(--ink-soft); font-size:.94rem; line-height:1.55; }
 
 /* tick/cross deck */
 .deck-wrap{
@@ -735,103 +712,113 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 .match-card p.line{ color:var(--ink-soft); font-size:.92rem; line-height:1.5; }
 .match-card .chip-row{ display:flex; gap:6px; flex-wrap:wrap; }
 .match-card .card-foot{ margin-top:auto; padding-top:12px; border-top:1px solid var(--card-edge); display:flex; align-items:center; justify-content:space-between; gap:10px; }
-.shovel-btn{
-  background:none; border:none; cursor:pointer; color:var(--forest); font-weight:600; font-size:.85rem;
-  display:inline-flex; align-items:center; gap:6px; padding:4px 2px;
-  transition:transform .12s var(--ease-out), color .18s var(--ease-out);
+/* ---- growth stage badges ---- */
+.growth-badge{
+  font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+  padding:3px 9px; border-radius:999px; display:inline-flex; align-items:center; gap:5px;
+  background:color-mix(in srgb, var(--badge-color, var(--leaf)) 15%, var(--card));
+  color:var(--badge-color, var(--forest));
+  border:1px solid color-mix(in srgb, var(--badge-color, var(--leaf)) 30%, transparent);
 }
-.shovel-btn:hover{ color:var(--forest-deep); }
-.shovel-btn:active{ transform:scale(.96); }
-.shovel-btn:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; border-radius:3px; }
+.growth-badge svg{ width:12px; height:12px; }
+.growth-badge[data-stage="seed"]{ --badge-color: var(--amber); }
+.growth-badge[data-stage="sprouting"]{ --badge-color: var(--leaf); }
+.growth-badge[data-stage="in_sprint"]{ --badge-color: var(--teal); }
+.growth-badge[data-stage="shipped"]{ --badge-color: var(--forest); }
 
-.empty-state{
-  padding:44px 30px; text-align:center; border:1.5px dashed var(--line); border-radius:18px;
-  color:var(--ink-faint); font-size:.94rem; display:none;
+/* ---- hero stat cluster (Match page) ---- */
+.stage-head-flex{
+  display:flex; justify-content:space-between; align-items:flex-start; gap:36px; flex-wrap:wrap;
+  margin-bottom:44px;
 }
-.empty-state.show{ display:block; }
-.empty-state button{ margin-top:12px; }
+.stat-cluster{
+  display:flex; gap:20px; flex-wrap:wrap; padding:18px 24px; border-radius:14px;
+  background:var(--card); border:1px solid var(--card-edge); box-shadow:0 12px 28px -16px var(--shadow);
+}
+.stat-item{ display:flex; flex-direction:column; gap:2px; min-width:80px; }
+.stat-num{
+  font-family:'Fraunces Var',serif; font-size:1.8rem; font-weight:700; color:var(--forest); line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.stat-label{ font-size:.76rem; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.08em; font-weight:600; }
 
-/* ---- sprint board ---- */
-.board{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start; }
-.board-col-head{
-  display:flex; align-items:center; gap:10px; margin-bottom:16px; padding:0 4px;
-}
-.board-col-head .dot{ width:9px; height:9px; border-radius:50%; }
-.board-col-head h3{ font-size:1.02rem; font-weight:600; }
-.board-col-head .n{ margin-left:auto; font-size:.8rem; color:var(--ink-faint); font-variant-numeric:tabular-nums; }
-.board-col[data-stage="forming"] .dot{ background:var(--sun); }
-.board-col[data-stage="building"] .dot{ background:var(--forest); }
-.board-col[data-stage="shipped"] .dot{ background:var(--twine); }
-.board-col-body{ display:flex; flex-direction:column; gap:16px; }
+.seeds-count{ font-size:.78rem; color:var(--ink-faint); margin-top:3px; display:block; }
 
-.sprint-card{ padding:20px 20px 18px; display:flex; flex-direction:column; gap:12px; }
-.sprint-card h4{ font-family:'Fraunces Var',serif; font-size:1.04rem; font-weight:600; line-height:1.3; }
-.sprint-card .clock-row{ display:flex; align-items:center; gap:12px; }
-.clock-ring{ width:36px; height:36px; flex:0 0 auto; }
-.clock-ring circle.track{ fill:none; stroke:var(--card-edge); stroke-width:3; }
-.clock-ring circle.fill{ fill:none; stroke:var(--domain,var(--forest)); stroke-width:3; stroke-linecap:round; transform-origin:50% 50%; transform:rotate(-90deg); }
-.clock-ring text{ font-family:'Jost Var',sans-serif; font-size:9px; font-weight:600; fill:var(--ink); text-anchor:middle; }
-.sprint-card .clock-label{ font-size:.78rem; color:var(--ink-faint); }
-.sprint-card .clock-label b{ color:var(--ink); font-weight:600; }
-.team-row{ display:flex; align-items:center; }
-.team-row .avatar{ margin-left:-10px; border:2px solid var(--card); }
-.team-row .avatar:first-child{ margin-left:0; }
-.team-row .plus{
-  width:30px; height:30px; border-radius:50%; margin-left:-10px; border:2px dashed var(--line);
-  display:flex; align-items:center; justify-content:center; font-size:.72rem; color:var(--ink-faint); background:var(--card);
+/* ---- application drawer (bottom sheet) ---- */
+.app-drawer-backdrop{
+  position:fixed; inset:0; background:rgba(15,20,14,.55); backdrop-filter:blur(3px);
+  opacity:0; pointer-events:none; transition:opacity .24s var(--ease-out); z-index:90;
 }
-.sprint-card.shipped{ opacity:.92; }
-.sprint-card.shipped h4{ text-decoration:line-through; text-decoration-color:var(--card-edge); text-decoration-thickness:1.5px; }
-.shipped-badge{
-  align-self:flex-start; font-size:.72rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
-  color:var(--twine); display:inline-flex; align-items:center; gap:5px;
-}
+.app-drawer-backdrop.is-open{ opacity:1; pointer-events:auto; }
 
-/* ---- lab notebook feed ---- */
-.feed-toolbar{
-  display:flex; align-items:center; gap:14px; margin-bottom:28px; flex-wrap:wrap;
+.app-drawer{
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%) translateY(100%);
+  width:100%; max-width:620px; max-height:88vh; overflow-y:auto;
+  background:var(--card); border:1px solid var(--card-edge); border-bottom:none;
+  border-radius:20px 20px 0 0;
+  box-shadow:0 -20px 50px -10px rgba(0,0,0,.35);
+  padding:24px 28px 36px; z-index:95;
+  transition:transform .28s var(--ease-drawer);
 }
-.compose-trigger{
-  flex:1 1 320px; min-width:0; text-align:left; padding:16px 20px; border-radius:14px;
-  border:1.5px dashed var(--line); background:var(--card); cursor:pointer;
-  color:var(--ink-faint); font-size:.92rem; font-family:inherit;
-  display:flex; align-items:center; gap:10px;
-  transition:border-color .18s var(--ease-out), color .18s var(--ease-out), transform .12s var(--ease-out);
-}
-.compose-trigger:active{ transform:scale(.99); }
-.compose-trigger:hover, .compose-trigger:focus-visible{ border-color:var(--forest); color:var(--ink-soft); }
-.compose-trigger:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; }
-.compose-trigger .plus-badge{
-  width:26px; height:26px; border-radius:50%; background:var(--forest); color:var(--paper);
-  display:flex; align-items:center; justify-content:center; font-size:1rem; flex:0 0 auto;
-}
+.app-drawer.is-open{ transform:translateX(-50%) translateY(0); }
+.app-drawer.closing{ transform:translateX(-50%) translateY(100%); transition:transform .22s var(--ease-out); }
 
-.feed-grid{ columns:3 260px; column-gap:20px; }
-.entry-card{
-  break-inside:avoid; margin-bottom:20px; padding:0; display:block; width:100%; text-align:left;
+.drawer-drag-handle{
+  width:40px; height:4px; border-radius:2px; background:var(--line);
+  margin:0 auto 18px; cursor:grab;
 }
-.entry-card .entry-top{ padding:20px 20px 0; display:flex; align-items:center; gap:10px; }
-.entry-card .entry-top .name{ font-size:.84rem; font-weight:600; color:var(--ink-soft); }
-.entry-card .entry-top .when{ margin-left:auto; font-size:.74rem; color:var(--ink-faint); }
-.entry-card h4{ padding:12px 20px 0; font-family:'Fraunces Var',serif; font-size:1.06rem; line-height:1.35; }
-.entry-card p.snippet{ padding:10px 20px 0; color:var(--ink-soft); font-size:.88rem; line-height:1.55; }
-/* collapses via grid-template-rows (0fr -> 1fr) rather than max-height, so
-   the reveal animates on the compositor without triggering layout/reflow
-   on every frame; the inner span's fixed padding never needs to change. */
-.entry-card .teaser{
-  margin:14px 20px 0; border-radius:10px; background:var(--paper-deep);
-  font-family:ui-monospace,'SF Mono','Cascadia Code',Consolas,monospace; font-size:.76rem; color:var(--ink-soft);
-  display:grid; grid-template-rows:minmax(0,0fr); opacity:0;
-  transition:grid-template-rows .3s cubic-bezier(.16,1,.3,1), opacity .25s ease;
+.drawer-head{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:20px;
+  padding-bottom:14px; border-bottom:1px dashed var(--line);
 }
-.entry-card .teaser > span{ overflow:hidden; padding:12px 14px; display:block; }
-.entry-card.interactive:focus-visible .teaser{
-  grid-template-rows:minmax(0,1fr); opacity:1;
+.drawer-head h3{ font-size:1.3rem; }
+.drawer-head .sub{ font-size:.85rem; color:var(--ink-faint); margin-top:3px; }
+.drawer-form{ display:flex; flex-direction:column; gap:18px; }
+.drawer-form textarea{
+  width:100%; min-height:90px; padding:10px 12px; border:1px solid var(--card-edge); border-radius:8px;
+  background:var(--paper); color:var(--ink); font-family:inherit; font-size:.95rem; line-height:1.5; resize:vertical;
 }
-@media (hover:hover) and (pointer:fine){
-  .entry-card.interactive:hover .teaser{ grid-template-rows:minmax(0,1fr); opacity:1; }
+.drawer-form textarea::placeholder{ color:var(--ink-faint); font-style:italic; }
+.drawer-form textarea:focus-visible{ outline:none; border-color:var(--forest); box-shadow:0 0 0 2px var(--teal-soft); }
+
+/* ---- ambient sprint clock (Sprint page) ---- */
+.ambient-clock-wrap{
+  display:flex; align-items:center; gap:12px; padding:10px 18px; border-radius:999px;
+  background:var(--card); border:1px solid var(--card-edge); box-shadow:0 6px 18px -8px var(--shadow);
 }
-.entry-card .entry-bottom{ padding:14px 20px 20px; display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
+.ambient-clock-wrap .clock-ring{ width:32px; height:32px; }
+.ambient-clock-text{ display:flex; flex-direction:column; line-height:1.2; }
+.ambient-clock-text .days{ font-family:'Caveat Var',cursive; font-size:1.1rem; font-weight:700; color:var(--forest); }
+.ambient-clock-text .voice{ font-family:'Caveat Var',cursive; font-size:.85rem; color:var(--twine); }
+
+/* ---- lab notebook field journal styling ---- */
+.entry-card.torn::after{
+  content:""; position:absolute; left:0; right:0; bottom:-8px; height:12px;
+  background:
+    linear-gradient(135deg, transparent 50%, var(--paper) 50%) 0 0/12px 12px repeat-x,
+    linear-gradient(-135deg, transparent 50%, var(--paper) 50%) 0 0/12px 12px repeat-x;
+  background-position: 0 0, 6px 0;
+  opacity:1;
+}
+.entry-breadcrumb{
+  font-family:'Caveat Var',cursive; font-size:.92rem; color:var(--forest);
+  padding:2px 20px 0; display:block;
+}
+.grow-btn{
+  background:none; border:none; cursor:pointer; color:var(--forest); font-weight:600; font-size:.82rem;
+  display:inline-flex; align-items:center; gap:5px; margin-left:auto; padding:2px 4px; border-radius:3px;
+  transition:color .15s var(--ease-out), transform .12s var(--ease-out); position:relative;
+}
+.grow-btn svg{ width:14px; height:14px; }
+.grow-btn:hover{ color:var(--forest-deep); transform:scale(1.04); }
+.grow-btn:active{ transform:scale(.96); }
+.grow-btn .tooltip{
+  position:absolute; bottom:100%; right:0; margin-bottom:6px; padding:4px 9px;
+  background:var(--ink); color:var(--paper); font-family:'Jost Var',sans-serif; font-size:.76rem;
+  border-radius:4px; white-space:nowrap; pointer-events:none; opacity:0;
+  transform:translateY(4px); transition:opacity .18s var(--ease-out), transform .18s var(--ease-out);
+}
+.grow-btn:hover .tooltip{ opacity:1; transform:translateY(0); }
 
 /* ---- shared closing CTA (evolves .connect-card for the workspace pages) ---- */
 .stage-cta{
@@ -856,24 +843,52 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 
 /* ---------- footer ---------- */
 footer{
-  background:var(--forest-deep); color:var(--paper); padding:56px 0 26px; position:relative; z-index:1;
+  background:var(--forest-deep); color:var(--paper);
+  padding:64px 0 28px; position:relative; z-index:1;
 }
-footer .wrap{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:36px; }
+footer .wrap{
+  display:grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap:48px 40px;
+  align-items:start;
+}
+footer .logo{
+  display:flex; align-items:center; gap:8px;
+  font-family:'Fraunces Var',serif; font-weight:700;
+  font-size:1.15rem; letter-spacing:.04em;
+  color:var(--paper); margin-bottom:18px;
+}
 footer h5{
-  font-family:'Caveat Var',cursive; font-variation-settings:'wght' 650; font-size:1.2rem;
-  color:var(--sun); margin-bottom:12px;
+  font-family:'Caveat Var',cursive;
+  font-variation-settings:'wght' 650;
+  font-size:1.15rem;
+  color:var(--sun); margin-bottom:14px;
 }
-footer a{ display:block; color:color-mix(in srgb, var(--paper) 82%, transparent); text-decoration:none; font-size:.92rem; margin-bottom:9px; }
+footer a{
+  display:block;
+  color:color-mix(in srgb, var(--paper) 75%, transparent);
+  text-decoration:none; font-size:.9rem;
+  margin-bottom:10px; line-height:1.4;
+  transition:color .14s ease;
+}
 footer a:hover{ color:var(--sun); }
 .founder-quote{
-  font-family:'Fraunces Var',serif; font-style:italic; font-size:1rem;
-  color:color-mix(in srgb, var(--paper) 90%, transparent); line-height:1.6; max-width:44ch;
+  font-family:'Fraunces Var',serif; font-style:italic; font-size:.98rem;
+  color:color-mix(in srgb, var(--paper) 88%, transparent);
+  line-height:1.65; max-width:38ch;
 }
-.founder-quote cite{ display:block; margin-top:10px; font-style:normal; font-size:.82rem; color:var(--sun); }
+.founder-quote cite{
+  display:block; margin-top:12px;
+  font-style:normal; font-size:.8rem; color:var(--sun);
+  letter-spacing:.03em;
+}
 .foot-bottom{
-  max-width:1180px; margin:40px auto 0; padding:20px clamp(18px,5vw,56px) 0;
-  border-top:1px solid rgba(255,255,255,.14);
-  display:flex; justify-content:space-between; font-size:.8rem; color:color-mix(in srgb, var(--paper) 65%, transparent);
+  max-width:1180px; margin:44px auto 0;
+  padding:22px clamp(18px,5vw,56px) 0;
+  border-top:1px solid rgba(255,255,255,.12);
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:.8rem;
+  color:color-mix(in srgb, var(--paper) 55%, transparent);
   flex-wrap:wrap; gap:10px;
 }
 
@@ -978,11 +993,260 @@ form.apply-form{ padding:24px 26px 26px; display:flex; flex-direction:column; ga
   .hero-grid{ grid-template-columns:1fr; }
   .steps{ grid-template-columns:1fr; }
   .deck-wrap{ grid-template-columns:1fr; }
-  footer .wrap{ grid-template-columns:1fr 1fr; }
+  footer .wrap{ grid-template-columns:1fr 1fr; gap:32px 28px; }
+  footer .wrap > div:first-child{ grid-column:1 / -1; } /* quote col spans full width on tablet */
   nav.primary-nav{ display:none; }
   .menu-toggle{ display:block; }
 }
 @media (max-width:600px){
-  footer .wrap{ grid-template-columns:1fr; }
+  footer .wrap{ grid-template-columns:1fr; gap:28px; }
   .vine-note{ max-width:100%; }
+}
+
+/* ── FOOTER LOGO — stacked vertical lockup ────────── */
+.footer-logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.footer-logo svg {
+  flex: 0 0 auto;
+  opacity: .92;
+}
+.footer-logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.footer-logo-name {
+  font-family: 'Fraunces Var', serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: .06em;
+  color: var(--paper);
+  line-height: 1;
+}
+.footer-logo-sub {
+  font-family: 'Caveat Var', cursive;
+  font-variation-settings: 'wght' 500;
+  font-size: .85rem;
+  color: var(--sun);
+  opacity: .8;
+  letter-spacing: .03em;
+  line-height: 1;
+}
+
+/* ── HERO CLIP STAGE ─────────────────────────────── */
+.hero-clip-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 480px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: 0 4px 32px -8px var(--shadow);
+  margin: 0 auto;
+}
+
+/* Each clip slides up from +18px and fades in — consistent single direction */
+.hero-clip {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 700ms cubic-bezier(0.2, 0.8, 0.4, 1);
+  will-change: opacity, transform;
+}
+
+.hero-clip.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Exiting frame drops slightly down */
+.hero-clip.exiting {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity 500ms cubic-bezier(0.4, 0, 1, 1),
+    transform 500ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+.hero-clip img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  padding: 32px 32px 24px;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+}
+
+/* Gentle breathing scale on active frame */
+.hero-clip.active img {
+  animation: clip-breathe 7s ease-in-out infinite;
+}
+
+@keyframes clip-breathe {
+  0%, 100% { transform: scale(1.00); }
+  50%       { transform: scale(1.025); }
+}
+
+/* ── VINE NOTE HOVER ─────────────────────────────── */
+.vine-note {
+  transition:
+    transform 220ms var(--ease-out),
+    box-shadow 220ms var(--ease-out);
+  cursor: default;
+}
+.vine-note:hover {
+  transform: rotate(0deg) scale(1.02) translateY(-4px) !important;
+  box-shadow: 0 20px 44px -12px var(--shadow);
+  z-index: 2;
+}
+
+/* ── PAGE TRANSITION ─────────────────────────────── */
+body {
+  transition: opacity 200ms ease-out;
+}
+body.page-leaving {
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+body.page-entering {
+  animation: pageIn 280ms ease-out forwards;
+}
+
+/* ── GROW BUTTON MICROINTERACTION ────────────────── */
+.grow-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1.5px solid var(--teal);
+  color: var(--teal);
+  border-radius: 999px;
+  padding: 5px 12px 5px 8px;
+  font-size: .8rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background 180ms var(--ease-out),
+    color 180ms var(--ease-out),
+    transform 120ms var(--ease-out),
+    gap 180ms var(--ease-out);
+}
+.grow-btn svg {
+  width: 15px; height: 15px;
+  flex: 0 0 auto;
+  transition: transform 200ms var(--ease-out);
+}
+.grow-btn:hover {
+  background: var(--teal-soft);
+  color: var(--forest-deep);
+  gap: 8px;
+  transform: translateY(-1px);
+}
+.grow-btn:hover svg {
+  transform: rotate(90deg);
+}
+.grow-btn:active { transform: scale(.96); }
+.grow-btn .tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  white-space: nowrap;
+  background: var(--forest-deep);
+  color: var(--paper);
+  font-size: .72rem;
+  padding: 5px 10px;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+.grow-btn:hover .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── HERO CLIP BADGE ─────────────────────────────── */
+.hero-clip-badge {
+  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  box-shadow: 0 4px 14px -4px var(--shadow);
+  font-size: .8rem;
+  font-family: 'Caveat Var', cursive;
+  font-variation-settings: 'wght' 600;
+  color: var(--forest);
+  letter-spacing: .02em;
+  transition: opacity 280ms ease, transform 280ms ease;
+}
+.hero-clip-badge .stage-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--leaf);
+  box-shadow: 0 0 0 2px var(--teal-soft);
+  animation: pulse-dot 2.5s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: .7; }
+}
+
+/* ── STEP CARDS & ICONS ──────────────────────────── */
+.step-card {
+  transition: transform 240ms var(--ease-out), box-shadow 240ms var(--ease-out);
+}
+.step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -14px var(--shadow);
+}
+.step-icon-wrap {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: color-mix(in srgb, var(--forest) 12%, transparent);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--forest); margin-bottom: 16px;
+  transition: transform 260ms var(--ease-out), background 260ms ease;
+}
+.step-card:hover .step-icon-wrap {
+  transform: scale(1.1) rotate(4deg);
+  background: color-mix(in srgb, var(--forest) 20%, transparent);
+}
+.step-icon-wrap svg {
+  width: 22px; height: 22px;
+}
+
+/* ── APPLICATION DRAWER SPRING OVERSHOOT ─────────── */
+.app-drawer.is-open {
+  transform: translateX(-50%) translateY(0);
+  transition: transform 340ms cubic-bezier(0.18, 0.89, 0.32, 1.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-clip,
+  .hero-clip.exiting { transition-duration: 0ms; }
+  .hero-clip.active img { animation: none; }
+  body { transition: none; }
+  .vine-note { transition: none; }
+  .grow-btn, .grow-btn svg { transition: none; }
+  .hero-clip-badge .stage-dot { animation: none; }
+  .step-card, .step-icon-wrap { transition: none; }
 }

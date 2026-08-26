@@ -11,64 +11,107 @@ import { animate, createTimeline, utils } from 'animejs';
     else{ nav.style.cssText='display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--paper);padding:16px 24px;border-bottom:1px solid var(--line);gap:16px;'; }
   });
 
-  /* ---------- the watering pour, choreographed as one anime.js timeline ----------
-     every stage (can tilt, stream, each droplet's fall, its splash, the soil
-     glisten, the sapling's response) shares one clock and real physical easing
-     — 'inQuad' for the falling water (gravity accelerates it), 'outQuad' for
-     the splash (impact decelerates), 'inOutSine' for the unhurried can — so
-     the whole gesture reads as one continuous pour instead of separate CSS
-     loops drifting in and out of phase with each other. Built on the npm
-     `animejs` v4 package: createTimeline() + .add(targets, params, position). */
-  function initPourTimeline(){
-    var canEl = document.querySelector('.can-wobble');
-    var streamEl = document.querySelector('.stream');
-    var dropletEls = document.querySelectorAll('.droplet');
-    var splashEls = document.querySelectorAll('.splash');
-    var glistenEl = document.querySelector('.soil-glisten');
-    var saplingEl = document.querySelector('.sapling-grow');
-    if(!canEl || reduced) return;
+  /* ---------- hero illustrated clip sequence ----------
+     4 frames slide up and fade in sequence: seed → watering → sapling → canopy.
+     Exiting frame gets .exiting (slides down + fades); entering frame gets
+     .active (slides up from +18px + fades in). Single consistent direction. */
+  function initHeroClips(){
+    var clips = Array.from(document.querySelectorAll('.hero-clip'));
+    if(!clips.length) return;
+    var badge = document.getElementById('heroClipBadge');
+    var badgeText = badge ? badge.querySelector('.stage-text') : null;
+    var captions = [
+      'an idea, unplanted',
+      'the right connection arrives',
+      'building together',
+      'shipped under one canopy'
+    ];
+    var durations = [2400, 2800, 3200, 5000];
+    var current = 0;
+    clips[0].classList.add('active');
 
-    /* a real watering can doesn't jump straight to a stream — it opens with a
-       couple of separate drops, THEN the pour opens into a stream, THEN it
-       tapers back to drops as the can lifts. each drop below is scheduled to
-       finish falling (and splash) well before the next one starts, so they
-       read as distinct, countable drops rather than a blur. */
-    function fallOfDrop(el, splashEl, start){
-      tl.add(el, { opacity:[0,.9], scale:[.5,1], duration:110, ease:'outQuad' }, start);
-      tl.add(el, { y:['0cqh','35cqh'], x:'1cqw', duration:520, ease:'inQuad' }, start);
-      tl.add(el, { opacity:0, scale:.5, duration:120, ease:'inQuad' }, start + 500);
-      if(splashEl){
-        var land = start + 520;
-        tl.add(splashEl, { opacity:[0,.55], scale:[.3,.85], duration:150, ease:'outQuad' }, land);
-        tl.add(splashEl, { opacity:0, scale:1.6, duration:280, ease:'inQuad' }, land + 150);
+    function advance(){
+      var leaving = clips[current];
+      leaving.classList.remove('active');
+      leaving.classList.add('exiting');
+      // Clean up exiting class after transition completes
+      setTimeout(function(){ leaving.classList.remove('exiting'); }, 520);
+
+      current = (current + 1) % clips.length;
+      clips[current].classList.add('active');
+
+      if(badgeText){
+        badge.style.opacity = '0';
+        badge.style.transform = 'translateY(4px)';
+        setTimeout(function(){
+          badgeText.textContent = captions[current];
+          badge.style.opacity = '1';
+          badge.style.transform = 'translateY(0)';
+        }, 220);
       }
+
+      setTimeout(advance, durations[current]);
     }
-
-    var tl = createTimeline({ loop:true });
-    tl.add(canEl, { rotate:-4, duration:0 }, 0);
-    tl.add(canEl, { rotate:-16, duration:1200, ease:'inOutSine' }, 700);
-    tl.add(canEl, { rotate:-4, duration:1200, ease:'inOutSine' }, 3900);
-
-    /* opening drips */
-    fallOfDrop(dropletEls[0], splashEls[0], 1950);
-    fallOfDrop(dropletEls[1], splashEls[1], 2500);
-
-    /* the pour opens into a steady stream, held, then closed again */
-    tl.add(streamEl, { scaleY:[0,1], opacity:[0,.85], duration:250, ease:'outQuad' }, 3120);
-    tl.add(streamEl, { scaleY:0, opacity:0, duration:250, ease:'inQuad' }, 3720);
-
-    /* closing drip, as the can lifts back up */
-    fallOfDrop(dropletEls[2], splashEls[2], 3980);
-
-    tl.add(glistenEl, { opacity:[0,.5], duration:400, ease:'outSine' }, 2650);
-    tl.add(glistenEl, { opacity:0, duration:600, ease:'inSine' }, 5000);
-
-    tl.add(saplingEl, { scale:[1,1.03], duration:500, ease:'outSine' }, 4550);
-    tl.add(saplingEl, { scale:1, duration:900, ease:'inOutSine' }, 5300);
+    setTimeout(advance, durations[0]);
   }
-  initPourTimeline();
+  initHeroClips();
 
-  /* ---------- reveal on scroll, animated with anime.js ---------- */
+  /* ---------- hero copy — staggered line entrance on load ---------- */
+  function initHeroCopy(){
+    if(reduced) return;
+    var heroLeft = document.querySelector('.hero-grid > div:first-child');
+    if(!heroLeft) return;
+    var els = [
+      heroLeft.querySelector('.eyebrow'),
+      heroLeft.querySelector('h1'),
+      heroLeft.querySelector('.hero-sub'),
+      heroLeft.querySelector('.hero-sub + .hero-sub') || heroLeft.querySelectorAll('.hero-sub')[1],
+      heroLeft.querySelector('.hero-hook'),
+      heroLeft.querySelector('.hero-ctas')
+    ].filter(Boolean);
+
+    els.forEach(function(el){ el.style.opacity = '0'; });
+
+    var delays = [80, 200, 360, 440, 560, 680];
+    els.forEach(function(el, i){
+      animate(el, {
+        opacity: [0, 1],
+        y: [i < 2 ? 24 : 16, 0],
+        duration: i < 2 ? 620 : 520,
+        delay: delays[i],
+        ease: 'outCubic'
+      });
+    });
+  }
+  initHeroCopy();
+
+  /* ---------- stat number tickers — easeOutExpo deceleration ---------- */
+  function easeOutExpo(t){ return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+  function tickStat(el){
+    if(el.dataset.ticked) return;
+    el.dataset.ticked = '1';
+    var target = parseInt(el.dataset.target, 10);
+    if(!target) return;
+    var dur = 1400;
+    var start = performance.now();
+    function frame(now){
+      var t = Math.min((now - start) / dur, 1);
+      el.textContent = Math.round(easeOutExpo(t) * target);
+      if(t < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  var statEls = document.querySelectorAll('.stat-num[data-target]');
+  if(statEls.length && 'IntersectionObserver' in window){
+    var statIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) tickStat(e.target); });
+    }, { threshold: .5 });
+    statEls.forEach(function(el){ statIO.observe(el); });
+  }
+
+  /* ---------- reveal on scroll ---------- */
   function tiltOf(el){
     var v = getComputedStyle(el).getPropertyValue('--tilt');
     var n = parseFloat(v);
@@ -76,34 +119,52 @@ import { animate, createTimeline, utils } from 'animejs';
   }
   function revealEl(el, stagger){
     if(el.classList.contains('in-view')) return;
-    if(reduced){ el.classList.add('in-view'); return; }
+    el.classList.add('in-view');
+    if(reduced) return;
     var delay = stagger || 0;
     if(el.classList.contains('vine-note')){
       var idx = Array.prototype.indexOf.call(el.parentNode.children, el);
       var rot = idx % 2 === 0 ? -1.2 : 1.2;
       animate(el, { opacity:[0,1], y:[24,0], rotate:[rot*2.4, rot],
-        duration:750, delay:delay, ease:'outCubic', onComplete:function(){ el.classList.add('in-view'); } });
+        duration:650, delay:delay, ease:'outCubic' });
     } else {
       var tilt = tiltOf(el);
       animate(el, { opacity:[0,1], y:[22,0], rotate:[tilt*2.4, tilt],
-        duration:700, delay:delay, ease:'outCubic', onComplete:function(){ el.classList.add('in-view'); } });
+        duration:600, delay:delay, ease:'outCubic' });
     }
   }
   var revealEls = document.querySelectorAll('.reveal, .vine-note');
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
-      /* elements crossing the threshold in the same callback batch (a whole
-         card grid scrolling into view at once) get a small stagger instead
-         of firing together — capped so a big batch doesn't drag the tail
-         out past ~300ms, since stagger is decorative and must never block
-         interaction with the first cards. */
       var batch = entries.filter(function(e){ return e.isIntersecting; });
-      batch.forEach(function(e, i){ revealEl(e.target, Math.min(i, 6) * 50); });
-    }, {threshold:.18, rootMargin:'0px 0px -60px 0px'});
-    revealEls.forEach(function(el){ io.observe(el); });
+      batch.forEach(function(e, i){ revealEl(e.target, Math.min(i, 6) * 35); });
+    }, { threshold: 0.01, rootMargin: '60px 0px 60px 0px' });
+    revealEls.forEach(function(el){
+      var rect = el.getBoundingClientRect();
+      if(rect.top < window.innerHeight + 100){
+        revealEl(el, 0);
+      } else {
+        io.observe(el);
+      }
+    });
   } else {
     revealEls.forEach(function(el){ el.classList.add('in-view'); });
   }
+
+  /* ---------- page fade transitions ---------- */
+  document.body.classList.add('page-entering');
+  setTimeout(function(){ document.body.classList.remove('page-entering'); }, 320);
+
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href]');
+    if(!a) return;
+    var href = a.getAttribute('href');
+    // Only fade for same-origin page navigations (not anchors, not external)
+    if(!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('http')) return;
+    e.preventDefault();
+    document.body.classList.add('page-leaving');
+    setTimeout(function(){ window.location.href = href; }, 210);
+  });
 
   /* ---------- growth vine canvas ----------
      two stacked canvases: #vineCanvas holds settled growth (drawn once,
@@ -539,16 +600,14 @@ import { animate, createTimeline, utils } from 'animejs';
 
   /* ---------- apply modal ---------- */
   var modal = document.getElementById('applyModal');
-  /* entrance/exit animated via .is-open / .closing classes (see
-     dialog#applyModal in style.css) rather than letting showModal()/close()
-     snap the dialog in and out instantly. */
   function openModal(){
+    if(!modal) return;
     if(typeof modal.showModal==='function'){ modal.showModal(); } else { modal.setAttribute('open',''); }
     modal.classList.remove('closing');
     requestAnimationFrame(function(){ modal.classList.add('is-open'); });
   }
   function closeModal(){
-    if(!modal.classList.contains('is-open') && !modal.hasAttribute('open')) return;
+    if(!modal || (!modal.classList.contains('is-open') && !modal.hasAttribute('open'))) return;
     modal.classList.remove('is-open');
     var finish = function(){
       modal.classList.remove('closing');
@@ -562,10 +621,48 @@ import { animate, createTimeline, utils } from 'animejs';
     var el = document.getElementById(id);
     el && el.addEventListener('click', openModal);
   });
-  document.getElementById('closeApply').addEventListener('click', closeModal);
+  var closeApplyBtn = document.getElementById('closeApply');
+  closeApplyBtn && closeApplyBtn.addEventListener('click', closeModal);
   var notYetBtn = document.getElementById('notYet');
   notYetBtn && notYetBtn.addEventListener('click', function(){ showToast("no rush — the sapling will still be here."); });
-  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+  modal && modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+
+  /* ---------- application drawer (bottom sheet for shovel / build calls) ---------- */
+  var drawer = document.getElementById('appDrawer');
+  var drawerBackdrop = document.getElementById('drawerBackdrop');
+  var drawerClose = document.getElementById('closeDrawer');
+  var drawerTitle = document.getElementById('drawerTitle');
+  var drawerSub = document.getElementById('drawerSub');
+
+  function openDrawer(callTitle, callDomain){
+    if(!drawer || !drawerBackdrop) { openModal(); return; }
+    if(callTitle && drawerTitle) drawerTitle.textContent = callTitle;
+    if(callDomain && drawerSub) drawerSub.textContent = callDomain;
+    drawerBackdrop.classList.add('is-open');
+    drawer.classList.remove('closing');
+    requestAnimationFrame(function(){ drawer.classList.add('is-open'); });
+  }
+  function closeDrawer(){
+    if(!drawer || !drawerBackdrop) return;
+    drawer.classList.remove('is-open');
+    drawerBackdrop.classList.remove('is-open');
+    drawer.classList.add('closing');
+    setTimeout(function(){ drawer.classList.remove('closing'); }, 240);
+  }
+  drawerClose && drawerClose.addEventListener('click', closeDrawer);
+  drawerBackdrop && drawerBackdrop.addEventListener('click', closeDrawer);
+
+  var drawerForm = document.getElementById('appDrawerForm');
+  drawerForm && drawerForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var note = this.querySelector('textarea') ? this.querySelector('textarea').value : '';
+    try {
+      sessionStorage.setItem('canopy_draft_note', note);
+    } catch(err){}
+    closeDrawer();
+    showToast('🌱 Shovel note planted — sent to the project poster.');
+    this.reset();
+  });
 
   /* pill groups */
   document.querySelectorAll('.pill-group').forEach(function(group){
@@ -585,13 +682,15 @@ import { animate, createTimeline, utils } from 'animejs';
   var toast = document.getElementById('toast');
   var toastTimer;
   function showToast(msg){
+    if(!toast) return;
     toast.textContent = msg || '🌱 Application planted — we\'ll be in touch soon.';
     toast.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 3200);
   }
 
-  document.getElementById('applyForm').addEventListener('submit', function(e){
+  var applyForm = document.getElementById('applyForm');
+  applyForm && applyForm.addEventListener('submit', function(e){
     e.preventDefault();
     closeModal();
     showToast();
@@ -599,15 +698,8 @@ import { animate, createTimeline, utils } from 'animejs';
     document.querySelectorAll('.pill').forEach(function(p){ p.setAttribute('aria-pressed','false'); });
   });
 
-  /* ---------- workspace pages (Match / Sprint / Lab Notebook) ----------
-     generative avatars, sprint clock rings, and domain filter chips shared
-     across the three product-UI pages. Each block is a no-op wherever its
-     markup doesn't exist, so this runs safely on every page including the
-     homepage. */
 
-  /* deterministic string hash, used to pick a stable blob shape + color
-     pair per name so the same person always renders the same "fingerprint"
-     avatar rather than a random one on every reload. */
+  /* ---------- workspace pages (Match / Sprint / Lab Notebook) ---------- */
   function hashStr(str){
     var h = 0;
     for(var i=0; i<str.length; i++){ h = (h << 5) - h + str.charCodeAt(i); h |= 0; }
@@ -619,7 +711,9 @@ import { animate, createTimeline, utils } from 'animejs';
     ['var(--sun)','var(--forest)'],
     ['var(--leaf-bright)','var(--forest-deep)'],
     ['var(--forest)','var(--sun)'],
-    ['var(--twine)','var(--leaf)']
+    ['var(--twine)','var(--leaf)'],
+    ['var(--teal)','var(--forest-deep)'],
+    ['var(--amber)','var(--forest)']
   ];
   document.querySelectorAll('.avatar[data-seed]').forEach(function(el){
     var h = hashStr(el.getAttribute('data-seed'));
@@ -631,10 +725,7 @@ import { animate, createTimeline, utils } from 'animejs';
     el.style.setProperty('--a-angle', (h % 360) + 'deg');
   });
 
-  /* sprint clock rings: data-pct (percent of the sprint window remaining)
-     drives the ring fill, animated in on scroll — the same "grows once
-     noticed" motion language as the rest of the site, scoped to this one
-     interaction rather than scattered across every card. */
+  /* sprint clock rings */
   var CLOCK_R = 15, CLOCK_C = 2 * Math.PI * CLOCK_R;
   document.querySelectorAll('.clock-ring').forEach(function(svg){
     var fill = svg.querySelector('circle.fill');
@@ -655,9 +746,7 @@ import { animate, createTimeline, utils } from 'animejs';
     clockObs.observe(svg);
   });
 
-  /* domain filter chips: toggle aria-pressed, show/hide sibling cards by
-     data-domain, and reveal the section's empty state when a filter combo
-     leaves nothing to show. */
+  /* domain filter chips */
   document.querySelectorAll('.filter-row').forEach(function(row){
     var gridSel = row.getAttribute('data-filters-for');
     var grid = gridSel ? document.querySelector(gridSel) : null;
@@ -689,10 +778,27 @@ import { animate, createTimeline, utils } from 'animejs';
     });
   });
 
-  /* shovel / compose triggers on the card grids reuse the same intake
-     modal as the rest of the site — same mockup-only interaction, just
-     wired from many cards instead of a handful of fixed buttons. */
-  document.querySelectorAll('.shovel-btn, .compose-trigger').forEach(function(btn){
-    btn.addEventListener('click', openModal);
+  /* shovel / compose triggers */
+  document.querySelectorAll('.shovel-btn').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      var card = btn.closest('.match-card, .sprint-card');
+      var name = card ? (card.querySelector('.name, h4') ? card.querySelector('.name, h4').textContent : '') : '';
+      var domain = card ? (card.getAttribute('data-domain') || '') : '';
+      if(drawer) {
+        openDrawer(name, domain ? 'Domain · ' + domain.toUpperCase() : '');
+      } else {
+        openModal();
+      }
+    });
+  });
+
+  document.querySelectorAll('.compose-trigger').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(drawer){
+        openDrawer('Compose Lab Notebook Entry', 'Document your process, snippets, or findings');
+      } else {
+        openModal();
+      }
+    });
   });
 })();

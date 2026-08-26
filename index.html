@@ -32,8 +32,11 @@
 <header>
   <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
     <a class="logo" href="#top" aria-label="Canopy home">
-      <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
-      CANOPY
+      <div class="logo-main">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
+        CANOPY
+      </div>
+      <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
       <a href="#problem">The Gap</a>
@@ -59,8 +62,9 @@
     <div class="reveal in-view">
       <span class="eyebrow">✎ a field application sandbox</span>
       <h1>If we can find love online,<br>why not <em>teammates?</em></h1>
-      <p class="hero-sub">CANOPY is where builders, problem holders, and enablers find each other and turn ideas into shipped solutions — across AI, hardware, design, research, and everything between. No swipes. No noise. Just real people building real things.</p>
-      <div class="hero-hook">We solved the problem of finding a romantic partner online. We still haven't solved the problem of finding the right teammate to build something meaningful with. That's the gap Canopy exists to close.</div>
+      <p class="hero-sub">Canopy is where builders, problem holders, and enablers come together and turn ideas into things that actually ship.</p>
+      <p class="hero-sub" style="margin-top:10px;font-size:1.02rem;">Across AI, hardware, design, research, and everything between.</p>
+      <div class="hero-hook">The right teammate changes everything — not just what gets built, but whether it gets built at all. Canopy is where that match happens.</div>
       <div class="hero-ctas">
         <button class="btn btn-stamp" id="heroApply">Join the Canopy</button>
         <a class="btn btn-ghost" href="#solution">See how it grows ↓</a>
@@ -68,43 +72,23 @@
     </div>
 
     <div class="scene reveal in-view">
-      <div class="pot-card">
-        <svg viewBox="0 0 200 220" aria-hidden="true">
-          <!-- watering can, tilted in a slow, gentle pour -->
-          <g class="can-wobble">
-            <rect x="118" y="18" width="52" height="34" rx="10" fill="var(--twine)"/>
-            <rect x="96" y="30" width="26" height="8" rx="4" fill="var(--twine)"/>
-            <circle cx="180" cy="26" r="9" fill="var(--twine)"/>
-            <circle cx="144" cy="24" r="3" fill="var(--sun-soft)"/>
-            <path d="M100 33 C88 33 84 40 84 40" stroke="var(--twine)" stroke-width="6" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- tiny sapling, freshly planted -->
-          <g class="sapling-grow">
-            <!-- pot -->
-            <path d="M68 208 L132 208 L124 168 L76 168 Z" fill="var(--forest-deep)"/>
-            <rect x="64" y="160" width="72" height="13" rx="4" fill="var(--forest)"/>
-            <!-- soil -->
-            <ellipse cx="100" cy="164" rx="28" ry="6" fill="#3a2c1c"/>
-            <!-- little grass tufts, just for cuteness -->
-            <path d="M70 168 q3 -10 6 0" stroke="var(--leaf)" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M126 168 q4 -9 7 -1" stroke="var(--leaf)" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <!-- stem, still short -->
-            <path d="M100 164 C 100 150 99 138 100 126" stroke="var(--forest)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-            <!-- small leaves -->
-            <path class="sapling-leaf l1" d="M100 142 C 78 136 70 116 80 102 C 100 110 103 128 100 142Z" fill="var(--leaf)"/>
-            <path class="sapling-leaf l2" d="M100 132 C 122 126 130 108 121 94 C 100 102 97 120 100 132Z" fill="var(--leaf-bright)"/>
-            <path class="sapling-leaf l3" d="M100 120 C 89 112 88 97 96 88 C 108 94 110 110 100 120Z" fill="var(--forest)"/>
-          </g>
-        </svg>
-        <div class="stream"></div>
-        <div class="droplet" style="left:42%;animation-delay:0s;"></div>
-        <div class="droplet" style="left:43%;animation-delay:.3s;"></div>
-        <div class="droplet" style="left:44%;animation-delay:.6s;"></div>
-        <div class="splash" style="left:42%;animation-delay:0s;"></div>
-        <div class="splash" style="left:43%;animation-delay:.3s;"></div>
-        <div class="splash" style="left:44%;animation-delay:.6s;"></div>
-        <div class="soil-glisten"></div>
-        <span class="stake-tag">day 1 🌱</span>
+      <div class="hero-clip-stage" id="heroClipStage" aria-hidden="true">
+        <div class="hero-clip active" id="heroClip1">
+          <img src="/frames/frame-1-seed.jpg" alt="" draggable="false" />
+        </div>
+        <div class="hero-clip" id="heroClip2">
+          <img src="/frames/frame-2-watering.jpg" alt="" draggable="false" />
+        </div>
+        <div class="hero-clip" id="heroClip3">
+          <img src="/frames/frame-3-sapling.jpg" alt="" draggable="false" />
+        </div>
+        <div class="hero-clip" id="heroClip4">
+          <img src="/frames/frame-4-canopy.jpg" alt="" draggable="false" />
+        </div>
+      </div>
+      <div class="hero-clip-badge" id="heroClipBadge">
+        <span class="stage-dot"></span>
+        <span class="stage-text">an idea, unplanted</span>
       </div>
     </div>
   </div>
@@ -136,27 +120,27 @@
 
     <div class="vine-notes">
       <div class="vine-note paper-card torn" data-note>
-        <div class="role">ML Engineer</div>
+        <div class="role"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg> ML Engineer</div>
         <p>"I've got strong skills. I just don't have a clear problem to point them at."</p>
       </div>
       <div class="vine-note paper-card torn" data-note>
-        <div class="role">Designer</div>
+        <div class="role"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg> Designer</div>
         <p>"I'm craving a real project — not another fake case study for my portfolio."</p>
       </div>
       <div class="vine-note paper-card torn" data-note>
-        <div class="role">Hardware Engineer</div>
+        <div class="role"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg> Hardware Engineer</div>
         <p>"I want a cause, and a team that actually values the craft of building physical things."</p>
       </div>
       <div class="vine-note paper-card torn" data-note>
-        <div class="role">Founder</div>
+        <div class="role"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg> Founder</div>
         <p>"The idea is vivid. What's missing is a technical co-builder to bring it to life."</p>
       </div>
       <div class="vine-note paper-card torn" data-note>
-        <div class="role">Researcher</div>
+        <div class="role"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg> Researcher</div>
         <p>"I'm holding deep contextual data and a sharp plan — with no execution path."</p>
       </div>
       <div class="vine-note paper-card torn" data-note>
-        <div class="role">NGO / Lab / Company</div>
+        <div class="role"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg> NGO / Lab / Company</div>
         <p>"We have real, pressing problems and no fast way to tap skilled, mission-driven teams."</p>
       </div>
     </div>
@@ -176,18 +160,30 @@
 
     <div class="steps">
       <div class="step-card paper-card torn reveal">
+        <div class="step-icon-wrap">
+          <!-- Seedling / Sprout SVG -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-9"/><path d="M9 8c3-3 8-1 9 4-3 1-8-1-9-4Z"/><path d="M15 11c-3-3-8-1-9 4 3 1 8-1 9-4Z"/></svg>
+        </div>
         <div class="step-num">Step 01</div>
         <h3>Match</h3>
         <span class="step-tag script">grab a shovel, not a swipe</span>
         <p>Build a profile with your domains, skills, and collaboration style, and get a generative avatar — a visual fingerprint of your building identity, not a photo. Browse Build Calls and people, and respond with a short note on what you'd bring. The poster actually reads it before choosing who joins, which is what makes the match feel human instead of automated.</p>
       </div>
       <div class="step-card paper-card torn reveal">
+        <div class="step-icon-wrap">
+          <!-- Collaboration / Users SVG -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
         <div class="step-num">Step 02</div>
         <h3>Sprint</h3>
         <span class="step-tag script">the mingle becomes a team</span>
         <p>Once a team forms, everyone enters a shared workspace: a starter repo, sample data, and a clear two-to-four week deadline. A living sprint clock keeps the gentle pressure of shared momentum on, so the rhythm stays building, checking in, adjusting — the kind of progress a month-long email chain never quite manages.</p>
       </div>
       <div class="step-card paper-card torn reveal">
+        <div class="step-icon-wrap">
+          <!-- Lab Notebook / Journal SVG -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
         <div class="step-num">Step 03</div>
         <h3>Notebook</h3>
         <span class="step-tag script">document the digging, not just the win</span>
@@ -308,12 +304,24 @@
 <!-- ---- FINALE ---- -->
 <section class="section finale" id="connect">
   <div class="wrap">
-    <svg class="finale-canopy reveal" viewBox="0 0 220 200" aria-hidden="true">
-      <path d="M110 195 L110 90" stroke="var(--forest)" stroke-width="8" stroke-linecap="round"/>
-      <path d="M110 130 C 40 120 20 60 55 20 C 110 40 118 100 110 130Z" fill="var(--leaf)"/>
-      <path d="M110 110 C 180 96 200 40 168 8 C 112 22 100 80 110 110Z" fill="var(--leaf-bright)"/>
-      <path d="M110 90 C 76 66 74 24 100 4 C 130 20 132 66 110 90Z" fill="var(--forest)"/>
-      <path d="M110 70 C 150 56 158 20 138 0 C 108 12 100 46 110 70Z" fill="var(--forest-deep)"/>
+    <svg class="finale-canopy reveal" viewBox="0 0 240 200" aria-hidden="true">
+      <!-- three figures reaching up as trunk and branches -->
+      <!-- left figure (Builder) -->
+      <circle cx="70" cy="115" r="9" fill="var(--amber)"/>
+      <path d="M55 160 C55 135 68 128 78 135 C88 142 85 175 80 185" stroke="var(--amber)" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <!-- right figure (Problem Holder) -->
+      <circle cx="170" cy="115" r="9" fill="var(--teal)"/>
+      <path d="M185 160 C185 135 172 128 162 135 C152 142 155 175 160 185" stroke="var(--teal)" stroke-width="8" stroke-linecap="round" fill="none"/>
+      <!-- center figure (Enabler / Core Trunk) -->
+      <circle cx="120" cy="90" r="10" fill="var(--forest)"/>
+      <path d="M120 185 L120 108" stroke="var(--forest)" stroke-width="9" stroke-linecap="round"/>
+      <path d="M120 125 C100 110 82 95 65 85" stroke="var(--leaf)" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M120 125 C140 110 158 95 175 85" stroke="var(--forest)" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <!-- canopy foliage clusters -->
+      <path d="M120 75 C90 55 70 20 100 10 C130 20 135 55 120 75Z" fill="var(--leaf)"/>
+      <path d="M65 80 C40 65 30 30 60 20 C85 30 85 65 65 80Z" fill="var(--leaf-bright)"/>
+      <path d="M175 80 C200 65 210 30 180 20 C155 30 155 65 175 80Z" fill="var(--forest-deep)"/>
+      <path d="M120 40 C105 25 105 5 120 0 C135 5 135 25 120 40Z" fill="var(--leaf-bright)"/>
     </svg>
     <h2>It grew this far because someone kept watering it. Want in?</h2>
     <p class="lede">The next Build Call, the next sprint, the next shipped prototype — it starts with one honest note about what you'd bring.</p>
@@ -335,9 +343,16 @@
 <footer>
   <div class="wrap">
     <div>
-      <div class="logo" style="color:var(--paper);margin-bottom:14px;">
-        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--sun)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--sun)"/></svg>
-        CANOPY
+      <div class="footer-logo">
+        <svg viewBox="0 0 40 44" fill="none" width="40" height="44" aria-hidden="true">
+          <path d="M20 44V24" stroke="var(--sun)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M20 26C20 26 4 24 5 6C20 6 20 26 20 26Z" fill="var(--leaf)"/>
+          <path d="M20 19C20 19 36 16 35 2C20 3 20 19 20 19Z" fill="var(--sun)"/>
+        </svg>
+        <div class="footer-logo-text">
+          <span class="footer-logo-name">CANOPY</span>
+          <span class="footer-logo-sub">Build · Connect · Ship</span>
+        </div>
       </div>
       <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
     </div>

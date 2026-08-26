@@ -43,8 +43,11 @@
 <header>
   <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
     <a class="logo" href="index.html" aria-label="Canopy home">
-      <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
-      CANOPY
+      <div class="logo-main">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
+        CANOPY
+      </div>
+      <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
       <a href="index.html#problem">The Gap</a>
@@ -65,9 +68,21 @@
 
 <main id="top">
 <div class="stage">
-  <div class="stage-head reveal">
-    <h1>A sprint is where an idea becomes something you can point to.</h1>
-    <p class="lede">Two to four weeks, start to shipped. A team forms around one specific Build Call, works against a visible clock instead of an open-ended timeline, and walks away with a prototype, a dataset, a dashboard, or a write-up added to the public Library — no month-long email chains, just a team, a problem, and a date on the calendar.</p>
+  <div class="stage-head-flex reveal">
+    <div class="stage-head" style="margin-bottom:0;">
+      <h1>A sprint is where an idea becomes something you can point to.</h1>
+      <p class="lede">Two to four weeks, start to shipped. A team forms around one specific Build Call, works against a visible clock instead of an open-ended timeline, and walks away with a prototype, a dataset, a dashboard, or a write-up added to the public Library — no month-long email chains, just a team, a problem, and a date on the calendar.</p>
+    </div>
+    <div class="ambient-clock-wrap">
+      <svg class="clock-ring" viewBox="0 0 36 36" data-pct="72" aria-hidden="true">
+        <circle class="track" cx="18" cy="18" r="15"/>
+        <circle class="fill" cx="18" cy="18" r="15"/>
+      </svg>
+      <div class="ambient-clock-text">
+        <span class="days">12 days left</span>
+        <span class="voice">vine climbing fast</span>
+      </div>
+    </div>
   </div>
 
   <div class="board">
@@ -230,9 +245,16 @@
 <footer>
   <div class="wrap">
     <div>
-      <div class="logo" style="color:var(--paper);margin-bottom:14px;">
-        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--sun)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--sun)"/></svg>
-        CANOPY
+      <div class="footer-logo">
+        <svg viewBox="0 0 40 44" fill="none" width="40" height="44" aria-hidden="true">
+          <path d="M20 44V24" stroke="var(--sun)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M20 26C20 26 4 24 5 6C20 6 20 26 20 26Z" fill="var(--leaf)"/>
+          <path d="M20 19C20 19 36 16 35 2C20 3 20 19 20 19Z" fill="var(--sun)"/>
+        </svg>
+        <div class="footer-logo-text">
+          <span class="footer-logo-name">CANOPY</span>
+          <span class="footer-logo-sub">Build &middot; Connect &middot; Ship</span>
+        </div>
       </div>
       <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
     </div>
@@ -262,6 +284,51 @@
     <span>© 2026 Canopy. All rights reserved.</span>
   </div>
 </footer>
+
+<!-- ============ APPLICATION DRAWER ============ -->
+<div class="app-drawer-backdrop" id="drawerBackdrop"></div>
+<div class="app-drawer" id="appDrawer">
+  <div class="drawer-drag-handle"></div>
+  <div class="drawer-head">
+    <div>
+      <h3 id="drawerTitle">Sprint Collaboration Note</h3>
+      <p class="sub" id="drawerSub">Domain · Sprint Workspace</p>
+    </div>
+    <button class="modal-close" id="closeDrawer" aria-label="Close drawer">✕</button>
+  </div>
+  <form class="drawer-form" id="appDrawerForm">
+    <div class="field">
+      <label for="dNote">What would you bring to this sprint?</label>
+      <textarea id="dNote" placeholder="Start honest. What's your angle on this problem? (e.g. I can build the telemetry pipeline in 2 weeks...)" required></textarea>
+    </div>
+    <div class="field">
+      <label>Your relevant skills</label>
+      <div class="pill-group" data-group="drawer-skills">
+        <button type="button" class="pill" aria-pressed="true">Hardware / Embedded</button>
+        <button type="button" class="pill" aria-pressed="false">AI / Machine Learning</button>
+        <button type="button" class="pill" aria-pressed="false">UI / Product Design</button>
+        <button type="button" class="pill" aria-pressed="false">Full-Stack Dev</button>
+        <button type="button" class="pill" aria-pressed="false">Domain Research</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Availability for this sprint</label>
+      <div class="pill-group" data-group="drawer-avail" data-single="true">
+        <button type="button" class="pill" aria-pressed="true">Full sprint (2–4 weeks)</button>
+        <button type="button" class="pill" aria-pressed="false">Part-time (10–15 hrs/wk)</button>
+        <button type="button" class="pill" aria-pressed="false">Advisory / Mentor</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="dLink">Link something you've shipped or written</label>
+      <input type="text" id="dLink" placeholder="GitHub, portfolio, writeup URL (optional)">
+    </div>
+    <div class="form-foot">
+      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">take ninety seconds to make it honest</span>
+      <button type="submit" class="btn btn-stamp btn-sm">Plant this note →</button>
+    </div>
+  </form>
+</div>
 
 <!-- ============ APPLY MODAL ============ -->
 <dialog id="applyModal">

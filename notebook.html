@@ -25,13 +25,28 @@
 </head>
 <body>
 
+<!-- icon sprite -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-sprout" viewBox="0 0 32 32">
+    <path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor"/>
+    <path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-bell" viewBox="0 0 16 16">
+    <path d="M8 1.5a3.5 3.5 0 0 0-3.5 3.5v2.2L3.2 9.5a.75.75 0 0 0 .55 1.25h8.5a.75.75 0 0 0 .55-1.25l-1.3-2.3V5A3.5 3.5 0 0 0 8 1.5z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
+    <path d="M6.5 12a1.5 1.5 0 0 0 3 0" stroke="currentColor" stroke-width="1.2" fill="none"/>
+  </symbol>
+</svg>
 
 <!-- ============ HEADER ============ -->
 <header>
   <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
     <a class="logo" href="index.html" aria-label="Canopy home">
-      <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
-      CANOPY
+      <div class="logo-main">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
+        CANOPY
+      </div>
+      <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
       <a href="index.html#problem">The Gap</a>
@@ -80,12 +95,18 @@
         <span class="name">Priya Nandan</span>
         <span class="when">2 days ago</span>
       </div>
+      <span class="entry-breadcrumb">grown from Sprint: Groundwater Sensor</span>
       <h4>Why my groundwater model kept overfitting on rainy days</h4>
       <p class="snippet">Turns out three sensors were miscalibrated after the last storm and I was training on noise. Here's how I caught it.</p>
       <div class="teaser"><span>rmse_by_weather.py:14 → std(residual | rain) &gt;&gt; std(residual | dry)</span></div>
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="climate">Climate</span>
         <span class="tag-chip skill">post-mortem</span>
+        <button type="button" class="grow-btn compose-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Grow entry
+          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
+        </button>
       </div>
     </article>
 
@@ -95,27 +116,39 @@
         <span class="name">Ines Falk</span>
         <span class="when">4 days ago</span>
       </div>
+      <span class="entry-breadcrumb">grown from Sprint: Fault Detection</span>
       <h4>First failed prototype of the fault-detection board</h4>
       <p class="snippet">The enclosure trapped heat and cooked the sensor by hour six. Redesigned the vent pattern — full teardown photos inside.</p>
       <div class="teaser"><span>thermal_log.csv → 84°C at t+6h, spec max 65°C</span></div>
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="hardware">Hardware</span>
         <span class="tag-chip skill">teardown</span>
+        <button type="button" class="grow-btn compose-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Grow entry
+          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
+        </button>
       </div>
     </article>
 
-    <article class="elevated-card interactive entry-card reveal" data-domain="civic" tabindex="0">
+    <article class="elevated-card interactive entry-card torn reveal" data-domain="civic" tabindex="0">
       <div class="entry-top">
         <div class="avatar sm" data-seed="Deshi Osei" aria-hidden="true"></div>
         <span class="name">Deshi Osei</span>
         <span class="when">5 days ago</span>
       </div>
+      <span class="entry-breadcrumb">grown from Sprint: City Budget Explorer</span>
       <h4>A dataset that surprised me: the line-items don't sum to the total</h4>
       <p class="snippet">The city's published budget PDF and its "open data" export disagree by 4%. Wrote a reconciliation script before touching any UI.</p>
       <div class="teaser"><span>reconcile.js → drift: +$2.3M unattributed</span></div>
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="civic">Civic Tech</span>
         <span class="tag-chip skill">data cleaning</span>
+        <button type="button" class="grow-btn compose-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Grow entry
+          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
+        </button>
       </div>
     </article>
 
@@ -125,12 +158,18 @@
         <span class="name">Marcus Webb</span>
         <span class="when">1 week ago</span>
       </div>
+      <span class="entry-breadcrumb">grown from Sprint: Adaptive Reading Tutor</span>
       <h4>The small fix that made the tutor usable on a cracked screen</h4>
       <p class="snippet">Touch targets were fine in the simulator and unusable on the actual donated classroom tablets. One line, huge difference.</p>
       <div class="teaser"><span>tutor.css:212 → min-height: 44px !important;</span></div>
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="education">Education</span>
         <span class="tag-chip skill">field-testing</span>
+        <button type="button" class="grow-btn compose-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Grow entry
+          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
+        </button>
       </div>
     </article>
 
@@ -140,27 +179,39 @@
         <span class="name">Rohan Malhotra</span>
         <span class="when">1 week ago</span>
       </div>
+      <span class="entry-breadcrumb">grown from Sprint: Clinic Triage</span>
       <h4>Post-mortem: our offline sync merge conflicts</h4>
       <p class="snippet">Two clinics editing the same patient record offline, no server to arbitrate. Landed on last-write-wins plus a visible conflict flag.</p>
       <div class="teaser"><span>sync.md → conflicts/day: 40 → 3 after v2</span></div>
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="health">Health</span>
         <span class="tag-chip skill">architecture</span>
+        <button type="button" class="grow-btn compose-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Grow entry
+          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
+        </button>
       </div>
     </article>
 
-    <article class="elevated-card interactive entry-card reveal" data-domain="ai" tabindex="0">
+    <article class="elevated-card interactive entry-card torn reveal" data-domain="ai" tabindex="0">
       <div class="entry-top">
         <div class="avatar sm" data-seed="Priya Nandan" aria-hidden="true"></div>
         <span class="name">Priya Nandan</span>
         <span class="when">2 weeks ago</span>
       </div>
+      <span class="entry-breadcrumb">grown from Sprint: Model Alignment</span>
       <h4>Sketch: what a fair matching algorithm could look like</h4>
       <p class="snippet">Half-baked, not shipped anywhere yet — thinking out loud about weighting "note quality" over raw skill overlap.</p>
       <div class="teaser"><span>match_weights.md → draft, unscored</span></div>
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="ai">AI / ML</span>
         <span class="tag-chip skill">idea</span>
+        <button type="button" class="grow-btn compose-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Grow entry
+          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
+        </button>
       </div>
     </article>
   </div>
@@ -186,9 +237,16 @@
 <footer>
   <div class="wrap">
     <div>
-      <div class="logo" style="color:var(--paper);margin-bottom:14px;">
-        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--sun)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--sun)"/></svg>
-        CANOPY
+      <div class="footer-logo">
+        <svg viewBox="0 0 40 44" fill="none" width="40" height="44" aria-hidden="true">
+          <path d="M20 44V24" stroke="var(--sun)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M20 26C20 26 4 24 5 6C20 6 20 26 20 26Z" fill="var(--leaf)"/>
+          <path d="M20 19C20 19 36 16 35 2C20 3 20 19 20 19Z" fill="var(--sun)"/>
+        </svg>
+        <div class="footer-logo-text">
+          <span class="footer-logo-name">CANOPY</span>
+          <span class="footer-logo-sub">Build &middot; Connect &middot; Ship</span>
+        </div>
       </div>
       <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
     </div>
@@ -218,6 +276,44 @@
     <span>© 2026 Canopy. All rights reserved.</span>
   </div>
 </footer>
+
+<!-- ============ APPLICATION DRAWER ============ -->
+<div class="app-drawer-backdrop" id="drawerBackdrop"></div>
+<div class="app-drawer" id="appDrawer">
+  <div class="drawer-drag-handle"></div>
+  <div class="drawer-head">
+    <div>
+      <h3 id="drawerTitle">Compose Lab Notebook Entry</h3>
+      <p class="sub" id="drawerSub">Field notes, post-mortems, datasets & learnings</p>
+    </div>
+    <button class="modal-close" id="closeDrawer" aria-label="Close drawer">✕</button>
+  </div>
+  <form class="drawer-form" id="appDrawerForm">
+    <div class="field">
+      <label for="dNote">What did you build, learn, or fail at?</label>
+      <textarea id="dNote" placeholder="Document the digging, not just the win. Include code snippets, teardowns, or what surprised you..." required></textarea>
+    </div>
+    <div class="field">
+      <label>Relevant Domain</label>
+      <div class="pill-group" data-group="drawer-domain" data-single="true">
+        <button type="button" class="pill" aria-pressed="true">Climate</button>
+        <button type="button" class="pill" aria-pressed="false">Health</button>
+        <button type="button" class="pill" aria-pressed="false">Education</button>
+        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
+        <button type="button" class="pill" aria-pressed="false">Hardware</button>
+        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="dLink">Link to code, repo, or raw dataset (optional)</label>
+      <input type="text" id="dLink" placeholder="URL or snippet reference">
+    </div>
+    <div class="form-foot">
+      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">grows the library and your presence</span>
+      <button type="submit" class="btn btn-stamp btn-sm">Publish this entry →</button>
+    </div>
+  </form>
+</div>
 
 <!-- ============ APPLY MODAL ============ -->
 <dialog id="applyModal">
