@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found — Canopy</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+    <a class="logo" href="index.html" aria-label="Canopy home">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--forest)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--forest)"/></svg>
+      CANOPY
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="index.html#problem">The Gap</a>
+      <a href="index.html#solution">How it Works</a>
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="index.html#for">Who it's For</a>
+      <a href="index.html#connect">Connect</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn btn-ghost btn-sm" id="openApplyGhost">Post a Build Call</button>
+      <button class="btn btn-stamp btn-sm" id="openApply">Apply to Canopy</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap" style="padding:110px clamp(18px,5vw,56px) 130px; text-align:center;">
+  <svg viewBox="0 0 140 150" width="120" height="128" style="margin:0 auto 28px; display:block;" aria-hidden="true">
+    <!-- an empty pot, tipped over — the sapling that isn't here -->
+    <g transform="rotate(-14 70 110)">
+      <path d="M40 108 L100 108 L92 78 L48 78 Z" fill="var(--forest-deep)"/>
+      <rect x="36" y="70" width="68" height="12" rx="4" fill="var(--forest)"/>
+      <ellipse cx="70" cy="74" rx="26" ry="5" fill="#3a2c1c"/>
+    </g>
+    <path d="M70 78 C70 60 92 52 100 34" stroke="var(--card-edge)" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="2 9"/>
+    <text x="96" y="30" font-family="'Caveat Var',cursive" font-size="22" fill="var(--coral)" transform="rotate(8 96 30)">gone looking</text>
+  </svg>
+  <span class="kicker">error 404</span>
+  <h1 style="font-size:clamp(1.8rem,3.4vw,2.4rem); margin-top:10px; max-width:26ch; margin-left:auto; margin-right:auto;">Nothing's growing at this address.</h1>
+  <p class="lede" style="margin-left:auto; margin-right:auto; margin-top:14px;">The page you're looking for either moved, never sprouted, or the link's just a little overgrown. Let's get you back to solid soil.</p>
+  <div class="hero-ctas" style="justify-content:center; margin-top:32px;">
+    <a class="btn btn-stamp" href="index.html">Back to Canopy</a>
+    <a class="btn btn-ghost" href="index.html#solution">See how it works</a>
+  </div>
+</div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="logo" style="color:var(--paper);margin-bottom:14px;">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="var(--sun)" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="var(--leaf)"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="var(--sun)"/></svg>
+        CANOPY
+      </div>
+      <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a href="index.html#for">About</a>
+      <a href="index.html#for">For Builders</a>
+      <a href="index.html#for">For Problem Holders</a>
+      <a href="index.html#for">For Enablers</a>
+    </div>
+    <div>
+      <h5>The Loop</h5>
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="index.html#problem">The Gap</a>
+    </div>
+    <div>
+      <h5>Say hello</h5>
+      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="index.html#connect">LinkedIn</a>
+      <a href="index.html#connect">Twitter</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>Canopy — Connect. Collaborate. Ship things that matter.</span>
+    <span>© 2026 Canopy. All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- ============ APPLY MODAL ============ -->
+<dialog id="applyModal">
+  <span class="tape modal-tape" aria-hidden="true"></span>
+  <div class="modal-head">
+    <div>
+      <h3>Sandbox intake form</h3>
+      <p>A few honest lines beat a long resume. Takes about ninety seconds.</p>
+    </div>
+    <div class="modal-meta">
+      <span class="form-tag">FORM 01 · CANOPY</span>
+      <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
+    </div>
+  </div>
+  <form class="apply-form" id="applyForm">
+    <div class="field">
+      <label for="fName">Name / handle</label>
+      <input type="text" id="fName" name="name" placeholder="e.g. Elena R." required>
+    </div>
+    <div class="field">
+      <label for="fProject">Project you're circling</label>
+      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or &ldquo;still looking&rdquo;">
+    </div>
+    <div class="field">
+      <label>Domain you care about</label>
+      <div class="pill-group" data-group="domain">
+        <button type="button" class="pill" aria-pressed="false">Climate</button>
+        <button type="button" class="pill" aria-pressed="false">Health</button>
+        <button type="button" class="pill" aria-pressed="false">Education</button>
+        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
+        <button type="button" class="pill" aria-pressed="false">Hardware</button>
+        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+        <button type="button" class="pill" aria-pressed="false">Design</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Skill level</label>
+      <div class="pill-group" data-group="skill" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">Just starting</button>
+        <button type="button" class="pill" aria-pressed="false">Comfortable</button>
+        <button type="button" class="pill" aria-pressed="false">Advanced</button>
+        <button type="button" class="pill" aria-pressed="false">Domain expert</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="fLink">Link to something you've built or written</label>
+      <input type="text" id="fLink" name="link" placeholder="URL, optional">
+    </div>
+    <div class="field">
+      <label>What are you looking for</label>
+      <div class="pill-group" data-group="lookingfor" data-single="true">
+        <button type="button" class="pill" aria-pressed="false">A team</button>
+        <button type="button" class="pill" aria-pressed="false">A co-founder</button>
+        <button type="button" class="pill" aria-pressed="false">A problem to solve</button>
+        <button type="button" class="pill" aria-pressed="false">Mentorship</button>
+      </div>
+    </div>
+    <div class="form-foot">
+      <span class="hint-small">no account created — this is a design mockup</span>
+      <button type="submit" class="btn btn-stamp btn-sm">Plant this application</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast">🌱 Application planted — we'll be in touch soon.</div>
+
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

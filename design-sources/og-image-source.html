@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face{
+    font-family:'Fraunces Var';
+    src:url('/fonts/fraunces.woff2') format('woff2');
+    font-weight:300 900; font-style:normal;
+  }
+  @font-face{
+    font-family:'Caveat Var';
+    src:url('/fonts/caveat.woff2') format('woff2');
+    font-weight:400 700; font-style:normal;
+  }
+  @font-face{
+    font-family:'Jost Var';
+    src:url('/fonts/jost.woff2') format('woff2');
+    font-weight:300 700; font-style:normal;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ width:1200px; height:630px; overflow:hidden; }
+  body{
+    background:
+      radial-gradient(900px 520px at 82% -10%, rgba(255,255,255,.12), transparent 60%),
+      radial-gradient(700px 500px at -5% 115%, rgba(0,0,0,.18), transparent 55%),
+      linear-gradient(160deg, #16412d 0%, #123a28 55%, #0d2c1d 100%);
+    font-family:'Jost Var', sans-serif;
+    position:relative;
+  }
+  .grid{
+    position:absolute; inset:0; opacity:.07;
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0 44px, #fff 44px 45px),
+      repeating-linear-gradient(0deg, transparent 0 44px, #fff 44px 45px);
+  }
+  .wrap{
+    position:relative; height:100%;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:0 88px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:14px; margin-bottom:38px;
+  }
+  .logo svg{ width:44px; height:44px; }
+  .logo span{
+    font-family:'Fraunces Var',serif; font-weight:700; font-size:2.1rem; color:#f4efdc; letter-spacing:-.01em;
+  }
+  h1{
+    font-family:'Fraunces Var',serif; font-weight:600; font-size:4.1rem; line-height:1.05;
+    color:#f9f6ea; letter-spacing:-.02em; max-width:920px;
+  }
+  h1 em{ font-style:italic; color:#93d9ac; }
+  .sub{
+    margin-top:26px; font-size:1.5rem; color:#cfe0d3; max-width:780px; line-height:1.4;
+  }
+  .tag{
+    position:absolute; right:90px; top:70px;
+    font-family:'Caveat Var',cursive; font-weight:650; font-size:1.7rem;
+    color:#e3b23f; transform:rotate(-4deg);
+  }
+  .leaf{
+    position:absolute; opacity:.9;
+  }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <span class="tag">✎ a field application sandbox</span>
+  <div class="wrap">
+    <div class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="#93d9ac" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="#8fe39b"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="#93d9ac"/></svg>
+      <span>CANOPY</span>
+    </div>
+    <h1>If we can find love<br>online, why not <em>teammates?</em></h1>
+    <div class="sub">Match with intent. Sprint with a team. Ship something real.<br>No swipes. No noise. Just people who grab a shovel.</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#16412d"/>
+      <stop offset="55%" stop-color="#123a28"/>
+      <stop offset="100%" stop-color="#0d2c1d"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="82%" cy="-5%" r="55%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <text x="1110" y="98" text-anchor="end" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="30" fill="#e3b23f" transform="rotate(-3 1110 98)">a field application sandbox</text>
+
+  <g transform="translate(88,150)">
+    <path d="M16 30V17" stroke="#93d9ac" stroke-width="2.4" stroke-linecap="round" fill="none" transform="scale(1.7)"/>
+    <path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="#8fe39b" transform="scale(1.7)"/>
+    <path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="#93d9ac" transform="scale(1.7)"/>
+    <text x="64" y="34" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="38" fill="#f4efdc" letter-spacing="1">CANOPY</text>
+  </g>
+
+  <text x="88" y="288" font-family="Georgia, 'Times New Roman', serif" font-weight="600" font-size="66" fill="#f9f6ea">If we can find love</text>
+  <text x="88" y="360" font-family="Georgia, 'Times New Roman', serif" font-weight="600" font-size="66" fill="#f9f6ea">online, why not <tspan font-style="italic" fill="#93d9ac">teammates?</tspan></text>
+
+  <text x="88" y="424" font-family="Verdana, Arial, sans-serif" font-size="25" fill="#cfe0d3">Match with intent. Sprint with a team. Ship something real.</text>
+  <text x="88" y="460" font-family="Verdana, Arial, sans-serif" font-size="25" fill="#cfe0d3">No swipes. No noise. Just people who grab a shovel.</text>
+</svg>

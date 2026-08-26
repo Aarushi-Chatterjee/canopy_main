@@ -14,7 +14,8 @@ export default defineConfig({
         main: resolve(root, 'index.html'),
         match: resolve(root, 'match.html'),
         sprint: resolve(root, 'sprint.html'),
-        notebook: resolve(root, 'notebook.html')
+        notebook: resolve(root, 'notebook.html'),
+        notFound: resolve(root, '404.html')
       }
     }
   }
