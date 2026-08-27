@@ -234,14 +234,15 @@ import { animate, createTimeline, utils } from 'animejs';
     ch.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
   });
 
-  /* ---------- for-tabs ---------- */
+  /* ---------- for-tabs (persona cards) ---------- */
   document.querySelectorAll('.tab-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       document.querySelectorAll('.tab-btn').forEach(function(b){ b.setAttribute('aria-selected','false'); });
       btn.setAttribute('aria-selected','true');
       var target = btn.getAttribute('data-tab');
-      document.querySelectorAll('.tab-panel').forEach(function(p){
-        p.setAttribute('data-active', p.getAttribute('data-panel')===target ? 'true':'false');
+      document.querySelectorAll('.persona-card').forEach(function(card){
+        var isActive = card.getAttribute('data-persona') === target;
+        card.setAttribute('data-active', isActive ? 'true' : 'false');
       });
     });
   });

@@ -55,8 +55,55 @@
   </div>
 </header>
 
-<!-- ============ HERO ============ -->
 <main id="top">
+<!-- Vine network: sparse diagonal at S2 top → escalating density → full canopy at S4 -->
+<div class="page-vines" aria-hidden="true">
+
+  <!-- ── S1 LEFT TRUNK SEED (single climbing vine off the left edge) ── -->
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-left-1" />
+
+  <!-- ── S2 TOP: Single diagonal sweep (matches image top — one thin arc) ── -->
+  <img src="/vine-arch.png" alt="" class="bg-vine vine-sweep-s2-top" />
+
+  <!-- ── S2 MID: Left stem emerges + right stem starts ── -->
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-left-2" />
+  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-right-1" />
+
+  <!-- ── S2 BOTTOM: Both stems grow, first cross-interweave ── -->
+  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-left-3" />
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-right-2" />
+  <img src="/vine-arch-flip.png" alt="" class="bg-vine vine-cross-s2-bottom" />
+
+  <!-- ── S3 TOP: 3 stems — left, centre-left, right (expanding outward) ── -->
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-left-4" />
+  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-right-3" />
+  <img src="/vine-arch.png" alt="" class="bg-vine vine-cross-s3-top" />
+
+  <!-- ── S3 MID: Full 4-column coverage + centre interweaves ── -->
+  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-left-5" />
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-right-4" />
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-s3-inner-l" />
+  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-s3-inner-r" />
+
+  <!-- ── S3 BOTTOM: Dense interweave (5 columns) transitioning to canopy ── -->
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-left-6" />
+  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-right-5" />
+  <img src="/vine-arch-flip.png" alt="" class="bg-vine vine-cross-s3-bottom" />
+  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-s3-centre" />
+
+  <!-- ── S4 FINALE: Full-width dense canopy (matches image bottom — wall of vines) ── -->
+  <img src="/vine-arch.png" alt="" class="bg-vine vine-canopy-top-arch" />
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-canopy-l1" />
+  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-canopy-r1" />
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-canopy-l2" />
+  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-canopy-r2" />
+  <img src="/vine-arch.png" alt="" class="bg-vine vine-canopy-crown-l" />
+  <img src="/vine-arch-flip.png" alt="" class="bg-vine vine-canopy-crown-r" />
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-finale-dense-l" />
+  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-finale-dense-r" />
+  <img src="/vine-climbing.png" alt="" class="bg-vine vine-finale-centre" />
+</div>
+
 <section class="hero">
   <div class="wrap hero-grid">
     <div class="reveal in-view">
@@ -281,21 +328,106 @@
       </div>
     </div>
 
+    <!-- Persona tab strip -->
     <div class="for-tabs" role="tablist" aria-label="Who Canopy is for">
-      <button class="tab-btn" role="tab" aria-selected="true" data-tab="builders">For Builders</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-tab="holders">For Problem Holders</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-tab="enablers">For Enablers</button>
+      <button class="tab-btn" role="tab" aria-selected="true" data-tab="builders">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2L3 7v11h5v-5h4v5h5V7L10 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        For Builders
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="holders">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M10 6v5l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        For Problem Holders
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="enablers">
+        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6L10 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        For Enablers
+      </button>
     </div>
-    <div class="tab-panels">
-      <div class="tab-panel" data-panel="builders" data-active="true">
-        <p>You have skills, and you want to use them on something real. Post a Build Call for your own idea, or browse challenges that need your exact skills. Smart matching suggests collaborators by skill, domain, and intent — so you stop waiting for the right project to find you, and start shipping instead.</p>
+
+    <!-- Rich 3-card persona grid -->
+    <div class="persona-grid">
+
+      <div class="persona-card" data-persona="builders" data-active="true">
+        <div class="persona-accent" style="--accent-color:var(--leaf);"></div>
+        <div class="persona-icon" style="--icon-bg:rgba(95,154,76,.12); --icon-color:var(--leaf);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3-3a1 1 0 0 0-1.4-1.4L19 6.2l-.9-.9a1 1 0 0 0-1.4 0l-2 1Z" fill="currentColor" opacity=".4"/>
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25Zm17.71-10.46a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="persona-label">Builder</div>
+        <h3 class="persona-headline">Ship skills on something real</h3>
+        <p class="persona-body">Post a Build Call for your own idea, or browse challenges that need your exact skills. Smart matching suggests collaborators by skill, domain, and intent.</p>
+        <ul class="persona-actions">
+          <li>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Post a Build Call
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Browse open challenges
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Get matched by skill &amp; intent
+          </li>
+        </ul>
       </div>
-      <div class="tab-panel" data-panel="holders">
-        <p>You have a real problem and need fresh, motivated teams. Post it in the Problem Marketplace with context, data, and a reward — a cash prize, a paid pilot, or open-source credit. Get rapid prototypes without procurement overhead, from a curated pool of builders who've already demonstrated they ship.</p>
+
+      <div class="persona-card" data-persona="holders">
+        <div class="persona-accent" style="--accent-color:var(--teal);"></div>
+        <div class="persona-icon" style="--icon-bg:rgba(126,170,179,.12); --icon-color:var(--teal);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Z" fill="currentColor" opacity=".15"/>
+            <path d="M11 7h2v6h-2V7Zm0 8h2v2h-2v-2Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="persona-label">Problem Holder</div>
+        <h3 class="persona-headline">Turn your challenge into a prototype</h3>
+        <p class="persona-body">Post your problem with context, data, and a reward. Get rapid prototypes without procurement overhead, from builders who've already demonstrated they ship.</p>
+        <ul class="persona-actions">
+          <li>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Post to the Problem Marketplace
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Set a cash prize or paid pilot
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Review curated prototype submissions
+          </li>
+        </ul>
       </div>
-      <div class="tab-panel" data-panel="enablers">
-        <p>You want to invest in people who actually execute. Browse the Library for shipped proof, scout teams before they raise, and sponsor challenges or mentorship for early access to high-performing teams — a working prototype tells you more than a forecast slide ever will.</p>
+
+      <div class="persona-card" data-persona="enablers">
+        <div class="persona-accent" style="--accent-color:var(--sun);"></div>
+        <div class="persona-icon" style="--icon-bg:rgba(227,178,63,.12); --icon-color:var(--sun);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2Z" fill="currentColor" opacity=".25"/>
+            <path d="M12 5.5l1.6 5H19l-4.1 3 1.6 4.9L12 15.4l-4.5 3 1.6-4.9-4.1-3h5.4L12 5.5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="persona-label">Enabler</div>
+        <h3 class="persona-headline">Scout teams before they raise</h3>
+        <p class="persona-body">Browse the Library for shipped proof, sponsor challenges or mentorship, and get early access to high-performing teams. A working prototype tells you more than a forecast slide.</p>
+        <ul class="persona-actions">
+          <li>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Browse the Proof Library
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Sponsor a Build Sprint
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Get deal flow with proof attached
+          </li>
+        </ul>
       </div>
+
     </div>
   </div>
 </section>
