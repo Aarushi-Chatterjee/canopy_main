@@ -138,245 +138,110 @@ body{
    S4      : full-width dense canopy wall (matches image bottom)
    All at z-index:0 · pointer-events:none · mix-blend-mode:multiply
 ────────────────────────────────────────────────────────────────────── */
-.page-vines{
-  position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0;
+/* ──────────────────────────────────────────────────────────────────────────
+   AMBIENT BACKGROUND FLUID PLATE & BOTANICAL IVY SYSTEM
+   ────────────────────────────────────────────────────────────────────────── */
+#ambientPlateCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+  mix-blend-mode: multiply;
 }
 
-.bg-vine{
-  position:absolute; pointer-events:none; user-select:none;
-  opacity:.60;
-  mix-blend-mode:multiply;
-  filter: contrast(1.05) saturate(1.10);
-  transform-origin:center center;
+#ivyGrowthSystem {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
 }
 
-/* ── S1: LEFT TRUNK SEED ── */
-.vine-left-1{
-  left:calc(50% - 760px);
-  top:650px;
-  width:clamp(300px, 30vw, 460px);
-  transform:rotate(-3deg);
+.ivy-unit {
+  position: sticky;
+  top: 40px;
+  width: clamp(280px, 30vw, 460px);
+  height: clamp(520px, 86vh, 940px);
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.88;
+  mix-blend-mode: multiply;
+  filter: contrast(1.04) saturate(1.08);
 }
 
-/* ── S2 TOP: single diagonal sweep across page (image: one thin arc at top) ── */
-.vine-sweep-s2-top{
-  left:calc(50% - 620px);
-  top:1220px;
-  width:clamp(700px, 72vw, 1100px);
-  transform:rotate(-9deg);
-  opacity:.42;
+#ivyLeft {
+  float: left;
+  margin-left: max(0px, calc(50% - 740px));
+  margin-top: 40px;
 }
 
-/* ── S2 MID: left stem starts climbing, right seed appears ── */
-.vine-left-2{
-  left:calc(50% - 760px);
-  top:1450px;
-  width:clamp(300px, 30vw, 460px);
-  transform:rotate(-2deg);
-  opacity:.52;
-}
-.vine-right-1{
-  right:calc(50% - 760px);
-  top:1550px;
-  width:clamp(290px, 29vw, 450px);
-  transform:rotate(3deg);
-  opacity:.48;
+#ivyRight {
+  float: right;
+  margin-right: max(0px, calc(50% - 740px));
+  margin-top: 100px;
+  transform: scaleX(-1);
 }
 
-/* ── S2 BOTTOM: both stems grown, first cross-interweave ── */
-.vine-left-3{
-  left:calc(50% - 770px);
-  top:2050px;
-  width:clamp(310px, 32vw, 480px);
-  transform:rotate(2deg);
-  opacity:.56;
-}
-.vine-right-2{
-  right:calc(50% - 770px);
-  top:2100px;
-  width:clamp(310px, 31vw, 470px);
-  transform:rotate(-2deg);
-  opacity:.54;
-}
-.vine-cross-s2-bottom{
-  left:calc(50% - 480px);
-  top:2350px;
-  width:clamp(500px, 52vw, 780px);
-  transform:rotate(12deg);
-  opacity:.40;
+.ivy-stem-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
 }
 
-/* ── S3 TOP: 3 columns — left, right, arch bridge ── */
-.vine-left-4{
-  left:calc(50% - 780px);
-  top:2700px;
-  width:clamp(320px, 33vw, 500px);
-  transform:rotate(-3deg);
-  opacity:.60;
-}
-.vine-right-3{
-  right:calc(50% - 780px);
-  top:2750px;
-  width:clamp(320px, 32vw, 490px);
-  transform:rotate(3deg);
-  opacity:.58;
-}
-.vine-cross-s3-top{
-  left:calc(50% - 440px);
-  top:3000px;
-  width:clamp(480px, 50vw, 750px);
-  transform:rotate(-11deg);
-  opacity:.44;
+.ivy-leaves-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
-/* ── S3 MID: 4 columns + inner fills ── */
-.vine-left-5{
-  left:calc(50% - 770px);
-  top:3380px;
-  width:clamp(330px, 34vw, 510px);
-  transform:rotate(2deg);
-  opacity:.62;
-}
-.vine-right-4{
-  right:calc(50% - 770px);
-  top:3430px;
-  width:clamp(330px, 34vw, 510px);
-  transform:rotate(-2deg);
-  opacity:.62;
-}
-/* inner-l: ~30% from left, inner-r: ~70% from left */
-.vine-s3-inner-l{
-  left:calc(50% - 280px);
-  top:3300px;
-  width:clamp(260px, 27vw, 400px);
-  transform:rotate(-5deg);
-  opacity:.42;
-}
-.vine-s3-inner-r{
-  right:calc(50% - 280px);
-  top:3360px;
-  width:clamp(260px, 27vw, 400px);
-  transform:rotate(5deg);
-  opacity:.40;
+.ivy-leaf-node {
+  position: absolute;
+  background-image: url('/vine-leaves-isolated.png');
+  background-repeat: no-repeat;
+  background-size: 564px 1024px;
+  will-change: transform, opacity;
+  pointer-events: none;
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.16s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.16s ease-out;
 }
 
-/* ── S3 BOTTOM: 5 columns, dense interweave, centre fill ── */
-.vine-left-6{
-  left:calc(50% - 790px);
-  top:4020px;
-  width:clamp(340px, 35vw, 530px);
-  transform:rotate(-3deg);
-  opacity:.64;
-}
-.vine-right-5{
-  right:calc(50% - 790px);
-  top:4060px;
-  width:clamp(340px, 35vw, 530px);
-  transform:rotate(3deg);
-  opacity:.64;
-}
-.vine-cross-s3-bottom{
-  left:calc(50% - 500px);
-  top:4180px;
-  width:clamp(560px, 58vw, 870px);
-  transform:rotate(8deg);
-  opacity:.44;
-}
-.vine-s3-centre{
-  left:calc(50% - 170px);
-  top:3920px;
-  width:clamp(240px, 24vw, 360px);
-  transform:rotate(-7deg);
-  opacity:.38;
+@media (max-width: 1200px) {
+  #ivyLeft { margin-left: -50px; }
+  #ivyRight { margin-right: -50px; }
 }
 
-/* ── S4 FINALE: Full-width dense canopy (image bottom — wall of vines) ── */
-.vine-canopy-top-arch{
-  left:calc(50% - 560px);
-  top:4560px;
-  width:clamp(700px, 73vw, 1100px);
-  transform:rotate(-6deg);
-  opacity:.56;
-}
-.vine-canopy-l1{
-  left:calc(50% - 790px);
-  top:4620px;
-  width:clamp(340px, 35vw, 530px);
-  transform:rotate(-2deg);
-  opacity:.68;
-}
-.vine-canopy-r1{
-  right:calc(50% - 790px);
-  top:4640px;
-  width:clamp(340px, 35vw, 530px);
-  transform:rotate(2deg);
-  opacity:.68;
-}
-.vine-canopy-l2{
-  left:calc(50% - 500px);
-  top:4720px;
-  width:clamp(300px, 31vw, 470px);
-  transform:rotate(-4deg);
-  opacity:.58;
-}
-.vine-canopy-r2{
-  right:calc(50% - 500px);
-  top:4740px;
-  width:clamp(300px, 31vw, 470px);
-  transform:rotate(4deg);
-  opacity:.58;
-}
-.vine-canopy-crown-l{
-  left:calc(50% - 790px);
-  top:5160px;
-  width:clamp(360px, 37vw, 560px);
-  transform:rotate(-20deg);
-  opacity:.72;
-}
-.vine-canopy-crown-r{
-  right:calc(50% - 790px);
-  top:5180px;
-  width:clamp(360px, 37vw, 560px);
-  transform:rotate(20deg);
-  opacity:.72;
-}
-.vine-finale-dense-l{
-  left:calc(50% - 790px);
-  top:5320px;
-  width:clamp(340px, 35vw, 520px);
-  transform:rotate(3deg);
-  opacity:.78;
-}
-.vine-finale-dense-r{
-  right:calc(50% - 790px);
-  top:5340px;
-  width:clamp(340px, 35vw, 520px);
-  transform:rotate(-3deg);
-  opacity:.78;
-}
-.vine-finale-centre{
-  left:calc(50% - 190px);
-  top:5220px;
-  width:clamp(260px, 26vw, 380px);
-  transform:rotate(-6deg);
-  opacity:.50;
+@media (max-width: 768px) {
+  .ivy-unit {
+    width: 220px;
+    height: 520px;
+    opacity: 0.72;
+  }
+  #ivyLeft { margin-left: -60px; }
+  #ivyRight { margin-right: -60px; }
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 1200px){
-  .vine-left-1,.vine-left-2,.vine-left-3,.vine-left-4,.vine-left-5,.vine-left-6{ left:-80px; }
-  .vine-right-1,.vine-right-2,.vine-right-3,.vine-right-4,.vine-right-5{ right:-80px; }
-  .vine-canopy-l1,.vine-canopy-l2,.vine-canopy-crown-l,.vine-finale-dense-l{ left:-60px; }
-  .vine-canopy-r1,.vine-canopy-r2,.vine-canopy-crown-r,.vine-finale-dense-r{ right:-60px; }
+/* Liquid Glass Enhancements (inspired by liquid-glass-js) */
+.liquid-glass,
+header {
+  background: rgba(244, 239, 220, 0.82) !important;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid rgba(38, 36, 26, 0.08) !important;
 }
 
-@media (max-width: 768px){
-  .bg-vine{ opacity:.38; }
-  .vine-left-1,.vine-left-2,.vine-left-3,.vine-left-4,.vine-left-5,.vine-left-6{ left:-70px; width:230px; }
-  .vine-right-1,.vine-right-2,.vine-right-3,.vine-right-4,.vine-right-5{ right:-70px; width:230px; }
-  .vine-sweep-s2-top,.vine-cross-s2-bottom,.vine-cross-s3-top,.vine-cross-s3-bottom,
-  .vine-s3-inner-l,.vine-s3-inner-r,.vine-s3-centre,.vine-canopy-top-arch,
-  .vine-canopy-crown-l,.vine-canopy-crown-r,.vine-finale-centre{ display:none; }
+.paper-card,
+.problem-card,
+.keychain-card {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* tracking is size-specific, never one fixed value across the whole scale

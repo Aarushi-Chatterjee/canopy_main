@@ -56,53 +56,11 @@
 </header>
 
 <main id="top">
-<!-- Vine network: sparse diagonal at S2 top → escalating density → full canopy at S4 -->
-<div class="page-vines" aria-hidden="true">
+<!-- Ambient Background Fluid Plate (inspired by shadergradient) -->
+<canvas id="ambientPlateCanvas" aria-hidden="true"></canvas>
 
-  <!-- ── S1 LEFT TRUNK SEED (single climbing vine off the left edge) ── -->
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-left-1" />
-
-  <!-- ── S2 TOP: Single diagonal sweep (matches image top — one thin arc) ── -->
-  <img src="/vine-arch.png" alt="" class="bg-vine vine-sweep-s2-top" />
-
-  <!-- ── S2 MID: Left stem emerges + right stem starts ── -->
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-left-2" />
-  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-right-1" />
-
-  <!-- ── S2 BOTTOM: Both stems grow, first cross-interweave ── -->
-  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-left-3" />
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-right-2" />
-  <img src="/vine-arch-flip.png" alt="" class="bg-vine vine-cross-s2-bottom" />
-
-  <!-- ── S3 TOP: 3 stems — left, centre-left, right (expanding outward) ── -->
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-left-4" />
-  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-right-3" />
-  <img src="/vine-arch.png" alt="" class="bg-vine vine-cross-s3-top" />
-
-  <!-- ── S3 MID: Full 4-column coverage + centre interweaves ── -->
-  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-left-5" />
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-right-4" />
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-s3-inner-l" />
-  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-s3-inner-r" />
-
-  <!-- ── S3 BOTTOM: Dense interweave (5 columns) transitioning to canopy ── -->
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-left-6" />
-  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-right-5" />
-  <img src="/vine-arch-flip.png" alt="" class="bg-vine vine-cross-s3-bottom" />
-  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-s3-centre" />
-
-  <!-- ── S4 FINALE: Full-width dense canopy (matches image bottom — wall of vines) ── -->
-  <img src="/vine-arch.png" alt="" class="bg-vine vine-canopy-top-arch" />
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-canopy-l1" />
-  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-canopy-r1" />
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-canopy-l2" />
-  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-canopy-r2" />
-  <img src="/vine-arch.png" alt="" class="bg-vine vine-canopy-crown-l" />
-  <img src="/vine-arch-flip.png" alt="" class="bg-vine vine-canopy-crown-r" />
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-finale-dense-l" />
-  <img src="/vine-climbing-flip.png" alt="" class="bg-vine vine-finale-dense-r" />
-  <img src="/vine-climbing.png" alt="" class="bg-vine vine-finale-centre" />
-</div>
+<!-- Botanical Ivy Growth System: Left & Right Margins Scroll Framing -->
+<div id="ivyGrowthSystem" aria-hidden="true"></div>
 
 <section class="hero">
   <div class="wrap hero-grid">

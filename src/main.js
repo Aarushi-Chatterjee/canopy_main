@@ -1,7 +1,13 @@
 import { animate, createTimeline, utils } from 'animejs';
+import { initAmbientPlate } from './ambient-plate.js';
+import { initIvyGrowth } from './ivy-growth.js';
 
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Initialize Ambient Shader Plate and Botanical Ivy Growth Engine
+  initAmbientPlate();
+  initIvyGrowth();
 
   /* ---------- mobile menu (simple show/hide of nav as list) ---------- */
   var menuToggle = document.getElementById('menuToggle');
