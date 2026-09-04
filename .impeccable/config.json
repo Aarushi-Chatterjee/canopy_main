@@ -17,6 +17,17 @@
         ],
         "createdAt": "2026-08-16T16:04:57.137Z",
         "reason": "single hand-designed hero pull-quote callout (.hero-hook), thin 3px border-left, not a repeated card pattern — matches the paper/newspaper-cutout brand direction established earlier in this session"
+      },
+      {
+        "rule": "botanical-ivy-system",
+        "value": "ivy-placement-design",
+        "files": [
+          "src/ivy-growth.js",
+          "index.html",
+          "src/style.css"
+        ],
+        "createdAt": "2026-09-03T14:52:00.000Z",
+        "reason": "Hero section is kept clean with zero ivy. Ivy growth begins strictly at #problem ('Finding who to build it with...'). Leaves are polished with velvety muted sage tones matching the storybook canopy tree theme and grow simultaneously little by little in each section. Stem updates use pre-bucketed pixel buffers with zero CSS transform transition lag, ensuring direct, synchronous 60fps scroll responsiveness."
       }
     ]
   }

@@ -152,39 +152,46 @@ body{
   mix-blend-mode: multiply;
 }
 
+/* ── Ivy Growth System wrapper (starts at #problem inside #contentTrack) ── */
 #ivyGrowthSystem {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  overflow: hidden;
+  overflow: visible;
 }
 
-.ivy-unit {
-  position: sticky;
-  top: 40px;
-  width: clamp(280px, 30vw, 460px);
-  height: clamp(520px, 86vh, 940px);
+/* ── Botanical Ivy Continuous Zone Unit ── */
+.ivy-zone-unit {
+  position: absolute;
   pointer-events: none;
   user-select: none;
-  opacity: 0.88;
   mix-blend-mode: multiply;
   filter: contrast(1.04) saturate(1.08);
+  transform-origin: top center;
 }
 
-#ivyLeft {
-  float: left;
-  margin-left: max(0px, calc(50% - 740px));
-  margin-top: 40px;
+.ivy-zone-1 {
+  /* Zone 1: Top Arc sweeping across top of #problem */
+  transform: rotate(-3deg);
 }
 
-#ivyRight {
-  float: right;
-  margin-right: max(0px, calc(50% - 740px));
-  margin-top: 100px;
-  transform: scaleX(-1);
+.ivy-zone-2 {
+  /* Zone 2: Branching S-loop framing #solution */
+  transform: rotate(1deg);
 }
 
+.ivy-zone-3 {
+  /* Zone 3: Parallel Cascades framing #for */
+  transform: rotate(-1deg);
+}
+
+.ivy-zone-4 {
+  /* Zone 4: Dense Canopy Wall framing #connect */
+  transform: rotate(0deg);
+}
+
+/* Stem canvas */
 .ivy-stem-canvas {
   position: absolute;
   inset: 0;
@@ -194,6 +201,7 @@ body{
   pointer-events: none;
 }
 
+/* Leaves overlay (coordinate space matches native image slice) */
 .ivy-leaves-container {
   position: absolute;
   top: 0;
@@ -201,6 +209,7 @@ body{
   pointer-events: none;
 }
 
+/* Individual leaf node */
 .ivy-leaf-node {
   position: absolute;
   background-image: url('/vine-leaves-isolated.png');
@@ -210,38 +219,36 @@ body{
   pointer-events: none;
   transform: scale(0);
   opacity: 0;
-  transition: transform 0.16s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.16s ease-out;
 }
 
 @media (max-width: 1200px) {
-  #ivyLeft { margin-left: -50px; }
-  #ivyRight { margin-right: -50px; }
+  .ivy-zone-unit {
+    opacity: 0.78 !important;
+  }
 }
 
 @media (max-width: 768px) {
-  .ivy-unit {
-    width: 220px;
-    height: 520px;
-    opacity: 0.72;
+  .ivy-zone-unit {
+    width: 90vw !important;
+    left: 5vw !important;
+    opacity: 0.65 !important;
   }
-  #ivyLeft { margin-left: -60px; }
-  #ivyRight { margin-right: -60px; }
 }
 
-/* Liquid Glass Enhancements (inspired by liquid-glass-js) */
-.liquid-glass,
-header {
-  background: rgba(244, 239, 220, 0.82) !important;
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border-bottom: 1px solid rgba(38, 36, 26, 0.08) !important;
+/* Liquid Glass (kept for workspace & modal cards, header is untouched) */
+.liquid-glass {
+  background: rgba(252, 248, 234, 0.72) !important;
+  backdrop-filter: blur(14px) saturate(135%);
+  -webkit-backdrop-filter: blur(14px) saturate(135%);
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 8px 30px -4px rgba(38, 32, 16, 0.12) !important;
 }
 
 .paper-card,
 .problem-card,
 .keychain-card {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 /* tracking is size-specific, never one fixed value across the whole scale
