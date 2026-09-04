@@ -3,12 +3,198 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terms and Conditions - Canopy</title>
-<meta name="description" content="Terms and conditions for participation in Canopy sprints, problem matching, and sandbox collaborations.">
+<title>Terms &amp; Community Compact - Canopy</title>
+<meta name="description" content="Operating agreements and community compact governing Canopy sprints, IP ownership, and problem-matching collaborations.">
 <link rel="canonical" href="https://canopy.earth/terms.html">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
+<style>
+  .charter-page {
+    padding-top: 40px;
+    padding-bottom: 90px;
+  }
+  .charter-banner {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+  .charter-tag {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--forest);
+    background: var(--forest-wash);
+    border: 1px solid var(--border-moss);
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .charter-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    margin-top: 14px;
+  }
+  .charter-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .charter-meta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--moss);
+  }
+  .charter-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .charter-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .charter-sidebar {
+      position: static !important;
+    }
+  }
+  .charter-sidebar {
+    position: sticky;
+    top: 96px;
+    background: var(--paper-subtle, var(--sand-soft));
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px;
+  }
+  .charter-toc-title {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+  .charter-toc {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .charter-toc a {
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+    display: block;
+    line-height: 1.35;
+  }
+  .charter-toc a:hover {
+    background: var(--forest-wash);
+    color: var(--forest);
+  }
+  .charter-custody-card {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border);
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    line-height: 1.5;
+  }
+  .charter-custody-card strong {
+    color: var(--ink);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .charter-content {
+    background: var(--paper, #fff);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: clamp(24px, 5vw, 44px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  }
+  .charter-section {
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border-soft, #ebe7df);
+  }
+  .charter-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .charter-section h2 {
+    font-family: var(--font-serif, "Fraunces", Georgia, serif);
+    font-size: 1.45rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-top: 0;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .charter-section-num {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.84rem;
+    color: var(--forest);
+    font-weight: 600;
+  }
+  .charter-section p {
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+    line-height: 1.7;
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+  .charter-callout {
+    background: var(--forest-wash);
+    border-left: 3px solid var(--forest);
+    padding: 16px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 18px 0;
+    font-size: 0.9rem;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .charter-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 0.86rem;
+  }
+  .charter-table th {
+    text-align: left;
+    padding: 10px 12px;
+    background: var(--sand-soft);
+    border-bottom: 2px solid var(--border);
+    font-family: var(--font-mono, monospace);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .charter-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-soft, #ebe7df);
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+</style>
 </head>
 <body class="interior-page">
 
@@ -23,14 +209,14 @@
       <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
+      <a href="/#problem">About</a>
       <a href="match.html">Match</a>
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
-      <a href="/#problem">About</a>
     </nav>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
-      <a class="btn btn-stamp btn-sm" href="apply.html">Apply to Canopy</a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:4px;">Log In</a>
+      <a class="btn btn-stamp btn-sm" href="login.html?tab=signup">Sign Up</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -46,7 +232,8 @@
     <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
   </div>
   <div class="nav-drawer-section">
-    <span class="nav-drawer-section-label">Workspace Tools</span>
+    <span class="nav-drawer-section-label">Main</span>
+    <a href="/#problem" class="nav-drawer-link">About Canopy</a>
     <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
     <a href="sprint.html" class="nav-drawer-link">Active Sprints</a>
     <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
@@ -55,24 +242,25 @@
   <div class="nav-drawer-section">
     <span class="nav-drawer-section-label">Community Roles</span>
     <a href="builders.html" class="nav-drawer-link">
-      <img src="/avatars/builders.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-builders.png" alt="" class="drawer-avatar">
       For Builders
     </a>
     <a href="problem-holders.html" class="nav-drawer-link">
-      <img src="/avatars/problem%20holders.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-problem-holders.png" alt="" class="drawer-avatar">
       For Problem Holders
     </a>
     <a href="enablers.html" class="nav-drawer-link">
-      <img src="/avatars/enablers.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-enablers.png" alt="" class="drawer-avatar">
       For Enablers
     </a>
   </div>
   <div class="nav-drawer-divider"></div>
   <div class="nav-drawer-section">
-    <span class="nav-drawer-section-label">Intake &amp; Membership</span>
+    <span class="nav-drawer-section-label">Intake &amp; Access</span>
     <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
     <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
     <a href="login.html" class="nav-drawer-link">Sign In / Verify</a>
+    <a href="login.html?tab=signup" class="nav-drawer-link" style="color:var(--forest);font-weight:600;">Create Account</a>
   </div>
   <div class="nav-drawer-divider"></div>
   <div class="nav-drawer-section" style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;">
@@ -84,28 +272,147 @@
   </div>
 </aside>
 
-<main id="top">
-<div class="stage" style="max-width:820px;">
-  <div class="stage-head reveal">
-    <span class="kicker" style="font-size:1.15rem;">Community Compact</span>
-    <h1 style="font-size:clamp(2rem,3.8vw,2.8rem);margin-top:4px;">Terms and Conditions</h1>
-    <p class="lede">Last updated: September 2026. The operating agreements governing sprints, submissions, and code ownership.</p>
+<main id="top" class="charter-page">
+  <div class="wrap" style="max-width:1120px;">
+    
+    <!-- Banner -->
+    <div class="charter-banner">
+      <span class="charter-tag">AGREEMENT · CNP-TRM-2026</span>
+      <h1 style="font-size:clamp(2.1rem,4.2vw,3rem);margin-top:6px;margin-bottom:10px;">Community Compact &amp; Terms</h1>
+      <p class="lede" style="margin-bottom:0;max-width:780px;">
+        The operational covenants governing sprint participation, intellectual property ownership, problem holder commitments, and community conduct.
+      </p>
+      <div class="charter-meta-row">
+        <div class="charter-meta-item"><span class="charter-meta-dot"></span>Effective: September 2026</div>
+        <div class="charter-meta-item">·</div>
+        <div class="charter-meta-item">Revision: 3.1</div>
+        <div class="charter-meta-item">·</div>
+        <div class="charter-meta-item">Framework: Open Source Commons</div>
+        <div class="charter-meta-item">·</div>
+        <div class="charter-meta-item">Questions: hello@canopy.earth</div>
+      </div>
+    </div>
+
+    <!-- Two-Column Grid -->
+    <div class="charter-grid">
+      
+      <!-- Sticky Sidebar -->
+      <aside class="charter-sidebar" aria-label="Table of Contents">
+        <div class="charter-toc-title">Compact Sections</div>
+        <ul class="charter-toc">
+          <li><a href="#builder-compact">1. The Builder Compact</a></li>
+          <li><a href="#eligibility">2. Authentic Participation</a></li>
+          <li><a href="#ip-ownership">3. Intellectual Property</a></li>
+          <li><a href="#problem-holders">4. Problem Holder Pledges</a></li>
+          <li><a href="#enablers">5. Enabler Non-Dilution</a></li>
+          <li><a href="#conduct">6. Conduct &amp; Safety</a></li>
+          <li><a href="#experimental-risk">7. Field Reality &amp; Risk</a></li>
+        </ul>
+        <div class="charter-custody-card">
+          <strong>Community Stewardship</strong>
+          Canopy arbitrates sprint disputes through consensus and transparent review.
+          <div style="margin-top:10px;">
+            <a href="mailto:hello@canopy.earth" style="color:var(--forest);font-weight:600;text-decoration:none;">hello@canopy.earth</a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <article class="charter-content">
+        
+        <section id="builder-compact" class="charter-section">
+          <h2><span class="charter-section-num">01</span> The Builder Compact: Building with Integrity</h2>
+          <p>
+            Canopy is an operating collective for builders who value shipping over posture. By entering the Match directory or claiming an active sprint seat, you agree to:
+          </p>
+          <ul style="color:var(--ink-soft);line-height:1.7;padding-left:20px;">
+            <li>Engage with committed weekly availability as stated on your builder profile.</li>
+            <li>Maintain honest, unvarnished communication during 7-day sprint milestones.</li>
+            <li>Give open attribution to co-builders, upstream libraries, and field mentors.</li>
+          </ul>
+        </section>
+
+        <section id="eligibility" class="charter-section">
+          <h2><span class="charter-section-num">02</span> Authentic Participation &amp; Proof of Work</h2>
+          <p>
+            To protect our sprint teams from automated spam and dishonest profiles, all participants must provide verifiable proof of work (such as an authentic GitHub profile, research publication record, or active portfolio).
+          </p>
+          <div class="charter-callout">
+            <strong>Zero Tolerance for Sybil Accounts:</strong> Accounts created using deceptive identities, stolen credentials, or automated scrapers will be immediately revoked alongside any associated sandbox tokens.
+          </div>
+        </section>
+
+        <section id="ip-ownership" class="charter-section">
+          <h2><span class="charter-section-num">03</span> Intellectual Property &amp; Code Ownership</h2>
+          <p>
+            The software, firmware schematics, CAD models, and written methodologies created during Canopy sprints belong to the individuals and teams who create them.
+          </p>
+          <p>
+            <strong>Default Permissive Licensing:</strong> Unless an explicit commercial agreement is co-signed between a team and a Problem Holder sponsor prior to sprint day one, all codebases submitted to the sprint directory are licensed under standard permissive licenses (MIT or Apache 2.0).
+          </p>
+          <p>
+            Canopy itself claims zero equity, zero patent rights, and zero royalties from the solutions built by our community.
+          </p>
+        </section>
+
+        <section id="problem-holders" class="charter-section">
+          <h2><span class="charter-section-num">04</span> Problem Holder Obligations &amp; Pledges</h2>
+          <p>
+            Civic organizations, researchers, and enterprise teams who publish Build Calls on Canopy commit to the following standards:
+          </p>
+          <table class="charter-table">
+            <thead>
+              <tr>
+                <th>Commitment</th>
+                <th>Standard</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Lawful Data</strong></td>
+                <td>Any domain datasets provided to sprint teams must be lawfully gathered and scrubbed of sensitive PII.</td>
+              </tr>
+              <tr>
+                <td><strong>Timely Feedback</strong></td>
+                <td>Sponsors agree to designate a technical contact to answer team questions within 48 hours during sprint cycles.</td>
+              </tr>
+              <tr>
+                <td><strong>Pilot Grants</strong></td>
+                <td>If a Build Call advertises pilot stipends or compute credits, they must be disbursed according to the agreed milestone criteria.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="enablers" class="charter-section">
+          <h2><span class="charter-section-num">05</span> Enabler Resources &amp; Non-Dilutive Capital</h2>
+          <p>
+            Enablers who contribute grants, hardware access, or cloud credits do so on a non-dilutive basis unless a formal outside term sheet is separately executed by the sprint team. Canopy does not broker equity exchanges or charge transaction cuts on micro-grants.
+          </p>
+        </section>
+
+        <section id="conduct" class="charter-section">
+          <h2><span class="charter-section-num">06</span> Code of Conduct &amp; Psychological Safety</h2>
+          <p>
+            We enforce a welcoming environment for builders of all backgrounds, geographic regions, and skill disciplines. Harassment, condescension, plagiarism, or discriminatory behavior will result in immediate removal from sprint channels and revocation of platform membership.
+          </p>
+        </section>
+
+        <section id="experimental-risk" class="charter-section">
+          <h2><span class="charter-section-num">07</span> Field Reality &amp; Experimental Risk</h2>
+          <p>
+            Canopy sprints produce rapid prototypes, pilot software, and experimental hardware rigs designed to solve difficult real-world challenges.
+          </p>
+          <p>
+            All solutions are provided on an "as-is" basis. Teams deploying prototypes into live physical environments (such as water sensors, solar inverters, or medical tooling) assume responsibility for thorough safety verification, field calibrations, and compliance with local municipal codes.
+          </p>
+        </section>
+
+      </article>
+
+    </div>
+
   </div>
-
-  <div class="elevated-card paper-card" style="padding:36px clamp(20px,5vw,40px);border-radius:14px;margin-top:24px;line-height:1.7;font-size:0.95rem;color:var(--ink-soft);">
-    <h3 style="font-size:1.3rem;color:var(--ink);margin-top:0;">1. The Builder Compact</h3>
-    <p>By joining Canopy sprints, you commit to honest, constructive collaboration. Teams agree to execute within designated sprint cycles with transparent communication, real status checkpoints, and open attribution of technical contributions.</p>
-
-    <h3 style="font-size:1.3rem;color:var(--ink);margin-top:28px;">2. Intellectual Property and Code Ownership</h3>
-    <p>Unless explicitly negotiated otherwise with a Problem Holder sponsor prior to sprint kickoff, all code, documentation, and hardware schematics generated by builders remain the intellectual property of the respective creators under standard permissive open source licenses (such as MIT or Apache 2.0).</p>
-
-    <h3 style="font-size:1.3rem;color:var(--ink);margin-top:28px;">3. Problem Holder Obligations</h3>
-    <p>Organizations and labs posting Build Calls warrant that any underlying datasets provided to collaborators are lawfully collected and comply with local data protection regulations. Promised pilot grants and resource stipends must be honored upon delivery of agreed milestones.</p>
-
-    <h3 style="font-size:1.3rem;color:var(--ink);margin-top:28px;">4. Code of Conduct and Safety</h3>
-    <p>Harassment, discriminatory conduct, intellectual theft, or dishonest project misrepresentation will result in immediate suspension of account privileges and removal from active sprint directories.</p>
-  </div>
-</div>
 </main>
 
 <!-- ============ FOOTER ============ -->
@@ -124,7 +431,7 @@
         </div>
       </div>
       <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
-        <img src="/avatars/rooted in purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
+        <img src="/avatars/avatar-rooted-purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
         <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
       </div>
     </div>

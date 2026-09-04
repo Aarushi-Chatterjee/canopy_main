@@ -3,12 +3,198 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy - Canopy</title>
-<meta name="description" content="Privacy Policy for Canopy. Transparent data collection, telemetry controls, and user rights.">
+<title>Privacy Covenant - Canopy</title>
+<meta name="description" content="Canopy Privacy Covenant. Zero data brokerage, no behavioral ad tracking, and absolute ownership of sprint artifacts.">
 <link rel="canonical" href="https://canopy.earth/privacy.html">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
+<style>
+  .charter-page {
+    padding-top: 40px;
+    padding-bottom: 90px;
+  }
+  .charter-banner {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+  .charter-tag {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--forest);
+    background: var(--forest-wash);
+    border: 1px solid var(--border-moss);
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .charter-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    margin-top: 14px;
+  }
+  .charter-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .charter-meta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--moss);
+  }
+  .charter-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .charter-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .charter-sidebar {
+      position: static !important;
+    }
+  }
+  .charter-sidebar {
+    position: sticky;
+    top: 96px;
+    background: var(--paper-subtle, var(--sand-soft));
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px;
+  }
+  .charter-toc-title {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+  .charter-toc {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .charter-toc a {
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+    display: block;
+    line-height: 1.35;
+  }
+  .charter-toc a:hover {
+    background: var(--forest-wash);
+    color: var(--forest);
+  }
+  .charter-custody-card {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border);
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    line-height: 1.5;
+  }
+  .charter-custody-card strong {
+    color: var(--ink);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .charter-content {
+    background: var(--paper, #fff);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: clamp(24px, 5vw, 44px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  }
+  .charter-section {
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border-soft, #ebe7df);
+  }
+  .charter-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .charter-section h2 {
+    font-family: var(--font-serif, "Fraunces", Georgia, serif);
+    font-size: 1.45rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-top: 0;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .charter-section-num {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.84rem;
+    color: var(--forest);
+    font-weight: 600;
+  }
+  .charter-section p {
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+    line-height: 1.7;
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+  .charter-callout {
+    background: var(--forest-wash);
+    border-left: 3px solid var(--forest);
+    padding: 16px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 18px 0;
+    font-size: 0.9rem;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .charter-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 0.86rem;
+  }
+  .charter-table th {
+    text-align: left;
+    padding: 10px 12px;
+    background: var(--sand-soft);
+    border-bottom: 2px solid var(--border);
+    font-family: var(--font-mono, monospace);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .charter-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-soft, #ebe7df);
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+</style>
 </head>
 <body class="interior-page">
 
@@ -23,14 +209,14 @@
       <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
+      <a href="/#problem">About</a>
       <a href="match.html">Match</a>
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
-      <a href="/#problem">About</a>
     </nav>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
-      <a class="btn btn-stamp btn-sm" href="apply.html">Apply to Canopy</a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:4px;">Log In</a>
+      <a class="btn btn-stamp btn-sm" href="login.html?tab=signup">Sign Up</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -46,7 +232,8 @@
     <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
   </div>
   <div class="nav-drawer-section">
-    <span class="nav-drawer-section-label">Workspace Tools</span>
+    <span class="nav-drawer-section-label">Main</span>
+    <a href="/#problem" class="nav-drawer-link">About Canopy</a>
     <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
     <a href="sprint.html" class="nav-drawer-link">Active Sprints</a>
     <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
@@ -55,24 +242,25 @@
   <div class="nav-drawer-section">
     <span class="nav-drawer-section-label">Community Roles</span>
     <a href="builders.html" class="nav-drawer-link">
-      <img src="/avatars/builders.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-builders.png" alt="" class="drawer-avatar">
       For Builders
     </a>
     <a href="problem-holders.html" class="nav-drawer-link">
-      <img src="/avatars/problem%20holders.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-problem-holders.png" alt="" class="drawer-avatar">
       For Problem Holders
     </a>
     <a href="enablers.html" class="nav-drawer-link">
-      <img src="/avatars/enablers.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-enablers.png" alt="" class="drawer-avatar">
       For Enablers
     </a>
   </div>
   <div class="nav-drawer-divider"></div>
   <div class="nav-drawer-section">
-    <span class="nav-drawer-section-label">Intake &amp; Membership</span>
+    <span class="nav-drawer-section-label">Intake &amp; Access</span>
     <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
     <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
     <a href="login.html" class="nav-drawer-link">Sign In / Verify</a>
+    <a href="login.html?tab=signup" class="nav-drawer-link" style="color:var(--forest);font-weight:600;">Create Account</a>
   </div>
   <div class="nav-drawer-divider"></div>
   <div class="nav-drawer-section" style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;">
@@ -84,33 +272,168 @@
   </div>
 </aside>
 
-<main id="top">
-<div class="stage" style="max-width:820px;">
-  <div class="stage-head reveal">
-    <span class="kicker" style="font-size:1.15rem;">Legal &amp; Transparency</span>
-    <h1 style="font-size:clamp(2rem,3.8vw,2.8rem);margin-top:4px;">Privacy Policy</h1>
-    <p class="lede">Last updated: September 2026. How Canopy collects, uses, and protects your information.</p>
+<main id="top" class="charter-page">
+  <div class="wrap" style="max-width:1120px;">
+    
+    <!-- Banner -->
+    <div class="charter-banner">
+      <span class="charter-tag">DOCUMENT · CNP-PRIV-2026</span>
+      <h1 style="font-size:clamp(2.1rem,4.2vw,3rem);margin-top:6px;margin-bottom:10px;">Canopy Privacy Covenant</h1>
+      <p class="lede" style="margin-bottom:0;max-width:780px;">
+        Zero data brokerage, no behavioral ad tracking, and absolute ownership of sprint artifacts. How we handle builder identities, match telemetry, and private contact records.
+      </p>
+      <div class="charter-meta-row">
+        <div class="charter-meta-item"><span class="charter-meta-dot"></span>Effective: September 2026</div>
+        <div class="charter-meta-item">·</div>
+        <div class="charter-meta-item">Revision: 2.4 (Audited)</div>
+        <div class="charter-meta-item">·</div>
+        <div class="charter-meta-item">Steward: Aarushi Chatterjee</div>
+        <div class="charter-meta-item">·</div>
+        <div class="charter-meta-item">Contact: privacy@canopy.earth</div>
+      </div>
+    </div>
+
+    <!-- Two-Column Grid -->
+    <div class="charter-grid">
+      
+      <!-- Sticky Sidebar -->
+      <aside class="charter-sidebar" aria-label="Table of Contents">
+        <div class="charter-toc-title">Covenant Index</div>
+        <ul class="charter-toc">
+          <li><a href="#core-tenet">1. The Core Tenet</a></li>
+          <li><a href="#data-collected">2. What We Collect</a></li>
+          <li><a href="#telemetry">3. Telemetry &amp; Cookies</a></li>
+          <li><a href="#code-ownership">4. Code &amp; Artifact IP</a></li>
+          <li><a href="#peer-handshake">5. Peer Contact Disclosure</a></li>
+          <li><a href="#data-rights">6. Deletion &amp; Export</a></li>
+          <li><a href="#security">7. Infrastructure Security</a></li>
+        </ul>
+        <div class="charter-custody-card">
+          <strong>Direct Verification</strong>
+          Requests for data retrieval or token resets are processed by human maintainers within 48 hours.
+          <div style="margin-top:10px;">
+            <a href="mailto:privacy@canopy.earth" style="color:var(--forest);font-weight:600;text-decoration:none;">privacy@canopy.earth</a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <article class="charter-content">
+        
+        <section id="core-tenet" class="charter-section">
+          <h2><span class="charter-section-num">01</span> The Core Tenet: Zero Data Brokerage</h2>
+          <p>
+            Canopy operates as an open-coordination platform for serious builders, mission-driven problem holders, and catalytic enablers. We are not an advertising network, a lead-generation farm, or an audience data broker.
+          </p>
+          <div class="charter-callout">
+            <strong>The Ground Rule:</strong> We never sell, rent, monetize, or barter your email address, profile data, match history, or sprint code to third parties. We do not integrate surveillance pixels, behavioral trackers, or retargeting scripts.
+          </div>
+          <p>
+            Every byte of data we request exists solely to verify authentic participants, establish cross-disciplinary project teams, and document transparent sprint deliverables.
+          </p>
+        </section>
+
+        <section id="data-collected" class="charter-section">
+          <h2><span class="charter-section-num">02</span> Information We Collect &amp; Why</h2>
+          <p>
+            We collect the minimum information required to facilitate collaborative building and prevent spam:
+          </p>
+          <table class="charter-table">
+            <thead>
+              <tr>
+                <th>Data Point</th>
+                <th>Source</th>
+                <th>Operational Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Identity &amp; Email</strong></td>
+                <td>Registration or magic link sign-in</td>
+                <td>Authentication, critical sprint updates, match handshakes.</td>
+              </tr>
+              <tr>
+                <td><strong>Builder Credentials</strong></td>
+                <td>Match Sandbox &amp; Application</td>
+                <td>Domain skills, GitHub handle, proof-of-work links, time availability.</td>
+              </tr>
+              <tr>
+                <td><strong>Build Call Briefs</strong></td>
+                <td>Post a Call submission</td>
+                <td>Field problem statements, pilot scope, funding support availability.</td>
+              </tr>
+              <tr>
+                <td><strong>Lab Notebook Notes</strong></td>
+                <td>Open contributions</td>
+                <td>Public field logs, technical post-mortems, open-source code references.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="telemetry" class="charter-section">
+          <h2><span class="charter-section-num">03</span> Telemetry, Cookies, and Analytics</h2>
+          <p>
+            We respect your browser environment:
+          </p>
+          <p>
+            <strong>No Third-Party Ad Cookies:</strong> We do not set commercial advertising cookies. The only client-side storage keys we utilize are essential functional keys (such as <code>canopy_theme</code> for your light/dark display preference and <code>canopy_pass</code> for active session tokens).
+          </p>
+          <p>
+            <strong>Privacy-Preserving Aggregate Metrics:</strong> If aggregated site analytics are collected, we use lightweight, cookieless, self-hosted telemetry that complies with GDPR and ePrivacy directives. We do not fingerprint devices or log IP addresses in permanent stores.
+          </p>
+        </section>
+
+        <section id="code-ownership" class="charter-section">
+          <h2><span class="charter-section-num">04</span> Code, Schematics, and Artifact Ownership</h2>
+          <p>
+            Code written during Canopy sprints belongs to the people who create it.
+          </p>
+          <div class="charter-callout">
+            <strong>Default Stance:</strong> Canopy claims no proprietary ownership or commercial license over repositories, CAD schematics, ML checkpoints, or research documentation created by builders or problem holders.
+          </div>
+          <p>
+            Unless explicitly agreed in a dedicated sponsor grant prior to sprint kickoff, all sprint deliverables are published under permissive open-source licenses (MIT, Apache 2.0, or CERN Open Hardware) to maximize public good.
+          </p>
+        </section>
+
+        <section id="peer-handshake" class="charter-section">
+          <h2><span class="charter-section-num">05</span> Peer Contact Disclosure: The Two-Way Handshake</h2>
+          <p>
+            In the Match Sandbox and directory, builder profiles and problem briefs are listed with verified attributes and public summaries.
+          </p>
+          <p>
+            To prevent unsolicited solicitation, personal email addresses and direct messaging handles are never broadcast publicly. Contact channels are only revealed once both parties (for instance, Elena R. and the Rural Water Alliance) accept a mutual match handshake.
+          </p>
+        </section>
+
+        <section id="data-rights" class="charter-section">
+          <h2><span class="charter-section-num">06</span> Your Rights: Full Export and Cryptographic Purge</h2>
+          <p>
+            You retain absolute autonomy over your account records:
+          </p>
+          <ul style="color:var(--ink-soft);line-height:1.7;padding-left:20px;">
+            <li><strong>Complete Data Export:</strong> You can request a clean JSON bundle of your profile, applications, and sprint history at any time.</li>
+            <li><strong>Right to Deletion:</strong> Upon email request to <code>privacy@canopy.earth</code>, we will delete your credentials and profile records from our primary databases within 48 hours.</li>
+            <li><strong>Public Notebook Contributions:</strong> Publicly submitted open-source notes in the Lab Notebook may remain in public archives with your name unlinked or replaced by an anonymous contributor tag.</li>
+          </ul>
+        </section>
+
+        <section id="security" class="charter-section">
+          <h2><span class="charter-section-num">07</span> Infrastructure Security &amp; Encryption</h2>
+          <p>
+            All network communication with Canopy is secured via TLS 1.3 with strict transport security (HSTS). Production databases utilize AES-256 encryption at rest. Internal access to account tables is strictly restricted to designated core stewards using hardware MFA.
+          </p>
+          <p>
+            If you identify a security or privacy vulnerability in any Canopy service, please disclose it responsibly to <a href="mailto:privacy@canopy.earth" style="color:var(--forest);font-weight:600;">privacy@canopy.earth</a>. We respond to all technical disclosures within 24 hours.
+          </p>
+        </section>
+
+      </article>
+
+    </div>
+
   </div>
-
-  <div class="elevated-card paper-card" style="padding:36px clamp(20px,5vw,40px);border-radius:14px;margin-top:24px;line-height:1.7;font-size:0.95rem;color:var(--ink-soft);">
-    <h3 style="font-size:1.3rem;color:var(--ink);margin-top:0;">1. Purpose-Driven Data Collection</h3>
-    <p>We collect information solely to foster intentional builder collaboration, team matching, and sprint coordination. We never monetize personal information, sell user contact details, or serve third-party advertising trackers.</p>
-
-    <h3 style="font-size:1.3rem;color:var(--ink);margin-top:28px;">2. Information We Receive</h3>
-    <ul style="padding-left:20px;margin-top:10px;">
-      <li><strong>Account Details:</strong> Email addresses and verification tokens submitted during registration.</li>
-      <li><strong>Builder Profiles:</strong> Domains, technical skill tags, portfolio links, and collaboration notes voluntarily published in our matching directory.</li>
-      <li><strong>Build Calls:</strong> Problem statements, pilot budgets, and organizational points of contact.</li>
-      <li><strong>Lab Notebook Entries:</strong> Public technical logs, field notes, and code snippets contributed to the community library.</li>
-    </ul>
-
-    <h3 style="font-size:1.3rem;color:var(--ink);margin-top:28px;">3. Storage and Protection</h3>
-    <p>User credentials and sandbox submissions are stored using industry-standard encryption protocols. Database layers enforce strict row-level security so that personal contact emails remain visible only to sprint creators once a match is confirmed.</p>
-
-    <h3 style="font-size:1.3rem;color:var(--ink);margin-top:28px;">4. Your Rights and Deletion</h3>
-    <p>You maintain complete ownership of all code, datasets, and writing created during Canopy sprints. You may request account deletion or data export at any time by contacting our stewardship team at <a href="mailto:privacy@canopy.earth" style="color:var(--forest);font-weight:600;">privacy@canopy.earth</a>.</p>
-  </div>
-</div>
 </main>
 
 <!-- ============ FOOTER ============ -->
@@ -129,7 +452,7 @@
         </div>
       </div>
       <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
-        <img src="/avatars/rooted in purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
+        <img src="/avatars/avatar-rooted-purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
         <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
       </div>
     </div>

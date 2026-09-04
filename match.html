@@ -48,14 +48,15 @@
       <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
+      <a href="/#problem">About</a>
       <a href="match.html" aria-current="page">Match</a>
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
-      <a href="/#problem">About</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
+      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
       <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
-      <a class="btn btn-stamp btn-sm" href="apply.html">Apply to Canopy</a>
+      <a class="btn btn-stamp btn-sm" href="apply.html">Apply / Sign Up</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -67,45 +68,66 @@
 <div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
 <aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
   <div class="nav-drawer-header">
-    <span class="nav-drawer-logo">Canopy</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <img src="/avatars/avatar-builders.png" alt="" style="width:24px;height:24px;object-fit:contain;">
+      <span class="nav-drawer-logo">Canopy</span>
+    </div>
     <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
   </div>
+
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Overview</span>
+    <a href="/#problem" class="nav-drawer-link">About Canopy &amp; The Gap</a>
+  </div>
+
+  <div class="nav-drawer-divider"></div>
+
   <div class="nav-drawer-section">
     <span class="nav-drawer-section-label">Workspace Tools</span>
-    <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
+    <a href="match.html" class="nav-drawer-link" style="color:var(--forest);font-weight:700;">Match Sandbox</a>
     <a href="sprint.html" class="nav-drawer-link">Active Sprints</a>
     <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
   </div>
+
   <div class="nav-drawer-divider"></div>
+
   <div class="nav-drawer-section">
     <span class="nav-drawer-section-label">Community Roles</span>
     <a href="builders.html" class="nav-drawer-link">
-      <img src="/avatars/builders.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-builders.png" alt="" class="drawer-avatar">
       For Builders
     </a>
     <a href="problem-holders.html" class="nav-drawer-link">
-      <img src="/avatars/problem%20holders.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-problem-holders.png" alt="" class="drawer-avatar">
       For Problem Holders
     </a>
     <a href="enablers.html" class="nav-drawer-link">
-      <img src="/avatars/enablers.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-enablers.png" alt="" class="drawer-avatar">
       For Enablers
     </a>
   </div>
+
   <div class="nav-drawer-divider"></div>
+
   <div class="nav-drawer-section">
-    <span class="nav-drawer-section-label">Intake &amp; Membership</span>
+    <span class="nav-drawer-section-label">Account &amp; Membership</span>
+    <a href="login.html" class="nav-drawer-link">Log In to Dashboard</a>
+    <a href="login.html?tab=signup" class="nav-drawer-link">Sign Up / New Collaborator</a>
     <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
     <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
-    <a href="login.html" class="nav-drawer-link">Sign In / Verify</a>
   </div>
+
   <div class="nav-drawer-divider"></div>
+
   <div class="nav-drawer-section" style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;">
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
       <span>Theme</span>
     </button>
-    <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+    <div style="display:flex;gap:12px;">
+      <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+      <a href="terms.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Terms</a>
+    </div>
   </div>
 </aside>
 
@@ -116,10 +138,10 @@
     <p class="lede">It should feel like meeting someone at a workshop, realizing you both care about the same problem, and deciding to build together: high-context, not high-volume. A written note, read by a real person, who chooses.</p>
   </div>
 
-  <!-- ---- Profile Builder for First-Time Users ---- -->
+  <!-- ---- Profile Builder with Verified Connections Network ---- -->
   <div class="profile-builder elevated-card reveal" id="profileBuilderModule" data-domain="design">
     <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
-      <img src="/avatars/builders.png" id="activeAvatarImg" alt="Selected Persona Avatar" style="width:64px;height:64px;object-fit:contain;border-radius:12px;background:rgba(31,92,64,0.08);padding:6px;flex:0 0 auto;">
+      <img src="/avatars/avatar-builders.png" id="activeAvatarImg" alt="Selected Persona Avatar" style="width:64px;height:64px;object-fit:contain;border-radius:12px;background:rgba(31,92,64,0.08);padding:6px;flex:0 0 auto;">
       <div style="flex:1;min-width:240px;">
         <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--forest);">Build Your Sandbox Profile</span>
         <h3 class="profile-builder-title" id="profileTitle">Select your community role and focus domain</h3>
@@ -128,25 +150,73 @@
     </div>
 
     <div class="role-picker" style="margin-top:18px;">
-      <button type="button" class="role-pick-btn" data-role="builder" data-avatar="/avatars/builders.png" aria-pressed="true">
-        <img src="/avatars/builders.png" alt="Builder">
+      <button type="button" class="role-pick-btn" data-role="builder" data-avatar="/avatars/avatar-builders.png" aria-pressed="true">
+        <img src="/avatars/avatar-builders.png" alt="Builder">
         <span>Builder</span>
       </button>
-      <button type="button" class="role-pick-btn" data-role="problem-holder" data-avatar="/avatars/problem%20holders.png" aria-pressed="false">
-        <img src="/avatars/problem%20holders.png" alt="Problem Holder">
+      <button type="button" class="role-pick-btn" data-role="problem-holder" data-avatar="/avatars/avatar-problem-holders.png" aria-pressed="false">
+        <img src="/avatars/avatar-problem-holders.png" alt="Problem Holder">
         <span>Problem Holder</span>
       </button>
-      <button type="button" class="role-pick-btn" data-role="enabler" data-avatar="/avatars/enablers.png" aria-pressed="false">
-        <img src="/avatars/enablers.png" alt="Enabler">
+      <button type="button" class="role-pick-btn" data-role="enabler" data-avatar="/avatars/avatar-enablers.png" aria-pressed="false">
+        <img src="/avatars/avatar-enablers.png" alt="Enabler">
         <span>Enabler</span>
       </button>
     </div>
 
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px;margin-top:14px;">
-      <span style="font-size:0.8rem;color:var(--ink-soft);font-weight:600;">Active tags:</span>
-      <span class="tag-chip skill" id="profileTagRole">Builder</span>
-      <span class="tag-chip" data-domain="climate">Climate &amp; AI Focus</span>
-      <a href="apply.html" class="btn btn-ghost btn-sm" style="margin-left:auto;">Complete Verified Profile →</a>
+    <div style="border-top:1px solid var(--line);padding-top:16px;margin-top:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:0.8rem;color:var(--ink-soft);font-weight:600;">Active tags:</span>
+          <span class="tag-chip skill" id="profileTagRole">Builder</span>
+          <span class="tag-chip" data-domain="climate">Climate &amp; AI Focus</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <button type="button" class="btn btn-ghost btn-sm" id="btnToggleConnections" aria-expanded="false">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true" style="margin-right:2px;"><circle cx="4" cy="8" r="2.5"/><circle cx="12" cy="4" r="2.5"/><circle cx="12" cy="12" r="2.5"/><path d="M4 8l8-4M4 8l8 4" stroke="currentColor" stroke-width="1.5"/></svg>
+            Verified Connections (3)
+          </button>
+          <a href="apply.html" class="btn btn-stamp btn-sm">Complete Verified Profile →</a>
+        </div>
+      </div>
+
+      <!-- Verified Connections Expandable Deck -->
+      <div class="verified-connections-panel" id="verifiedConnectionsPanel" style="display:none;background:color-mix(in srgb, var(--paper) 60%, var(--card));border:1px solid var(--card-edge);border-radius:10px;padding:16px 18px;margin-top:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+          <span style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--forest);">Verified Peer Connections</span>
+          <span style="font-size:0.75rem;color:var(--ink-faint);">3 direct collaborator channels active this cycle</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:12px;">
+          <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
+            <img src="/avatars/avatar-builders.png" alt="" style="width:32px;height:32px;border-radius:6px;object-fit:contain;background:rgba(31,92,64,0.06);">
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">Elena R.</div>
+              <div style="font-size:0.75rem;color:var(--ink-faint);">Hardware Engineer · Soil Sensor</div>
+              <span class="growth-badge" data-stage="in_sprint" style="margin-top:6px;font-size:0.68rem;padding:2px 6px;">Sprint Forming</span>
+            </div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
+            <img src="/avatars/avatar-problem-holders.png" alt="" style="width:32px;height:32px;border-radius:6px;object-fit:contain;background:rgba(31,92,64,0.06);">
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">Rural Water Alliance</div>
+              <div style="font-size:0.75rem;color:var(--ink-faint);">Problem Holder · Real-Time Telemetry</div>
+              <span class="growth-badge" data-stage="sprouting" style="margin-top:6px;font-size:0.68rem;padding:2px 6px;">Open Call Lead</span>
+            </div>
+          </div>
+          <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
+            <img src="/avatars/avatar-enablers.png" alt="" style="width:32px;height:32px;border-radius:6px;object-fit:contain;background:rgba(31,92,64,0.06);">
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">Maya L. (Seed Fund)</div>
+              <div style="font-size:0.75rem;color:var(--ink-faint);">Enabler · Deployment Grant Sponsor</div>
+              <span class="growth-badge" data-stage="shipped" style="margin-top:6px;font-size:0.68rem;padding:2px 6px;">Scout Channel</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-size:0.8rem;flex-wrap:wrap;gap:8px;">
+          <span style="color:var(--ink-soft);">Verified collaborators receive direct sprint notifications and invitation channels.</span>
+          <a href="apply.html" style="color:var(--forest);font-weight:600;text-decoration:none;">Update Verification Intake →</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -398,7 +468,7 @@
         </div>
       </div>
       <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
-        <img src="/avatars/rooted in purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
+        <img src="/avatars/avatar-rooted-purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
         <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
       </div>
     </div>

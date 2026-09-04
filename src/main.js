@@ -65,15 +65,13 @@ import { initIvyGrowth } from './ivy-growth.js';
     drawerBackdrop && drawerBackdrop.addEventListener('click', closeNavDrawer);
   }
 
-  /* ---------- Hero Illustrated Background Sequence ----------
-     Supports both .hero-bg-clip (new 3-layer full-bleed background)
-     and legacy .hero-clip if still present.
-     Cycles through 4 frames with gentle crossfades. */
+  /* ---------- hero illustrated clip sequence ----------
+     4 frames slide up and fade in sequence: seed → watering → sapling → canopy.
+     Exiting frame gets .exiting (slides down + fades); entering frame gets
+     .active (slides up from +18px + fades in). Single consistent direction. */
   function initHeroClips(){
-    var bgClips = Array.from(document.querySelectorAll('.hero-bg-clip'));
-    var clips = bgClips.length ? bgClips : Array.from(document.querySelectorAll('.hero-clip'));
+    var clips = Array.from(document.querySelectorAll('.hero-clip'));
     if(!clips.length) return;
-
     var badge = document.getElementById('heroClipBadge');
     var badgeText = badge ? badge.querySelector('.stage-text') : null;
     var captions = [
@@ -82,7 +80,7 @@ import { initIvyGrowth } from './ivy-growth.js';
       'building together',
       'shipped under one canopy'
     ];
-    var durations = [3400, 3600, 4000, 5200];
+    var durations = [2400, 2800, 3200, 5000];
     var current = 0;
     clips[0].classList.add('active');
 
@@ -90,19 +88,20 @@ import { initIvyGrowth } from './ivy-growth.js';
       var leaving = clips[current];
       leaving.classList.remove('active');
       leaving.classList.add('exiting');
-      setTimeout(function(){ leaving.classList.remove('exiting'); }, 850);
+      // Clean up exiting class after transition completes
+      setTimeout(function(){ leaving.classList.remove('exiting'); }, 520);
 
       current = (current + 1) % clips.length;
       clips[current].classList.add('active');
 
-      if(badgeText && badge){
+      if(badgeText){
         badge.style.opacity = '0';
         badge.style.transform = 'translateY(4px)';
         setTimeout(function(){
           badgeText.textContent = captions[current];
           badge.style.opacity = '1';
           badge.style.transform = 'translateY(0)';
-        }, 250);
+        }, 220);
       }
 
       setTimeout(advance, durations[current]);
@@ -111,18 +110,18 @@ import { initIvyGrowth } from './ivy-growth.js';
   }
   initHeroClips();
 
-  /* ---------- Hero Copy Entrance ---------- */
+  /* ---------- hero copy — staggered line entrance on load ---------- */
   function initHeroCopy(){
     if(reduced) return;
-    var heroCopy = document.querySelector('.hero-copy');
-    if(!heroCopy) return;
+    var heroLeft = document.querySelector('.hero-grid > div:first-child');
+    if(!heroLeft) return;
     var els = [
-      heroCopy.querySelector('.eyebrow'),
-      heroCopy.querySelector('h1'),
-      heroCopy.querySelector('.hero-sub'),
-      heroCopy.querySelectorAll('.hero-sub')[1],
-      heroCopy.querySelector('.hero-hook'),
-      heroCopy.querySelector('.hero-ctas')
+      heroLeft.querySelector('.eyebrow'),
+      heroLeft.querySelector('h1'),
+      heroLeft.querySelector('.hero-sub'),
+      heroLeft.querySelector('.hero-sub + .hero-sub') || heroLeft.querySelectorAll('.hero-sub')[1],
+      heroLeft.querySelector('.hero-hook'),
+      heroLeft.querySelector('.hero-ctas')
     ].filter(Boolean);
 
     els.forEach(function(el){ el.style.opacity = '0'; });
@@ -284,6 +283,17 @@ import { initIvyGrowth } from './ivy-growth.js';
         if(profileTagRole) profileTagRole.textContent = role.charAt(0).toUpperCase() + role.slice(1).replace('-', ' ');
         if(profileTitle) profileTitle.textContent = 'Active profile configured for ' + (role.charAt(0).toUpperCase() + role.slice(1).replace('-', ' '));
       });
+    });
+  }
+
+  /* ---------- Verified Connections Network Toggle ---------- */
+  var btnToggleConnections = document.getElementById('btnToggleConnections');
+  var verifiedConnectionsPanel = document.getElementById('verifiedConnectionsPanel');
+  if(btnToggleConnections && verifiedConnectionsPanel){
+    btnToggleConnections.addEventListener('click', function(){
+      var isExpanded = btnToggleConnections.getAttribute('aria-expanded') === 'true';
+      btnToggleConnections.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+      verifiedConnectionsPanel.style.display = isExpanded ? 'none' : 'block';
     });
   }
 

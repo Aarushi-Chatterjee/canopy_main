@@ -391,14 +391,32 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
 .btn-sm{ padding:8px 16px; font-size:.85rem; }
 
 /* Three-line hamburger menu toggle */
-.menu-toggle{ display:none; background:none; border:none; cursor:pointer; padding:6px; flex-direction:column; justify-content:center; }
-.menu-toggle:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; border-radius:3px; }
-.menu-toggle span{ display:block; width:22px; height:2px; background:var(--ink); border-radius:2px; transition:transform .22s var(--ease-out), opacity .18s var(--ease-out); }
-.menu-toggle span:nth-child(1){ margin-bottom:5px; }
-.menu-toggle span:nth-child(2){ margin-bottom:5px; }
-.menu-toggle.is-open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+.menu-toggle{
+  display:inline-flex;
+  background:var(--card);
+  border:1px solid var(--card-edge);
+  border-radius:6px;
+  cursor:pointer;
+  padding:8px 9px;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  transition:background .16s ease, border-color .16s ease, transform .16s ease;
+}
+.menu-toggle:hover{
+  background:color-mix(in srgb, var(--forest) 8%, var(--card));
+  border-color:var(--forest);
+}
+.menu-toggle:active{
+  transform:scale(.95);
+}
+.menu-toggle:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; border-radius:4px; }
+.menu-toggle span{ display:block; width:20px; height:2px; background:var(--ink); border-radius:2px; transition:transform .22s var(--ease-out), opacity .18s var(--ease-out); }
+.menu-toggle span:nth-child(1){ margin-bottom:4px; }
+.menu-toggle span:nth-child(2){ margin-bottom:4px; }
+.menu-toggle.is-open span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
 .menu-toggle.is-open span:nth-child(2){ opacity:0; transform:scaleX(0); }
-.menu-toggle.is-open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+.menu-toggle.is-open span:nth-child(3){ transform:translateY(-6px) rotate(-45deg); }
 
 /* ---- Nav Drawer (three-line corner menu) ---- */
 .nav-drawer-backdrop{
@@ -450,13 +468,14 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
   width:24px; height:24px; border-radius:4px; object-fit:contain; flex:0 0 auto;
 }
 .nav-drawer-divider{
-  height:1px; background:var(--line); margin:8px 24px;
+  height:1px; background:var(--line); margin:6px 0;
 }
 
 /* Theme toggle button */
 .theme-toggle{
-  background:none; border:1.5px solid var(--line); border-radius:6px;
-  cursor:pointer; padding:6px 10px; display:inline-flex; align-items:center; gap:6px;
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--card); border:1px solid var(--card-edge);
+  border-radius:6px; padding:6px 12px; cursor:pointer;
   color:var(--ink-soft); font-size:.8rem; font-weight:600;
   transition:border-color .16s ease, color .16s ease, background .16s ease;
 }
@@ -469,72 +488,15 @@ main#top{
   overflow:visible;
 }
 
-/* ---------- hero (3-layer full-bleed composition) ----------
-   Layer 0: .hero-bg-stage — full-bleed animated image sequence (absolute, inset 0)
-   Layer 1: .hero-scrim    — directional paper-to-transparent gradient for text contrast
-   Layer 2: .hero-content  — eyebrow, heading, body, CTAs (relative, z-index:3) */
+/* ---------- hero (2-column card stage layout) ---------- */
 .hero{
-  position:relative;
-  min-height:clamp(520px, 82vh, 860px);
-  display:flex; align-items:center;
-  overflow:hidden;
+  position:relative; padding:64px 0 40px;
+  overflow:visible;
   z-index:1;
-  padding:0;
 }
-/* Full-bleed animated background fills entire hero */
-.hero-bg-stage{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  z-index:1;
-  pointer-events:none;
-  overflow:hidden;
+.hero-grid{
+  display:grid; grid-template-columns:1.1fr .9fr; gap:56px; align-items:center;
 }
-.hero-bg-clip{
-  position:absolute; inset:0;
-  opacity:0;
-  transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
-  will-change:opacity;
-}
-.hero-bg-clip.active{ opacity:1; }
-.hero-bg-clip.exiting{ opacity:0; transition-duration:800ms; }
-.hero-bg-clip img{
-  width:100%; height:100%;
-  object-fit:cover;
-  object-position:70% center;
-  display:block;
-  pointer-events:none; user-select:none;
-  will-change:transform;
-}
-.hero-bg-clip.active img{
-  animation: hero-bg-breathe 10s ease-in-out infinite;
-}
-@keyframes hero-bg-breathe{
-  0%, 100%{ transform:scale(1.00); }
-  50%{ transform:scale(1.018); }
-}
-/* Directional scrim: strong on the left (behind copy), fades right */
-.hero-scrim{
-  position:absolute; inset:0;
-  z-index:2; pointer-events:none;
-  background: linear-gradient(
-    to right,
-    var(--paper) 0%,
-    color-mix(in srgb, var(--paper) 90%, transparent) 36%,
-    color-mix(in srgb, var(--paper) 48%, transparent) 58%,
-    color-mix(in srgb, var(--paper) 12%, transparent) 78%,
-    transparent 100%
-  );
-}
-/* Foreground content column */
-.hero-content{
-  position:relative; z-index:3;
-  width:100%; max-width:1180px;
-  margin:0 auto;
-  padding:72px clamp(18px,5vw,56px) 60px;
-}
-.hero-copy{ max-width:600px; }
-/* Legacy two-column grid — retired. hero-grid is now a single foreground column. */
-.hero-grid{ display:block; }
 .eyebrow{
   font-family:'Caveat Var',cursive; font-variation-settings:'wght' 650;
   color:var(--coral); font-size:1.35rem; display:inline-flex; align-items:center; gap:8px;
@@ -552,11 +514,6 @@ main#top{
 }
 .hero-ctas{ display:flex; gap:14px; margin-top:30px; flex-wrap:wrap; }
 
-/* sapling scene — a tiny, freshly-planted sapling, watered slow and gentle */
-.scene{
-  position:relative; width:100%; aspect-ratio:1/1; max-width:360px; margin:0 auto;
-}
-/* hero dynamic plant container — replicates DALL·E video plant growth flow in native code */
 .scene{
   position:relative; width:100%; aspect-ratio:1/1; max-width:400px; margin:0 auto;
 }
@@ -646,7 +603,7 @@ main#top{
   display:flex; flex-wrap:wrap; gap:12px; margin-top:36px;
 }
 .audience-chip{
-  padding:9px 16px; border-radius:999px; border:1.3px solid var(--line);
+  padding:8px 14px; border-radius:6px; border:1.3px solid var(--line);
   font-size:.86rem; color:var(--ink-soft); background:var(--card);
   display:inline-flex; align-items:center; gap:8px;
 }
@@ -929,7 +886,7 @@ main#top{
 
 .tag-chip{
   display:inline-flex; align-items:center; gap:6px;
-  padding:5px 12px; border-radius:999px; font-size:.76rem; font-weight:600;
+  padding:4px 10px; border-radius:4px; font-size:.76rem; font-weight:600;
   background: color-mix(in srgb, var(--domain, var(--ink-faint)) 18%, var(--card));
   color: var(--ink);
   border:1px solid color-mix(in srgb, var(--domain, var(--ink-faint)) 40%, transparent);
@@ -1012,7 +969,7 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 .stage-section-head .count{ font-size:.85rem; color:var(--ink-faint); }
 .filter-row{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
 .filter-chip{
-  padding:7px 14px; border-radius:999px; border:1.4px solid var(--line); background:var(--card);
+  padding:6px 14px; border-radius:6px; border:1.4px solid var(--line); background:var(--card);
   cursor:pointer; font-size:.82rem; font-weight:600; color:var(--ink-soft);
   transition:transform .12s var(--ease-out), background .18s var(--ease-out), color .18s var(--ease-out), border-color .18s var(--ease-out);
 }
@@ -1039,7 +996,7 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 /* ---- growth stage badges ---- */
 .growth-badge{
   font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
-  padding:3px 9px; border-radius:999px; display:inline-flex; align-items:center; gap:5px;
+  padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:5px;
   background:color-mix(in srgb, var(--badge-color, var(--leaf)) 15%, var(--card));
   color:var(--badge-color, var(--forest));
   border:1px solid color-mix(in srgb, var(--badge-color, var(--leaf)) 30%, transparent);
@@ -1062,7 +1019,63 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 .stat-num{ display:none; }
 .stat-label{ display:none; }
 
-.seeds-count{ font-size:.78rem; color:var(--ink-faint); margin-top:3px; display:block; }
+/* ---- sprint board ---- */
+.board{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; align-items:start; }
+.board-col{ min-width:0; }
+.board-col-head{
+  display:flex; align-items:center; gap:10px; margin-bottom:16px; padding:0 4px;
+}
+.board-col-head .dot{ width:9px; height:9px; border-radius:50%; flex:0 0 auto; }
+.board-col-head h3{ font-size:1.05rem; font-weight:600; font-family:'Fraunces Var',serif; margin:0; }
+.board-col-head .n{
+  margin-left:auto; font-size:.8rem; color:var(--ink-faint); font-variant-numeric:tabular-nums;
+  background:color-mix(in srgb, var(--ink-faint) 12%, transparent); padding:2px 7px; border-radius:4px;
+}
+.board-col[data-stage="forming"] .dot{ background:var(--sun); }
+.board-col[data-stage="building"] .dot{ background:var(--forest); }
+.board-col[data-stage="shipped"] .dot{ background:var(--twine); }
+.board-col-body{ display:flex; flex-direction:column; gap:16px; }
+
+.sprint-card{ padding:22px 20px 20px; display:flex; flex-direction:column; gap:12px; }
+.sprint-card h4{ font-family:'Fraunces Var',serif; font-size:1.05rem; font-weight:600; line-height:1.35; margin:0; }
+.sprint-card .clock-row{ display:flex; align-items:center; gap:12px; }
+.clock-ring{ width:36px; height:36px; flex:0 0 auto; }
+.clock-ring circle.track{ fill:none; stroke:var(--card-edge); stroke-width:3; }
+.clock-ring circle.fill{
+  fill:none; stroke:var(--domain,var(--forest)); stroke-width:3; stroke-linecap:round;
+  transform-origin:50% 50%; transform:rotate(-90deg);
+  transition:stroke-dashoffset 0.9s var(--ease-out);
+}
+.clock-ring text{ font-family:'Jost Var',sans-serif; font-size:9px; font-weight:600; fill:var(--ink); text-anchor:middle; }
+.sprint-card .clock-label{ font-size:.82rem; color:var(--ink-soft); }
+.sprint-card .clock-label b{ color:var(--ink); font-weight:600; }
+.team-row{ display:flex; align-items:center; }
+.team-row .avatar{ margin-left:-10px; border:2px solid var(--card); }
+.team-row .avatar:first-child{ margin-left:0; }
+.team-row .plus{
+  width:30px; height:30px; border-radius:50%; margin-left:-10px; border:2px dashed var(--line);
+  display:flex; align-items:center; justify-content:center; font-size:.72rem; color:var(--ink-faint); background:var(--card);
+}
+.sprint-card.shipped{ opacity:.95; }
+.shipped-badge{
+  align-self:flex-start; font-size:.72rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+  color:var(--forest); background:color-mix(in srgb, var(--forest) 12%, transparent);
+  padding:3px 8px; border-radius:4px; display:inline-flex; align-items:center; gap:5px;
+}
+
+/* ---- ambient sprint clock (Sprint page) ---- */
+.ambient-clock-wrap{
+  display:flex; align-items:center; gap:12px; padding:10px 18px; border-radius:8px;
+  background:var(--card); border:1px solid var(--card-edge); box-shadow:0 6px 18px -8px var(--shadow);
+}
+.ambient-clock-wrap .clock-ring{ width:32px; height:32px; }
+.ambient-clock-text{ display:flex; flex-direction:column; line-height:1.2; }
+.ambient-clock-text .days{ font-family:'Caveat Var',cursive; font-size:1.1rem; font-weight:700; color:var(--forest); }
+.ambient-clock-text .voice{ font-family:'Caveat Var',cursive; font-size:.85rem; color:var(--twine); }
+
+@media (max-width:980px){
+  .board{ grid-template-columns:1fr; }
+}
 
 /* ---- application drawer (bottom sheet) ---- */
 .app-drawer-backdrop{
@@ -1103,7 +1116,7 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 
 /* ---- ambient sprint clock (Sprint page) ---- */
 .ambient-clock-wrap{
-  display:flex; align-items:center; gap:12px; padding:10px 18px; border-radius:999px;
+  display:flex; align-items:center; gap:12px; padding:10px 18px; border-radius:8px;
   background:var(--card); border:1px solid var(--card-edge); box-shadow:0 6px 18px -8px var(--shadow);
 }
 .ambient-clock-wrap .clock-ring{ width:32px; height:32px; }
@@ -1282,7 +1295,7 @@ form.apply-form{ padding:24px 26px 26px; display:flex; flex-direction:column; ga
 .field input:focus-visible{ outline:none; border-bottom-color:var(--forest); border-bottom-width:2px; }
 .pill-group{ display:flex; flex-wrap:wrap; gap:8px; }
 .pill{
-  padding:8px 14px; border-radius:999px; border:1.4px solid var(--line); cursor:pointer;
+  padding:7px 13px; border-radius:6px; border:1.4px solid var(--line); cursor:pointer;
   font-size:.83rem; background:var(--paper); color:var(--ink-soft); user-select:none;
   transition:transform .12s var(--ease-out), background .15s var(--ease-out), border-color .15s var(--ease-out);
 }
@@ -1359,13 +1372,17 @@ form.apply-form{ padding:24px 26px 26px; display:flex; flex-direction:column; ga
 }
 
 /* ── HERO CLIP STAGE ─────────────────────────────── */
-/* The card identity (border-radius, background, shadow, max-width, aspect-ratio)
-   is intentionally removed. This element is now used only as a compatibility
-   shim — the actual full-bleed background is .hero-bg-stage / .hero-bg-clip.
-   These styles are kept empty to avoid breaking any JS that still queries
-   .hero-clip-stage, but the visual is owned by the new background system. */
 .hero-clip-stage {
-  display: none;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 440px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--card-edge);
+  box-shadow: 0 12px 40px -12px var(--shadow), 0 2px 0 var(--card-edge);
+  margin: 0 auto;
 }
 
 /* Each clip slides up from +18px and fades in — consistent single direction */
@@ -1544,7 +1561,7 @@ body.page-entering {
   background: none;
   border: 1.5px solid var(--teal);
   color: var(--teal);
-  border-radius: 999px;
+  border-radius: 6px;
   padding: 5px 12px 5px 8px;
   font-size: .8rem;
   font-family: inherit;
@@ -1590,6 +1607,66 @@ body.page-entering {
   transform: translateX(-50%) translateY(0);
 }
 
+/* ── HERO CLIP STAGE ─────────────────────────────── */
+.hero-clip-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 480px;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: 0 4px 32px -8px var(--shadow);
+  margin: 0 auto;
+}
+
+/* Each clip slides up from +18px and fades in — consistent single direction */
+.hero-clip {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 700ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 700ms cubic-bezier(0.2, 0.8, 0.4, 1);
+  will-change: opacity, transform;
+}
+
+.hero-clip.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Exiting frame drops slightly up */
+.hero-clip.exiting {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity 500ms cubic-bezier(0.4, 0, 1, 1),
+    transform 500ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+.hero-clip img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  padding: 32px 32px 24px;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+}
+
+/* Gentle breathing scale on active frame */
+.hero-clip.active img {
+  animation: clip-breathe 7s ease-in-out infinite;
+}
+
+@keyframes clip-breathe {
+  0%, 100% { transform: scale(1.00); }
+  50%       { transform: scale(1.025); }
+}
+
 /* ── HERO CLIP BADGE ─────────────────────────────── */
 .hero-clip-badge {
   margin-top: 14px;
@@ -1597,7 +1674,7 @@ body.page-entering {
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  border-radius: 999px;
+  border-radius: 6px;
   background: var(--card);
   border: 1px solid var(--card-edge);
   box-shadow: 0 4px 14px -4px var(--shadow);

@@ -37,14 +37,15 @@
       <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
+      <a href="#problem">About</a>
       <a href="match.html">Match</a>
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
-      <a href="#problem">About</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
+      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
       <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
-      <a class="btn btn-stamp btn-sm" href="apply.html">Apply to Canopy</a>
+      <a class="btn btn-stamp btn-sm" href="apply.html">Apply / Sign Up</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -56,9 +57,19 @@
 <div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
 <aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
   <div class="nav-drawer-header">
-    <span class="nav-drawer-logo">Canopy</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <img src="/avatars/avatar-builders.png" alt="" style="width:24px;height:24px;object-fit:contain;">
+      <span class="nav-drawer-logo">Canopy</span>
+    </div>
     <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
   </div>
+
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Overview</span>
+    <a href="#problem" class="nav-drawer-link">About Canopy &amp; The Gap</a>
+  </div>
+
+  <div class="nav-drawer-divider"></div>
 
   <div class="nav-drawer-section">
     <span class="nav-drawer-section-label">Workspace Tools</span>
@@ -72,15 +83,15 @@
   <div class="nav-drawer-section">
     <span class="nav-drawer-section-label">Community Roles</span>
     <a href="builders.html" class="nav-drawer-link">
-      <img src="/avatars/builders.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-builders.png" alt="" class="drawer-avatar">
       For Builders
     </a>
     <a href="problem-holders.html" class="nav-drawer-link">
-      <img src="/avatars/problem%20holders.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-problem-holders.png" alt="" class="drawer-avatar">
       For Problem Holders
     </a>
     <a href="enablers.html" class="nav-drawer-link">
-      <img src="/avatars/enablers.png" alt="" class="drawer-avatar">
+      <img src="/avatars/avatar-enablers.png" alt="" class="drawer-avatar">
       For Enablers
     </a>
   </div>
@@ -88,10 +99,11 @@
   <div class="nav-drawer-divider"></div>
 
   <div class="nav-drawer-section">
-    <span class="nav-drawer-section-label">Intake &amp; Membership</span>
+    <span class="nav-drawer-section-label">Account &amp; Membership</span>
+    <a href="login.html" class="nav-drawer-link">Log In to Dashboard</a>
+    <a href="login.html?tab=signup" class="nav-drawer-link">Sign Up / New Collaborator</a>
     <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
     <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
-    <a href="login.html" class="nav-drawer-link">Sign In / Verify</a>
   </div>
 
   <div class="nav-drawer-divider"></div>
@@ -101,7 +113,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
       <span>Theme</span>
     </button>
-    <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+    <div style="display:flex;gap:12px;">
+      <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+      <a href="terms.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Terms</a>
+    </div>
   </div>
 </aside>
 
@@ -109,30 +124,10 @@
 <!-- Ambient Background Fluid Plate (WebGL canvas) -->
 <canvas id="ambientPlateCanvas" aria-hidden="true"></canvas>
 
-<!-- ============ 3-LAYER FULL-BLEED HERO ============ -->
+<!-- ============ HERO ============ -->
 <section class="hero">
-  <!-- Layer 0: Full-Bleed Animated Background Clip Sequence -->
-  <div class="hero-bg-stage" id="heroBgStage" aria-hidden="true">
-    <div class="hero-bg-clip active" id="heroBgClip1">
-      <img src="/frames/frame-1-seed.jpg" alt="" draggable="false" />
-    </div>
-    <div class="hero-bg-clip" id="heroBgClip2">
-      <img src="/frames/frame-2-watering.jpg" alt="" draggable="false" />
-    </div>
-    <div class="hero-bg-clip" id="heroBgClip3">
-      <img src="/frames/frame-3-sapling.jpg" alt="" draggable="false" />
-    </div>
-    <div class="hero-bg-clip" id="heroBgClip4">
-      <img src="/frames/frame-4-canopy.jpg" alt="" draggable="false" />
-    </div>
-  </div>
-
-  <!-- Layer 1: Directional Scrim for Contrast -->
-  <div class="hero-scrim" aria-hidden="true"></div>
-
-  <!-- Layer 2: Foreground Content -->
-  <div class="hero-content">
-    <div class="hero-copy reveal in-view">
+  <div class="wrap hero-grid">
+    <div class="reveal in-view">
       <span class="eyebrow">✎ a field application sandbox</span>
       <h1>If we can find love online,<br>why not <em>teammates?</em></h1>
       <p class="hero-sub">Canopy is where builders, problem holders, and enablers come together and turn ideas into things that actually ship.</p>
@@ -142,26 +137,41 @@
         <a class="btn btn-stamp" href="apply.html">Join the Canopy</a>
         <a class="btn btn-ghost" href="#solution">See how it grows ↓</a>
       </div>
+    </div>
 
-      <div class="hero-clip-badge" id="heroClipBadge" style="margin-top:28px;">
+    <div class="scene reveal in-view">
+      <div class="hero-clip-stage" id="heroClipStage" aria-hidden="true">
+        <div class="hero-clip active" id="heroClip1">
+          <img src="/frames/frame-1-seed.jpg" alt="" draggable="false" />
+        </div>
+        <div class="hero-clip" id="heroClip2">
+          <img src="/frames/frame-2-watering.jpg" alt="" draggable="false" />
+        </div>
+        <div class="hero-clip" id="heroClip3">
+          <img src="/frames/frame-3-sapling.jpg" alt="" draggable="false" />
+        </div>
+        <div class="hero-clip" id="heroClip4">
+          <img src="/frames/frame-4-canopy.jpg" alt="" draggable="false" />
+        </div>
+      </div>
+      <div class="hero-clip-badge" id="heroClipBadge">
         <span class="stage-dot"></span>
         <span class="stage-text">an idea, unplanted</span>
       </div>
     </div>
   </div>
-</section>
 
-<!-- Snapshot callouts below hero -->
-<div class="wrap hero-caption-row" style="margin-top:24px;">
-  <div class="snapshot alone reveal in-view">
-    <b>Alone in the tab maze</b>
-    one more DM into the void, one more brilliant idea with nobody to build it with.
+  <div class="wrap hero-caption-row">
+    <div class="snapshot alone reveal in-view">
+      <b>Alone in the tab maze</b>
+      one more DM into the void, one more brilliant idea with nobody to build it with.
+    </div>
+    <div class="snapshot together reveal in-view">
+      <b>Surrounded, and shipping</b>
+      the same builder, three sprints later: a team, a prototype, and a deadline that actually mattered.
+    </div>
   </div>
-  <div class="snapshot together reveal in-view">
-    <b>Surrounded, and shipping</b>
-    the same builder, three sprints later: a team, a prototype, and a deadline that actually mattered.
-  </div>
-</div>
+</section>
 
 
 <!-- ============ CONTENT WRAPPER: PROBLEM → FINALE ============ -->
@@ -346,15 +356,15 @@
     <!-- Community Role Hub with Dedicated Page Navigation -->
     <div class="role-hub-row reveal">
       <a href="builders.html" class="role-hub-link">
-        <img src="/avatars/builders.png" alt="Builders Avatar">
+        <img src="/avatars/avatar-builders.png" alt="Builders Avatar">
         <span>For Builders: Ship with a Team →</span>
       </a>
       <a href="problem-holders.html" class="role-hub-link">
-        <img src="/avatars/problem%20holders.png" alt="Problem Holders Avatar">
+        <img src="/avatars/avatar-problem-holders.png" alt="Problem Holders Avatar">
         <span>For Problem Holders: Post a Challenge →</span>
       </a>
       <a href="enablers.html" class="role-hub-link">
-        <img src="/avatars/enablers.png" alt="Enablers Avatar">
+        <img src="/avatars/avatar-enablers.png" alt="Enablers Avatar">
         <span>For Enablers: Scout &amp; Support →</span>
       </a>
     </div>
@@ -365,7 +375,7 @@
 <section class="section finale" id="connect">
   <div class="wrap">
     <div style="display:flex;justify-content:center;margin-bottom:20px;">
-      <img src="/avatars/built on connection.png" alt="Built on Connection" style="width:120px;height:auto;object-fit:contain;" class="reveal">
+      <img src="/avatars/avatar-built-connection.png" alt="Built on Connection" style="width:120px;height:auto;object-fit:contain;" class="reveal">
     </div>
     <h2>It grew this far because someone kept watering it. Want in?</h2>
     <p class="lede">The next Build Call, the next sprint, the next shipped prototype: it starts with one honest note about what you'd bring.</p>
@@ -398,7 +408,7 @@
         </div>
       </div>
       <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
-        <img src="/avatars/rooted in purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
+        <img src="/avatars/avatar-rooted-purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
         <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
       </div>
     </div>
