@@ -166,7 +166,16 @@ import { initIvyGrowth } from './ivy-growth.js';
     if(!a) return;
     var href = a.getAttribute('href');
     // Only fade for same-origin page navigations (not anchors, not external)
-    if(!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('http')) return;
+    if(!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('http') || a.target === '_blank') return;
+    
+    // Check if link points to an anchor on the current page
+    try {
+      var targetUrl = new URL(a.href, window.location.href);
+      if(targetUrl.origin === window.location.origin && targetUrl.pathname === window.location.pathname && targetUrl.hash){
+        return; // Allow smooth anchor scroll without page reload
+      }
+    } catch(err){}
+
     e.preventDefault();
     document.body.classList.add('page-leaving');
     setTimeout(function(){ window.location.href = href; }, 210);
@@ -315,7 +324,11 @@ import { initIvyGrowth } from './ivy-growth.js';
       sessionStorage.setItem('canopy_draft_note', note);
     } catch(err){}
     closeDrawer();
-    showToast('🌱 Shovel note planted — sent to the project poster.');
+    var isNotebook = window.location.pathname.indexOf('notebook') !== -1 || (drawerTitle && drawerTitle.textContent.indexOf('Notebook') !== -1);
+    var toastMsg = isNotebook 
+      ? '🌱 Entry planted in your Lab Notebook — grown into the Library.'
+      : '🌱 Shovel note planted — sent to the project poster.';
+    showToast(toastMsg);
     this.reset();
   });
 

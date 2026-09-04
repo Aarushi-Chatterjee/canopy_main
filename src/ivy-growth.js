@@ -1,61 +1,33 @@
-// Continuous Botanical Ivy Growth System
-// Sliced from the original reference artwork across the 4 sections of #contentTrack:
-// - Hero section: ZERO ivy (100% clean & breathable)
-// - Zone 1 (#problem "Finding who to build it with..."): Top sweeping arc (visual cue from top of image)
-// - Zone 2 (#solution): Branching S-loop framing steps & deck
-// - Zone 3 (#for): Parallel cascading columns framing keychain & persona cards
-// - Zone 4 (#connect): Dense interlocking canopy wall framing the tree finale
-//
-// Performance & Timing:
-// - Leaves grow simultaneously little by little in each section
-// - Uses polished, velvety sage leaves (vine-leaves-isolated.png)
-// - Pre-bucketed pixel buffers for sub-millisecond, synchronous 60fps rendering with 0ms scroll lag
+// Continuous Botanical Ivy Growth Engine
+// - Single continuous botanical vine that unfurls and branches as the user scrolls through #contentTrack to the end of the site
+// - Zero gap: absolute container with sticky flex rail spanning #problem to #connect
+// - Hero section is 100% clean and minimal (zero ivy)
+// - Polished, high-contrast forest-green stems (#2a4635) and velvety sage leaves
+// - Emil Kowalski animation principles: critically damped lerp, organic blooming ease, and fluid micro-transitions
 
 export async function initIvyGrowth() {
   const container = document.getElementById('ivyGrowthSystem');
-  if (!container) return;
+  const track = document.getElementById('contentTrack');
+  if (!container || !track) return;
 
   container.innerHTML = '';
 
-  const zoneConfigs = [
-    {
-      id: 1,
-      sectionId: 'problem',
-      name: 'top-arc',
-      yOff: 20,
-      width: 'clamp(380px, 48vw, 780px)',
-      left: 'calc(50% - min(390px, 24vw))',
-      opacity: 0.90
-    },
-    {
-      id: 2,
-      sectionId: 'solution',
-      name: 'branching',
-      yOff: 40,
-      width: 'clamp(320px, 36vw, 580px)',
-      left: 'calc(50% - min(360px, 22vw))',
-      opacity: 0.88
-    },
-    {
-      id: 3,
-      sectionId: 'for',
-      name: 'cascading',
-      yOff: 30,
-      width: 'clamp(340px, 38vw, 620px)',
-      left: 'calc(50% - min(380px, 23vw))',
-      opacity: 0.90
-    },
-    {
-      id: 4,
-      sectionId: 'connect',
-      name: 'canopy-wall',
-      yOff: 20,
-      width: 'clamp(360px, 42vw, 680px)',
-      left: 'calc(50% - min(400px, 24vw))',
-      opacity: 0.94
-    }
-  ];
+  // Create sticky flex rail inside container (0 flow height, perfect sticky pinning)
+  const rail = document.createElement('div');
+  rail.className = 'ivy-sticky-rail';
+  container.appendChild(rail);
 
+  // Load leaf metadata (177 leaves with precise attachment points & growth timings)
+  let leavesData;
+  try {
+    const res = await fetch('/ivy-leaves.json');
+    leavesData = await res.json();
+  } catch (err) {
+    console.error('Failed to load ivy-leaves.json', err);
+    return;
+  }
+
+  // Load stem and growth map images
   function loadImg(src) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -65,57 +37,48 @@ export async function initIvyGrowth() {
     });
   }
 
-  // Load all 4 zone datasets in parallel
-  const zoneAssets = await Promise.all(
-    zoneConfigs.map(async (z) => {
-      const [stemImg, mapImg, leavesRes] = await Promise.all([
-        loadImg(`/zone-${z.id}-stem.png`),
-        loadImg(`/zone-${z.id}-map.png`),
-        fetch(`/zone-${z.id}-leaves.json`).then(r => r.json())
-      ]);
-      return { ...z, stemImg, mapImg, leaves: leavesRes };
-    })
-  );
+  const [stemImg, growthMapImg] = await Promise.all([
+    loadImg('/vine-stems-isolated.png'),
+    loadImg('/vine-growth-map.png')
+  ]);
+
+  if (!stemImg || !growthMapImg) {
+    console.warn('ivy-growth: source images not found');
+    return;
+  }
 
   const W = 564;
+  const H = 1024;
+
+  // Extract raw pixel data once
   const offC = document.createElement('canvas');
+  offC.width = W;
+  offC.height = H;
   const offCtx = offC.getContext('2d', { willReadFrequently: true });
 
-  // Instantiate each zone on the page
-  const zones = zoneAssets.map((z) => {
-    const secEl = document.getElementById(z.sectionId);
-    if (!secEl) return null;
+  offCtx.drawImage(stemImg, 0, 0);
+  const stemPx = offCtx.getImageData(0, 0, W, H).data;
 
-    const H = z.stemImg.height;
+  offCtx.clearRect(0, 0, W, H);
+  offCtx.drawImage(growthMapImg, 0, 0);
+  const mapPx = offCtx.getImageData(0, 0, W, H).data;
 
-    // Read pixel data for stem and growth map
-    offC.width = W;
-    offC.height = H;
-    offCtx.clearRect(0, 0, W, H);
-    offCtx.drawImage(z.stemImg, 0, 0);
-    const stemPx = offCtx.getImageData(0, 0, W, H).data;
-
-    offCtx.clearRect(0, 0, W, H);
-    offCtx.drawImage(z.mapImg, 0, 0);
-    const mapPx = offCtx.getImageData(0, 0, W, H).data;
-
-    // Pre-bucket pixels by growth byte (0..255) for instant synchronous updates
-    const buckets = Array.from({ length: 256 }, () => []);
-    const numPx = W * H;
-    for (let i = 0; i < numPx; i++) {
-      const idx = i * 4;
-      if (stemPx[idx + 3] > 15) {
-        const b = mapPx[idx];
-        buckets[b].push(idx);
-      }
+  // Pre-bucket pixels by growth byte (0..255) for instant synchronous updates
+  const buckets = Array.from({ length: 256 }, () => []);
+  const numPx = W * H;
+  for (let i = 0; i < numPx; i++) {
+    const idx = i * 4;
+    if (stemPx[idx + 3] > 15) {
+      const b = mapPx[idx];
+      buckets[b].push(idx);
     }
+  }
 
-    // Container element
+  // Create Left and Right ivy units
+  function createUnit(id, isFlipped, lagOffset = 0) {
     const unitEl = document.createElement('div');
-    unitEl.className = `ivy-zone-unit ivy-zone-${z.id}`;
-    unitEl.style.width = z.width;
-    unitEl.style.left = z.left;
-    unitEl.style.opacity = z.opacity;
+    unitEl.className = 'ivy-unit';
+    unitEl.id = id;
 
     // Stem canvas
     const canvas = document.createElement('canvas');
@@ -125,13 +88,13 @@ export async function initIvyGrowth() {
     const ctx = canvas.getContext('2d');
     const drawData = ctx.createImageData(W, H);
 
-    // Leaves overlay
+    // Leaves container
     const leavesContainer = document.createElement('div');
     leavesContainer.className = 'ivy-leaves-container';
 
-    // Leaves elements with polished velvety texture
-    const leafNodes = z.leaves.map((leaf, idx) => {
-      const { box, absBox, attach, relProgress } = leaf;
+    // 177 polished leaves
+    const leafNodes = leavesData.map((leaf) => {
+      const { box, attach, progress } = leaf;
       const [x0, y0, x1, y1] = box;
       const [ax, ay] = attach;
 
@@ -141,120 +104,153 @@ export async function initIvyGrowth() {
       el.style.top = `${y0}px`;
       el.style.width = `${x1 - x0 + 1}px`;
       el.style.height = `${y1 - y0 + 1}px`;
-      el.style.backgroundPosition = `-${absBox[0]}px -${absBox[1]}px`;
+      el.style.backgroundPosition = `-${x0}px -${y0}px`;
+
+      // Pivot exactly at petiole connection node on stem
       el.style.transformOrigin = `${ax - x0}px ${ay - y0}px`;
+      el.style.willChange = 'transform, opacity';
 
       leavesContainer.appendChild(el);
 
-      // Organic spread so leaves grow simultaneously and briskly
-      const simultaneousOffset = (relProgress * 0.20) + ((idx % 4) * 0.02);
-
-      return { el, simultaneousOffset };
+      return {
+        el,
+        progress,
+        state: -1
+      };
     });
 
     unitEl.appendChild(canvas);
     unitEl.appendChild(leavesContainer);
-    container.appendChild(unitEl);
+    rail.appendChild(unitEl);
 
     // Coordinate scale
     function syncScale() {
-      const curW = unitEl.clientWidth || 420;
+      const curW = unitEl.clientWidth || 220;
       const s = curW / W;
       leavesContainer.style.transform = `scale(${s})`;
       leavesContainer.style.transformOrigin = 'top left';
       leavesContainer.style.width = `${W}px`;
       leavesContainer.style.height = `${H}px`;
-
-      const topPos = secEl.offsetTop + z.yOff;
-      unitEl.style.top = `${topPos}px`;
     }
     syncScale();
     window.addEventListener('resize', syncScale, { passive: true });
 
-    let currentByte = 0;
+    let currentDrawnByte = 0;
+    const UNFURL_WINDOW = 0.040; // gradual organic unfurl window
 
-    // Fast, synchronous render function
-    function render(progress) {
-      const p = Math.max(0, Math.min(1, progress));
+    function update(globalP) {
+      // Natural lag offset for right vine gives organic asymmetry
+      const p = Math.max(0, Math.min(1, (globalP - lagOffset) / (1 - lagOffset)));
       const targetByte = Math.round(p * 255);
 
-      // Synchronous incremental stem update (instantaneous!)
-      if (targetByte > currentByte) {
+      // 1. Fast incremental stem reveal with tender-tip easing
+      if (targetByte > currentDrawnByte) {
         const out = drawData.data;
-        for (let b = currentByte + 1; b <= targetByte; b++) {
+        for (let b = currentDrawnByte + 1; b <= targetByte; b++) {
           const list = buckets[b];
           for (let k = 0; k < list.length; k++) {
             const idx = list[k];
             out[idx] = stemPx[idx];
             out[idx + 1] = stemPx[idx + 1];
             out[idx + 2] = stemPx[idx + 2];
-            out[idx + 3] = stemPx[idx + 3];
+
+            // Soft tender tip easing at the leading growth front
+            const diff = targetByte - b;
+            if (diff < 5) {
+              out[idx + 3] = Math.round(stemPx[idx + 3] * ((diff + 1) / 5));
+            } else {
+              out[idx + 3] = stemPx[idx + 3];
+            }
           }
         }
-        currentByte = targetByte;
+        currentDrawnByte = targetByte;
         ctx.putImageData(drawData, 0, 0);
-      } else if (targetByte < currentByte) {
+      } else if (targetByte < currentDrawnByte) {
         const out = drawData.data;
-        for (let b = currentByte; b > targetByte; b--) {
+        for (let b = currentDrawnByte; b > targetByte; b--) {
           const list = buckets[b];
           for (let k = 0; k < list.length; k++) {
             out[list[k] + 3] = 0;
           }
         }
-        currentByte = targetByte;
+        currentDrawnByte = targetByte;
         ctx.putImageData(drawData, 0, 0);
       }
 
-      // Leaves grow briskly and simultaneously with the stem
+      // 2. Emil Kowalski organic blooming ease:
+      // Gentle start, swift blossoming expansion, soft cushioned settlement
       for (let i = 0; i < leafNodes.length; i++) {
         const item = leafNodes[i];
-        const pLocal = (p - item.simultaneousOffset) / 0.36;
-        const clamped = Math.max(0, Math.min(1, pLocal));
+        const leafP = item.progress;
 
-        if (clamped <= 0) {
-          item.el.style.transform = 'scale(0)';
-          item.el.style.opacity = '0';
-        } else if (clamped >= 1) {
-          item.el.style.transform = 'scale(1)';
-          item.el.style.opacity = '1';
+        if (p < leafP) {
+          if (item.state !== 0) {
+            item.el.style.transform = 'scale(0)';
+            item.el.style.opacity = '0';
+            item.state = 0;
+          }
+        } else if (p >= leafP + UNFURL_WINDOW) {
+          if (item.state !== 2) {
+            item.el.style.transform = 'scale(1)';
+            item.el.style.opacity = '1';
+            item.state = 2;
+          }
         } else {
-          const ease = 1 - Math.pow(1 - clamped, 2.0);
-          const s = (0.06 + 0.94 * ease).toFixed(3);
+          const t = (p - leafP) / UNFURL_WINDOW;
+          // Organic ease curve
+          const ease = 1 - Math.pow(1 - t, 2.4);
+          const s = (0.05 + 0.95 * ease).toFixed(3);
           item.el.style.transform = `scale(${s})`;
-          item.el.style.opacity = Math.min(1, clamped * 2.2).toFixed(2);
+          item.el.style.opacity = Math.min(1, t * 1.6).toFixed(2);
+          item.state = 1;
         }
       }
     }
 
-    return { secEl, render, syncScale };
-  }).filter(Boolean);
-
-  // Synchronous, zero-lag scroll driver: brisk, responsive growth speed
-  function updateScroll() {
-    const vh = window.innerHeight;
-
-    for (let i = 0; i < zones.length; i++) {
-      const z = zones[i];
-      const rect = z.secEl.getBoundingClientRect();
-
-      // Faster growth: begins as section approaches view (vh * 0.95)
-      // and flourishes fully within the first 450-520px of scroll!
-      const activeTravel = Math.min(rect.height * 0.55, vh * 0.65);
-      const traveled = (vh * 0.95) - rect.top;
-      const progress = Math.max(0, Math.min(1, traveled / activeTravel));
-
-      z.render(progress);
-    }
+    return { update };
   }
 
-  let ticking = false;
+  // Create Left and Right framing units
+  const leftUnit = createUnit('ivyLeft', false, 0.0);
+  const rightUnit = createUnit('ivyRight', true, 0.05);
+
+  // Smooth scroll progression calculation
+  function getTargetProgress() {
+    const trackRect = track.getBoundingClientRect();
+    const vh = window.innerHeight;
+
+    // Track starts right at #problem and finishes at the bottom of #connect
+    // The hero section is completely clean: when trackRect.top > vh * 0.4, progress is strictly 0.
+    // As #problem scrolls up toward view, growth begins gently.
+    const startThreshold = vh * 0.4;
+    const totalTravel = trackRect.height + startThreshold - vh;
+    if (totalTravel <= 0) return 0;
+
+    const scrolled = startThreshold - trackRect.top;
+    return Math.max(0, Math.min(1, scrolled / totalTravel));
+  }
+
+  // Emil Kowalski smooth animation loop:
+  // Critically damped spring / lerp motion so wheel scrolling glides with organic fluidity
+  let targetProgress = 0;
+  let currentProgress = 0;
+  let isRunning = true;
+
   function onScroll() {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        updateScroll();
-        ticking = false;
-      });
-      ticking = true;
+    targetProgress = getTargetProgress();
+  }
+
+  function loop() {
+    // Smooth damping: glides gradually and settles smoothly
+    const diff = targetProgress - currentProgress;
+    if (Math.abs(diff) > 0.0002) {
+      currentProgress += diff * 0.12;
+      leftUnit.update(currentProgress);
+      rightUnit.update(currentProgress);
+    }
+
+    if (isRunning) {
+      requestAnimationFrame(loop);
     }
   }
 
@@ -262,5 +258,10 @@ export async function initIvyGrowth() {
   window.addEventListener('resize', onScroll, { passive: true });
 
   // Initial sync
-  updateScroll();
+  onScroll();
+  currentProgress = targetProgress;
+  leftUnit.update(currentProgress);
+  rightUnit.update(currentProgress);
+
+  requestAnimationFrame(loop);
 }

@@ -123,7 +123,7 @@ body{
   font-family:'Jost Var', 'Century Gothic', 'Avenir Next', system-ui, sans-serif;
   font-weight:400;
   line-height:1.55;
-  overflow-x:hidden;
+  overflow-x:clip;
   position:relative;
 }
 
@@ -152,103 +152,95 @@ body{
   mix-blend-mode: multiply;
 }
 
-/* ── Ivy Growth System wrapper (starts at #problem inside #contentTrack) ── */
-#ivyGrowthSystem {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  overflow: visible;
+/* ── Content track wrapping #problem to #connect ── */
+#contentTrack,
+.content-track {
+  position: relative;
 }
 
-/* ── Botanical Ivy Continuous Zone Unit ── */
-.ivy-zone-unit {
+/* ── Botanical Ivy Growth System: frames the entire journey from #problem to end of site ── */
+#ivyGrowthSystem {
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ivy-sticky-rail {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.ivy-unit {
+  width: clamp(260px, 22vw, 380px);
+  position: relative;
+  flex-shrink: 0;
   pointer-events: none;
   user-select: none;
   mix-blend-mode: multiply;
-  filter: contrast(1.04) saturate(1.08);
-  transform-origin: top center;
 }
 
-.ivy-zone-1 {
-  /* Zone 1: Top Arc sweeping across top of #problem */
-  transform: rotate(-3deg);
+#ivyRight {
+  transform: scaleX(-1);
 }
 
-.ivy-zone-2 {
-  /* Zone 2: Branching S-loop framing #solution */
-  transform: rotate(1deg);
-}
-
-.ivy-zone-3 {
-  /* Zone 3: Parallel Cascades framing #for */
-  transform: rotate(-1deg);
-}
-
-.ivy-zone-4 {
-  /* Zone 4: Dense Canopy Wall framing #connect */
-  transform: rotate(0deg);
-}
-
-/* Stem canvas */
 .ivy-stem-canvas {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  height: auto;
   pointer-events: none;
 }
 
-/* Leaves overlay (coordinate space matches native image slice) */
 .ivy-leaves-container {
   position: absolute;
   top: 0;
   left: 0;
+  width: 564px;
+  height: 1024px;
   pointer-events: none;
 }
 
-/* Individual leaf node */
 .ivy-leaf-node {
   position: absolute;
-  background-image: url('/vine-leaves-isolated.png');
+  background-image: url('/vine-leaves-polished.png');
   background-repeat: no-repeat;
   background-size: 564px 1024px;
-  will-change: transform, opacity;
-  pointer-events: none;
   transform: scale(0);
   opacity: 0;
+  will-change: transform, opacity;
+  pointer-events: none;
 }
 
-@media (max-width: 1200px) {
-  .ivy-zone-unit {
-    opacity: 0.78 !important;
-  }
+@media (max-width: 640px) {
+  #ivyRight { display: none; }
+  .ivy-unit { width: 180px; opacity: 0.65; }
 }
 
-@media (max-width: 768px) {
-  .ivy-zone-unit {
-    width: 90vw !important;
-    left: 5vw !important;
-    opacity: 0.65 !important;
-  }
-}
-
-/* Liquid Glass (kept for workspace & modal cards, header is untouched) */
+/* Liquid Glass Enhancements (inspired by liquid-glass-js) */
 .liquid-glass {
   background: rgba(252, 248, 234, 0.72) !important;
   backdrop-filter: blur(14px) saturate(135%);
   -webkit-backdrop-filter: blur(14px) saturate(135%);
-  border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  box-shadow: 0 8px 30px -4px rgba(38, 32, 16, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 8px 32px -4px rgba(38, 32, 16, 0.10) !important;
 }
 
 .paper-card,
 .problem-card,
-.keychain-card {
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+.keychain-card,
+.connect-card {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px -2px rgba(38, 32, 16, 0.08), 3px 3px 0 var(--ink);
 }
 
 /* tracking is size-specific, never one fixed value across the whole scale
@@ -325,7 +317,11 @@ header{
   gap:16px;
 }
 .logo{
-  display:flex; flex-direction:column; gap:0; text-decoration:none;
+  display:flex; flex-direction:column; gap:2px; text-decoration:none;
+}
+.logo img,
+.logo-main img{
+  height:44px; width:auto; display:block; object-fit:contain;
 }
 .logo-main{
   display:flex; align-items:center; gap:10px;
@@ -336,7 +332,7 @@ header{
 .logo-tagline{
   font-family:'Jost Var',sans-serif; font-size:0.62rem; font-weight:600;
   letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint);
-  margin-left:38px; margin-top:2px;
+  margin-top:2px;
 }
 nav.primary-nav{ display:flex; gap:28px; align-items:center; }
 nav.primary-nav a{
@@ -380,7 +376,7 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
 /* ---------- main container ---------- */
 main#top{
   position:relative;
-  overflow:hidden;
+  overflow:visible;
 }
 
 /* ---------- hero ---------- */
