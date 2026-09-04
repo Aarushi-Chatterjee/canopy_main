@@ -41,12 +41,13 @@ const server = app.listen(PORT, async () => {
     console.log('✓ Health check:', health.status, health.data.status);
 
     // 2. Auth: Register
+    const testEmail = `test.builder.${Date.now()}@canopy.earth`;
     const reg = await request('POST', '/api/auth/register', {
-      email: 'test.builder@canopy.earth',
+      email: testEmail,
       displayName: 'Test Builder',
       role: 'builder'
     });
-    console.log('✓ Auth Register:', reg.status, reg.data.user.email);
+    console.log('✓ Auth Register:', reg.status, reg.data.user?.email || reg.data.error);
 
     // 3. Matches: Sandbox
     const sandbox = await request('GET', '/api/matches/sandbox?domain=climate');

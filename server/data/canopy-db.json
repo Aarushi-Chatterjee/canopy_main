@@ -1,6 +1,15 @@
 {
   "users": [
     {
+      "id": "usr_1788558019820",
+      "email": "test.builder.1788558019805@canopy.earth",
+      "role": "builder",
+      "displayName": "Test Builder",
+      "is_verified": false,
+      "verification_token": "ZR7EFO",
+      "created_at": "2026-09-04T21:40:19.820Z"
+    },
+    {
       "id": "usr_1788556155986",
       "email": "new.collab@canopy.earth",
       "role": "builder",
@@ -56,6 +65,17 @@
     }
   ],
   "profiles": [
+    {
+      "userId": "usr_1788558019820",
+      "displayName": "Test Builder",
+      "headline": "BUILDER at Canopy",
+      "bio": "",
+      "primaryDomain": "climate",
+      "skillTags": [],
+      "avatarUrl": "/avatars/avatar-builders.png",
+      "hoursPerWeek": 10,
+      "proofOfWork": []
+    },
     {
       "userId": "usr_1788556155986",
       "displayName": "New Collaborator",
@@ -146,6 +166,23 @@
     }
   ],
   "build_calls": [
+    {
+      "id": "call_1788558019868",
+      "creatorId": "usr_elena",
+      "title": "Decentralized Water Filter Diagnostics",
+      "orgName": "Clean Water Project",
+      "problemStatement": "Automate membrane fouling detection.",
+      "domain": "climate",
+      "targetDeliverable": "Functional prototype code and field evaluation report",
+      "pilotBudget": "Community Supported",
+      "datasetAccessUrl": "",
+      "neededSkills": [
+        "Sensors",
+        "Embedded C"
+      ],
+      "status": "open",
+      "createdAt": "2026-09-04T21:40:19.868Z"
+    },
     {
       "id": "call_1788556155967",
       "creatorId": "usr_elena",
@@ -326,7 +363,7 @@
       "title": "A plain-language city budget explorer",
       "description": "Municipal budget data is public but unreadable: the team is still coming together before the clock starts.",
       "domain": "civic",
-      "stage": "forming",
+      "stage": "building",
       "teamCapacity": 3,
       "members": [
         {
@@ -340,6 +377,12 @@
           "squadRole": "Full-stack UI",
           "displayName": "Test Builder",
           "joinedAt": "2026-09-04T21:09:15.958Z"
+        },
+        {
+          "userId": "usr_1788558019820",
+          "squadRole": "Full-stack UI",
+          "displayName": "Test Builder",
+          "joinedAt": "2026-09-04T21:40:19.860Z"
         }
       ],
       "skillTags": [
@@ -351,8 +394,8 @@
       "daysTotal": 14,
       "daysLeft": 14,
       "progressPct": 0,
-      "statusHint": "2 of 3 spots filled",
-      "updatedAt": "2026-09-04T21:09:15.959Z"
+      "statusHint": "team locked for this cycle",
+      "updatedAt": "2026-09-04T21:40:19.861Z"
     },
     {
       "id": "sp_2",
@@ -561,9 +604,20 @@
           "teaser": "calib_v2.py → accuracy: 98.4%",
           "bodyMarkdown": "Added test benchmarks across 10 rainfall cycles.",
           "createdAt": "2026-09-04T21:09:15.977Z"
+        },
+        {
+          "id": "branch_1788558019878",
+          "parentEntryId": "entry_1",
+          "authorId": "usr_elena",
+          "authorName": "Elena R.",
+          "title": "Follow-up dataset on sensor calibrations",
+          "summarySnippet": "Added test benchmarks across 10 rainfall cycles.",
+          "teaser": "calib_v2.py → accuracy: 98.4%",
+          "bodyMarkdown": "Added test benchmarks across 10 rainfall cycles.",
+          "createdAt": "2026-09-04T21:40:19.878Z"
         }
       ],
-      "updatedAt": "2026-09-04T21:09:15.978Z"
+      "updatedAt": "2026-09-04T21:40:19.880Z"
     },
     {
       "id": "entry_2",
@@ -643,6 +697,17 @@
     }
   ],
   "applications": [
+    {
+      "id": "app_1788558019884",
+      "fullName": "New Collaborator",
+      "email": "new.collab@canopy.earth",
+      "role": "Builder",
+      "domain": "Hardware",
+      "proofOfWorkLink": "",
+      "motivationNote": "Ready to build.",
+      "status": "verified",
+      "submittedAt": "2026-09-04T21:40:19.884Z"
+    },
     {
       "id": "app_1788556155982",
       "fullName": "New Collaborator",

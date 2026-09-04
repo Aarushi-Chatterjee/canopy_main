@@ -488,6 +488,18 @@ const store = {
     db[name] = db[name].filter(item => !predicate(item));
     writeDb(db);
     return db[name].length < initialLen;
+  },
+
+  // Supabase Live Client & Query Helpers
+  supabase: require('../config/supabase').supabase,
+  isLiveDb: () => require('../config/supabase').isConfigured(),
+
+  async fromSupabase(table) {
+    const { supabase, isConfigured } = require('../config/supabase');
+    if (!isConfigured() || !supabase) {
+      return null;
+    }
+    return supabase.from(table);
   }
 };
 
