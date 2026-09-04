@@ -1,4 +1,4 @@
-import { animate, createTimeline, utils } from 'animejs';
+import { animate, utils } from 'animejs';
 import { initAmbientPlate } from './ambient-plate.js';
 import { initIvyGrowth } from './ivy-growth.js';
 
@@ -9,21 +9,71 @@ import { initIvyGrowth } from './ivy-growth.js';
   initAmbientPlate();
   initIvyGrowth();
 
-  /* ---------- mobile menu (simple show/hide of nav as list) ---------- */
-  var menuToggle = document.getElementById('menuToggle');
-  var nav = document.querySelector('nav.primary-nav');
-  menuToggle && menuToggle.addEventListener('click', function(){
-    if(nav.style.display === 'flex'){ nav.style.display=''; }
-    else{ nav.style.cssText='display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--paper);padding:16px 24px;border-bottom:1px solid var(--line);gap:16px;'; }
-  });
+  /* ---------- Theme Persistence & Toggle ---------- */
+  function initTheme(){
+    var saved = localStorage.getItem('canopy_theme');
+    if(saved === 'dark'){
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    var toggles = document.querySelectorAll('#themeToggle, .theme-toggle');
+    toggles.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var current = document.documentElement.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
+        if(next === 'dark'){
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('canopy_theme', 'dark');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('canopy_theme', 'light');
+        }
+      });
+    });
+  }
+  initTheme();
 
-  /* ---------- hero illustrated clip sequence ----------
-     4 frames slide up and fade in sequence: seed → watering → sapling → canopy.
-     Exiting frame gets .exiting (slides down + fades); entering frame gets
-     .active (slides up from +18px + fades in). Single consistent direction. */
+  /* ---------- Three-Line Navigation Drawer ---------- */
+  var menuToggle = document.getElementById('menuToggle');
+  var navDrawer = document.getElementById('navDrawer');
+  var drawerBackdrop = document.getElementById('drawerBackdrop');
+  var drawerClose = document.getElementById('drawerClose');
+
+  function openNavDrawer(){
+    if(!navDrawer) return;
+    navDrawer.classList.add('is-open');
+    drawerBackdrop && drawerBackdrop.classList.add('is-open');
+    menuToggle && menuToggle.classList.add('is-open');
+    menuToggle && menuToggle.setAttribute('aria-expanded', 'true');
+    navDrawer.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeNavDrawer(){
+    if(!navDrawer) return;
+    navDrawer.classList.remove('is-open');
+    drawerBackdrop && drawerBackdrop.classList.remove('is-open');
+    menuToggle && menuToggle.classList.remove('is-open');
+    menuToggle && menuToggle.setAttribute('aria-expanded', 'false');
+    navDrawer.setAttribute('aria-hidden', 'true');
+  }
+
+  if(menuToggle && navDrawer){
+    menuToggle.addEventListener('click', function(){
+      if(navDrawer.classList.contains('is-open')) closeNavDrawer();
+      else openNavDrawer();
+    });
+    drawerClose && drawerClose.addEventListener('click', closeNavDrawer);
+    drawerBackdrop && drawerBackdrop.addEventListener('click', closeNavDrawer);
+  }
+
+  /* ---------- Hero Illustrated Background Sequence ----------
+     Supports both .hero-bg-clip (new 3-layer full-bleed background)
+     and legacy .hero-clip if still present.
+     Cycles through 4 frames with gentle crossfades. */
   function initHeroClips(){
-    var clips = Array.from(document.querySelectorAll('.hero-clip'));
+    var bgClips = Array.from(document.querySelectorAll('.hero-bg-clip'));
+    var clips = bgClips.length ? bgClips : Array.from(document.querySelectorAll('.hero-clip'));
     if(!clips.length) return;
+
     var badge = document.getElementById('heroClipBadge');
     var badgeText = badge ? badge.querySelector('.stage-text') : null;
     var captions = [
@@ -32,7 +82,7 @@ import { initIvyGrowth } from './ivy-growth.js';
       'building together',
       'shipped under one canopy'
     ];
-    var durations = [2400, 2800, 3200, 5000];
+    var durations = [3400, 3600, 4000, 5200];
     var current = 0;
     clips[0].classList.add('active');
 
@@ -40,20 +90,19 @@ import { initIvyGrowth } from './ivy-growth.js';
       var leaving = clips[current];
       leaving.classList.remove('active');
       leaving.classList.add('exiting');
-      // Clean up exiting class after transition completes
-      setTimeout(function(){ leaving.classList.remove('exiting'); }, 520);
+      setTimeout(function(){ leaving.classList.remove('exiting'); }, 850);
 
       current = (current + 1) % clips.length;
       clips[current].classList.add('active');
 
-      if(badgeText){
+      if(badgeText && badge){
         badge.style.opacity = '0';
         badge.style.transform = 'translateY(4px)';
         setTimeout(function(){
           badgeText.textContent = captions[current];
           badge.style.opacity = '1';
           badge.style.transform = 'translateY(0)';
-        }, 220);
+        }, 250);
       }
 
       setTimeout(advance, durations[current]);
@@ -62,18 +111,18 @@ import { initIvyGrowth } from './ivy-growth.js';
   }
   initHeroClips();
 
-  /* ---------- hero copy — staggered line entrance on load ---------- */
+  /* ---------- Hero Copy Entrance ---------- */
   function initHeroCopy(){
     if(reduced) return;
-    var heroLeft = document.querySelector('.hero-grid > div:first-child');
-    if(!heroLeft) return;
+    var heroCopy = document.querySelector('.hero-copy');
+    if(!heroCopy) return;
     var els = [
-      heroLeft.querySelector('.eyebrow'),
-      heroLeft.querySelector('h1'),
-      heroLeft.querySelector('.hero-sub'),
-      heroLeft.querySelector('.hero-sub + .hero-sub') || heroLeft.querySelectorAll('.hero-sub')[1],
-      heroLeft.querySelector('.hero-hook'),
-      heroLeft.querySelector('.hero-ctas')
+      heroCopy.querySelector('.eyebrow'),
+      heroCopy.querySelector('h1'),
+      heroCopy.querySelector('.hero-sub'),
+      heroCopy.querySelectorAll('.hero-sub')[1],
+      heroCopy.querySelector('.hero-hook'),
+      heroCopy.querySelector('.hero-ctas')
     ].filter(Boolean);
 
     els.forEach(function(el){ el.style.opacity = '0'; });
@@ -91,33 +140,7 @@ import { initIvyGrowth } from './ivy-growth.js';
   }
   initHeroCopy();
 
-  /* ---------- stat number tickers — easeOutExpo deceleration ---------- */
-  function easeOutExpo(t){ return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
-
-  function tickStat(el){
-    if(el.dataset.ticked) return;
-    el.dataset.ticked = '1';
-    var target = parseInt(el.dataset.target, 10);
-    if(!target) return;
-    var dur = 1400;
-    var start = performance.now();
-    function frame(now){
-      var t = Math.min((now - start) / dur, 1);
-      el.textContent = Math.round(easeOutExpo(t) * target);
-      if(t < 1) requestAnimationFrame(frame);
-    }
-    requestAnimationFrame(frame);
-  }
-
-  var statEls = document.querySelectorAll('.stat-num[data-target]');
-  if(statEls.length && 'IntersectionObserver' in window){
-    var statIO = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ if(e.isIntersecting) tickStat(e.target); });
-    }, { threshold: .5 });
-    statEls.forEach(function(el){ statIO.observe(el); });
-  }
-
-  /* ---------- reveal on scroll ---------- */
+  /* ---------- Reveal on Scroll ---------- */
   function tiltOf(el){
     var v = getComputedStyle(el).getPropertyValue('--tilt');
     var n = parseFloat(v);
@@ -157,7 +180,7 @@ import { initIvyGrowth } from './ivy-growth.js';
     revealEls.forEach(function(el){ el.classList.add('in-view'); });
   }
 
-  /* ---------- page fade transitions ---------- */
+  /* ---------- Page Transitions ---------- */
   document.body.classList.add('page-entering');
   setTimeout(function(){ document.body.classList.remove('page-entering'); }, 320);
 
@@ -165,14 +188,11 @@ import { initIvyGrowth } from './ivy-growth.js';
     var a = e.target.closest('a[href]');
     if(!a) return;
     var href = a.getAttribute('href');
-    // Only fade for same-origin page navigations (not anchors, not external)
     if(!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('http') || a.target === '_blank') return;
-    
-    // Check if link points to an anchor on the current page
     try {
       var targetUrl = new URL(a.href, window.location.href);
       if(targetUrl.origin === window.location.origin && targetUrl.pathname === window.location.pathname && targetUrl.hash){
-        return; // Allow smooth anchor scroll without page reload
+        return;
       }
     } catch(err){}
 
@@ -181,9 +201,7 @@ import { initIvyGrowth } from './ivy-growth.js';
     setTimeout(function(){ window.location.href = href; }, 210);
   });
 
-  /* ---------- tick / cross deck ----------
-     only present on the homepage — Sprint and Lab Notebook don't have it, so
-     the whole block is gated on deckCard existing rather than assuming it. */
+  /* ---------- Tick / Cross Deck ---------- */
   var deckCard = document.getElementById('deckCard');
   if(deckCard){
     var problems = [
@@ -212,7 +230,8 @@ import { initIvyGrowth } from './ivy-growth.js';
     var swipe = function(dir){
       if(deckBusy) return;
       if(dir==='check') ticks++; else crosses++;
-      tickCountEl.textContent = ticks; crossCountEl.textContent = crosses;
+      if(tickCountEl) tickCountEl.textContent = ticks;
+      if(crossCountEl) crossCountEl.textContent = crosses;
 
       if(reduced){
         di++; paintDeck();
@@ -235,104 +254,87 @@ import { initIvyGrowth } from './ivy-growth.js';
         }
       });
     };
-    document.getElementById('deckCheck').addEventListener('click', function(){ swipe('check'); });
-    document.getElementById('deckCross').addEventListener('click', function(){ swipe('cross'); });
+    var btnCheck = document.getElementById('deckCheck');
+    var btnCross = document.getElementById('deckCross');
+    btnCheck && btnCheck.addEventListener('click', function(){ swipe('check'); });
+    btnCross && btnCross.addEventListener('click', function(){ swipe('cross'); });
   }
 
-  /* ---------- keychain charms ----------
-     the expand/collapse is pure CSS now (grid-template-rows in style.css) —
-     it used to tween height/margin directly via anime.js, which are layout
-     properties and repaint every frame instead of compositing on the GPU. */
+  /* ---------- Keychain Charms ---------- */
   document.querySelectorAll('[data-charm]').forEach(function(ch){
     function toggle(){ ch.classList.toggle('open'); }
     ch.addEventListener('click', toggle);
     ch.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
   });
 
-  /* ---------- for-tabs (persona cards) ---------- */
-  document.querySelectorAll('.tab-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('.tab-btn').forEach(function(b){ b.setAttribute('aria-selected','false'); });
-      btn.setAttribute('aria-selected','true');
-      var target = btn.getAttribute('data-tab');
-      document.querySelectorAll('.persona-card').forEach(function(card){
-        var isActive = card.getAttribute('data-persona') === target;
-        card.setAttribute('data-active', isActive ? 'true' : 'false');
+  /* ---------- Profile Builder Avatar & Role Picker ---------- */
+  var roleButtons = document.querySelectorAll('.role-pick-btn');
+  var activeAvatarImg = document.getElementById('activeAvatarImg');
+  var profileTagRole = document.getElementById('profileTagRole');
+  var profileTitle = document.getElementById('profileTitle');
+
+  if(roleButtons.length){
+    roleButtons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        roleButtons.forEach(function(b){ b.setAttribute('aria-pressed', 'false'); });
+        btn.setAttribute('aria-pressed', 'true');
+        var avatar = btn.getAttribute('data-avatar');
+        var role = btn.getAttribute('data-role');
+        if(activeAvatarImg && avatar) activeAvatarImg.src = avatar;
+        if(profileTagRole) profileTagRole.textContent = role.charAt(0).toUpperCase() + role.slice(1).replace('-', ' ');
+        if(profileTitle) profileTitle.textContent = 'Active profile configured for ' + (role.charAt(0).toUpperCase() + role.slice(1).replace('-', ' '));
       });
     });
-  });
-
-  /* ---------- apply modal ---------- */
-  var modal = document.getElementById('applyModal');
-  function openModal(){
-    if(!modal) return;
-    if(typeof modal.showModal==='function'){ modal.showModal(); } else { modal.setAttribute('open',''); }
-    modal.classList.remove('closing');
-    requestAnimationFrame(function(){ modal.classList.add('is-open'); });
   }
-  function closeModal(){
-    if(!modal || (!modal.classList.contains('is-open') && !modal.hasAttribute('open'))) return;
-    modal.classList.remove('is-open');
-    var finish = function(){
-      modal.classList.remove('closing');
-      if(typeof modal.close==='function'){ modal.close(); } else { modal.removeAttribute('open'); }
-    };
-    if(reduced){ finish(); return; }
-    modal.classList.add('closing');
-    setTimeout(finish, 160);
-  }
-  ['openApply','openApplyGhost','heroApply','finaleApply','openApplySprint','openApplyNotebook','openApplyMatch'].forEach(function(id){
-    var el = document.getElementById(id);
-    el && el.addEventListener('click', openModal);
-  });
-  var closeApplyBtn = document.getElementById('closeApply');
-  closeApplyBtn && closeApplyBtn.addEventListener('click', closeModal);
-  var notYetBtn = document.getElementById('notYet');
-  notYetBtn && notYetBtn.addEventListener('click', function(){ showToast("no rush — the sapling will still be here."); });
-  modal && modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
 
-  /* ---------- application drawer (bottom sheet for shovel / build calls) ---------- */
-  var drawer = document.getElementById('appDrawer');
-  var drawerBackdrop = document.getElementById('drawerBackdrop');
-  var drawerClose = document.getElementById('closeDrawer');
+  /* ---------- Application Drawer / Bottom Sheet ---------- */
+  var appDrawer = document.getElementById('appDrawer');
+  var appDrawerBackdrop = document.getElementById('drawerBackdrop');
+  var appDrawerClose = document.getElementById('closeDrawer');
   var drawerTitle = document.getElementById('drawerTitle');
   var drawerSub = document.getElementById('drawerSub');
 
-  function openDrawer(callTitle, callDomain){
-    if(!drawer || !drawerBackdrop) { openModal(); return; }
+  function openAppDrawer(callTitle, callDomain){
+    if(!appDrawer || !appDrawerBackdrop) return;
     if(callTitle && drawerTitle) drawerTitle.textContent = callTitle;
     if(callDomain && drawerSub) drawerSub.textContent = callDomain;
-    drawerBackdrop.classList.add('is-open');
-    drawer.classList.remove('closing');
-    requestAnimationFrame(function(){ drawer.classList.add('is-open'); });
+    appDrawerBackdrop.classList.add('is-open');
+    appDrawer.classList.remove('closing');
+    requestAnimationFrame(function(){ appDrawer.classList.add('is-open'); });
   }
-  function closeDrawer(){
-    if(!drawer || !drawerBackdrop) return;
-    drawer.classList.remove('is-open');
-    drawerBackdrop.classList.remove('is-open');
-    drawer.classList.add('closing');
-    setTimeout(function(){ drawer.classList.remove('closing'); }, 240);
+  function closeAppDrawer(){
+    if(!appDrawer || !appDrawerBackdrop) return;
+    appDrawer.classList.remove('is-open');
+    appDrawerBackdrop.classList.remove('is-open');
+    appDrawer.classList.add('closing');
+    setTimeout(function(){ appDrawer.classList.remove('closing'); }, 240);
   }
-  drawerClose && drawerClose.addEventListener('click', closeDrawer);
-  drawerBackdrop && drawerBackdrop.addEventListener('click', closeDrawer);
+  appDrawerClose && appDrawerClose.addEventListener('click', closeAppDrawer);
 
-  var drawerForm = document.getElementById('appDrawerForm');
-  drawerForm && drawerForm.addEventListener('submit', function(e){
+  var appDrawerForm = document.getElementById('appDrawerForm');
+  appDrawerForm && appDrawerForm.addEventListener('submit', function(e){
     e.preventDefault();
-    var note = this.querySelector('textarea') ? this.querySelector('textarea').value : '';
-    try {
-      sessionStorage.setItem('canopy_draft_note', note);
-    } catch(err){}
-    closeDrawer();
+    closeAppDrawer();
     var isNotebook = window.location.pathname.indexOf('notebook') !== -1 || (drawerTitle && drawerTitle.textContent.indexOf('Notebook') !== -1);
     var toastMsg = isNotebook 
-      ? '🌱 Entry planted in your Lab Notebook — grown into the Library.'
-      : '🌱 Shovel note planted — sent to the project poster.';
+      ? '🌱 Entry planted in your Lab Notebook: added to library.'
+      : '🌱 Shovel note planted: sent to project lead.';
     showToast(toastMsg);
     this.reset();
   });
 
-  /* pill groups */
+  /* ---------- Toast Messenger ---------- */
+  var toast = document.getElementById('toast');
+  var toastTimer;
+  function showToast(msg){
+    if(!toast) return;
+    toast.textContent = msg || '🌱 Application planted: we will be in touch soon.';
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 3200);
+  }
+
+  /* ---------- Interactive Pill Groups ---------- */
   document.querySelectorAll('.pill-group').forEach(function(group){
     var single = group.getAttribute('data-single') === 'true';
     group.querySelectorAll('.pill').forEach(function(pill){
@@ -347,27 +349,7 @@ import { initIvyGrowth } from './ivy-growth.js';
     });
   });
 
-  var toast = document.getElementById('toast');
-  var toastTimer;
-  function showToast(msg){
-    if(!toast) return;
-    toast.textContent = msg || '🌱 Application planted — we\'ll be in touch soon.';
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 3200);
-  }
-
-  var applyForm = document.getElementById('applyForm');
-  applyForm && applyForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    closeModal();
-    showToast();
-    this.reset();
-    document.querySelectorAll('.pill').forEach(function(p){ p.setAttribute('aria-pressed','false'); });
-  });
-
-
-  /* ---------- workspace pages (Match / Sprint / Lab Notebook) ---------- */
+  /* ---------- Generative Avatars ---------- */
   function hashStr(str){
     var h = 0;
     for(var i=0; i<str.length; i++){ h = (h << 5) - h + str.charCodeAt(i); h |= 0; }
@@ -393,7 +375,7 @@ import { initIvyGrowth } from './ivy-growth.js';
     el.style.setProperty('--a-angle', (h % 360) + 'deg');
   });
 
-  /* sprint clock rings */
+  /* ---------- Sprint Clock Rings ---------- */
   var CLOCK_R = 15, CLOCK_C = 2 * Math.PI * CLOCK_R;
   document.querySelectorAll('.clock-ring').forEach(function(svg){
     var fill = svg.querySelector('circle.fill');
@@ -414,7 +396,7 @@ import { initIvyGrowth } from './ivy-growth.js';
     clockObs.observe(svg);
   });
 
-  /* domain filter chips */
+  /* ---------- Domain Filter Chips ---------- */
   document.querySelectorAll('.filter-row').forEach(function(row){
     var gridSel = row.getAttribute('data-filters-for');
     var grid = gridSel ? document.querySelector(gridSel) : null;
@@ -446,27 +428,19 @@ import { initIvyGrowth } from './ivy-growth.js';
     });
   });
 
-  /* shovel / compose triggers */
-  document.querySelectorAll('.shovel-btn').forEach(function(btn){
-    btn.addEventListener('click', function(e){
+  /* ---------- Shovel & Compose Triggers ---------- */
+  document.querySelectorAll('.shovel-btn:not([href])').forEach(function(btn){
+    btn.addEventListener('click', function(){
       var card = btn.closest('.match-card, .sprint-card');
       var name = card ? (card.querySelector('.name, h4') ? card.querySelector('.name, h4').textContent : '') : '';
       var domain = card ? (card.getAttribute('data-domain') || '') : '';
-      if(drawer) {
-        openDrawer(name, domain ? 'Domain · ' + domain.toUpperCase() : '');
-      } else {
-        openModal();
-      }
+      openAppDrawer(name, domain ? 'Domain · ' + domain.toUpperCase() : '');
     });
   });
 
   document.querySelectorAll('.compose-trigger').forEach(function(btn){
     btn.addEventListener('click', function(){
-      if(drawer){
-        openDrawer('Compose Lab Notebook Entry', 'Document your process, snippets, or findings');
-      } else {
-        openModal();
-      }
+      openAppDrawer('Compose Lab Notebook Entry', 'Document your process, snippets, or findings');
     });
   });
 })();

@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Page not found - Canopy</title>
-<meta name="robots" content="noindex">
+<title>Apply to Canopy - Join the Sandbox</title>
+<meta name="description" content="Apply to Canopy. Form a profile with your domain, skills, and collaboration style to match with intentional teams.">
+<link rel="canonical" href="https://canopy.earth/apply.html">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
@@ -29,7 +30,7 @@
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
       <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
-      <a class="btn btn-stamp btn-sm" href="apply.html">Apply to Canopy</a>
+      <a class="btn btn-stamp btn-sm" href="apply.html" aria-current="page">Apply to Canopy</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -84,25 +85,67 @@
 </aside>
 
 <main id="top">
-<div class="wrap" style="padding:110px clamp(18px,5vw,56px) 130px; text-align:center;">
-  <svg viewBox="0 0 140 150" width="120" height="128" style="margin:0 auto 28px; display:block;" aria-hidden="true">
-    <g transform="rotate(-14 70 110)">
-      <path d="M40 108 L100 108 L92 78 L48 78 Z" fill="var(--forest-deep)"/>
-      <rect x="36" y="70" width="68" height="12" rx="4" fill="var(--forest)"/>
-      <ellipse cx="70" cy="74" rx="26" ry="5" fill="#3a2c1c"/>
-    </g>
-    <path d="M70 78 C70 60 92 52 100 34" stroke="var(--card-edge)" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="2 9"/>
-    <text x="96" y="30" font-family="'Caveat Var',cursive" font-size="22" fill="var(--coral)" transform="rotate(8 96 30)">gone looking</text>
-  </svg>
-  <span class="kicker">error 404</span>
-  <h1 style="font-size:clamp(1.8rem,3.4vw,2.4rem); margin-top:10px; max-width:26ch; margin-left:auto; margin-right:auto;">Nothing is growing at this address.</h1>
-  <p class="lede" style="margin-left:auto; margin-right:auto; margin-top:14px;">The page you are looking for either moved, never sprouted, or the link is just a little overgrown. Let us get you back to solid soil.</p>
-  <div class="hero-ctas" style="justify-content:center; margin-top:32px;">
-    <a class="btn btn-stamp" href="/">Back to Canopy</a>
-    <a class="btn btn-ghost" href="/#problem">See how it works</a>
+<div class="stage" style="max-width:720px;">
+  <div class="stage-head reveal">
+    <span class="kicker" style="font-size:1.15rem;">Sandbox Membership</span>
+    <h1 style="font-size:clamp(2rem,3.8vw,2.8rem);margin-top:4px;">Yes, plant me into Canopy</h1>
+    <p class="lede">A few honest lines beat a long resume. Takes about ninety seconds to build your verified collaborator profile.</p>
+  </div>
+
+  <div class="elevated-card paper-card" style="padding:36px clamp(20px,5vw,40px);border-radius:14px;margin-top:24px;">
+    <form id="fullApplyForm" style="display:flex;flex-direction:column;gap:22px;">
+      <div class="field">
+        <label for="appName" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Full Name or Handle</label>
+        <input type="text" id="appName" required placeholder="e.g. Elena Rostova" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div class="field">
+        <label for="appEmail" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Email Address (for sprint confirmation)</label>
+        <input type="email" id="appEmail" required placeholder="elena@domain.org" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div class="field">
+        <label style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Your Community Role</label>
+        <div class="pill-group" data-group="role" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
+          <button type="button" class="pill" aria-pressed="true">Builder</button>
+          <button type="button" class="pill" aria-pressed="false">Problem Holder</button>
+          <button type="button" class="pill" aria-pressed="false">Enabler</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Domain Focus</label>
+        <div class="pill-group" data-group="domain" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
+          <button type="button" class="pill" aria-pressed="true">Climate</button>
+          <button type="button" class="pill" aria-pressed="false">Health</button>
+          <button type="button" class="pill" aria-pressed="false">Education</button>
+          <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
+          <button type="button" class="pill" aria-pressed="false">Hardware</button>
+          <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+          <button type="button" class="pill" aria-pressed="false">Design</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="appLink" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Link to something you have built or written</label>
+        <input type="text" id="appLink" placeholder="GitHub, portfolio, writeup, or repo URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div class="field">
+        <label for="appNote" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">What would you bring to a 2 to 4 week sprint?</label>
+        <textarea id="appNote" required rows="3" placeholder="Tell us about your specific technical skills or domain questions..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:inherit;"></textarea>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:16px;border-top:1px solid var(--line);">
+        <span style="font-size:0.8rem;color:var(--ink-faint);">Generates your verified sandbox avatar</span>
+        <button type="submit" class="btn btn-stamp">Plant My Profile →</button>
+      </div>
+    </form>
   </div>
 </div>
 </main>
+
+<div class="toast" id="toast">🌱 Application planted: welcome to Canopy.</div>
 
 <!-- ============ FOOTER ============ -->
 <footer>
@@ -155,5 +198,31 @@
 </footer>
 
 <script type="module" src="/src/main.js"></script>
+<script type="module">
+  import { db } from '/src/db.js';
+  const form = document.getElementById('fullApplyForm');
+  const toast = document.getElementById('toast');
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('appName').value;
+      const email = document.getElementById('appEmail').value;
+      const link = document.getElementById('appLink').value;
+      const note = document.getElementById('appNote').value;
+      const rolePill = form.querySelector('[data-group="role"] .pill[aria-pressed="true"]');
+      const domainPill = form.querySelector('[data-group="domain"] .pill[aria-pressed="true"]');
+      const role = rolePill ? rolePill.textContent : 'Builder';
+      const domain = domainPill ? domainPill.textContent : 'Climate';
+
+      await db.submitApplication({ name, email, role, domain, link, note });
+      db.saveProfile({ name, email, role, domain });
+      toast.textContent = '🌱 Application planted: profile saved.';
+      toast.classList.add('show');
+      setTimeout(() => {
+        window.location.href = 'match.html';
+      }, 1500);
+    });
+  }
+</script>
 </body>
 </html>

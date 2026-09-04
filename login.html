@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In / Verify - Canopy</title>
+<meta name="description" content="Access your Canopy sandbox account, verify email, and manage active sprints.">
+<link rel="canonical" href="https://canopy.earth/login.html">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body class="interior-page">
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+    <a class="logo" href="/" aria-label="Canopy home">
+      <div class="logo-main">
+        <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
+        CANOPY
+      </div>
+      <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="/#problem">About</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
+      <a class="btn btn-stamp btn-sm" href="apply.html">Apply to Canopy</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ THREE-LINE CORNER DRAWER ============ -->
+<div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+<aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
+  <div class="nav-drawer-header">
+    <span class="nav-drawer-logo">Canopy</span>
+    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
+  </div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Workspace Tools</span>
+    <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
+    <a href="sprint.html" class="nav-drawer-link">Active Sprints</a>
+    <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Community Roles</span>
+    <a href="builders.html" class="nav-drawer-link">
+      <img src="/avatars/builders.png" alt="" class="drawer-avatar">
+      For Builders
+    </a>
+    <a href="problem-holders.html" class="nav-drawer-link">
+      <img src="/avatars/problem%20holders.png" alt="" class="drawer-avatar">
+      For Problem Holders
+    </a>
+    <a href="enablers.html" class="nav-drawer-link">
+      <img src="/avatars/enablers.png" alt="" class="drawer-avatar">
+      For Enablers
+    </a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Intake &amp; Membership</span>
+    <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
+    <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
+    <a href="login.html" class="nav-drawer-link">Sign In / Verify</a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section" style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <span>Theme</span>
+    </button>
+    <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+  </div>
+</aside>
+
+<main id="top">
+<div class="stage" style="max-width:520px;">
+  <div class="stage-head reveal" style="text-align:center;">
+    <span class="kicker" style="font-size:1.15rem;">Verified Membership</span>
+    <h1 style="font-size:clamp(1.9rem,3.4vw,2.5rem);margin-top:4px;">Sign in to Canopy</h1>
+    <p class="lede" style="margin:8px auto 0;">Authenticate with your verified email to track Build Calls and active sprint repositories.</p>
+  </div>
+
+  <div class="elevated-card paper-card" style="padding:32px clamp(18px,4vw,34px);border-radius:14px;margin-top:24px;">
+    <!-- Tab Toggle -->
+    <div style="display:flex;border-bottom:1px solid var(--line);margin-bottom:24px;">
+      <button type="button" id="tabSignIn" class="btn btn-ghost btn-sm" style="flex:1;border:none;border-bottom:2px solid var(--forest);border-radius:0;font-weight:700;color:var(--forest);">Sign In</button>
+      <button type="button" id="tabSignUp" class="btn btn-ghost btn-sm" style="flex:1;border:none;border-bottom:2px solid transparent;border-radius:0;color:var(--ink-soft);">Register &amp; Verify</button>
+    </div>
+
+    <!-- Sign In Form -->
+    <form id="signInForm" style="display:flex;flex-direction:column;gap:18px;">
+      <div class="field">
+        <label for="loginEmail" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Registered Email</label>
+        <input type="email" id="loginEmail" required placeholder="name@domain.org" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div class="field">
+        <label for="loginPassword" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Password</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <button type="submit" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:6px;">Sign In to Dashboard →</button>
+    </form>
+
+    <!-- Sign Up Form (hidden by default) -->
+    <form id="signUpForm" style="display:none;flex-direction:column;gap:18px;">
+      <div class="field">
+        <label for="regEmail" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Email Address</label>
+        <input type="email" id="regEmail" required placeholder="your.name@domain.org" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div class="field">
+        <label for="regPassword" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Create Password</label>
+        <input type="password" id="regPassword" required placeholder="Minimum 8 characters" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <button type="submit" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:6px;">Send Verification Code →</button>
+    </form>
+
+    <!-- OTP Form (hidden by default) -->
+    <div id="otpSection" style="display:none;margin-top:20px;padding-top:20px;border-top:1px dashed var(--line);">
+      <h4 style="font-size:1.05rem;margin-bottom:6px;">Enter 6-Character Code</h4>
+      <p style="font-size:0.85rem;color:var(--ink-soft);margin-bottom:14px;" id="otpNotice">A verification token has been dispatched.</p>
+      <div style="display:flex;gap:10px;">
+        <input type="text" id="otpInput" maxlength="6" placeholder="e.g. 123456" style="flex:1;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;text-align:center;">
+        <button type="button" id="verifyBtn" class="btn btn-stamp btn-sm">Verify</button>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<div class="toast" id="toast">🌱 Welcome to Canopy.</div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="footer-logo">
+        <svg viewBox="0 0 40 44" fill="none" width="40" height="44" aria-hidden="true">
+          <path d="M20 44V24" stroke="var(--sun)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M20 26C20 26 4 24 5 6C20 6 20 26 20 26Z" fill="var(--leaf)"/>
+          <path d="M20 19C20 19 36 16 35 2C20 3 20 19 20 19Z" fill="var(--sun)"/>
+        </svg>
+        <div class="footer-logo-text">
+          <span class="footer-logo-name">CANOPY</span>
+          <span class="footer-logo-sub">Build · Connect · Ship</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
+        <img src="/avatars/rooted in purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
+        <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
+      </div>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a href="builders.html">For Builders</a>
+      <a href="problem-holders.html">For Problem Holders</a>
+      <a href="enablers.html">For Enablers</a>
+      <a href="post-call.html">Post a Build Call</a>
+      <a href="apply.html">Apply to Canopy</a>
+    </div>
+    <div>
+      <h5>The Loop</h5>
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="/#problem">The Gap</a>
+      <a href="login.html">Sign In / Account</a>
+    </div>
+    <div>
+      <h5>Legal &amp; Connect</h5>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms and Conditions</a>
+      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
+    <span>© 2026 Canopy. All rights reserved.</span>
+  </div>
+</footer>
+
+<script type="module" src="/src/main.js"></script>
+<script type="module">
+  import { auth } from '/src/db.js';
+  const tabSignIn = document.getElementById('tabSignIn');
+  const tabSignUp = document.getElementById('tabSignUp');
+  const signInForm = document.getElementById('signInForm');
+  const signUpForm = document.getElementById('signUpForm');
+  const otpSection = document.getElementById('otpSection');
+  const otpNotice = document.getElementById('otpNotice');
+  const otpInput = document.getElementById('otpInput');
+  const verifyBtn = document.getElementById('verifyBtn');
+  const toast = document.getElementById('toast');
+
+  let pendingEmail = '';
+
+  tabSignIn.addEventListener('click', () => {
+    tabSignIn.style.borderBottomColor = 'var(--forest)';
+    tabSignIn.style.color = 'var(--forest)';
+    tabSignUp.style.borderBottomColor = 'transparent';
+    tabSignUp.style.color = 'var(--ink-soft)';
+    signInForm.style.display = 'flex';
+    signUpForm.style.display = 'none';
+  });
+
+  tabSignUp.addEventListener('click', () => {
+    tabSignUp.style.borderBottomColor = 'var(--forest)';
+    tabSignUp.style.color = 'var(--forest)';
+    tabSignIn.style.borderBottomColor = 'transparent';
+    tabSignIn.style.color = 'var(--ink-soft)';
+    signUpForm.style.display = 'flex';
+    signInForm.style.display = 'none';
+  });
+
+  signInForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const pwd = document.getElementById('loginPassword').value;
+    try {
+      const res = await auth.signIn(email, pwd);
+      toast.textContent = '🌱 Signed in: welcome back.';
+      toast.classList.add('show');
+      setTimeout(() => { window.location.href = 'match.html'; }, 1200);
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
+  signUpForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    pendingEmail = document.getElementById('regEmail').value;
+    const pwd = document.getElementById('regPassword').value;
+    try {
+      const res = await auth.signUp(pendingEmail, pwd);
+      otpSection.style.display = 'block';
+      if (res.verificationNotice) {
+        otpNotice.textContent = res.verificationNotice;
+      }
+      toast.textContent = '🌱 Verification code dispatched.';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
+  verifyBtn.addEventListener('click', async () => {
+    const token = otpInput.value.trim();
+    try {
+      await auth.verifyOtp(pendingEmail, token);
+      toast.textContent = '🌱 Email verified: account active.';
+      toast.classList.add('show');
+      setTimeout(() => { window.location.href = 'match.html'; }, 1200);
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+</script>
+</body>
+</html>

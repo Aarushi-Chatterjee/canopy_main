@@ -3,35 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Canopy — Find your teammates, not just your matches</title>
-<meta name="description" content="Canopy is the sandbox where builders, problem holders, and enablers find each other and ship real things — match with a real note instead of a swipe, sprint on a real deadline, and walk away with something built.">
+<title>Canopy - Find your teammates, not just your matches</title>
+<meta name="description" content="Canopy is the sandbox where builders, problem holders, and enablers find each other and ship real things: match with a real note instead of a swipe, sprint on a real deadline, and walk away with something built.">
 <link rel="canonical" href="https://canopy.earth/">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Canopy">
 <meta property="og:url" content="https://canopy.earth/">
-<meta property="og:title" content="Canopy — Find your teammates, not just your matches">
+<meta property="og:title" content="Canopy - Find your teammates, not just your matches">
 <meta property="og:description" content="If we can find love online, why not teammates? Match with intent, sprint with a team, and ship something real. No swipes. No noise.">
 <meta property="og:image" content="https://canopy.earth/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Canopy — Find your teammates, not just your matches">
+<meta name="twitter:title" content="Canopy - Find your teammates, not just your matches">
 <meta name="twitter:description" content="If we can find love online, why not teammates? Match with intent, sprint with a team, and ship something real.">
 <meta name="twitter:image" content="https://canopy.earth/og-image.png">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
 
-
 <!-- ============ HEADER ============ -->
 <header>
   <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
-    <a class="logo" href="#top" aria-label="Canopy home">
+    <a class="logo" href="/" aria-label="Canopy home">
       <div class="logo-main">
         <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
         CANOPY
@@ -39,73 +37,132 @@
       <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
-      <a href="#problem">The Gap</a>
-      <a href="#solution">How it Works</a>
       <a href="match.html">Match</a>
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
-      <a href="#for">Who it's For</a>
-      <a href="#connect">Connect</a>
+      <a href="#problem">About</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
-      <button class="btn btn-ghost btn-sm" id="openApplyGhost">Post a Build Call</button>
-      <button class="btn btn-stamp btn-sm" id="openApply">Apply to Canopy</button>
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
+      <a class="btn btn-stamp btn-sm" href="apply.html">Apply to Canopy</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
 
+<!-- ============ THREE-LINE CORNER DRAWER ============ -->
+<div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+<aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
+  <div class="nav-drawer-header">
+    <span class="nav-drawer-logo">Canopy</span>
+    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
+  </div>
+
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Workspace Tools</span>
+    <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
+    <a href="sprint.html" class="nav-drawer-link">Active Sprints</a>
+    <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
+  </div>
+
+  <div class="nav-drawer-divider"></div>
+
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Community Roles</span>
+    <a href="builders.html" class="nav-drawer-link">
+      <img src="/avatars/builders.png" alt="" class="drawer-avatar">
+      For Builders
+    </a>
+    <a href="problem-holders.html" class="nav-drawer-link">
+      <img src="/avatars/problem%20holders.png" alt="" class="drawer-avatar">
+      For Problem Holders
+    </a>
+    <a href="enablers.html" class="nav-drawer-link">
+      <img src="/avatars/enablers.png" alt="" class="drawer-avatar">
+      For Enablers
+    </a>
+  </div>
+
+  <div class="nav-drawer-divider"></div>
+
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Intake &amp; Membership</span>
+    <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
+    <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
+    <a href="login.html" class="nav-drawer-link">Sign In / Verify</a>
+  </div>
+
+  <div class="nav-drawer-divider"></div>
+
+  <div class="nav-drawer-section" style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <span>Theme</span>
+    </button>
+    <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+  </div>
+</aside>
+
 <main id="top">
-<!-- Ambient Background Fluid Plate (inspired by shadergradient) -->
+<!-- Ambient Background Fluid Plate (WebGL canvas) -->
 <canvas id="ambientPlateCanvas" aria-hidden="true"></canvas>
 
+<!-- ============ 3-LAYER FULL-BLEED HERO ============ -->
 <section class="hero">
-  <div class="wrap hero-grid">
-    <div class="reveal in-view">
+  <!-- Layer 0: Full-Bleed Animated Background Clip Sequence -->
+  <div class="hero-bg-stage" id="heroBgStage" aria-hidden="true">
+    <div class="hero-bg-clip active" id="heroBgClip1">
+      <img src="/frames/frame-1-seed.jpg" alt="" draggable="false" />
+    </div>
+    <div class="hero-bg-clip" id="heroBgClip2">
+      <img src="/frames/frame-2-watering.jpg" alt="" draggable="false" />
+    </div>
+    <div class="hero-bg-clip" id="heroBgClip3">
+      <img src="/frames/frame-3-sapling.jpg" alt="" draggable="false" />
+    </div>
+    <div class="hero-bg-clip" id="heroBgClip4">
+      <img src="/frames/frame-4-canopy.jpg" alt="" draggable="false" />
+    </div>
+  </div>
+
+  <!-- Layer 1: Directional Scrim for Contrast -->
+  <div class="hero-scrim" aria-hidden="true"></div>
+
+  <!-- Layer 2: Foreground Content -->
+  <div class="hero-content">
+    <div class="hero-copy reveal in-view">
       <span class="eyebrow">✎ a field application sandbox</span>
       <h1>If we can find love online,<br>why not <em>teammates?</em></h1>
       <p class="hero-sub">Canopy is where builders, problem holders, and enablers come together and turn ideas into things that actually ship.</p>
       <p class="hero-sub" style="margin-top:10px;font-size:1.02rem;">Across AI, hardware, design, research, and everything between.</p>
-      <div class="hero-hook">The right teammate changes everything — not just what gets built, but whether it gets built at all. Canopy is where that match happens.</div>
+      <div class="hero-hook">The right teammate changes everything: not just what gets built, but whether it gets built at all. Canopy is where that match happens.</div>
       <div class="hero-ctas">
-        <button class="btn btn-stamp" id="heroApply">Join the Canopy</button>
+        <a class="btn btn-stamp" href="apply.html">Join the Canopy</a>
         <a class="btn btn-ghost" href="#solution">See how it grows ↓</a>
       </div>
-    </div>
 
-    <div class="scene reveal in-view">
-      <div class="hero-clip-stage" id="heroClipStage" aria-hidden="true">
-        <div class="hero-clip active" id="heroClip1">
-          <img src="/frames/frame-1-seed.jpg" alt="" draggable="false" />
-        </div>
-        <div class="hero-clip" id="heroClip2">
-          <img src="/frames/frame-2-watering.jpg" alt="" draggable="false" />
-        </div>
-        <div class="hero-clip" id="heroClip3">
-          <img src="/frames/frame-3-sapling.jpg" alt="" draggable="false" />
-        </div>
-        <div class="hero-clip" id="heroClip4">
-          <img src="/frames/frame-4-canopy.jpg" alt="" draggable="false" />
-        </div>
-      </div>
-      <div class="hero-clip-badge" id="heroClipBadge">
+      <div class="hero-clip-badge" id="heroClipBadge" style="margin-top:28px;">
         <span class="stage-dot"></span>
         <span class="stage-text">an idea, unplanted</span>
       </div>
     </div>
   </div>
-
-  <div class="wrap hero-caption-row">
-    <div class="snapshot alone reveal in-view">
-      <b>Alone in the tab maze</b>
-      one more DM into the void, one more brilliant idea with nobody to build it with.
-    </div>
-    <div class="snapshot together reveal in-view">
-      <b>Surrounded, and shipping</b>
-      the same builder, three sprints later — a team, a prototype, and a deadline that actually mattered.
-    </div>
-  </div>
 </section>
+
+<!-- Snapshot callouts below hero -->
+<div class="wrap hero-caption-row" style="margin-top:24px;">
+  <div class="snapshot alone reveal in-view">
+    <b>Alone in the tab maze</b>
+    one more DM into the void, one more brilliant idea with nobody to build it with.
+  </div>
+  <div class="snapshot together reveal in-view">
+    <b>Surrounded, and shipping</b>
+    the same builder, three sprints later: a team, a prototype, and a deadline that actually mattered.
+  </div>
+</div>
+
 
 <!-- ============ CONTENT WRAPPER: PROBLEM → FINALE ============ -->
 <div class="content-track" id="contentTrack">
@@ -129,7 +186,7 @@
       </div>
       <div class="vine-note paper-card torn" data-note>
         <div class="role"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg> Designer</div>
-        <p>"I'm craving a real project — not another fake case study for my portfolio."</p>
+        <p>"I'm craving a real project: not another case study for my portfolio."</p>
       </div>
       <div class="vine-note paper-card torn" data-note>
         <div class="role"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg> Hardware Engineer</div>
@@ -141,7 +198,7 @@
       </div>
       <div class="vine-note paper-card torn" data-note>
         <div class="role"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg> Researcher</div>
-        <p>"I'm holding deep contextual data and a sharp plan — with no execution path."</p>
+        <p>"I'm holding deep contextual data and a sharp plan, with no execution path."</p>
       </div>
       <div class="vine-note paper-card torn" data-note>
         <div class="role"><svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg> NGO / Lab / Company</div>
@@ -171,7 +228,7 @@
         <div class="step-num">Step 01</div>
         <h3>Match</h3>
         <span class="step-tag script">grab a shovel, not a swipe</span>
-        <p>Build a profile with your domains, skills, and collaboration style, and get a generative avatar — a visual fingerprint of your building identity, not a photo. Browse Build Calls and people, and respond with a short note on what you'd bring. The poster actually reads it before choosing who joins, which is what makes the match feel human instead of automated.</p>
+        <p>Build a profile with your domains, skills, and collaboration style, and get a generative avatar: a visual fingerprint of your building identity, not a photo. Browse Build Calls and people, and respond with a short note on what you'd bring. The poster actually reads it before choosing who joins, which is what makes the match feel human instead of automated.</p>
       </div>
       <div class="step-card paper-card torn reveal">
         <div class="step-icon-wrap">
@@ -181,7 +238,7 @@
         <div class="step-num">Step 02</div>
         <h3>Sprint</h3>
         <span class="step-tag script">the mingle becomes a team</span>
-        <p>Once a team forms, everyone enters a shared workspace: a starter repo, sample data, and a clear two-to-four week deadline. A living sprint clock keeps the gentle pressure of shared momentum on, so the rhythm stays building, checking in, adjusting — the kind of progress a month-long email chain never quite manages.</p>
+        <p>Once a team forms, everyone enters a shared workspace: a starter repo, sample data, and a clear two-to-four week deadline. A living sprint clock keeps the gentle pressure of shared momentum on, so the rhythm stays building, checking in, adjusting: the kind of progress a month-long email chain never quite manages.</p>
       </div>
       <div class="step-card paper-card torn reveal">
         <div class="step-icon-wrap">
@@ -191,7 +248,7 @@
         <div class="step-num">Step 03</div>
         <h3>Notebook</h3>
         <span class="step-tag script">document the digging, not just the win</span>
-        <p>Ship a prototype, a dashboard, or a write-up, then log the process in the open. What worked, what failed, what's next. It grows the Library, grows your presence, and becomes the proof point that attracts the next teammate, funder, or challenge.</p>
+        <p>Ship a prototype, a dashboard, or a write-up, then log the process in the open. What worked, what failed, what is next. It grows the Library, grows your presence, and becomes the proof point that attracts the next teammate, funder, or challenge.</p>
       </div>
     </div>
 
@@ -200,9 +257,9 @@
       <div class="deck-side reveal">
         <span class="kicker">the mingle, in practice</span>
         <h3>Every problem gets a straight answer.</h3>
-        <p>This is the Problem Marketplace — real challenges posted by companies, NGOs, and labs, each with context, data, and a reward. Swipe through with a tick or a cross: an honest read on which problems are worth your next sprint, never a blind match on the people behind them.</p>
+        <p>This is the Problem Marketplace: real challenges posted by companies, NGOs, and labs, each with context, data, and a reward. Review each challenge with a tick or a cross: an honest read on which problems are worth your next sprint, never a blind match on the people behind them.</p>
         <div class="deck-meta">
-          <span><b id="tickCount">0</b> grabbed a shovel</span>
+          <span><b id="tickCount">0</b> interested</span>
           <span><b id="crossCount">0</b> passed for now</span>
         </div>
       </div>
@@ -231,7 +288,7 @@
     <div class="section-head reveal">
       <span class="kicker">a sandbox for builders of every stream</span>
       <h2>One keyring, and everyone on it is missing a different piece.</h2>
-      <p class="lede">Every builder here is missing a different piece: an ML engineer looking for a project finds a founder with a vision; the founder needs a designer; the designer needs a domain expert; the domain expert needs a hardware engineer ready to prototype. Click a tag to see who they're looking for.</p>
+      <p class="lede">Every builder here is missing a different piece: an ML engineer looking for a project finds a founder with a vision; the founder needs a designer; the designer needs a domain expert; the domain expert needs a hardware engineer ready to prototype. Click a tag to see who they are looking for.</p>
     </div>
 
     <div class="keychain reveal" id="keychain">
@@ -286,106 +343,20 @@
       </div>
     </div>
 
-    <!-- Persona tab strip -->
-    <div class="for-tabs" role="tablist" aria-label="Who Canopy is for">
-      <button class="tab-btn" role="tab" aria-selected="true" data-tab="builders">
-        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2L3 7v11h5v-5h4v5h5V7L10 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-        For Builders
-      </button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-tab="holders">
-        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M10 6v5l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        For Problem Holders
-      </button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-tab="enablers">
-        <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6L10 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-        For Enablers
-      </button>
-    </div>
-
-    <!-- Rich 3-card persona grid -->
-    <div class="persona-grid">
-
-      <div class="persona-card" data-persona="builders" data-active="true">
-        <div class="persona-accent" style="--accent-color:var(--leaf);"></div>
-        <div class="persona-icon" style="--icon-bg:rgba(95,154,76,.12); --icon-color:var(--leaf);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3-3a1 1 0 0 0-1.4-1.4L19 6.2l-.9-.9a1 1 0 0 0-1.4 0l-2 1Z" fill="currentColor" opacity=".4"/>
-            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25Zm17.71-10.46a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83Z" fill="currentColor"/>
-          </svg>
-        </div>
-        <div class="persona-label">Builder</div>
-        <h3 class="persona-headline">Ship skills on something real</h3>
-        <p class="persona-body">Post a Build Call for your own idea, or browse challenges that need your exact skills. Smart matching suggests collaborators by skill, domain, and intent.</p>
-        <ul class="persona-actions">
-          <li>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Post a Build Call
-          </li>
-          <li>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Browse open challenges
-          </li>
-          <li>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Get matched by skill &amp; intent
-          </li>
-        </ul>
-      </div>
-
-      <div class="persona-card" data-persona="holders">
-        <div class="persona-accent" style="--accent-color:var(--teal);"></div>
-        <div class="persona-icon" style="--icon-bg:rgba(126,170,179,.12); --icon-color:var(--teal);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2Z" fill="currentColor" opacity=".15"/>
-            <path d="M11 7h2v6h-2V7Zm0 8h2v2h-2v-2Z" fill="currentColor"/>
-          </svg>
-        </div>
-        <div class="persona-label">Problem Holder</div>
-        <h3 class="persona-headline">Turn your challenge into a prototype</h3>
-        <p class="persona-body">Post your problem with context, data, and a reward. Get rapid prototypes without procurement overhead, from builders who've already demonstrated they ship.</p>
-        <ul class="persona-actions">
-          <li>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Post to the Problem Marketplace
-          </li>
-          <li>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Set a cash prize or paid pilot
-          </li>
-          <li>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Review curated prototype submissions
-          </li>
-        </ul>
-      </div>
-
-      <div class="persona-card" data-persona="enablers">
-        <div class="persona-accent" style="--accent-color:var(--sun);"></div>
-        <div class="persona-icon" style="--icon-bg:rgba(227,178,63,.12); --icon-color:var(--sun);">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2Z" fill="currentColor" opacity=".25"/>
-            <path d="M12 5.5l1.6 5H19l-4.1 3 1.6 4.9L12 15.4l-4.5 3 1.6-4.9-4.1-3h5.4L12 5.5Z" fill="currentColor"/>
-          </svg>
-        </div>
-        <div class="persona-label">Enabler</div>
-        <h3 class="persona-headline">Scout teams before they raise</h3>
-        <p class="persona-body">Browse the Library for shipped proof, sponsor challenges or mentorship, and get early access to high-performing teams. A working prototype tells you more than a forecast slide.</p>
-        <ul class="persona-actions">
-          <li>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Browse the Proof Library
-          </li>
-          <li>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Sponsor a Build Sprint
-          </li>
-          <li>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Get deal flow with proof attached
-          </li>
-        </ul>
-      </div>
-
+    <!-- Community Role Hub with Dedicated Page Navigation -->
+    <div class="role-hub-row reveal">
+      <a href="builders.html" class="role-hub-link">
+        <img src="/avatars/builders.png" alt="Builders Avatar">
+        <span>For Builders: Ship with a Team →</span>
+      </a>
+      <a href="problem-holders.html" class="role-hub-link">
+        <img src="/avatars/problem%20holders.png" alt="Problem Holders Avatar">
+        <span>For Problem Holders: Post a Challenge →</span>
+      </a>
+      <a href="enablers.html" class="role-hub-link">
+        <img src="/avatars/enablers.png" alt="Enablers Avatar">
+        <span>For Enablers: Scout &amp; Support →</span>
+      </a>
     </div>
   </div>
 </section>
@@ -393,35 +364,18 @@
 <!-- ---- FINALE ---- -->
 <section class="section finale" id="connect">
   <div class="wrap">
-    <svg class="finale-canopy reveal" viewBox="0 0 240 200" aria-hidden="true">
-      <!-- three figures reaching up as trunk and branches -->
-      <!-- left figure (Builder) -->
-      <circle cx="70" cy="115" r="9" fill="var(--amber)"/>
-      <path d="M55 160 C55 135 68 128 78 135 C88 142 85 175 80 185" stroke="var(--amber)" stroke-width="8" stroke-linecap="round" fill="none"/>
-      <!-- right figure (Problem Holder) -->
-      <circle cx="170" cy="115" r="9" fill="var(--teal)"/>
-      <path d="M185 160 C185 135 172 128 162 135 C152 142 155 175 160 185" stroke="var(--teal)" stroke-width="8" stroke-linecap="round" fill="none"/>
-      <!-- center figure (Enabler / Core Trunk) -->
-      <circle cx="120" cy="90" r="10" fill="var(--forest)"/>
-      <path d="M120 185 L120 108" stroke="var(--forest)" stroke-width="9" stroke-linecap="round"/>
-      <path d="M120 125 C100 110 82 95 65 85" stroke="var(--leaf)" stroke-width="5" stroke-linecap="round" fill="none"/>
-      <path d="M120 125 C140 110 158 95 175 85" stroke="var(--forest)" stroke-width="5" stroke-linecap="round" fill="none"/>
-      <!-- canopy foliage clusters -->
-      <path d="M120 75 C90 55 70 20 100 10 C130 20 135 55 120 75Z" fill="var(--leaf)"/>
-      <path d="M65 80 C40 65 30 30 60 20 C85 30 85 65 65 80Z" fill="var(--leaf-bright)"/>
-      <path d="M175 80 C200 65 210 30 180 20 C155 30 155 65 175 80Z" fill="var(--forest-deep)"/>
-      <path d="M120 40 C105 25 105 5 120 0 C135 5 135 25 120 40Z" fill="var(--leaf-bright)"/>
-    </svg>
+    <div style="display:flex;justify-content:center;margin-bottom:20px;">
+      <img src="/avatars/built on connection.png" alt="Built on Connection" style="width:120px;height:auto;object-fit:contain;" class="reveal">
+    </div>
     <h2>It grew this far because someone kept watering it. Want in?</h2>
-    <p class="lede">The next Build Call, the next sprint, the next shipped prototype — it starts with one honest note about what you'd bring.</p>
+    <p class="lede">The next Build Call, the next sprint, the next shipped prototype: it starts with one honest note about what you'd bring.</p>
 
     <div class="connect-card paper-card torn reveal">
-      <p class="script" style="font-size:1.3rem;color:var(--forest);">so — are you building, or holding a problem?</p>
+      <p class="script" style="font-size:1.3rem;color:var(--forest);">Are you building, or holding a problem?</p>
       <div class="connect-row">
-        <button class="btn btn-stamp" id="finaleApply">Yes, plant me in</button>
-        <button class="btn btn-ghost" id="notYet">Not yet, just looking</button>
+        <a class="btn btn-stamp" href="apply.html">Yes, plant me in</a>
+        <a class="btn btn-ghost" href="match.html">Explore open calls</a>
       </div>
-      <p class="hint-small" style="margin-top:16px;text-align:center;">mockup only — no account is created here</p>
     </div>
   </div>
 </section>
@@ -443,14 +397,18 @@
           <span class="footer-logo-sub">Build · Connect · Ship</span>
         </div>
       </div>
-      <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
+        <img src="/avatars/rooted in purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
+        <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
+      </div>
     </div>
     <div>
       <h5>Explore</h5>
-      <a href="#for">About</a>
-      <a href="#for">For Builders</a>
-      <a href="#for">For Problem Holders</a>
-      <a href="#for">For Enablers</a>
+      <a href="builders.html">For Builders</a>
+      <a href="problem-holders.html">For Problem Holders</a>
+      <a href="enablers.html">For Enablers</a>
+      <a href="post-call.html">Post a Build Call</a>
+      <a href="apply.html">Apply to Canopy</a>
     </div>
     <div>
       <h5>The Loop</h5>
@@ -458,86 +416,25 @@
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
       <a href="#problem">The Gap</a>
+      <a href="login.html">Sign In / Account</a>
     </div>
     <div>
-      <h5>Say hello</h5>
+      <h5>Legal &amp; Connect</h5>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms and Conditions</a>
       <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
-      <a href="#connect">LinkedIn</a>
-      <a href="#connect">Twitter</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
   <div class="foot-bottom">
-    <span>Canopy — Connect. Collaborate. Ship things that matter.</span>
+    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
     <span>© 2026 Canopy. All rights reserved.</span>
   </div>
 </footer>
 
-<!-- ============ APPLY MODAL ============ -->
-<dialog id="applyModal">
-  <span class="tape modal-tape" aria-hidden="true"></span>
-  <div class="modal-head">
-    <div>
-      <h3>Sandbox intake form</h3>
-      <p>A few honest lines beat a long resume. Takes about ninety seconds.</p>
-    </div>
-    <div class="modal-meta">
-      <span class="form-tag">FORM 01 · CANOPY</span>
-      <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
-    </div>
-  </div>
-  <form class="apply-form" id="applyForm">
-    <div class="field">
-      <label for="fName">Name / handle</label>
-      <input type="text" id="fName" name="name" placeholder="e.g. Elena R." required>
-    </div>
-    <div class="field">
-      <label for="fProject">Project you're circling</label>
-      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or &ldquo;still looking&rdquo;">
-    </div>
-    <div class="field">
-      <label>Domain you care about</label>
-      <div class="pill-group" data-group="domain">
-        <button type="button" class="pill" aria-pressed="false">Climate</button>
-        <button type="button" class="pill" aria-pressed="false">Health</button>
-        <button type="button" class="pill" aria-pressed="false">Education</button>
-        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
-        <button type="button" class="pill" aria-pressed="false">Hardware</button>
-        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
-        <button type="button" class="pill" aria-pressed="false">Design</button>
-      </div>
-    </div>
-    <div class="field">
-      <label>Skill level</label>
-      <div class="pill-group" data-group="skill" data-single="true">
-        <button type="button" class="pill" aria-pressed="false">Just starting</button>
-        <button type="button" class="pill" aria-pressed="false">Comfortable</button>
-        <button type="button" class="pill" aria-pressed="false">Advanced</button>
-        <button type="button" class="pill" aria-pressed="false">Domain expert</button>
-      </div>
-    </div>
-    <div class="field">
-      <label for="fLink">Link to something you've built or written</label>
-      <input type="text" id="fLink" name="link" placeholder="URL, optional">
-    </div>
-    <div class="field">
-      <label>What are you looking for</label>
-      <div class="pill-group" data-group="lookingfor" data-single="true">
-        <button type="button" class="pill" aria-pressed="false">A team</button>
-        <button type="button" class="pill" aria-pressed="false">A co-founder</button>
-        <button type="button" class="pill" aria-pressed="false">A problem to solve</button>
-        <button type="button" class="pill" aria-pressed="false">Mentorship</button>
-      </div>
-    </div>
-    <div class="form-foot">
-      <span class="hint-small">no account created — this is a design mockup</span>
-      <button type="submit" class="btn btn-stamp btn-sm">Plant this application</button>
-    </div>
-  </form>
-</dialog>
-
-<div class="toast" id="toast">🌱 Application planted — we'll be in touch soon.</div>
-
+<div class="toast" id="toast">🌱 Application planted: we will be in touch soon.</div>
 
 <script type="module" src="/src/main.js"></script>
 </body>
 </html>
+

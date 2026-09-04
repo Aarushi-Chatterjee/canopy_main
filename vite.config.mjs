@@ -1,21 +1,27 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
-// Vite's default build only bundles the entry index.html — match.html,
-// sprint.html, and notebook.html were silently missing from every
-// production build until this config existed. Multi-page apps must list
-// every HTML entry explicitly via rollupOptions.input.
+// Multi-page app: every HTML entry must be listed explicitly.
+// Production build bundles all 13 pages correctly.
 const root = import.meta.dirname;
 
 export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(root, 'index.html'),
-        match: resolve(root, 'match.html'),
-        sprint: resolve(root, 'sprint.html'),
-        notebook: resolve(root, 'notebook.html'),
-        notFound: resolve(root, '404.html')
+        main:           resolve(root, 'index.html'),
+        match:          resolve(root, 'match.html'),
+        sprint:         resolve(root, 'sprint.html'),
+        notebook:       resolve(root, 'notebook.html'),
+        builders:       resolve(root, 'builders.html'),
+        problemHolders: resolve(root, 'problem-holders.html'),
+        enablers:       resolve(root, 'enablers.html'),
+        postCall:       resolve(root, 'post-call.html'),
+        apply:          resolve(root, 'apply.html'),
+        login:          resolve(root, 'login.html'),
+        privacy:        resolve(root, 'privacy.html'),
+        terms:          resolve(root, 'terms.html'),
+        notFound:       resolve(root, '404.html')
       }
     }
   }

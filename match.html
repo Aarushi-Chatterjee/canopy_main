@@ -3,30 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Match — Canopy</title>
-<meta name="description" content="Browse Build Calls and builders on Canopy. Not a swipe — an invitation: write a short note about what you'd bring, and the poster chooses who joins.">
+<title>Match - Canopy</title>
+<meta name="description" content="Browse Build Calls and builders on Canopy. Not a swipe, an invitation: write a short note about what you'd bring, and the poster chooses who joins.">
 <link rel="canonical" href="https://canopy.earth/match.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Canopy">
 <meta property="og:url" content="https://canopy.earth/match.html">
-<meta property="og:title" content="Match — Canopy">
-<meta property="og:description" content="Not a swipe — an invitation. Browse Build Calls and builders, and write a real note about what you'd bring.">
+<meta property="og:title" content="Match - Canopy">
+<meta property="og:description" content="Not a swipe, an invitation. Browse Build Calls and builders, and write a real note about what you'd bring.">
 <meta property="og:image" content="https://canopy.earth/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Match — Canopy">
-<meta name="twitter:description" content="Not a swipe — an invitation. Browse Build Calls and builders, and write a real note about what you'd bring.">
+<meta name="twitter:title" content="Match - Canopy">
+<meta name="twitter:description" content="Not a swipe, an invitation. Browse Build Calls and builders, and write a real note about what you'd bring.">
 <meta name="twitter:image" content="https://canopy.earth/og-image.png">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
 </head>
-<body>
+<body class="interior-page">
 
-<!-- icon sprite: the sprout mark is the logo's own leaf silhouette, reused
-     as a small line/fill icon instead of an emoji glyph -->
+<!-- icon sprite -->
 <svg style="display:none" aria-hidden="true">
   <symbol id="icon-sprout" viewBox="0 0 32 32">
     <path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
@@ -42,7 +40,7 @@
 <!-- ============ HEADER ============ -->
 <header>
   <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
-    <a class="logo" href="index.html" aria-label="Canopy home">
+    <a class="logo" href="/" aria-label="Canopy home">
       <div class="logo-main">
         <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
         CANOPY
@@ -50,58 +48,106 @@
       <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
-      <a href="index.html#problem">The Gap</a>
-      <a href="index.html#solution">How it Works</a>
       <a href="match.html" aria-current="page">Match</a>
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
-      <a href="index.html#for">Who it's For</a>
-      <a href="index.html#connect">Connect</a>
+      <a href="/#problem">About</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
-      <button class="btn btn-ghost btn-sm" id="openApplyGhost">Post a Build Call</button>
-      <button class="btn btn-stamp btn-sm" id="openApply">Apply to Canopy</button>
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
+      <a class="btn btn-stamp btn-sm" href="apply.html">Apply to Canopy</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
 
+<!-- ============ THREE-LINE CORNER DRAWER ============ -->
+<div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+<aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
+  <div class="nav-drawer-header">
+    <span class="nav-drawer-logo">Canopy</span>
+    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
+  </div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Workspace Tools</span>
+    <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
+    <a href="sprint.html" class="nav-drawer-link">Active Sprints</a>
+    <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Community Roles</span>
+    <a href="builders.html" class="nav-drawer-link">
+      <img src="/avatars/builders.png" alt="" class="drawer-avatar">
+      For Builders
+    </a>
+    <a href="problem-holders.html" class="nav-drawer-link">
+      <img src="/avatars/problem%20holders.png" alt="" class="drawer-avatar">
+      For Problem Holders
+    </a>
+    <a href="enablers.html" class="nav-drawer-link">
+      <img src="/avatars/enablers.png" alt="" class="drawer-avatar">
+      For Enablers
+    </a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Intake &amp; Membership</span>
+    <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
+    <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
+    <a href="login.html" class="nav-drawer-link">Sign In / Verify</a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section" style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <span>Theme</span>
+    </button>
+    <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+  </div>
+</aside>
+
 <main id="top">
 <div class="stage">
-  <div class="stage-head-flex reveal">
-    <div class="stage-head" style="margin-bottom:0;">
-      <h1>Finding the right teammate shouldn't feel like swiping through strangers.</h1>
-      <p class="lede">It should feel like meeting someone at a workshop, realizing you both care about the same problem, and deciding to build together — high-context, not high-volume. A written note, read by a real person, who chooses.</p>
-    </div>
-    <div class="stat-cluster">
-      <div class="stat-item">
-        <span class="stat-num" data-target="18">0</span>
-        <span class="stat-label">Build Calls Open</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num" data-target="64">0</span>
-        <span class="stat-label">Builders Active</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num" data-target="12">0</span>
-        <span class="stat-label">Sprints Running</span>
-      </div>
-    </div>
+  <div class="stage-head reveal">
+    <h1>Finding the right teammate shouldn't feel like swiping through strangers.</h1>
+    <p class="lede">It should feel like meeting someone at a workshop, realizing you both care about the same problem, and deciding to build together: high-context, not high-volume. A written note, read by a real person, who chooses.</p>
   </div>
 
-  <!-- ---- your profile ---- -->
-  <div class="profile-strip elevated-card reveal" data-domain="design">
-    <div class="avatar lg" data-seed="you" aria-hidden="true"></div>
-    <div class="who">
-      <span class="label">Your Match Profile · <span style="font-family:'Caveat Var',cursive;text-transform:none;letter-spacing:0;color:var(--forest);">BUILD · CONNECT · SHIP</span></span>
-      <h3>A generative avatar, not a photo — a fingerprint of your building identity.</h3>
-      <div class="chips">
-        <span class="tag-chip skill">Product Design</span>
-        <span class="tag-chip skill">Systems Thinker</span>
-        <span class="tag-chip skill">Open to: a team</span>
+  <!-- ---- Profile Builder for First-Time Users ---- -->
+  <div class="profile-builder elevated-card reveal" id="profileBuilderModule" data-domain="design">
+    <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+      <img src="/avatars/builders.png" id="activeAvatarImg" alt="Selected Persona Avatar" style="width:64px;height:64px;object-fit:contain;border-radius:12px;background:rgba(31,92,64,0.08);padding:6px;flex:0 0 auto;">
+      <div style="flex:1;min-width:240px;">
+        <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--forest);">Build Your Sandbox Profile</span>
+        <h3 class="profile-builder-title" id="profileTitle">Select your community role and focus domain</h3>
+        <p class="profile-builder-sub">Select your primary role below to configure your generative avatar and highlight calls tailored to your craft.</p>
       </div>
     </div>
-    <button class="btn btn-ghost btn-sm shovel-btn" style="border:1.5px solid var(--ink);padding:11px 22px;">Edit profile</button>
+
+    <div class="role-picker" style="margin-top:18px;">
+      <button type="button" class="role-pick-btn" data-role="builder" data-avatar="/avatars/builders.png" aria-pressed="true">
+        <img src="/avatars/builders.png" alt="Builder">
+        <span>Builder</span>
+      </button>
+      <button type="button" class="role-pick-btn" data-role="problem-holder" data-avatar="/avatars/problem%20holders.png" aria-pressed="false">
+        <img src="/avatars/problem%20holders.png" alt="Problem Holder">
+        <span>Problem Holder</span>
+      </button>
+      <button type="button" class="role-pick-btn" data-role="enabler" data-avatar="/avatars/enablers.png" aria-pressed="false">
+        <img src="/avatars/enablers.png" alt="Enabler">
+        <span>Enabler</span>
+      </button>
+    </div>
+
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px;margin-top:14px;">
+      <span style="font-size:0.8rem;color:var(--ink-soft);font-weight:600;">Active tags:</span>
+      <span class="tag-chip skill" id="profileTagRole">Builder</span>
+      <span class="tag-chip" data-domain="climate">Climate &amp; AI Focus</span>
+      <a href="apply.html" class="btn btn-ghost btn-sm" style="margin-left:auto;">Complete Verified Profile →</a>
+    </div>
   </div>
 
   <!-- ---- build calls ---- -->
@@ -110,7 +156,7 @@
       <h2>Build Calls that fit your profile</h2>
       <span class="count" id="callCount">6 open</span>
     </div>
-    <p class="lede" style="margin-top:-10px;margin-bottom:20px;">Each card is the problem in one line, the skills it needs, and a sprout if it's open to new collaborators. Reacting isn't a swipe — it's a short note about what you'd bring.</p>
+    <p class="lede" style="margin-top:-10px;margin-bottom:20px;">Each card is the problem in one line, the skills it needs, and a sprout if it's open to new collaborators. Reacting isn't a swipe: it is a short note about what you'd bring.</p>
 
     <div class="filter-row" data-filters-for="#callGrid" aria-label="Filter Build Calls by domain">
       <button type="button" class="filter-chip" data-domain="climate" aria-pressed="false">Climate</button>
@@ -173,15 +219,15 @@
           </div>
           <span class="growth-badge" data-stage="in_sprint"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> In Sprint</span>
         </div>
-        <p class="line">A scoped problem with real clinic partners lined up — needs someone who's shipped for low-connectivity Android before.</p>
+        <p class="line">A scoped problem with real clinic partners lined up: needs someone who's shipped for low-connectivity Android before.</p>
         <div class="chip-row">
           <span class="tag-chip" data-domain="health">Health</span>
           <span class="tag-chip skill">Android</span>
           <span class="tag-chip skill">Offline sync</span>
         </div>
         <div class="card-foot">
-          <span class="hint-small">team full — accepting notes for next cycle</span>
-          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+          <span class="hint-small">team active in sprint</span>
+          <button type="button" class="shovel-btn notify">Notify next cycle</button>
         </div>
       </article>
 
@@ -292,7 +338,7 @@
             <span class="seeds-count">5 seeds planted</span>
           </div>
         </div>
-        <p class="line">"I'm craving a real project — not another fake case study for my portfolio." Wants a technical co-builder to pair with.</p>
+        <p class="line">"I'm craving a real project: not another case study for my portfolio." Wants a technical co-builder to pair with.</p>
         <div class="chip-row">
           <span class="tag-chip" data-domain="design">Design</span>
           <span class="tag-chip skill">Prototyping</span>
@@ -327,12 +373,11 @@
 
   <div class="stage-cta elevated-card reveal">
     <h2>Update your match profile. Browse Build Calls. Write a note.</h2>
-    <p class="lede">Grab a shovel — the next good match is closer than a swipe.</p>
+    <p class="lede">Grab a shovel: the next good match is closer than a swipe.</p>
     <div class="connect-row">
-      <button class="btn btn-stamp" id="openApplyMatch">Open my match profile</button>
-      <a class="btn btn-ghost" href="index.html#solution">See the whole loop</a>
+      <a class="btn btn-stamp" href="apply.html">Open my match profile</a>
+      <a class="btn btn-ghost" href="sprint.html">Explore active sprints</a>
     </div>
-    <p class="hint-small">mockup only — no account is created here</p>
   </div>
 </div>
 </main>
@@ -349,34 +394,40 @@
         </svg>
         <div class="footer-logo-text">
           <span class="footer-logo-name">CANOPY</span>
-          <span class="footer-logo-sub">Build &middot; Connect &middot; Ship</span>
+          <span class="footer-logo-sub">Build · Connect · Ship</span>
         </div>
       </div>
-      <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
+        <img src="/avatars/rooted in purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
+        <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
+      </div>
     </div>
     <div>
       <h5>Explore</h5>
-      <a href="index.html#for">About</a>
-      <a href="index.html#for">For Builders</a>
-      <a href="index.html#for">For Problem Holders</a>
-      <a href="index.html#for">For Enablers</a>
+      <a href="builders.html">For Builders</a>
+      <a href="problem-holders.html">For Problem Holders</a>
+      <a href="enablers.html">For Enablers</a>
+      <a href="post-call.html">Post a Build Call</a>
+      <a href="apply.html">Apply to Canopy</a>
     </div>
     <div>
       <h5>The Loop</h5>
       <a href="match.html">Match</a>
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
-      <a href="index.html#problem">The Gap</a>
+      <a href="/#problem">The Gap</a>
+      <a href="login.html">Sign In / Account</a>
     </div>
     <div>
-      <h5>Say hello</h5>
+      <h5>Legal &amp; Connect</h5>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms and Conditions</a>
       <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
-      <a href="index.html#connect">LinkedIn</a>
-      <a href="index.html#connect">Twitter</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
   <div class="foot-bottom">
-    <span>Canopy — Connect. Collaborate. Ship things that matter.</span>
+    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
     <span>© 2026 Canopy. All rights reserved.</span>
   </div>
 </footer>
@@ -426,70 +477,7 @@
   </form>
 </div>
 
-<!-- ============ APPLY MODAL ============ -->
-<dialog id="applyModal">
-  <span class="tape modal-tape" aria-hidden="true"></span>
-  <div class="modal-head">
-    <div>
-      <h3>Sandbox intake form</h3>
-      <p>A few honest lines beat a long resume. Takes about ninety seconds.</p>
-    </div>
-    <div class="modal-meta">
-      <span class="form-tag">FORM 01 · CANOPY</span>
-      <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
-    </div>
-  </div>
-  <form class="apply-form" id="applyForm">
-    <div class="field">
-      <label for="fName">Name / handle</label>
-      <input type="text" id="fName" name="name" placeholder="e.g. Elena R." required>
-    </div>
-    <div class="field">
-      <label for="fProject">Project you're circling</label>
-      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or &ldquo;still looking&rdquo;">
-    </div>
-    <div class="field">
-      <label>Domain you care about</label>
-      <div class="pill-group" data-group="domain">
-        <button type="button" class="pill" aria-pressed="false">Climate</button>
-        <button type="button" class="pill" aria-pressed="false">Health</button>
-        <button type="button" class="pill" aria-pressed="false">Education</button>
-        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
-        <button type="button" class="pill" aria-pressed="false">Hardware</button>
-        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
-        <button type="button" class="pill" aria-pressed="false">Design</button>
-      </div>
-    </div>
-    <div class="field">
-      <label>Skill level</label>
-      <div class="pill-group" data-group="skill" data-single="true">
-        <button type="button" class="pill" aria-pressed="false">Just starting</button>
-        <button type="button" class="pill" aria-pressed="false">Comfortable</button>
-        <button type="button" class="pill" aria-pressed="false">Advanced</button>
-        <button type="button" class="pill" aria-pressed="false">Domain expert</button>
-      </div>
-    </div>
-    <div class="field">
-      <label for="fLink">Link to something you've built or written</label>
-      <input type="text" id="fLink" name="link" placeholder="URL, optional">
-    </div>
-    <div class="field">
-      <label>What are you looking for</label>
-      <div class="pill-group" data-group="lookingfor" data-single="true">
-        <button type="button" class="pill" aria-pressed="false">A team</button>
-        <button type="button" class="pill" aria-pressed="false">A co-founder</button>
-        <button type="button" class="pill" aria-pressed="false">A problem to solve</button>
-        <button type="button" class="pill" aria-pressed="false">Mentorship</button>
-      </div>
-    </div>
-    <div class="form-foot">
-      <span class="hint-small">no account created — this is a design mockup</span>
-      <button type="submit" class="btn btn-stamp btn-sm">Plant this application</button>
-    </div>
-  </form>
-</dialog>
-
-<div class="toast" id="toast">🌱 Application planted — we'll be in touch soon.</div>
+<div class="toast" id="toast">🌱 Note planted: we will be in touch soon.</div>
 
 <script type="module" src="/src/main.js"></script>
 </body>

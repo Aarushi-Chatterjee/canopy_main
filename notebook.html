@@ -3,27 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lab Notebook — Canopy</title>
-<meta name="description" content="The Lab Notebook is where process lives — the raw record of how builders work, not just their wins. Browse real entries or publish your own.">
+<title>Lab Notebook - Canopy</title>
+<meta name="description" content="The Lab Notebook is where process lives: the raw record of how builders work, not just their wins. Browse real entries or publish your own.">
 <link rel="canonical" href="https://canopy.earth/notebook.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Canopy">
 <meta property="og:url" content="https://canopy.earth/notebook.html">
-<meta property="og:title" content="Lab Notebook — Canopy">
-<meta property="og:description" content="The raw, honest record of how builders work — the half-baked idea, the failed model, the fix that finally worked.">
+<meta property="og:title" content="Lab Notebook - Canopy">
+<meta property="og:description" content="The raw, honest record of how builders work: the half-baked idea, the failed model, the fix that finally worked.">
 <meta property="og:image" content="https://canopy.earth/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Lab Notebook — Canopy">
-<meta name="twitter:description" content="The raw, honest record of how builders work — the half-baked idea, the failed model, the fix that finally worked.">
+<meta name="twitter:title" content="Lab Notebook - Canopy">
+<meta name="twitter:description" content="The raw, honest record of how builders work: the half-baked idea, the failed model, the fix that finally worked.">
 <meta name="twitter:image" content="https://canopy.earth/og-image.png">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
 </head>
-<body>
+<body class="interior-page">
 
 <!-- icon sprite -->
 <svg style="display:none" aria-hidden="true">
@@ -41,7 +40,7 @@
 <!-- ============ HEADER ============ -->
 <header>
   <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
-    <a class="logo" href="index.html" aria-label="Canopy home">
+    <a class="logo" href="/" aria-label="Canopy home">
       <div class="logo-main">
         <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
         CANOPY
@@ -49,33 +48,87 @@
       <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
-      <a href="index.html#problem">The Gap</a>
-      <a href="index.html#solution">How it Works</a>
       <a href="match.html">Match</a>
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html" aria-current="page">Lab Notebook</a>
-      <a href="index.html#for">Who it's For</a>
-      <a href="index.html#connect">Connect</a>
+      <a href="/#problem">About</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
-      <button class="btn btn-ghost btn-sm" id="openApplyGhost">Post a Build Call</button>
-      <button class="btn btn-stamp btn-sm" id="openApply">Apply to Canopy</button>
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
+      <a class="btn btn-stamp btn-sm" href="apply.html">Apply to Canopy</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
 
+<!-- ============ THREE-LINE CORNER DRAWER ============ -->
+<div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+<aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
+  <div class="nav-drawer-header">
+    <span class="nav-drawer-logo">Canopy</span>
+    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
+  </div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Workspace Tools</span>
+    <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
+    <a href="sprint.html" class="nav-drawer-link">Active Sprints</a>
+    <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Community Roles</span>
+    <a href="builders.html" class="nav-drawer-link">
+      <img src="/avatars/builders.png" alt="" class="drawer-avatar">
+      For Builders
+    </a>
+    <a href="problem-holders.html" class="nav-drawer-link">
+      <img src="/avatars/problem%20holders.png" alt="" class="drawer-avatar">
+      For Problem Holders
+    </a>
+    <a href="enablers.html" class="nav-drawer-link">
+      <img src="/avatars/enablers.png" alt="" class="drawer-avatar">
+      For Enablers
+    </a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Intake &amp; Membership</span>
+    <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
+    <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
+    <a href="login.html" class="nav-drawer-link">Sign In / Verify</a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section" style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <span>Theme</span>
+    </button>
+    <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+  </div>
+</aside>
+
 <main id="top">
 <div class="stage">
-  <div class="stage-head reveal">
-    <h1>The Lab Notebook is where process lives.</h1>
-    <p class="lede">Not polished marketing, not a finished product page — the raw record of how you build: the half-baked idea, the dataset that surprised you, the model that failed, the small fix that finally worked. It doesn't have to be perfect. It just has to be real, and it's a quiet, powerful credential to the people deciding whether to build with you.</p>
+  <div class="stage-head-flex reveal">
+    <div class="stage-head" style="margin-bottom:0;">
+      <h1>The Lab Notebook is where process lives.</h1>
+      <p class="lede">Not polished marketing, not a finished product page: the raw record of how you build: the half-baked idea, the dataset that surprised you, the model that failed, the small fix that finally worked. It does not have to be perfect. It just has to be real, and it is a quiet, powerful proof point to the people deciding whether to build with you.</p>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:12px;background:var(--card);border:1px solid var(--card-edge);box-shadow:0 6px 18px -8px var(--shadow);">
+      <img src="/avatars/growing ideas.png" alt="Growing Ideas" style="width:36px;height:36px;object-fit:contain;">
+      <div style="line-height:1.2;">
+        <span style="font-family:'Caveat Var',cursive;font-size:1.1rem;font-weight:700;color:var(--forest);">Growing Ideas</span>
+        <span style="display:block;font-size:0.75rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;">Open Library</span>
+      </div>
+    </div>
   </div>
 
-  <div class="feed-toolbar">
+  <div class="feed-toolbar" style="margin-top:32px;">
     <button type="button" class="compose-trigger">
       <span class="plus-badge">+</span>
-      Write what you did, what you learned, what's next…
+      Write what you did, what you learned, what is next…
     </button>
   </div>
 
@@ -97,7 +150,7 @@
       </div>
       <span class="entry-breadcrumb">grown from Sprint: Groundwater Sensor</span>
       <h4>Why my groundwater model kept overfitting on rainy days</h4>
-      <p class="snippet">Turns out three sensors were miscalibrated after the last storm and I was training on noise. Here's how I caught it.</p>
+      <p class="snippet">Turns out three sensors were miscalibrated after the last storm and I was training on noise. Here is how I caught it.</p>
       <div class="teaser"><span>rmse_by_weather.py:14 → std(residual | rain) &gt;&gt; std(residual | dry)</span></div>
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="climate">Climate</span>
@@ -118,7 +171,7 @@
       </div>
       <span class="entry-breadcrumb">grown from Sprint: Fault Detection</span>
       <h4>First failed prototype of the fault-detection board</h4>
-      <p class="snippet">The enclosure trapped heat and cooked the sensor by hour six. Redesigned the vent pattern — full teardown photos inside.</p>
+      <p class="snippet">The enclosure trapped heat and cooked the sensor by hour six. Redesigned the vent pattern: full teardown notes inside.</p>
       <div class="teaser"><span>thermal_log.csv → 84°C at t+6h, spec max 65°C</span></div>
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="hardware">Hardware</span>
@@ -139,7 +192,7 @@
       </div>
       <span class="entry-breadcrumb">grown from Sprint: City Budget Explorer</span>
       <h4>A dataset that surprised me: the line-items don't sum to the total</h4>
-      <p class="snippet">The city's published budget PDF and its "open data" export disagree by 4%. Wrote a reconciliation script before touching any UI.</p>
+      <p class="snippet">The city's published budget PDF and its open data export disagree by 4%. Wrote a reconciliation script before touching any UI.</p>
       <div class="teaser"><span>reconcile.js → drift: +$2.3M unattributed</span></div>
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="civic">Civic Tech</span>
@@ -202,7 +255,7 @@
       </div>
       <span class="entry-breadcrumb">grown from Sprint: Model Alignment</span>
       <h4>Sketch: what a fair matching algorithm could look like</h4>
-      <p class="snippet">Half-baked, not shipped anywhere yet — thinking out loud about weighting "note quality" over raw skill overlap.</p>
+      <p class="snippet">Thinking out loud about weighting note quality over raw skill overlap.</p>
       <div class="teaser"><span>match_weights.md → draft, unscored</span></div>
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="ai">AI / ML</span>
@@ -223,12 +276,11 @@
 
   <div class="stage-cta elevated-card reveal">
     <h2>Open your notebook. Share your process.</h2>
-    <p class="lede">Let others learn from your digging — "grow this entry" grows the library, your presence, and the community's knowledge with it.</p>
+    <p class="lede">Let others learn from your digging: growing this entry grows the library, your presence, and the community's knowledge with it.</p>
     <div class="connect-row">
-      <button class="btn btn-stamp" id="openApplyNotebook">Open your notebook</button>
-      <a class="btn btn-ghost" href="index.html#solution">See the whole loop</a>
+      <button class="btn btn-stamp compose-trigger">Write an entry now</button>
+      <a class="btn btn-ghost" href="match.html">Find teammates to build with</a>
     </div>
-    <p class="hint-small">mockup only — no account is created here</p>
   </div>
 </div>
 </main>
@@ -245,52 +297,58 @@
         </svg>
         <div class="footer-logo-text">
           <span class="footer-logo-name">CANOPY</span>
-          <span class="footer-logo-sub">Build &middot; Connect &middot; Ship</span>
+          <span class="footer-logo-sub">Build · Connect · Ship</span>
         </div>
       </div>
-      <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
+        <img src="/avatars/rooted in purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
+        <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
+      </div>
     </div>
     <div>
       <h5>Explore</h5>
-      <a href="index.html#for">About</a>
-      <a href="index.html#for">For Builders</a>
-      <a href="index.html#for">For Problem Holders</a>
-      <a href="index.html#for">For Enablers</a>
+      <a href="builders.html">For Builders</a>
+      <a href="problem-holders.html">For Problem Holders</a>
+      <a href="enablers.html">For Enablers</a>
+      <a href="post-call.html">Post a Build Call</a>
+      <a href="apply.html">Apply to Canopy</a>
     </div>
     <div>
       <h5>The Loop</h5>
       <a href="match.html">Match</a>
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
-      <a href="index.html#problem">The Gap</a>
+      <a href="/#problem">The Gap</a>
+      <a href="login.html">Sign In / Account</a>
     </div>
     <div>
-      <h5>Say hello</h5>
+      <h5>Legal &amp; Connect</h5>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms and Conditions</a>
       <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
-      <a href="index.html#connect">LinkedIn</a>
-      <a href="index.html#connect">Twitter</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
   <div class="foot-bottom">
-    <span>Canopy — Connect. Collaborate. Ship things that matter.</span>
+    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
     <span>© 2026 Canopy. All rights reserved.</span>
   </div>
 </footer>
 
-<!-- ============ APPLICATION DRAWER ============ -->
+<!-- ============ COMPOSE / GROW DRAWER ============ -->
 <div class="app-drawer-backdrop" id="drawerBackdrop"></div>
 <div class="app-drawer" id="appDrawer">
   <div class="drawer-drag-handle"></div>
   <div class="drawer-head">
     <div>
       <h3 id="drawerTitle">Compose Lab Notebook Entry</h3>
-      <p class="sub" id="drawerSub">Field notes, post-mortems, datasets & learnings</p>
+      <p class="sub" id="drawerSub">Field notes, post-mortems, datasets &amp; learnings</p>
     </div>
     <button class="modal-close" id="closeDrawer" aria-label="Close drawer">✕</button>
   </div>
   <form class="drawer-form" id="appDrawerForm">
     <div class="field">
-      <label for="dNote">What did you build, learn, or fail at?</label>
+      <label for="dNote">What did you build, learn, or discover?</label>
       <textarea id="dNote" placeholder="Document the digging, not just the win. Include code snippets, teardowns, or what surprised you..." required></textarea>
     </div>
     <div class="field">
@@ -315,71 +373,7 @@
   </form>
 </div>
 
-<!-- ============ APPLY MODAL ============ -->
-<dialog id="applyModal">
-  <span class="tape modal-tape" aria-hidden="true"></span>
-  <div class="modal-head">
-    <div>
-      <h3>Sandbox intake form</h3>
-      <p>A few honest lines beat a long resume. Takes about ninety seconds.</p>
-    </div>
-    <div class="modal-meta">
-      <span class="form-tag">FORM 01 · CANOPY</span>
-      <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
-    </div>
-  </div>
-  <form class="apply-form" id="applyForm">
-    <div class="field">
-      <label for="fName">Name / handle</label>
-      <input type="text" id="fName" name="name" placeholder="e.g. Elena R." required>
-    </div>
-    <div class="field">
-      <label for="fProject">Project you're circling</label>
-      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or &ldquo;still looking&rdquo;">
-    </div>
-    <div class="field">
-      <label>Domain you care about</label>
-      <div class="pill-group" data-group="domain">
-        <button type="button" class="pill" aria-pressed="false">Climate</button>
-        <button type="button" class="pill" aria-pressed="false">Health</button>
-        <button type="button" class="pill" aria-pressed="false">Education</button>
-        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
-        <button type="button" class="pill" aria-pressed="false">Hardware</button>
-        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
-        <button type="button" class="pill" aria-pressed="false">Design</button>
-      </div>
-    </div>
-    <div class="field">
-      <label>Skill level</label>
-      <div class="pill-group" data-group="skill" data-single="true">
-        <button type="button" class="pill" aria-pressed="false">Just starting</button>
-        <button type="button" class="pill" aria-pressed="false">Comfortable</button>
-        <button type="button" class="pill" aria-pressed="false">Advanced</button>
-        <button type="button" class="pill" aria-pressed="false">Domain expert</button>
-      </div>
-    </div>
-    <div class="field">
-      <label for="fLink">Link to something you've built or written</label>
-      <input type="text" id="fLink" name="link" placeholder="URL, optional">
-    </div>
-    <div class="field">
-      <label>What are you looking for</label>
-      <div class="pill-group" data-group="lookingfor" data-single="true">
-        <button type="button" class="pill" aria-pressed="false">A team</button>
-        <button type="button" class="pill" aria-pressed="false">A co-founder</button>
-        <button type="button" class="pill" aria-pressed="false">A problem to solve</button>
-        <button type="button" class="pill" aria-pressed="false">Mentorship</button>
-      </div>
-    </div>
-    <div class="form-foot">
-      <span class="hint-small">no account created — this is a design mockup</span>
-      <button type="submit" class="btn btn-stamp btn-sm">Plant this application</button>
-    </div>
-  </form>
-</dialog>
-
-<div class="toast" id="toast">🌱 Application planted — we'll be in touch soon.</div>
-
+<div class="toast" id="toast">🌱 Entry logged: added to public library.</div>
 
 <script type="module" src="/src/main.js"></script>
 </body>

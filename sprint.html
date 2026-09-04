@@ -3,30 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sprints — Canopy</title>
+<title>Sprints - Canopy</title>
 <meta name="description" content="A sprint is where an idea becomes something you can point to. Two to four weeks, a real team, a visible clock, and a shipped outcome in the Canopy Library.">
 <link rel="canonical" href="https://canopy.earth/sprint.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Canopy">
 <meta property="og:url" content="https://canopy.earth/sprint.html">
-<meta property="og:title" content="Sprints — Canopy">
+<meta property="og:title" content="Sprints - Canopy">
 <meta property="og:description" content="Two to four weeks, start to shipped. A team forms around one Build Call and ships a real, tangible outcome.">
 <meta property="og:image" content="https://canopy.earth/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sprints — Canopy">
+<meta name="twitter:title" content="Sprints - Canopy">
 <meta name="twitter:description" content="Two to four weeks, start to shipped. A team forms around one Build Call and ships a real, tangible outcome.">
 <meta name="twitter:image" content="https://canopy.earth/og-image.png">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
 </head>
-<body>
+<body class="interior-page">
 
-<!-- icon sprite: sprout is the logo's own leaf silhouette; bell matches its
-     stroke weight — both replace emoji glyphs for a consistent icon system -->
+<!-- icon sprite -->
 <svg style="display:none" aria-hidden="true">
   <symbol id="icon-sprout" viewBox="0 0 32 32">
     <path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
@@ -42,7 +40,7 @@
 <!-- ============ HEADER ============ -->
 <header>
   <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
-    <a class="logo" href="index.html" aria-label="Canopy home">
+    <a class="logo" href="/" aria-label="Canopy home">
       <div class="logo-main">
         <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
         CANOPY
@@ -50,28 +48,73 @@
       <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
     </a>
     <nav class="primary-nav" aria-label="Primary">
-      <a href="index.html#problem">The Gap</a>
-      <a href="index.html#solution">How it Works</a>
       <a href="match.html">Match</a>
       <a href="sprint.html" aria-current="page">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
-      <a href="index.html#for">Who it's For</a>
-      <a href="index.html#connect">Connect</a>
+      <a href="/#problem">About</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
-      <button class="btn btn-ghost btn-sm" id="openApplyGhost">Post a Build Call</button>
-      <button class="btn btn-stamp btn-sm" id="openApply">Apply to Canopy</button>
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
+      <a class="btn btn-stamp btn-sm" href="apply.html">Apply to Canopy</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
+
+<!-- ============ THREE-LINE CORNER DRAWER ============ -->
+<div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+<aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
+  <div class="nav-drawer-header">
+    <span class="nav-drawer-logo">Canopy</span>
+    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
+  </div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Workspace Tools</span>
+    <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
+    <a href="sprint.html" class="nav-drawer-link">Active Sprints</a>
+    <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Community Roles</span>
+    <a href="builders.html" class="nav-drawer-link">
+      <img src="/avatars/builders.png" alt="" class="drawer-avatar">
+      For Builders
+    </a>
+    <a href="problem-holders.html" class="nav-drawer-link">
+      <img src="/avatars/problem%20holders.png" alt="" class="drawer-avatar">
+      For Problem Holders
+    </a>
+    <a href="enablers.html" class="nav-drawer-link">
+      <img src="/avatars/enablers.png" alt="" class="drawer-avatar">
+      For Enablers
+    </a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section">
+    <span class="nav-drawer-section-label">Intake &amp; Membership</span>
+    <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
+    <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
+    <a href="login.html" class="nav-drawer-link">Sign In / Verify</a>
+  </div>
+  <div class="nav-drawer-divider"></div>
+  <div class="nav-drawer-section" style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <span>Theme</span>
+    </button>
+    <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+  </div>
+</aside>
 
 <main id="top">
 <div class="stage">
   <div class="stage-head-flex reveal">
     <div class="stage-head" style="margin-bottom:0;">
       <h1>A sprint is where an idea becomes something you can point to.</h1>
-      <p class="lede">Two to four weeks, start to shipped. A team forms around one specific Build Call, works against a visible clock instead of an open-ended timeline, and walks away with a prototype, a dataset, a dashboard, or a write-up added to the public Library — no month-long email chains, just a team, a problem, and a date on the calendar.</p>
+      <p class="lede">Two to four weeks, start to shipped. A team forms around one specific Build Call, works against a visible clock instead of an open-ended timeline, and walks away with a prototype, a dataset, a dashboard, or a write-up added to the public Library: no month-long email chains, just a team, a problem, and a date on the calendar.</p>
     </div>
     <div class="ambient-clock-wrap">
       <svg class="clock-ring" viewBox="0 0 36 36" data-pct="72" aria-hidden="true">
@@ -80,7 +123,7 @@
       </svg>
       <div class="ambient-clock-text">
         <span class="days">12 days left</span>
-        <span class="voice">vine climbing fast</span>
+        <span class="voice">active cycle running</span>
       </div>
     </div>
   </div>
@@ -95,7 +138,7 @@
       <div class="board-col-body">
         <article class="elevated-card sprint-card reveal" data-domain="civic">
           <h4>A plain-language city budget explorer</h4>
-          <p class="line" style="color:var(--ink-soft);font-size:.9rem;">Municipal budget data is public but unreadable — the team is still coming together before the clock starts.</p>
+          <p class="line" style="color:var(--ink-soft);font-size:.9rem;">Municipal budget data is public but unreadable: the team is still coming together before the clock starts.</p>
           <div class="team-row">
             <div class="avatar sm" data-seed="civic-budget-1" aria-hidden="true"></div>
             <span class="plus">+2</span>
@@ -108,7 +151,7 @@
         </article>
         <article class="elevated-card sprint-card reveal" data-domain="education">
           <h4>Adaptive reading tutor for grade 3–5</h4>
-          <p class="line" style="color:var(--ink-soft);font-size:.9rem;">"The idea is vivid. What's missing is a technical co-builder to bring it to life."</p>
+          <p class="line" style="color:var(--ink-soft);font-size:.9rem;">"The idea is vivid. What is missing is a technical co-builder to bring it to life."</p>
           <div class="team-row">
             <div class="avatar sm" data-seed="reading-tutor-1" aria-hidden="true"></div>
           </div>
@@ -145,7 +188,7 @@
           <div class="chip-row"><span class="tag-chip" data-domain="climate">Climate</span><span class="tag-chip skill">Hardware</span></div>
           <div class="card-foot">
             <span class="hint-small">team locked for this cycle</span>
-            <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
+            <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
           </div>
         </article>
         <article class="elevated-card sprint-card reveal" data-domain="ai">
@@ -164,7 +207,7 @@
           <div class="chip-row"><span class="tag-chip" data-domain="ai">AI / ML</span><span class="tag-chip skill">Computer Vision</span></div>
           <div class="card-foot">
             <span class="hint-small">team locked for this cycle</span>
-            <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
+            <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
           </div>
         </article>
         <article class="elevated-card sprint-card reveal" data-domain="hardware">
@@ -185,17 +228,18 @@
           <div class="chip-row"><span class="tag-chip" data-domain="hardware">Hardware</span><span class="tag-chip skill">ML</span></div>
           <div class="card-foot">
             <span class="hint-small">team locked for this cycle</span>
-            <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
+            <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
           </div>
         </article>
       </div>
     </div>
 
     <div class="board-col" data-stage="shipped">
-      <div class="board-col-head">
+      <div class="board-col-head" style="display:flex;align-items:center;gap:8px;">
         <span class="dot"></span>
         <h3>Shipped</h3>
         <span class="n">2</span>
+        <img src="/avatars/shipping impact.png" alt="Shipping Impact" style="width:24px;height:24px;object-fit:contain;margin-left:auto;">
       </div>
       <div class="board-col-body">
         <article class="elevated-card sprint-card shipped reveal" data-domain="climate">
@@ -208,7 +252,7 @@
           <div class="chip-row"><span class="tag-chip" data-domain="climate">Climate</span><span class="tag-chip skill">Dashboards</span></div>
           <div class="card-foot">
             <span class="hint-small">shipped in 3 weeks</span>
-            <a class="shovel-btn" href="index.html#for" style="text-decoration:none;">View in the Library →</a>
+            <a class="shovel-btn" href="notebook.html" style="text-decoration:none;">Read Notebook Log →</a>
           </div>
         </article>
         <article class="elevated-card sprint-card shipped reveal" data-domain="education">
@@ -222,7 +266,7 @@
           <div class="chip-row"><span class="tag-chip" data-domain="education">Education</span><span class="tag-chip skill">Full-stack</span></div>
           <div class="card-foot">
             <span class="hint-small">shipped in 2 weeks</span>
-            <a class="shovel-btn" href="index.html#for" style="text-decoration:none;">View in the Library →</a>
+            <a class="shovel-btn" href="notebook.html" style="text-decoration:none;">Read Notebook Log →</a>
           </div>
         </article>
       </div>
@@ -233,10 +277,9 @@
     <h2>Start a sprint, or join one that's already growing.</h2>
     <p class="lede">The next deadline is closer than you think.</p>
     <div class="connect-row">
-      <button class="btn btn-stamp" id="openApplySprint">Start a sprint</button>
-      <a class="btn btn-ghost" href="index.html#solution">See the whole loop</a>
+      <a class="btn btn-stamp" href="post-call.html">Post a Build Call to Sprint</a>
+      <a class="btn btn-ghost" href="match.html">Find teammates first</a>
     </div>
-    <p class="hint-small">mockup only — no account is created here</p>
   </div>
 </div>
 </main>
@@ -253,34 +296,40 @@
         </svg>
         <div class="footer-logo-text">
           <span class="footer-logo-name">CANOPY</span>
-          <span class="footer-logo-sub">Build &middot; Connect &middot; Ship</span>
+          <span class="footer-logo-sub">Build · Connect · Ship</span>
         </div>
       </div>
-      <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time."<cite>— Aarushi Chatterjee, Founder</cite></p>
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
+        <img src="/avatars/rooted in purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
+        <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
+      </div>
     </div>
     <div>
       <h5>Explore</h5>
-      <a href="index.html#for">About</a>
-      <a href="index.html#for">For Builders</a>
-      <a href="index.html#for">For Problem Holders</a>
-      <a href="index.html#for">For Enablers</a>
+      <a href="builders.html">For Builders</a>
+      <a href="problem-holders.html">For Problem Holders</a>
+      <a href="enablers.html">For Enablers</a>
+      <a href="post-call.html">Post a Build Call</a>
+      <a href="apply.html">Apply to Canopy</a>
     </div>
     <div>
       <h5>The Loop</h5>
       <a href="match.html">Match</a>
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
-      <a href="index.html#problem">The Gap</a>
+      <a href="/#problem">The Gap</a>
+      <a href="login.html">Sign In / Account</a>
     </div>
     <div>
-      <h5>Say hello</h5>
+      <h5>Legal &amp; Connect</h5>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms and Conditions</a>
       <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
-      <a href="index.html#connect">LinkedIn</a>
-      <a href="index.html#connect">Twitter</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
   <div class="foot-bottom">
-    <span>Canopy — Connect. Collaborate. Ship things that matter.</span>
+    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
     <span>© 2026 Canopy. All rights reserved.</span>
   </div>
 </footer>
@@ -330,71 +379,7 @@
   </form>
 </div>
 
-<!-- ============ APPLY MODAL ============ -->
-<dialog id="applyModal">
-  <span class="tape modal-tape" aria-hidden="true"></span>
-  <div class="modal-head">
-    <div>
-      <h3>Sandbox intake form</h3>
-      <p>A few honest lines beat a long resume. Takes about ninety seconds.</p>
-    </div>
-    <div class="modal-meta">
-      <span class="form-tag">FORM 01 · CANOPY</span>
-      <button class="modal-close" id="closeApply" aria-label="Close">✕</button>
-    </div>
-  </div>
-  <form class="apply-form" id="applyForm">
-    <div class="field">
-      <label for="fName">Name / handle</label>
-      <input type="text" id="fName" name="name" placeholder="e.g. Elena R." required>
-    </div>
-    <div class="field">
-      <label for="fProject">Project you're circling</label>
-      <input type="text" id="fProject" name="project" placeholder="e.g. groundwater sensor, or &ldquo;still looking&rdquo;">
-    </div>
-    <div class="field">
-      <label>Domain you care about</label>
-      <div class="pill-group" data-group="domain">
-        <button type="button" class="pill" aria-pressed="false">Climate</button>
-        <button type="button" class="pill" aria-pressed="false">Health</button>
-        <button type="button" class="pill" aria-pressed="false">Education</button>
-        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
-        <button type="button" class="pill" aria-pressed="false">Hardware</button>
-        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
-        <button type="button" class="pill" aria-pressed="false">Design</button>
-      </div>
-    </div>
-    <div class="field">
-      <label>Skill level</label>
-      <div class="pill-group" data-group="skill" data-single="true">
-        <button type="button" class="pill" aria-pressed="false">Just starting</button>
-        <button type="button" class="pill" aria-pressed="false">Comfortable</button>
-        <button type="button" class="pill" aria-pressed="false">Advanced</button>
-        <button type="button" class="pill" aria-pressed="false">Domain expert</button>
-      </div>
-    </div>
-    <div class="field">
-      <label for="fLink">Link to something you've built or written</label>
-      <input type="text" id="fLink" name="link" placeholder="URL, optional">
-    </div>
-    <div class="field">
-      <label>What are you looking for</label>
-      <div class="pill-group" data-group="lookingfor" data-single="true">
-        <button type="button" class="pill" aria-pressed="false">A team</button>
-        <button type="button" class="pill" aria-pressed="false">A co-founder</button>
-        <button type="button" class="pill" aria-pressed="false">A problem to solve</button>
-        <button type="button" class="pill" aria-pressed="false">Mentorship</button>
-      </div>
-    </div>
-    <div class="form-foot">
-      <span class="hint-small">no account created — this is a design mockup</span>
-      <button type="submit" class="btn btn-stamp btn-sm">Plant this application</button>
-    </div>
-  </form>
-</dialog>
-
-<div class="toast" id="toast">🌱 Application planted — we'll be in touch soon.</div>
-
+<div class="toast" id="toast">🌱 Note planted: we will be in touch soon.</div>
 
 <script type="module" src="/src/main.js"></script>
 </body>

@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Page not found - Canopy</title>
-<meta name="robots" content="noindex">
+<title>Post a Build Call - Canopy</title>
+<meta name="description" content="Submit a structured Build Call for your organization, lab, or startup. Define the challenge, resources, and reward to attract verified builders.">
+<link rel="canonical" href="https://canopy.earth/post-call.html">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
@@ -84,25 +85,62 @@
 </aside>
 
 <main id="top">
-<div class="wrap" style="padding:110px clamp(18px,5vw,56px) 130px; text-align:center;">
-  <svg viewBox="0 0 140 150" width="120" height="128" style="margin:0 auto 28px; display:block;" aria-hidden="true">
-    <g transform="rotate(-14 70 110)">
-      <path d="M40 108 L100 108 L92 78 L48 78 Z" fill="var(--forest-deep)"/>
-      <rect x="36" y="70" width="68" height="12" rx="4" fill="var(--forest)"/>
-      <ellipse cx="70" cy="74" rx="26" ry="5" fill="#3a2c1c"/>
-    </g>
-    <path d="M70 78 C70 60 92 52 100 34" stroke="var(--card-edge)" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="2 9"/>
-    <text x="96" y="30" font-family="'Caveat Var',cursive" font-size="22" fill="var(--coral)" transform="rotate(8 96 30)">gone looking</text>
-  </svg>
-  <span class="kicker">error 404</span>
-  <h1 style="font-size:clamp(1.8rem,3.4vw,2.4rem); margin-top:10px; max-width:26ch; margin-left:auto; margin-right:auto;">Nothing is growing at this address.</h1>
-  <p class="lede" style="margin-left:auto; margin-right:auto; margin-top:14px;">The page you are looking for either moved, never sprouted, or the link is just a little overgrown. Let us get you back to solid soil.</p>
-  <div class="hero-ctas" style="justify-content:center; margin-top:32px;">
-    <a class="btn btn-stamp" href="/">Back to Canopy</a>
-    <a class="btn btn-ghost" href="/#problem">See how it works</a>
+<div class="stage" style="max-width:760px;">
+  <div class="stage-head reveal">
+    <span class="kicker" style="font-size:1.15rem;">Organization Intake</span>
+    <h1 style="font-size:clamp(2rem,3.8vw,2.8rem);margin-top:4px;">Post a Build Call</h1>
+    <p class="lede">Define a scoped real-world challenge. Scoped problems with clear requirements and pilot support attract high-velocity multidisciplinary teams.</p>
+  </div>
+
+  <div class="elevated-card paper-card" style="padding:36px clamp(20px,5vw,40px);border-radius:14px;margin-top:24px;">
+    <form id="postCallForm" style="display:flex;flex-direction:column;gap:22px;">
+      <div class="field">
+        <label for="orgName" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Organization or Initiative Name</label>
+        <input type="text" id="orgName" required placeholder="e.g. Rural Water Alliance / Stanford BioLab" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div class="field">
+        <label for="contactEmail" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Direct Contact Email</label>
+        <input type="email" id="contactEmail" required placeholder="name@organization.org" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div class="field">
+        <label for="callTitle" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Build Call Headline (1 line)</label>
+        <input type="text" id="callTitle" required placeholder="e.g. Build an offline telemetry node for agricultural microgrids" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div class="field">
+        <label style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Primary Domain</label>
+        <div class="pill-group" data-group="domain" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
+          <button type="button" class="pill" aria-pressed="true">Climate</button>
+          <button type="button" class="pill" aria-pressed="false">Health</button>
+          <button type="button" class="pill" aria-pressed="false">Education</button>
+          <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
+          <button type="button" class="pill" aria-pressed="false">Hardware</button>
+          <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="callDesc" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Problem Context and Scope</label>
+        <textarea id="callDesc" required rows="4" placeholder="Explain the ground truth context, what data or hardware is already available, and what a 2-4 week prototype would accomplish..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:inherit;"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="callReward" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Reward or Pilot Resources</label>
+        <input type="text" id="callReward" placeholder="e.g. $5,000 deployment grant + open hardware kit sponsorship" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:16px;border-top:1px solid var(--line);">
+        <span style="font-size:0.8rem;color:var(--ink-faint);">Reviewed by Canopy curators within 24 hours</span>
+        <button type="submit" class="btn btn-stamp">Publish Build Call →</button>
+      </div>
+    </form>
   </div>
 </div>
 </main>
+
+<div class="toast" id="toast">🌱 Build Call submitted: added to review pipeline.</div>
 
 <!-- ============ FOOTER ============ -->
 <footer>
@@ -155,5 +193,28 @@
 </footer>
 
 <script type="module" src="/src/main.js"></script>
+<script type="module">
+  import { db } from '/src/db.js';
+  const form = document.getElementById('postCallForm');
+  const toast = document.getElementById('toast');
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const org = document.getElementById('orgName').value;
+      const email = document.getElementById('contactEmail').value;
+      const title = document.getElementById('callTitle').value;
+      const desc = document.getElementById('callDesc').value;
+      const reward = document.getElementById('callReward').value;
+      const activePill = form.querySelector('.pill[aria-pressed="true"]');
+      const domain = activePill ? activePill.textContent : 'General';
+
+      await db.postBuildCall({ org, email, title, desc, reward, domain });
+      toast.textContent = '🌱 Build Call submitted: queued for curator review.';
+      toast.classList.add('show');
+      form.reset();
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    });
+  }
+</script>
 </body>
 </html>

@@ -116,15 +116,34 @@ html{scroll-behavior:smooth; scrollbar-color:var(--forest) var(--paper-deep);}
 
 body{
   margin:0;
-  background:
-    radial-gradient(1200px 700px at 8% -10%, rgba(255,255,255,.35), transparent 60%),
-    var(--paper);
+  /* Explicit warm paper base in both bright and dark modes — prevents
+     the blank/washed-out background that occurs when the WebGL canvas
+     overlay at opacity:.65 is the only visible surface. */
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(1200px 700px at 8% -10%, rgba(255,255,255,.35), transparent 60%);
   color:var(--ink);
   font-family:'Jost Var', 'Century Gothic', 'Avenir Next', system-ui, sans-serif;
   font-weight:400;
   line-height:1.55;
   overflow-x:clip;
   position:relative;
+}
+
+/* Interior workspace pages stripe pattern.
+   Applied by adding .interior-page to <body> on all pages EXCEPT index.html.
+   The landing page (index.html) is strictly excluded — its ambient WebGL
+   canvas and vine growth system need a clean unstriped surface. */
+body.interior-page{
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 31px,
+      color-mix(in srgb, var(--ink) 5%, transparent) 31px,
+      color-mix(in srgb, var(--ink) 5%, transparent) 32px
+    ),
+    radial-gradient(1200px 700px at 8% -10%, rgba(255,255,255,.25), transparent 60%);
 }
 
 /* ──────────────────────────────────────────────────────────────────────
@@ -350,9 +369,10 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
 
 .btn{
   border:none; cursor:pointer; font-weight:600; font-size:.95rem;
-  padding:11px 22px; border-radius:3px;
+  padding:11px 22px; border-radius:6px;
   transition:transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background-color .18s var(--ease-out), color .18s var(--ease-out);
   display:inline-flex; align-items:center; gap:8px;
+  letter-spacing:.01em;
 }
 .btn:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; }
 .btn:active{ transform:scale(.97); }
@@ -369,9 +389,79 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
 .btn-ghost:hover{ background:var(--ink); color:var(--paper); }
 .btn-ghost:active{ transform:scale(.97); }
 .btn-sm{ padding:8px 16px; font-size:.85rem; }
-.menu-toggle{ display:none; background:none; border:none; cursor:pointer; padding:6px; }
+
+/* Three-line hamburger menu toggle */
+.menu-toggle{ display:none; background:none; border:none; cursor:pointer; padding:6px; flex-direction:column; justify-content:center; }
 .menu-toggle:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; border-radius:3px; }
-.menu-toggle span{ display:block; width:24px; height:2px; background:var(--ink); margin:5px 0; }
+.menu-toggle span{ display:block; width:22px; height:2px; background:var(--ink); border-radius:2px; transition:transform .22s var(--ease-out), opacity .18s var(--ease-out); }
+.menu-toggle span:nth-child(1){ margin-bottom:5px; }
+.menu-toggle span:nth-child(2){ margin-bottom:5px; }
+.menu-toggle.is-open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+.menu-toggle.is-open span:nth-child(2){ opacity:0; transform:scaleX(0); }
+.menu-toggle.is-open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+/* ---- Nav Drawer (three-line corner menu) ---- */
+.nav-drawer-backdrop{
+  position:fixed; inset:0; background:rgba(15,20,14,.45); backdrop-filter:blur(2px);
+  opacity:0; pointer-events:none; transition:opacity .24s var(--ease-out); z-index:45;
+}
+.nav-drawer-backdrop.is-open{ opacity:1; pointer-events:auto; }
+.nav-drawer{
+  position:fixed; top:0; right:0; bottom:0; width:min(320px, 88vw);
+  background:var(--card); border-left:1px solid var(--card-edge);
+  box-shadow:-20px 0 50px -10px rgba(0,0,0,.25);
+  transform:translateX(100%);
+  transition:transform .3s var(--ease-drawer);
+  z-index:50; overflow-y:auto;
+  padding:24px 0 40px;
+  display:flex; flex-direction:column; gap:0;
+}
+.nav-drawer.is-open{ transform:translateX(0); }
+.nav-drawer-header{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:0 24px 20px; border-bottom:1px solid var(--line); margin-bottom:8px;
+}
+.nav-drawer-logo{
+  font-family:'Fraunces Var',serif; font-size:1.1rem; font-weight:700;
+  color:var(--forest); letter-spacing:.02em;
+}
+.nav-drawer-close{
+  background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--ink-soft);
+  padding:4px 6px; border-radius:4px; line-height:1;
+  transition:color .14s ease, background .14s ease;
+}
+.nav-drawer-close:hover{ color:var(--ink); background:color-mix(in srgb, var(--ink) 8%, transparent); }
+.nav-drawer-section{
+  padding:14px 24px 8px;
+}
+.nav-drawer-section-label{
+  font-family:'Jost Var',sans-serif; font-size:.62rem; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint);
+  padding:0 0 8px; display:block;
+}
+.nav-drawer-link{
+  display:flex; align-items:center; gap:10px; padding:9px 0;
+  text-decoration:none; color:var(--ink-soft); font-size:.93rem; font-weight:500;
+  border-bottom:1px solid var(--line); transition:color .14s ease;
+}
+.nav-drawer-link:last-of-type{ border-bottom:none; }
+.nav-drawer-link:hover{ color:var(--forest); }
+.nav-drawer-link img.drawer-avatar{
+  width:24px; height:24px; border-radius:4px; object-fit:contain; flex:0 0 auto;
+}
+.nav-drawer-divider{
+  height:1px; background:var(--line); margin:8px 24px;
+}
+
+/* Theme toggle button */
+.theme-toggle{
+  background:none; border:1.5px solid var(--line); border-radius:6px;
+  cursor:pointer; padding:6px 10px; display:inline-flex; align-items:center; gap:6px;
+  color:var(--ink-soft); font-size:.8rem; font-weight:600;
+  transition:border-color .16s ease, color .16s ease, background .16s ease;
+}
+.theme-toggle:hover{ border-color:var(--forest); color:var(--forest); background:color-mix(in srgb, var(--forest) 6%, transparent); }
+.theme-toggle svg{ width:15px; height:15px; flex:0 0 auto; }
 
 /* ---------- main container ---------- */
 main#top{
@@ -379,15 +469,72 @@ main#top{
   overflow:visible;
 }
 
-/* ---------- hero ---------- */
+/* ---------- hero (3-layer full-bleed composition) ----------
+   Layer 0: .hero-bg-stage — full-bleed animated image sequence (absolute, inset 0)
+   Layer 1: .hero-scrim    — directional paper-to-transparent gradient for text contrast
+   Layer 2: .hero-content  — eyebrow, heading, body, CTAs (relative, z-index:3) */
 .hero{
-  position:relative; padding:64px 0 40px;
-  overflow:visible;
+  position:relative;
+  min-height:clamp(520px, 82vh, 860px);
+  display:flex; align-items:center;
+  overflow:hidden;
   z-index:1;
+  padding:0;
 }
-.hero-grid{
-  display:grid; grid-template-columns:1.1fr .9fr; gap:56px; align-items:center;
+/* Full-bleed animated background fills entire hero */
+.hero-bg-stage{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  z-index:1;
+  pointer-events:none;
+  overflow:hidden;
 }
+.hero-bg-clip{
+  position:absolute; inset:0;
+  opacity:0;
+  transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+  will-change:opacity;
+}
+.hero-bg-clip.active{ opacity:1; }
+.hero-bg-clip.exiting{ opacity:0; transition-duration:800ms; }
+.hero-bg-clip img{
+  width:100%; height:100%;
+  object-fit:cover;
+  object-position:70% center;
+  display:block;
+  pointer-events:none; user-select:none;
+  will-change:transform;
+}
+.hero-bg-clip.active img{
+  animation: hero-bg-breathe 10s ease-in-out infinite;
+}
+@keyframes hero-bg-breathe{
+  0%, 100%{ transform:scale(1.00); }
+  50%{ transform:scale(1.018); }
+}
+/* Directional scrim: strong on the left (behind copy), fades right */
+.hero-scrim{
+  position:absolute; inset:0;
+  z-index:2; pointer-events:none;
+  background: linear-gradient(
+    to right,
+    var(--paper) 0%,
+    color-mix(in srgb, var(--paper) 90%, transparent) 36%,
+    color-mix(in srgb, var(--paper) 48%, transparent) 58%,
+    color-mix(in srgb, var(--paper) 12%, transparent) 78%,
+    transparent 100%
+  );
+}
+/* Foreground content column */
+.hero-content{
+  position:relative; z-index:3;
+  width:100%; max-width:1180px;
+  margin:0 auto;
+  padding:72px clamp(18px,5vw,56px) 60px;
+}
+.hero-copy{ max-width:600px; }
+/* Legacy two-column grid — retired. hero-grid is now a single foreground column. */
+.hero-grid{ display:block; }
 .eyebrow{
   font-family:'Caveat Var',cursive; font-variation-settings:'wght' 650;
   color:var(--coral); font-size:1.35rem; display:inline-flex; align-items:center; gap:8px;
@@ -566,9 +713,14 @@ main#top{
 /* ---------- keychain ---------- */
 .keychain-section{ padding-top:80px; }
 .keychain{
-  position:relative; margin-top:60px; padding:60px clamp(10px,4vw,40px);
-  display:flex; align-items:flex-start; justify-content:center; gap:0; flex-wrap:wrap;
-  min-height:260px;
+  position:relative; margin-top:60px; padding:40px clamp(10px,4vw,40px) 60px;
+  /* nowrap keeps all charms on a single row at desktop widths;
+     flex-wrap kicks in only below ~700px so mobile still wraps gracefully */
+  display:flex; align-items:flex-start; justify-content:center; gap:0; flex-wrap:nowrap;
+  overflow-x:auto; min-height:220px;
+}
+@media (max-width:700px){
+  .keychain{ flex-wrap:wrap; }
 }
 .ring{
   width:70px; height:70px; border-radius:50%; border:6px solid var(--twine);
@@ -617,26 +769,31 @@ main#top{
   background:var(--paper); border:2px solid var(--twine); transform:translateX(-50%);
 }
 
-/* ---- persona tab strip ---- */
-.for-tabs{ display:flex; gap:10px; margin:34px 0 24px; flex-wrap:wrap; }
-.tab-btn{
-  display:inline-flex; align-items:center; gap:7px;
-  padding:9px 18px; border-radius:999px; border:1.5px solid var(--line); background:var(--card);
+/* ---- persona role hub navigation (links to dedicated pages) ---- */
+.role-hub-row{
+  display:flex; gap:14px; margin:34px 0 0; flex-wrap:wrap;
+}
+.role-hub-link{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:11px 20px; border-radius:6px; border:1.5px solid var(--line); background:var(--card);
   cursor:pointer; font-size:.88rem; font-weight:600; color:var(--ink-soft);
+  text-decoration:none;
   transition:transform .12s var(--ease-out), background .18s var(--ease-out),
              color .18s var(--ease-out), border-color .18s var(--ease-out),
              box-shadow .18s var(--ease-out);
 }
-.tab-btn:hover:not([aria-selected="true"]){
-  border-color:var(--ink-faint); color:var(--ink);
-  box-shadow:0 2px 8px rgba(38,32,16,.10);
+.role-hub-link img{ width:28px; height:28px; object-fit:contain; border-radius:4px; flex:0 0 auto; }
+.role-hub-link:hover{
+  border-color:var(--forest); color:var(--forest);
+  background:color-mix(in srgb, var(--forest) 7%, var(--card));
+  box-shadow:0 4px 14px rgba(31,92,64,.14);
+  transform:translateY(-2px);
 }
-.tab-btn:active{ transform:scale(.96); }
-.tab-btn[aria-selected="true"]{
-  background:var(--forest); border-color:var(--forest); color:var(--paper);
-  box-shadow:0 4px 16px rgba(31,92,64,.26);
-}
-.tab-btn:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; }
+.role-hub-link:active{ transform:scale(.96); }
+.role-hub-link:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; }
+/* Legacy persona tab strip — kept for CSS compat, no longer rendered */
+.for-tabs{ display:none; }
+.tab-btn{ display:none; }
 
 /* ---- persona card grid ---- */
 .persona-grid{
@@ -893,21 +1050,17 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 .growth-badge[data-stage="in_sprint"]{ --badge-color: var(--teal); }
 .growth-badge[data-stage="shipped"]{ --badge-color: var(--forest); }
 
-/* ---- hero stat cluster (Match page) ---- */
+/* ---- workspace head flex (stage-head + optional accessory) ---- */
 .stage-head-flex{
   display:flex; justify-content:space-between; align-items:flex-start; gap:36px; flex-wrap:wrap;
   margin-bottom:44px;
 }
-.stat-cluster{
-  display:flex; gap:20px; flex-wrap:wrap; padding:18px 24px; border-radius:14px;
-  background:var(--card); border:1px solid var(--card-edge); box-shadow:0 12px 28px -16px var(--shadow);
-}
-.stat-item{ display:flex; flex-direction:column; gap:2px; min-width:80px; }
-.stat-num{
-  font-family:'Fraunces Var',serif; font-size:1.8rem; font-weight:700; color:var(--forest); line-height:1;
-  font-variant-numeric:tabular-nums;
-}
-.stat-label{ font-size:.76rem; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.08em; font-weight:600; }
+/* Stat cluster removed (fake counters eliminated); legacy selectors kept
+   empty to avoid breaking JS references that might query .stat-cluster. */
+.stat-cluster{ display:none; }
+.stat-item{ display:none; }
+.stat-num{ display:none; }
+.stat-label{ display:none; }
 
 .seeds-count{ font-size:.78rem; color:var(--ink-faint); margin-top:3px; display:block; }
 
@@ -1206,16 +1359,13 @@ form.apply-form{ padding:24px 26px 26px; display:flex; flex-direction:column; ga
 }
 
 /* ── HERO CLIP STAGE ─────────────────────────────── */
+/* The card identity (border-radius, background, shadow, max-width, aspect-ratio)
+   is intentionally removed. This element is now used only as a compatibility
+   shim — the actual full-bleed background is .hero-bg-stage / .hero-bg-clip.
+   These styles are kept empty to avoid breaking any JS that still queries
+   .hero-clip-stage, but the visual is owned by the new background system. */
 .hero-clip-stage {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  max-width: 480px;
-  border-radius: 28px;
-  overflow: hidden;
-  background: var(--paper);
-  box-shadow: 0 4px 32px -8px var(--shadow);
-  margin: 0 auto;
+  display: none;
 }
 
 /* Each clip slides up from +18px and fades in — consistent single direction */
@@ -1247,9 +1397,8 @@ form.apply-form{ padding:24px 26px 26px; display:flex; flex-direction:column; ga
 .hero-clip img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-  padding: 32px 32px 24px;
+  object-fit: cover;
+  object-position: 70% center;
   pointer-events: none;
   user-select: none;
   display: block;
@@ -1262,8 +1411,100 @@ form.apply-form{ padding:24px 26px 26px; display:flex; flex-direction:column; ga
 
 @keyframes clip-breathe {
   0%, 100% { transform: scale(1.00); }
-  50%       { transform: scale(1.025); }
+  50%       { transform: scale(1.02); }
 }
+
+/* ── APPLE-GRADE SHOVEL BUTTON ───────────────────── */
+/* Used in sprint.html (Forming column) and match.html (card-foot).
+   Replaces the old unstyled .shovel-btn with a precise, crafted button:
+   no pill shape, clear border, correct density, proper active feedback. */
+.shovel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 6px;
+  border: 1.5px solid var(--forest);
+  background: transparent;
+  color: var(--forest);
+  font-family: inherit;
+  font-size: .84rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: .01em;
+  transition:
+    background 160ms var(--ease-out),
+    color 160ms var(--ease-out),
+    transform 120ms var(--ease-out),
+    box-shadow 160ms var(--ease-out);
+  white-space: nowrap;
+  text-decoration: none;
+}
+.shovel-btn:hover {
+  background: var(--forest);
+  color: var(--paper);
+  box-shadow: 0 4px 14px -4px rgba(31,92,64,.32);
+  transform: translateY(-1px);
+}
+.shovel-btn:active { transform: scale(.96); }
+.shovel-btn:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+.shovel-btn .icon { width: 14px; height: 14px; flex: 0 0 auto; }
+/* notify variant — subtle, passes-for-now intent */
+.shovel-btn.notify {
+  border-color: var(--ink-faint);
+  color: var(--ink-soft);
+}
+.shovel-btn.notify:hover {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--ink);
+  box-shadow: none;
+}
+
+/* ── AVATAR IMAGE UTILITY ────────────────────────── */
+/* Brand icon PNGs from /public/avatars/ used as role avatars,
+   page headers, keyring charms, footer quote badge, etc. */
+.avatar-img {
+  display: block;
+  border-radius: 8px;
+  object-fit: contain;
+  background: transparent;
+}
+.avatar-img.sm  { width: 32px;  height: 32px; }
+.avatar-img.md  { width: 56px;  height: 56px; }
+.avatar-img.lg  { width: 80px;  height: 80px; }
+.avatar-img.xl  { width: 120px; height: 120px; }
+.avatar-img.hero { width: 160px; height: 160px; }
+
+/* Profile Builder module (Match page — first-time users) */
+.profile-builder{
+  padding: 32px;
+  margin-bottom: 44px;
+  border-radius: 14px;
+}
+.profile-builder-title{
+  font-family: 'Fraunces Var', serif;
+  font-size: 1.28rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+.profile-builder-sub{
+  color: var(--ink-soft); font-size: .93rem; margin-bottom: 24px; max-width: 54ch;
+}
+.role-picker{
+  display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px;
+}
+.role-pick-btn{
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  padding: 16px 20px; border-radius: 10px;
+  border: 2px solid var(--card-edge); background: var(--paper);
+  cursor: pointer; min-width: 110px; text-align: center;
+  transition: border-color .16s ease, box-shadow .16s ease, transform .14s ease;
+}
+.role-pick-btn:hover{ border-color: var(--forest); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,92,64,.14); }
+.role-pick-btn[aria-pressed="true"]{ border-color: var(--forest); background: color-mix(in srgb, var(--forest) 6%, var(--card)); box-shadow: 0 4px 14px rgba(31,92,64,.18); }
+.role-pick-btn img { width: 48px; height: 48px; object-fit: contain; }
+.role-pick-btn span { font-size: .82rem; font-weight: 600; color: var(--ink-soft); }
+.role-pick-btn[aria-pressed="true"] span { color: var(--forest); }
 
 /* ── VINE NOTE HOVER ─────────────────────────────── */
 .vine-note {
