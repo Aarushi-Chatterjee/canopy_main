@@ -370,9 +370,14 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
 .btn{
   border:none; cursor:pointer; font-weight:600; font-size:.95rem;
   padding:11px 22px; border-radius:6px;
+  text-decoration:none !important;
   transition:transform .18s var(--ease-out), box-shadow .18s var(--ease-out), background-color .18s var(--ease-out), color .18s var(--ease-out);
   display:inline-flex; align-items:center; gap:8px;
   letter-spacing:.01em;
+}
+.btn, .btn:hover, .btn:focus, .btn:active,
+a.btn, a.btn:hover, a.btn:focus, a.btn:active {
+  text-decoration: none !important;
 }
 .btn:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; }
 .btn:active{ transform:scale(.97); }
@@ -380,15 +385,17 @@ nav.primary-nav a[aria-current="page"]::after{ transform:scaleX(1); background:v
   background:var(--forest); color:var(--paper);
   box-shadow: 3px 3px 0 var(--ink);
   transform:rotate(-1deg);
+  text-decoration:none !important;
 }
 .btn-stamp:hover{ transform:rotate(-1deg) translate(-2px,-2px); box-shadow:5px 5px 0 var(--ink); }
 .btn-stamp:active{ transform:rotate(-1deg) scale(.97); box-shadow:2px 2px 0 var(--ink); }
 .btn-ghost{
   background:transparent; color:var(--ink); border:1.5px solid var(--ink);
+  text-decoration:none !important;
 }
 .btn-ghost:hover{ background:var(--ink); color:var(--paper); }
 .btn-ghost:active{ transform:scale(.97); }
-.btn-sm{ padding:8px 16px; font-size:.85rem; }
+.btn-sm{ padding:8px 16px; font-size:.85rem; text-decoration:none !important; }
 
 /* Three-line hamburger menu toggle */
 .menu-toggle{

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { store } = require('../data/store');
+const { requireAuth, optionalAuth } = require('../middleware/auth');
 
 // GET /api/sprints
 router.get('/', (req, res) => {
@@ -60,7 +61,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST /api/sprints
-router.post('/', (req, res) => {
+router.post('/', requireAuth, (req, res) => {
   const { buildCallId, title, description, domain, teamCapacity = 3, startDate, durationDays = 14 } = req.body;
 
   if (!title || !domain) {
@@ -73,20 +74,26 @@ router.post('/', (req, res) => {
 
   const newSprint = {
     id: sprintId,
+    creatorId: req.user.id,
     buildCallId: buildCallId || null,
     title,
     description: description || 'Sprint formed to ship a concrete prototype.',
     domain,
     stage: 'forming',
     teamCapacity: parseInt(teamCapacity, 10) || 3,
-    members: [],
+    members: [{
+      userId: req.user.id,
+      squadRole: 'Sprint Lead',
+      displayName: req.user.name || req.user.email,
+      joinedAt: new Date().toISOString()
+    }],
     skillTags: [domain],
     startDate: start.toISOString().split('T')[0],
     endDate: end.toISOString().split('T')[0],
     daysTotal: durationDays,
     daysLeft: durationDays,
     progressPct: 0,
-    statusHint: '0 of ' + teamCapacity + ' spots filled',
+    statusHint: '1 of ' + teamCapacity + ' spots filled',
     createdAt: new Date().toISOString()
   };
 
@@ -99,8 +106,10 @@ router.post('/', (req, res) => {
 });
 
 // POST /api/sprints/:id/join ("Grab a Shovel")
-router.post('/:id/join', (req, res) => {
-  const { userId = 'usr_elena', squadRole = 'Technical Contributor', displayName = 'Elena R.' } = req.body;
+router.post('/:id/join', requireAuth, (req, res) => {
+  const userId = req.user.id;
+  const displayName = req.user.name || req.user.email;
+  const squadRole = req.body.squadRole || 'Technical Contributor';
 
   const sprint = store.getItem('sprints', s => s.id === req.params.id);
   if (!sprint) {
@@ -155,11 +164,24 @@ router.post('/:id/notify', (req, res) => {
 });
 
 // PATCH /api/sprints/:id/stage
-router.patch('/:id/stage', (req, res) => {
+router.patch('/:id/stage', requireAuth, (req, res) => {
   const { stage, shippedArtifactUrl } = req.body;
 
   if (!['forming', 'building', 'shipped'].includes(stage)) {
     return res.status(400).json({ error: 'Invalid stage. Allowed: forming, building, shipped.' });
+  }
+
+  const sprint = store.getItem('sprints', s => s.id === req.params.id);
+  if (!sprint) {
+    return res.status(404).json({ error: 'Sprint not found.' });
+  }
+
+  const isMember = sprint.members && sprint.members.some(m => m.userId === req.user.id);
+  const isCreator = sprint.creatorId === req.user.id;
+  const isAdmin = req.user.role === 'admin';
+
+  if (!isMember && !isCreator && !isAdmin) {
+    return res.status(403).json({ error: 'Only squad members, the sprint creator, or an administrator can transition sprint stages.' });
   }
 
   const updates = { stage };
@@ -171,9 +193,6 @@ router.patch('/:id/stage', (req, res) => {
   }
 
   const updated = store.updateItem('sprints', s => s.id === req.params.id, updates);
-  if (!updated) {
-    return res.status(404).json({ error: 'Sprint not found.' });
-  }
 
   res.json({
     sprint: updated,

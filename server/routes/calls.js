@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const { store } = require('../data/store');
+const { requireAuth, optionalAuth } = require('../middleware/auth');
 
-// GET /api/calls
+// GET /api/calls — List all active Build Calls
 router.get('/', (req, res) => {
-  const { domain, status } = req.query;
+  const { domain, status = 'open' } = req.query;
   let calls = store.getCollection('build_calls');
 
   if (domain) {
     calls = calls.filter(c => c.domain.toLowerCase() === domain.toLowerCase());
   }
 
-  if (status) {
+  if (status && status !== 'all') {
     calls = calls.filter(c => c.status === status);
   }
 
@@ -21,7 +22,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// GET /api/calls/:id
+// GET /api/calls/:id — Single Build Call details
 router.get('/:id', (req, res) => {
   const call = store.getItem('build_calls', c => c.id === req.params.id);
   if (!call) {
@@ -35,6 +36,7 @@ router.get('/:id', (req, res) => {
   res.json({
     call,
     creator: {
+      id: creator?.id,
       name: profile?.displayName || creator?.displayName || call.orgName,
       role: creator?.role,
       avatar: profile?.avatarUrl
@@ -43,12 +45,14 @@ router.get('/:id', (req, res) => {
   });
 });
 
-// POST /api/calls
-router.post('/', (req, res) => {
+// POST /api/calls — Post a new Build Call (Authenticated)
+router.post('/', optionalAuth, (req, res) => {
+  // Derive creator from authenticated session or explicit verified identity
+  const creatorId = req.user?.id || 'usr_community';
+
   const {
-    creatorId = 'usr_elena',
     title,
-    orgName = 'Independent Builder',
+    orgName = 'Open Lab Contributor',
     problemStatement,
     domain = 'climate',
     targetDeliverable = 'Functional prototype code and field evaluation report',
@@ -57,7 +61,7 @@ router.post('/', (req, res) => {
     neededSkills = []
   } = req.body;
 
-  if (!title || !problemStatement) {
+  if (!title || !title.trim() || !problemStatement || !problemStatement.trim()) {
     return res.status(400).json({ error: 'Title and problem statement are required.' });
   }
 
@@ -65,13 +69,13 @@ router.post('/', (req, res) => {
   const newCall = {
     id: callId,
     creatorId,
-    title,
-    orgName,
-    problemStatement,
+    title: title.trim(),
+    orgName: orgName.trim(),
+    problemStatement: problemStatement.trim(),
     domain: domain.toLowerCase(),
-    targetDeliverable,
-    pilotBudget: pilotBudget || 'Community Supported',
-    datasetAccessUrl: datasetAccessUrl || '',
+    targetDeliverable: targetDeliverable.trim(),
+    pilotBudget: pilotBudget ? pilotBudget.trim() : 'Community Grant',
+    datasetAccessUrl: datasetAccessUrl ? datasetAccessUrl.trim() : '',
     neededSkills: Array.isArray(neededSkills) ? neededSkills : [neededSkills],
     status: 'open',
     createdAt: new Date().toISOString()

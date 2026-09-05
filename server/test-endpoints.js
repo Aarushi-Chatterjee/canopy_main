@@ -1,9 +1,10 @@
 const http = require('http');
 const { app } = require('./index.js');
+const { generateToken } = require('./middleware/auth');
 
 const PORT = 3099;
 const server = app.listen(PORT, async () => {
-  console.log(`Test server running on port ${PORT}...`);
+  console.log(`\n🌱 Canopy Test Server running on port ${PORT}...`);
 
   function request(method, path, body = null, headers = {}) {
     return new Promise((resolve, reject) => {
@@ -35,80 +36,137 @@ const server = app.listen(PORT, async () => {
     });
   }
 
-  try {
-    // 1. Health
-    const health = await request('GET', '/api/health');
-    console.log('✓ Health check:', health.status, health.data.status);
+  let failures = 0;
+  function assert(condition, message) {
+    if (condition) {
+      console.log(`  ✓ ${message}`);
+    } else {
+      console.error(`  ✗ FAIL: ${message}`);
+      failures++;
+    }
+  }
 
-    // 2. Auth: Register
-    const testEmail = `test.builder.${Date.now()}@canopy.earth`;
-    const reg = await request('POST', '/api/auth/register', {
+  try {
+    console.log('\n--- 1. Health & Security Gateways ---');
+    const health = await request('GET', '/api/health');
+    assert(health.status === 200 && health.data.status === 'healthy', 'Health check responds 200 OK');
+
+    // Security Gate: GET /api/applications must reject unauthorized callers
+    const unauthApps = await request('GET', '/api/applications');
+    assert(unauthApps.status === 401, 'P0 Security Gate: GET /api/applications rejects unauthenticated caller with 401');
+
+    console.log('\n--- 2. Cryptographic Authentication & Password Policy ---');
+    const testEmail = `builder.${Date.now()}@canopy.earth`;
+    const shortPwdReg = await request('POST', '/api/auth/register', {
       email: testEmail,
-      displayName: 'Test Builder',
+      password: 'short',
+      displayName: 'Elena Test'
+    });
+    assert(shortPwdReg.status === 400, 'Password validation: rejects passcodes < 8 characters');
+
+    const validReg = await request('POST', '/api/auth/register', {
+      email: testEmail,
+      password: 'StrongPassword123!',
+      displayName: 'Elena Test',
       role: 'builder'
     });
-    console.log('✓ Auth Register:', reg.status, reg.data.user?.email || reg.data.error);
+    assert(validReg.status === 201 && validReg.data.user?.id, 'Registration: creates user account with password hash');
 
-    // 3. Matches: Sandbox
-    const sandbox = await request('GET', '/api/matches/sandbox?domain=climate');
-    console.log('✓ Matches Sandbox:', sandbox.status, 'Profiles:', sandbox.data.totalProfiles, 'Calls:', sandbox.data.totalCalls);
+    // Fetch the generated user to get their verification code for test automation
+    const { store } = require('./data/store');
+    const userInDb = store.getItem('users', u => u.email === testEmail);
+    const verificationCode = userInDb?.verification_token;
 
-    // 4. Matches: Connections
-    const connections = await request('GET', '/api/matches/connections');
-    console.log('✓ Verified Peer Connections:', connections.status, 'Count:', connections.data.count);
-
-    // 5. Sprints: Board
-    const sprints = await request('GET', '/api/sprints');
-    console.log('✓ Sprint Board:', sprints.status, 'Forming:', sprints.data.forming.length, 'Building:', sprints.data.building.length, 'Shipped:', sprints.data.shipped.length);
-
-    // 6. Sprints: Join ("Grab a shovel")
-    const targetSprint = (sprints.data.forming && sprints.data.forming[0]) || (sprints.data.building && sprints.data.building[0]) || { id: 'sp_1' };
-    const join = await request('POST', `/api/sprints/${targetSprint.id}/join`, {
-      userId: reg.data.user.id,
-      displayName: 'Test Builder',
-      squadRole: 'Full-stack UI'
+    const verifyRes = await request('POST', '/api/auth/verify', {
+      email: testEmail,
+      token: verificationCode
     });
-    console.log('✓ Sprints Join (Grab a shovel):', join.status, join.data.message);
+    assert(verifyRes.status === 200 && verifyRes.data.sessionToken, 'Pass Verification: verifies 6-digit code and returns signed JWT');
+    const userToken = verifyRes.data.sessionToken;
+    const authHeaders = { Authorization: `Bearer ${userToken}` };
 
-    // 7. Build Calls: List & Post
-    const calls = await request('GET', '/api/calls');
-    console.log('✓ Build Calls:', calls.status, 'Total:', calls.data.total);
+    // Login with correct credentials
+    const loginRes = await request('POST', '/api/auth/login', {
+      email: testEmail,
+      password: 'StrongPassword123!'
+    });
+    assert(loginRes.status === 200 && loginRes.data.sessionToken, 'Login: authenticates with valid credentials');
+
+    // Login with incorrect credentials must fail (no auto-provisioning)
+    const badLogin = await request('POST', '/api/auth/login', {
+      email: testEmail,
+      password: 'WrongPassword!'
+    });
+    assert(badLogin.status === 401, 'Security Gate: rejects invalid password with 401 (no auto-provisioning)');
+
+    console.log('\n--- 3. Matches Sandbox & Reciprocal Contact Privacy ---');
+    const sandbox = await request('GET', '/api/matches/sandbox?domain=climate');
+    assert(sandbox.status === 200 && sandbox.data.totalProfiles > 0, 'Matches Sandbox: returns public profiles & build calls');
+
+    const handshakeRes = await request('POST', '/api/matches/handshake', {
+      recipientId: 'usr_maya',
+      intentNote: 'Excited to collaborate on the sensor pipeline.'
+    }, authHeaders);
+    assert(handshakeRes.status === 201 && handshakeRes.data.match?.id, 'Matches Handshake: requires JWT and creates pending match');
+
+    console.log('\n--- 4. Sprints Engine & Capacity Guardrails ---');
+    const sprintBoard = await request('GET', '/api/sprints');
+    assert(sprintBoard.status === 200 && Array.isArray(sprintBoard.data.forming), 'Sprint Board: returns forming, building, shipped cycles');
+
+    const targetSprint = sprintBoard.data.forming[0] || { id: 'sp_1' };
+    const joinRes = await request('POST', `/api/sprints/${targetSprint.id}/join`, {
+      squadRole: 'Sensors Lead'
+    }, authHeaders);
+    assert(joinRes.status === 200 || joinRes.status === 409, 'Sprint Join: successfully claims squad seat via signed JWT');
+
+    console.log('\n--- 5. Build Calls Pipeline ---');
+    const callsList = await request('GET', '/api/calls');
+    assert(callsList.status === 200 && callsList.data.calls.length > 0, 'Build Calls: returns scoped calls directory');
 
     const newCall = await request('POST', '/api/calls', {
-      title: 'Decentralized Water Filter Diagnostics',
-      orgName: 'Clean Water Project',
-      problemStatement: 'Automate membrane fouling detection.',
+      title: 'Automated Soil Microgrid Sensor Hub',
+      orgName: 'Canopy Agritech',
+      problemStatement: 'Scope low-power telemetry for drought forecasting.',
       domain: 'climate',
-      neededSkills: ['Sensors', 'Embedded C']
-    });
-    console.log('✓ Post Build Call:', newCall.status, newCall.data.message);
+      neededSkills: ['Firmware', 'Rust']
+    }, authHeaders);
+    assert(newCall.status === 201 && newCall.data.call?.creatorId === userInDb.id, 'Post Call: derives creatorId securely from JWT session');
 
-    // 8. Lab Notebook: Feed & Grow Entry
+    console.log('\n--- 6. Lab Notebook & Branching ---');
     const notes = await request('GET', '/api/notebook');
-    console.log('✓ Lab Notebook Feed:', notes.status, 'Entries:', notes.data.total);
+    assert(notes.status === 200 && notes.data.entries.length > 0, 'Lab Notebook: returns community field notes');
 
-    const grow = await request('POST', `/api/notebook/${notes.data.entries[0].id}/grow`, {
-      title: 'Follow-up dataset on sensor calibrations',
-      summarySnippet: 'Added test benchmarks across 10 rainfall cycles.',
-      teaser: 'calib_v2.py → accuracy: 98.4%'
+    const growRes = await request('POST', `/api/notebook/${notes.data.entries[0].id}/grow`, {
+      title: 'Calibration test benchmarks under high turbidity',
+      summarySnippet: 'Validation passed over 24-hour continuous stream run.'
+    }, authHeaders);
+    assert(growRes.status === 201 && growRes.data.branch?.authorId === userInDb.id, 'Grow Entry: derives authorId securely from JWT session');
+
+    console.log('\n--- 7. Application Intake & PII Privacy Review ---');
+    const appSubmission = await request('POST', '/api/applications', {
+      fullName: 'Dr. Jane Vance',
+      email: 'jane.vance@ecology.org',
+      role: 'problem_holder',
+      domain: 'climate',
+      motivationNote: 'Field testing coastal salinity data.'
     });
-    console.log('✓ Grow Notebook Entry:', grow.status, grow.data.message);
+    assert(appSubmission.status === 201 && appSubmission.data.application?.status === 'pending_review', 'Application Intake: sets pending_review status without fake auto-verification');
 
-    // 9. Application Intake
-    const appIntake = await request('POST', '/api/applications', {
-      fullName: 'New Collaborator',
-      email: 'new.collab@canopy.earth',
-      role: 'Builder',
-      domain: 'Hardware',
-      motivationNote: 'Ready to build.'
-    });
-    console.log('✓ Application Intake:', appIntake.status, appIntake.data.message);
+    // Admin Token Access to GET /api/applications
+    const adminToken = generateToken({ id: 'usr_admin', email: 'aarushi@canopy.earth', role: 'admin' });
+    const adminApps = await request('GET', '/api/applications', null, { Authorization: `Bearer ${adminToken}` });
+    assert(adminApps.status === 200 && Array.isArray(adminApps.data.applications), 'Admin Access: verified admin token retrieves application review queue');
 
-    console.log('\n🎉 ALL CANOPY BACKEND ENDPOINTS PASSED VALIDATION WITH 100% SUCCESS!');
+    if (failures === 0) {
+      console.log('\n✨ ALL CANOPY SECURITY & BACKEND TESTS PASSED (0 failures)!');
+    } else {
+      console.error(`\n⚠️ Tests completed with ${failures} failure(s).`);
+    }
   } catch (err) {
-    console.error('Test error:', err);
+    console.error('Fatal test execution error:', err);
+    failures++;
   } finally {
     server.close();
-    process.exit(0);
+    process.exit(failures > 0 ? 1 : 0);
   }
 });

@@ -12,8 +12,29 @@ const applicationsRouter = require('./routes/applications');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:5174',
+  'https://canopy.earth',
+  'https://www.canopy.earth'
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow non-browser requests (curl, Postman, test suites) or allowed origins
+    if (!origin || ALLOWED_ORIGINS.includes(origin) || origin.endsWith('.canopy.earth')) {
+      return callback(null, true);
+    }
+    return callback(new Error('CORS policy does not allow access from origin: ' + origin), false);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 app.use(express.json());
 
 // Request logger
@@ -59,13 +80,16 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-const server = app.listen(PORT, () => {
-  console.log(`🌱 Canopy Backend API running at http://localhost:${PORT}`);
-  console.log(`   Health Check: http://localhost:${PORT}/api/health`);
-  console.log(`   Sandbox Matches: http://localhost:${PORT}/api/matches/sandbox`);
-  console.log(`   Sprint Board: http://localhost:${PORT}/api/sprints`);
-  console.log(`   Build Calls: http://localhost:${PORT}/api/calls`);
-  console.log(`   Lab Notebook: http://localhost:${PORT}/api/notebook`);
-});
+let server = null;
+if (require.main === module) {
+  server = app.listen(PORT, () => {
+    console.log(`🌱 Canopy Backend API running at http://localhost:${PORT}`);
+    console.log(`   Health Check: http://localhost:${PORT}/api/health`);
+    console.log(`   Sandbox Matches: http://localhost:${PORT}/api/matches/sandbox`);
+    console.log(`   Sprint Board: http://localhost:${PORT}/api/sprints`);
+    console.log(`   Build Calls: http://localhost:${PORT}/api/calls`);
+    console.log(`   Lab Notebook: http://localhost:${PORT}/api/notebook`);
+  });
+}
 
 module.exports = { app, server };

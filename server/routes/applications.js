@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { store } = require('../data/store');
+const { requireAdmin, optionalAuth } = require('../middleware/auth');
 
-// POST /api/applications
-router.post('/', (req, res) => {
+// POST /api/applications — Public intake form
+router.post('/', optionalAuth, (req, res) => {
   const {
     fullName,
     email,
@@ -20,59 +21,31 @@ router.post('/', (req, res) => {
   const appId = 'app_' + Date.now();
   const newApp = {
     id: appId,
-    fullName,
-    email: email.toLowerCase(),
+    fullName: fullName.trim(),
+    email: email.toLowerCase().trim(),
     role,
     domain,
-    proofOfWorkLink: proofOfWorkLink || '',
-    motivationNote: motivationNote || '',
-    status: 'verified', // Verified automatically in sandbox
+    proofOfWorkLink: proofOfWorkLink ? proofOfWorkLink.trim() : '',
+    motivationNote: motivationNote ? motivationNote.trim() : '',
+    status: 'pending_review',
     submittedAt: new Date().toISOString()
   };
 
   store.addItem('applications', newApp);
 
-  // Sync with user profile if not exists
-  let user = store.getItem('users', u => u.email.toLowerCase() === email.toLowerCase());
-  if (!user) {
-    const userId = 'usr_' + Date.now();
-    user = {
-      id: userId,
-      email: email.toLowerCase(),
-      role: role.toLowerCase().replace(' ', '_'),
-      displayName: fullName,
-      is_verified: true,
-      verified_at: new Date().toISOString(),
-      created_at: new Date().toISOString()
-    };
-    store.addItem('users', user);
-
-    const profile = {
-      userId,
-      displayName: fullName,
-      headline: `${role} at Canopy`,
-      bio: motivationNote,
-      primaryDomain: domain.toLowerCase(),
-      skillTags: [domain, role],
-      avatarUrl: role.toLowerCase().includes('problem') 
-        ? '/avatars/avatar-problem-holders.png' 
-        : role.toLowerCase().includes('enabler') 
-          ? '/avatars/avatar-enablers.png' 
-          : '/avatars/avatar-builders.png',
-      hoursPerWeek: 10,
-      proofOfWork: proofOfWorkLink ? [{ title: 'Portfolio', url: proofOfWorkLink }] : []
-    };
-    store.addItem('profiles', profile);
-  }
-
+  // Return truthful confirmation without fake automatic verification
   res.status(201).json({
-    application: newApp,
-    message: '🌱 Application planted! Verified profile generated for Match Sandbox.'
+    application: {
+      id: newApp.id,
+      status: newApp.status,
+      submittedAt: newApp.submittedAt
+    },
+    message: '🌱 Application received! Our curation team reviews submissions within 24 hours.'
   });
 });
 
-// GET /api/applications
-router.get('/', (req, res) => {
+// GET /api/applications — Protected Admin Intake Queue (PII Protection)
+router.get('/', requireAdmin, (req, res) => {
   const applications = store.getCollection('applications');
   res.json({
     applications,

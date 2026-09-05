@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { store } = require('../data/store');
+const { requireAuth } = require('../middleware/auth');
 
 // GET /api/notebook
 router.get('/', (req, res) => {
@@ -43,10 +44,8 @@ router.get('/:id', (req, res) => {
 });
 
 // POST /api/notebook
-router.post('/', (req, res) => {
+router.post('/', requireAuth, (req, res) => {
   const {
-    authorId = 'usr_elena',
-    authorName = 'Elena R.',
     sprintId,
     grownFromLabel,
     title,
@@ -61,6 +60,9 @@ router.post('/', (req, res) => {
   if (!title || !summarySnippet) {
     return res.status(400).json({ error: 'Title and summary snippet are required.' });
   }
+
+  const authorId = req.user.id;
+  const authorName = req.user.name || req.user.email;
 
   const entryId = 'entry_' + Date.now();
   const newEntry = {
@@ -89,10 +91,8 @@ router.post('/', (req, res) => {
 });
 
 // POST /api/notebook/:id/grow ("Grow Entry")
-router.post('/:id/grow', (req, res) => {
+router.post('/:id/grow', requireAuth, (req, res) => {
   const {
-    authorId = 'usr_elena',
-    authorName = 'Elena R.',
     title,
     summarySnippet,
     teaser,
@@ -107,6 +107,9 @@ router.post('/:id/grow', (req, res) => {
   if (!title || !summarySnippet) {
     return res.status(400).json({ error: 'Title and note snippet are required to grow this entry.' });
   }
+
+  const authorId = req.user.id;
+  const authorName = req.user.name || req.user.email;
 
   const branchId = 'branch_' + Date.now();
   const newBranch = {

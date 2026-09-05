@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sandbox Access - Canopy</title>
 <meta name="description" content="Access your Canopy sandbox account, verify your collaborator pass, and track active sprints and teammates.">
+<meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="https://canopy.earth/login.html">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
@@ -146,7 +147,7 @@
 <aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
   <div class="nav-drawer-header">
     <div style="display:flex;align-items:center;gap:8px;">
-      <img src="/avatars/avatar-builders.png" alt="" style="width:24px;height:24px;object-fit:contain;">
+      <img src="/canopy-logo.png" alt="Canopy Logo" style="width:24px;height:24px;object-fit:contain;">
       <span class="nav-drawer-logo">Canopy</span>
     </div>
     <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
@@ -218,7 +219,7 @@
 
   <!-- The Field Pass Card -->
   <div class="field-pass-card reveal">
-    <div class="field-pass-stamp">Pass 04 · Verified</div>
+    <div class="field-pass-stamp" id="passStatusStamp">Field Station Pass · Entry Gate</div>
 
     <!-- Tab Toggle -->
     <div class="pass-segmented" role="tablist">
@@ -240,7 +241,7 @@
         <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
       </div>
 
-      <button type="submit" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;">Access Collaborator Terminal →</button>
+      <button type="submit" id="signInSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;">Access Collaborator Terminal →</button>
     </form>
 
     <!-- Sign Up Form (hidden by default) -->
@@ -252,10 +253,11 @@
 
       <div class="pass-input-group">
         <label for="regPassword">Create Passcode</label>
-        <input type="password" id="regPassword" required placeholder="Minimum 8 characters" autocomplete="new-password">
+        <input type="password" id="regPassword" required minlength="8" placeholder="Minimum 8 characters" autocomplete="new-password">
+        <span style="font-size:0.75rem;color:var(--ink-faint);margin-top:2px;">Must be at least 8 characters.</span>
       </div>
 
-      <button type="submit" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;">Send Verification Token →</button>
+      <button type="submit" id="signUpSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;">Send Verification Token →</button>
     </form>
 
     <!-- OTP Section (hidden by default) -->
@@ -287,11 +289,7 @@
   <div class="wrap">
     <div>
       <div class="footer-logo">
-        <svg viewBox="0 0 40 44" fill="none" width="40" height="44" aria-hidden="true">
-          <path d="M20 44V24" stroke="var(--sun)" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M20 26C20 26 4 24 5 6C20 6 20 26 20 26Z" fill="var(--leaf)"/>
-          <path d="M20 19C20 19 36 16 35 2C20 3 20 19 20 19Z" fill="var(--sun)"/>
-        </svg>
+        <img src="/canopy-logo.png" alt="Canopy Logo" height="40" style="height:40px;width:auto;display:block;">
         <div class="footer-logo-text">
           <span class="footer-logo-name">CANOPY</span>
           <span class="footer-logo-sub">Build · Connect · Ship</span>
@@ -344,8 +342,16 @@
   const otpInput = document.getElementById('otpInput');
   const verifyBtn = document.getElementById('verifyBtn');
   const toast = document.getElementById('toast');
+  const passStatusStamp = document.getElementById('passStatusStamp');
 
   let pendingEmail = '';
+
+  // Check active session status to show authentic user state
+  auth.getCurrentUser().then(user => {
+    if (user && user.is_verified) {
+      if (passStatusStamp) passStatusStamp.textContent = `Pass · ${user.displayName || 'Collaborator'} (Verified)`;
+    }
+  }).catch(() => {});
 
   function setMode(mode) {
     if (mode === 'signup') {
@@ -355,6 +361,7 @@
       tabSignIn.setAttribute('aria-selected', 'false');
       signUpForm.style.display = 'flex';
       signInForm.style.display = 'none';
+      if (passStatusStamp) passStatusStamp.textContent = 'New Collaborator · Intake';
     } else {
       tabSignIn.classList.add('active');
       tabSignIn.setAttribute('aria-selected', 'true');
@@ -362,6 +369,7 @@
       tabSignUp.setAttribute('aria-selected', 'false');
       signInForm.style.display = 'flex';
       signUpForm.style.display = 'none';
+      if (passStatusStamp) passStatusStamp.textContent = 'Field Station Pass · Sign In';
     }
   }
 
@@ -372,49 +380,102 @@
   const params = new URLSearchParams(window.location.search);
   if (params.get('tab') === 'signup') {
     setMode('signup');
+  } else {
+    setMode('signin');
+  }
+
+  const signInSubmitBtn = document.getElementById('signInSubmitBtn');
+  const signUpSubmitBtn = document.getElementById('signUpSubmitBtn');
+
+  function showToast(msg) {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
   }
 
   signInForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById('loginEmail').value;
+    const email = document.getElementById('loginEmail').value.trim();
     const pwd = document.getElementById('loginPassword').value;
+
+    if (!email || !pwd) {
+      showToast('⚠️ Please provide both email and password.');
+      return;
+    }
+
+    const origText = signInSubmitBtn.innerHTML;
+    signInSubmitBtn.disabled = true;
+    signInSubmitBtn.innerHTML = 'Connecting to Station...';
+
     try {
-      await auth.signIn(email, pwd);
-      toast.textContent = '🌱 Signed in: welcome to the terminal.';
-      toast.classList.add('show');
-      setTimeout(() => { window.location.href = 'match.html'; }, 1100);
+      const res = await auth.signIn(email, pwd);
+      if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
+      showToast('🌱 Signed in: welcome to the terminal.');
+      setTimeout(() => { window.location.href = 'match.html'; }, 900);
     } catch (err) {
-      alert(err.message);
+      showToast('⚠️ ' + (err.message || 'Authentication failed.'));
+      signInSubmitBtn.disabled = false;
+      signInSubmitBtn.innerHTML = origText;
     }
   });
 
   signUpForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    pendingEmail = document.getElementById('regEmail').value;
+    pendingEmail = document.getElementById('regEmail').value.trim();
     const pwd = document.getElementById('regPassword').value;
+
+    if (!pendingEmail || !pendingEmail.includes('@')) {
+      showToast('⚠️ Please enter a valid email address.');
+      return;
+    }
+
+    if (!pwd || pwd.length < 8) {
+      showToast('⚠️ Passcode must be at least 8 characters long.');
+      return;
+    }
+
+    const origText = signUpSubmitBtn.innerHTML;
+    signUpSubmitBtn.disabled = true;
+    signUpSubmitBtn.innerHTML = 'Dispatching Token...';
+
     try {
       const res = await auth.signUp(pendingEmail, pwd);
       otpSection.style.display = 'block';
+      if (passStatusStamp) passStatusStamp.textContent = 'Code Dispatched · Verification Required';
       if (res.verificationNotice) {
         otpNotice.textContent = res.verificationNotice;
       }
-      toast.textContent = '🌱 Verification token dispatched.';
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3500);
+      showToast('🌱 Verification token dispatched to your inbox.');
+      signUpSubmitBtn.disabled = false;
+      signUpSubmitBtn.innerHTML = origText;
     } catch (err) {
-      alert(err.message);
+      showToast('⚠️ ' + (err.message || 'Registration failed.'));
+      signUpSubmitBtn.disabled = false;
+      signUpSubmitBtn.innerHTML = origText;
     }
   });
 
   verifyBtn.addEventListener('click', async () => {
     const token = otpInput.value.trim();
+    if (!token || token.length < 6) {
+      showToast('⚠️ Please enter the 6-digit verification code.');
+      return;
+    }
+
+    const origText = verifyBtn.innerHTML;
+    verifyBtn.disabled = true;
+    verifyBtn.innerHTML = 'Verifying...';
+
     try {
       await auth.verifyOtp(pendingEmail, token);
-      toast.textContent = '🌱 Pass verified: collaborator access active.';
-      toast.classList.add('show');
-      setTimeout(() => { window.location.href = 'match.html'; }, 1100);
+      if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
+      showToast('🌱 Pass verified: collaborator access active.');
+      setTimeout(() => { window.location.href = 'match.html'; }, 900);
     } catch (err) {
-      alert(err.message);
+      showToast('⚠️ ' + (err.message || 'Verification failed.'));
+      verifyBtn.disabled = false;
+      verifyBtn.innerHTML = origText;
     }
   });
 </script>

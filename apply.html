@@ -138,9 +138,16 @@
         <textarea id="appNote" required rows="3" placeholder="Tell us about your specific technical skills or domain questions..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:inherit;"></textarea>
       </div>
 
+      <div class="field" style="display:flex;align-items:flex-start;gap:8px;margin-top:4px;">
+        <input type="checkbox" id="appConsent" required style="margin-top:3px;accent-color:var(--forest);">
+        <label for="appConsent" style="font-size:0.8rem;color:var(--ink-soft);line-height:1.4;">
+          I agree to the <a href="privacy.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Privacy Policy</a> and understand that my application will be reviewed before verified cohort access.
+        </label>
+      </div>
+
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:16px;border-top:1px solid var(--line);">
         <span style="font-size:0.8rem;color:var(--ink-faint);">Generates your verified sandbox avatar</span>
-        <button type="submit" class="btn btn-stamp">Plant My Profile →</button>
+        <button type="submit" id="appSubmitBtn" class="btn btn-stamp">Plant My Profile →</button>
       </div>
     </form>
   </div>
@@ -154,11 +161,7 @@
   <div class="wrap">
     <div>
       <div class="footer-logo">
-        <svg viewBox="0 0 40 44" fill="none" width="40" height="44" aria-hidden="true">
-          <path d="M20 44V24" stroke="var(--sun)" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M20 26C20 26 4 24 5 6C20 6 20 26 20 26Z" fill="var(--leaf)"/>
-          <path d="M20 19C20 19 36 16 35 2C20 3 20 19 20 19Z" fill="var(--sun)"/>
-        </svg>
+        <img src="/canopy-logo.png" alt="Canopy Logo" height="40" style="height:40px;width:auto;display:block;">
         <div class="footer-logo-text">
           <span class="footer-logo-name">CANOPY</span>
           <span class="footer-logo-sub">Build · Connect · Ship</span>
@@ -204,25 +207,47 @@
   import { db } from '/src/db.js';
   const form = document.getElementById('fullApplyForm');
   const toast = document.getElementById('toast');
+  const submitBtn = document.getElementById('appSubmitBtn');
+
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const name = document.getElementById('appName').value;
-      const email = document.getElementById('appEmail').value;
-      const link = document.getElementById('appLink').value;
-      const note = document.getElementById('appNote').value;
+      const name = document.getElementById('appName').value.trim();
+      const email = document.getElementById('appEmail').value.trim();
+      const link = document.getElementById('appLink').value.trim();
+      const note = document.getElementById('appNote').value.trim();
       const rolePill = form.querySelector('[data-group="role"] .pill[aria-pressed="true"]');
       const domainPill = form.querySelector('[data-group="domain"] .pill[aria-pressed="true"]');
       const role = rolePill ? rolePill.textContent : 'Builder';
       const domain = domainPill ? domainPill.textContent : 'Climate';
 
-      await db.submitApplication({ name, email, role, domain, link, note });
-      db.saveProfile({ name, email, role, domain });
-      toast.textContent = '🌱 Application planted: profile saved.';
-      toast.classList.add('show');
-      setTimeout(() => {
-        window.location.href = 'match.html';
-      }, 1500);
+      const origText = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Planting Profile...';
+      }
+
+      try {
+        await db.submitApplication({ name, email, role, domain, link, note });
+        db.saveProfile({ name, email, role, domain });
+        if (toast) {
+          toast.textContent = '🌱 Application received: queued for curator review.';
+          toast.classList.add('show');
+        }
+        setTimeout(() => {
+          window.location.href = 'match.html';
+        }, 1300);
+      } catch (err) {
+        if (toast) {
+          toast.textContent = '⚠️ ' + (err.message || 'Submission failed.');
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origText;
+        }
+      }
     });
   }
 </script>

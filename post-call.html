@@ -133,9 +133,16 @@
         <input type="text" id="callReward" placeholder="e.g. $5,000 deployment grant + open hardware kit sponsorship" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
 
+      <div class="field" style="display:flex;align-items:flex-start;gap:8px;margin-top:4px;">
+        <input type="checkbox" id="callConsent" required style="margin-top:3px;accent-color:var(--forest);">
+        <label for="callConsent" style="font-size:0.8rem;color:var(--ink-soft);line-height:1.4;">
+          I confirm this Build Call represents an authentic scoped challenge, and agree to the <a href="terms.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Terms</a> and <a href="privacy.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Privacy Covenant</a>.
+        </label>
+      </div>
+
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:16px;border-top:1px solid var(--line);">
         <span style="font-size:0.8rem;color:var(--ink-faint);">Reviewed by Canopy curators within 24 hours</span>
-        <button type="submit" class="btn btn-stamp">Publish Build Call →</button>
+        <button type="submit" id="postCallSubmitBtn" class="btn btn-stamp">Publish Build Call →</button>
       </div>
     </form>
   </div>
@@ -149,11 +156,7 @@
   <div class="wrap">
     <div>
       <div class="footer-logo">
-        <svg viewBox="0 0 40 44" fill="none" width="40" height="44" aria-hidden="true">
-          <path d="M20 44V24" stroke="var(--sun)" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M20 26C20 26 4 24 5 6C20 6 20 26 20 26Z" fill="var(--leaf)"/>
-          <path d="M20 19C20 19 36 16 35 2C20 3 20 19 20 19Z" fill="var(--sun)"/>
-        </svg>
+        <img src="/canopy-logo.png" alt="Canopy Logo" height="40" style="height:40px;width:auto;display:block;">
         <div class="footer-logo-text">
           <span class="footer-logo-name">CANOPY</span>
           <span class="footer-logo-sub">Build · Connect · Ship</span>
@@ -199,22 +202,45 @@
   import { db } from '/src/db.js';
   const form = document.getElementById('postCallForm');
   const toast = document.getElementById('toast');
+  const submitBtn = document.getElementById('postCallSubmitBtn');
+
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const org = document.getElementById('orgName').value;
-      const email = document.getElementById('contactEmail').value;
-      const title = document.getElementById('callTitle').value;
-      const desc = document.getElementById('callDesc').value;
-      const reward = document.getElementById('callReward').value;
+      const org = document.getElementById('orgName').value.trim();
+      const email = document.getElementById('contactEmail').value.trim();
+      const title = document.getElementById('callTitle').value.trim();
+      const desc = document.getElementById('callDesc').value.trim();
+      const reward = document.getElementById('callReward').value.trim();
       const activePill = form.querySelector('.pill[aria-pressed="true"]');
       const domain = activePill ? activePill.textContent : 'General';
 
-      await db.postBuildCall({ org, email, title, desc, reward, domain });
-      toast.textContent = '🌱 Build Call submitted: queued for curator review.';
-      toast.classList.add('show');
-      form.reset();
-      setTimeout(() => toast.classList.remove('show'), 3500);
+      const origText = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Publishing Call...';
+      }
+
+      try {
+        await db.postBuildCall({ org, email, title, desc, reward, domain });
+        if (toast) {
+          toast.textContent = '🌱 Build Call submitted: queued for curator review.';
+          toast.classList.add('show');
+        }
+        form.reset();
+        setTimeout(() => toast && toast.classList.remove('show'), 3500);
+      } catch (err) {
+        if (toast) {
+          toast.textContent = '⚠️ ' + (err.message || 'Failed to submit Build Call.');
+          toast.classList.add('show');
+          setTimeout(() => toast && toast.classList.remove('show'), 4000);
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origText;
+        }
+      }
     });
   }
 </script>

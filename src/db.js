@@ -39,12 +39,12 @@ function getAuthHeader() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// Low-overhead fetch wrapper with automatic timeout and graceful fallback
+// Low-overhead fetch wrapper with timeout and distinction between network offline and HTTP status errors
 async function apiRequest(endpoint, options = {}) {
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 2800);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 4000);
 
+  try {
     const res = await fetch(`${API_BASE}${endpoint}`, {
       ...options,
       signal: controller.signal,
@@ -56,14 +56,14 @@ async function apiRequest(endpoint, options = {}) {
     });
     clearTimeout(timeout);
 
+    const data = await res.json().catch(() => ({}));
     if (res.ok) {
-      return await res.json();
+      return { ok: true, data };
     }
-    const errData = await res.json().catch(() => ({}));
-    throw new Error(errData.error || `HTTP error ${res.status}`);
-  } catch (err) {
-    // Return null to signal that local fallback should execute
-    return null;
+    return { ok: false, status: res.status, error: data.error || `HTTP error ${res.status}` };
+  } catch (networkErr) {
+    clearTimeout(timeout);
+    return { ok: false, offline: true, error: networkErr.message };
   }
 }
 
@@ -77,14 +77,18 @@ export const auth = {
       body: JSON.stringify({ email, password, role: metadata.role || 'builder', displayName: metadata.displayName })
     });
 
-    if (remote && remote.user) {
-      setLocal(STORAGE_KEYS.USER, remote.user);
-      if (remote.sessionToken) localStorage.setItem(STORAGE_KEYS.TOKEN, remote.sessionToken);
-      if (remote.profile) setLocal(STORAGE_KEYS.PROFILE, remote.profile);
-      return { data: remote, error: null, verificationNotice: remote.verificationNotice };
+    if (remote.ok && remote.data?.user) {
+      setLocal(STORAGE_KEYS.USER, remote.data.user);
+      if (remote.data.sessionToken) localStorage.setItem(STORAGE_KEYS.TOKEN, remote.data.sessionToken);
+      if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
+      return { data: remote.data, error: null, verificationNotice: remote.data.verificationNotice };
     }
 
-    // Local fallback
+    if (!remote.ok && !remote.offline) {
+      throw new Error(remote.error || 'Registration failed.');
+    }
+
+    // Local fallback for offline mode
     if (!email || !email.includes('@')) {
       throw new Error('Please provide a valid email address.');
     }
@@ -99,11 +103,10 @@ export const auth = {
       created_at: new Date().toISOString()
     };
     setLocal(STORAGE_KEYS.USER, user);
-    console.info(`[Canopy Local Mode] Verification code: ${token}`);
     return {
       data: { user, session: null },
       error: null,
-      verificationNotice: `Verification email simulated. Enter code: ${token}`
+      verificationNotice: `Offline mode: verification code simulated. Code: ${token}`
     };
   },
 
@@ -113,23 +116,27 @@ export const auth = {
       body: JSON.stringify({ email, token })
     });
 
-    if (remote && remote.user) {
-      setLocal(STORAGE_KEYS.USER, remote.user);
-      if (remote.sessionToken) localStorage.setItem(STORAGE_KEYS.TOKEN, remote.sessionToken);
-      if (remote.profile) setLocal(STORAGE_KEYS.PROFILE, remote.profile);
-      return { data: remote, error: null };
+    if (remote.ok && remote.data?.user) {
+      setLocal(STORAGE_KEYS.USER, remote.data.user);
+      if (remote.data.sessionToken) localStorage.setItem(STORAGE_KEYS.TOKEN, remote.data.sessionToken);
+      if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
+      return { data: remote.data, error: null };
     }
 
-    // Local fallback
+    if (!remote.ok && !remote.offline) {
+      throw new Error(remote.error || 'Verification failed.');
+    }
+
+    // Local fallback (strictly verifies token without backdoor)
     const user = getLocal(STORAGE_KEYS.USER, null);
     if (!user || user.email !== email) {
       throw new Error('User not found or uninitiated.');
     }
-    if (token.toUpperCase() === (user.verification_token || '').toUpperCase() || token === '123456') {
+    if (token.toUpperCase() === (user.verification_token || '').toUpperCase()) {
       user.is_verified = true;
       user.verified_at = new Date().toISOString();
       setLocal(STORAGE_KEYS.USER, user);
-      const sessionToken = 'demo_token_' + Date.now();
+      const sessionToken = 'offline_token_' + Date.now();
       localStorage.setItem(STORAGE_KEYS.TOKEN, sessionToken);
       return { data: { user, session: { access_token: sessionToken } }, error: null };
     }
@@ -142,30 +149,23 @@ export const auth = {
       body: JSON.stringify({ email, password })
     });
 
-    if (remote && remote.user) {
-      setLocal(STORAGE_KEYS.USER, remote.user);
-      if (remote.sessionToken) localStorage.setItem(STORAGE_KEYS.TOKEN, remote.sessionToken);
-      if (remote.profile) setLocal(STORAGE_KEYS.PROFILE, remote.profile);
-      return { data: remote, error: null };
+    if (remote.ok && remote.data?.user) {
+      setLocal(STORAGE_KEYS.USER, remote.data.user);
+      if (remote.data.sessionToken) localStorage.setItem(STORAGE_KEYS.TOKEN, remote.data.sessionToken);
+      if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
+      return { data: remote.data, error: null };
     }
 
-    // Local fallback
-    let user = getLocal(STORAGE_KEYS.USER, null);
-    if (!user || user.email !== email) {
-      user = {
-        id: 'usr_' + Date.now(),
-        email,
-        role: 'builder',
-        displayName: email.split('@')[0],
-        is_verified: true,
-        verified_at: new Date().toISOString(),
-        created_at: new Date().toISOString()
-      };
-      setLocal(STORAGE_KEYS.USER, user);
+    if (!remote.ok && !remote.offline) {
+      throw new Error(remote.error || 'Invalid email or password.');
     }
-    const sessionToken = 'demo_token_' + Date.now();
-    localStorage.setItem(STORAGE_KEYS.TOKEN, sessionToken);
-    return { data: { user, session: { access_token: sessionToken } }, error: null };
+
+    // Local fallback: only allow if local verified record matches
+    const localUser = getLocal(STORAGE_KEYS.USER, null);
+    if (localUser && localUser.email.toLowerCase() === email.toLowerCase()) {
+      return { data: { user: localUser, session: { access_token: localStorage.getItem(STORAGE_KEYS.TOKEN) || 'offline_token' } }, error: null };
+    }
+    throw new Error('Canopy API offline and no verified local credentials found.');
   },
 
   async signOut() {
@@ -178,6 +178,20 @@ export const auth = {
 
   getUser() {
     return getLocal(STORAGE_KEYS.USER, null);
+  },
+
+  async getCurrentUser() {
+    const localUser = getLocal(STORAGE_KEYS.USER, null);
+    const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
+    if (!token) return null;
+
+    const remote = await apiRequest('/auth/me');
+    if (remote.ok && remote.data?.user && !remote.data.isGuest) {
+      setLocal(STORAGE_KEYS.USER, remote.data.user);
+      if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
+      return remote.data.user;
+    }
+    return localUser;
   },
 
   getProfile() {
@@ -195,7 +209,7 @@ export const matches = {
     if (filters.role) params.append('role', filters.role);
 
     const remote = await apiRequest(`/matches/sandbox?${params.toString()}`);
-    if (remote) return remote;
+    if (remote.ok && remote.data) return remote.data;
 
     // Local fallback
     return {
@@ -216,7 +230,7 @@ export const matches = {
 
   async getConnections() {
     const remote = await apiRequest('/matches/connections');
-    if (remote && remote.connections) return remote.connections;
+    if (remote.ok && remote.data?.connections) return remote.data.connections;
 
     // Local fallback with verified connections
     return [
@@ -245,17 +259,22 @@ export const matches = {
   },
 
   async sendHandshake(recipientId, intentNote, buildCallId = null) {
-    const user = auth.getUser();
     const remote = await apiRequest('/matches/handshake', {
       method: 'POST',
       body: JSON.stringify({
-        requesterId: user?.id || 'usr_elena',
         recipientId,
         buildCallId,
         intentNote
       })
     });
-    return remote || { match: { id: 'mtc_' + Date.now(), status: 'pending' }, message: 'Handshake simulated locally.' };
+
+    if (remote.ok && remote.data) return remote.data;
+
+    if (!remote.ok && !remote.offline) {
+      throw new Error(remote.error || 'Failed to send handshake request.');
+    }
+
+    return { match: { id: 'mtc_' + Date.now(), status: 'pending' }, message: 'Handshake queued in local sandbox mode.' };
   }
 };
 
@@ -266,29 +285,28 @@ export const sprints = {
   async getBoard(domain = null) {
     const query = domain ? `?domain=${encodeURIComponent(domain)}` : '';
     const remote = await apiRequest(`/sprints${query}`);
-    if (remote && remote.forming) return remote;
+    if (remote.ok && remote.data?.forming) return remote.data;
 
-    // Fallback static mock structure
     return {
       forming: [],
       building: [],
       shipped: [],
+      totalSprints: 0,
       activeCycleDaysLeft: 12
     };
   },
 
   async joinSprint(sprintId, squadRole = 'Technical Contributor') {
-    const user = auth.getUser();
     const remote = await apiRequest(`/sprints/${sprintId}/join`, {
       method: 'POST',
-      body: JSON.stringify({
-        userId: user?.id || 'usr_visitor',
-        displayName: user?.displayName || 'Visiting Builder',
-        squadRole
-      })
+      body: JSON.stringify({ squadRole })
     });
 
-    if (remote) return remote;
+    if (remote.ok && remote.data) return remote.data;
+
+    if (!remote.ok && !remote.offline) {
+      throw new Error(remote.error || 'Unable to join sprint squad.');
+    }
 
     // Local fallback
     const memberships = getLocal(STORAGE_KEYS.SPRINT_MEMBERSHIPS, []);
@@ -302,7 +320,10 @@ export const sprints = {
       method: 'POST',
       body: JSON.stringify({ email })
     });
-    return remote || { success: true, message: '🔔 Subscribed for next sprint cycle notification.' };
+
+    if (remote.ok && remote.data) return remote.data;
+
+    return { success: true, message: '🔔 Subscribed for next sprint cycle notification.' };
   }
 };
 
@@ -313,28 +334,26 @@ export const calls = {
   async getCalls(domain = null) {
     const query = domain ? `?domain=${encodeURIComponent(domain)}` : '';
     const remote = await apiRequest(`/calls${query}`);
-    if (remote && remote.calls) return remote.calls;
+    if (remote.ok && remote.data?.calls) return remote.data.calls;
 
     return getLocal(STORAGE_KEYS.BUILD_CALLS, []);
   },
 
   async postBuildCall(callData) {
-    const user = auth.getUser();
-    const payload = {
-      creatorId: user?.id || 'usr_local',
-      ...callData
-    };
-
     const remote = await apiRequest('/calls', {
       method: 'POST',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(callData)
     });
 
-    if (remote && remote.call) return remote;
+    if (remote.ok && remote.data) return remote.data;
+
+    if (!remote.ok && !remote.offline) {
+      throw new Error(remote.error || 'Failed to post Build Call.');
+    }
 
     // Local fallback
     const callsList = getLocal(STORAGE_KEYS.BUILD_CALLS, []);
-    const entry = { id: 'call_' + Date.now(), ...payload, createdAt: new Date().toISOString() };
+    const entry = { id: 'call_' + Date.now(), ...callData, createdAt: new Date().toISOString() };
     callsList.unshift(entry);
     setLocal(STORAGE_KEYS.BUILD_CALLS, callsList);
     return { call: entry, message: '🌱 Build Call saved to local sandbox directory.' };
@@ -351,51 +370,45 @@ export const notebook = {
     if (filters.type) params.append('type', filters.type);
 
     const remote = await apiRequest(`/notebook?${params.toString()}`);
-    if (remote && remote.entries) return remote.entries;
+    if (remote.ok && remote.data?.entries) return remote.data.entries;
 
     return getLocal(STORAGE_KEYS.NOTEBOOK, []);
   },
 
   async publishEntry(entryData) {
-    const user = auth.getUser();
-    const payload = {
-      authorId: user?.id || 'usr_local',
-      authorName: user?.displayName || 'Anonymous Contributor',
-      ...entryData
-    };
-
     const remote = await apiRequest('/notebook', {
       method: 'POST',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(entryData)
     });
 
-    if (remote && remote.entry) return remote;
+    if (remote.ok && remote.data) return remote.data;
+
+    if (!remote.ok && !remote.offline) {
+      throw new Error(remote.error || 'Failed to publish notebook entry.');
+    }
 
     // Local fallback
     const list = getLocal(STORAGE_KEYS.NOTEBOOK, []);
-    const entry = { id: 'entry_' + Date.now(), ...payload, createdAt: new Date().toISOString() };
+    const entry = { id: 'entry_' + Date.now(), ...entryData, createdAt: new Date().toISOString() };
     list.unshift(entry);
     setLocal(STORAGE_KEYS.NOTEBOOK, list);
     return { entry, message: '🌿 Field note planted in local journal.' };
   },
 
   async growEntry(entryId, branchData) {
-    const user = auth.getUser();
-    const payload = {
-      authorId: user?.id || 'usr_local',
-      authorName: user?.displayName || 'Collaborator',
-      ...branchData
-    };
-
     const remote = await apiRequest(`/notebook/${entryId}/grow`, {
       method: 'POST',
-      body: JSON.stringify(payload)
+      body: JSON.stringify(branchData)
     });
 
-    if (remote) return remote;
+    if (remote.ok && remote.data) return remote.data;
+
+    if (!remote.ok && !remote.offline) {
+      throw new Error(remote.error || 'Failed to branch notebook entry.');
+    }
 
     return {
-      branch: { id: 'branch_' + Date.now(), ...payload },
+      branch: { id: 'branch_' + Date.now(), ...branchData },
       message: '🌱 Reflection branched into local entry.'
     };
   }
@@ -411,7 +424,11 @@ export const applications = {
       body: JSON.stringify(application)
     });
 
-    if (remote && remote.application) return remote;
+    if (remote.ok && remote.data) return remote.data;
+
+    if (!remote.ok && !remote.offline) {
+      throw new Error(remote.error || 'Failed to submit application.');
+    }
 
     // Local fallback
     const apps = getLocal(STORAGE_KEYS.APPLICATIONS, []);

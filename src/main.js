@@ -1,6 +1,7 @@
 import { animate, utils } from 'animejs';
 import { initAmbientPlate } from './ambient-plate.js';
 import { initIvyGrowth } from './ivy-growth.js';
+import { sprints, matches, notebook, auth } from './db.js';
 
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -204,12 +205,31 @@ import { initIvyGrowth } from './ivy-growth.js';
   var deckCard = document.getElementById('deckCard');
   if(deckCard){
     var problems = [
-      {tag:'Domain · Water', title:'Build a low-cost sensor to flag groundwater contamination in real time.', reward:'Reward: ₹150,000 pilot budget + open dataset access'},
-      {tag:'Domain · Energy', title:'Design a dashboard that helps rural microgrids predict demand a day ahead.', reward:'Reward: paid 6-week pilot with a state energy board'},
-      {tag:'Domain · Biodiversity', title:'Train a lightweight model to ID invasive species from camera-trap photos.', reward:'Reward: open-source credit + conference travel grant'},
-      {tag:'Domain · Civic Tech', title:'Prototype a plain-language explainer for municipal budget documents.', reward:'Reward: ₹80,000 cash prize'},
-      {tag:'Domain · Health', title:'Build a triage chatbot for a rural clinic network with patchy connectivity.', reward:'Reward: paid pilot + clinic deployment credit'}
+      {tag:'Domain · Climate', title:'Build a low-cost sensor to flag groundwater contamination in real time.', reward:'Reward: $8,500 deployment grant + open dataset access'},
+      {tag:'Domain · Energy', title:'Fault detection for village solar microgrids to prevent battery bank depletion.', reward:'Reward: $7,200 hardware stipend'},
+      {tag:'Domain · AI / ML', title:'Automated Sentinel-2 change detection pipeline flagging canopy incisions within 48 hours.', reward:'Reward: $10,000 compute credits'},
+      {tag:'Domain · Civic Tech', title:'Interactive line-item difference engine for municipal budget documents.', reward:'Reward: $5,000 micro-grant'},
+      {tag:'Domain · Health', title:'Offline-first CRDT synchronization client for frontier clinic triage.', reward:'Reward: $9,000 deployment pilot'}
     ];
+
+    // Connect to live backend /api/calls database
+    fetch('/api/calls')
+      .then(function(res){ return res.json(); })
+      .then(function(data){
+        if(data && data.calls && data.calls.length){
+          problems = data.calls.map(function(c){
+            return {
+              id: c.id,
+              tag: 'Domain · ' + (c.domain ? c.domain.charAt(0).toUpperCase() + c.domain.slice(1) : 'Field Call'),
+              title: c.problemStatement || c.title,
+              reward: c.pilotBudget ? 'Reward: ' + c.pilotBudget : 'Reward: Pilot support + dataset access'
+            };
+          });
+          paintDeck();
+        }
+      })
+      .catch(function(){ /* Fallback remains in place gracefully */ });
+
     var di = 0, ticks=0, crosses=0;
     var elTag = document.getElementById('deckTagLabel');
     var elTitle = document.getElementById('deckTitle');
@@ -303,9 +323,11 @@ import { initIvyGrowth } from './ivy-growth.js';
   var appDrawerClose = document.getElementById('closeDrawer');
   var drawerTitle = document.getElementById('drawerTitle');
   var drawerSub = document.getElementById('drawerSub');
+  var currentDrawerContext = {};
 
-  function openAppDrawer(callTitle, callDomain){
+  function openAppDrawer(callTitle, callDomain, context){
     if(!appDrawer || !appDrawerBackdrop) return;
+    currentDrawerContext = context || {};
     if(callTitle && drawerTitle) drawerTitle.textContent = callTitle;
     if(callDomain && drawerSub) drawerSub.textContent = callDomain;
     appDrawerBackdrop.classList.add('is-open');
@@ -322,15 +344,48 @@ import { initIvyGrowth } from './ivy-growth.js';
   appDrawerClose && appDrawerClose.addEventListener('click', closeAppDrawer);
 
   var appDrawerForm = document.getElementById('appDrawerForm');
-  appDrawerForm && appDrawerForm.addEventListener('submit', function(e){
+  appDrawerForm && appDrawerForm.addEventListener('submit', async function(e){
     e.preventDefault();
-    closeAppDrawer();
-    var isNotebook = window.location.pathname.indexOf('notebook') !== -1 || (drawerTitle && drawerTitle.textContent.indexOf('Notebook') !== -1);
-    var toastMsg = isNotebook 
-      ? '🌱 Entry planted in your Lab Notebook: added to library.'
-      : '🌱 Shovel note planted: sent to project lead.';
-    showToast(toastMsg);
-    this.reset();
+    var note = document.getElementById('dNote')?.value || '';
+    var submitBtn = this.querySelector('button[type="submit"]');
+    var origText = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Submitting...';
+    }
+
+    try {
+      var isNotebook = window.location.pathname.indexOf('notebook') !== -1 || (drawerTitle && drawerTitle.textContent.indexOf('Notebook') !== -1) || currentDrawerContext.type === 'notebook';
+
+      if (isNotebook) {
+        await notebook.publishEntry({
+          title: drawerTitle ? drawerTitle.textContent : 'Field Reflection',
+          summarySnippet: note,
+          grownFromLabel: 'Community Field Note',
+          entryType: 'field-report'
+        });
+        showToast('🌱 Entry planted in your Lab Notebook: added to library.');
+      } else if (currentDrawerContext.type === 'sprint' || window.location.pathname.includes('sprint')) {
+        var sprintId = currentDrawerContext.id || 'sp_1';
+        var activeSkillPill = this.querySelector('[data-group="drawer-skills"] .pill[aria-pressed="true"]');
+        var role = activeSkillPill ? activeSkillPill.textContent : 'Technical Contributor';
+        await sprints.joinSprint(sprintId, role);
+        showToast('🌱 Seat secured! Joined sprint squad as ' + role + '.');
+      } else {
+        var recipientId = currentDrawerContext.id || 'usr_elena';
+        await matches.sendHandshake(recipientId, note);
+        showToast('🌱 Handshake dispatched: sent to collaborator.');
+      }
+      closeAppDrawer();
+      this.reset();
+    } catch (err) {
+      showToast('⚠️ ' + (err.message || 'Action could not be completed.'));
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = origText;
+      }
+    }
   });
 
   /* ---------- Toast Messenger ---------- */
@@ -424,6 +479,8 @@ import { initIvyGrowth } from './ivy-growth.js';
         if(show) visible++;
       });
       if(empty){ empty.classList.toggle('show', visible === 0); }
+      var countEl = document.getElementById('callCount');
+      if (countEl) { countEl.textContent = visible + ' open'; }
     }
     chips.forEach(function(chip){
       chip.addEventListener('click', function(){
@@ -438,19 +495,37 @@ import { initIvyGrowth } from './ivy-growth.js';
     });
   });
 
+  /* ---------- Dynamic Sprint Board Column Counts ---------- */
+  document.querySelectorAll('.board-col').forEach(function(col){
+    var countEl = col.querySelector('.board-col-head .n');
+    var cards = col.querySelectorAll('.sprint-card');
+    if(countEl && cards.length) {
+      countEl.textContent = cards.length;
+    }
+  });
+
   /* ---------- Shovel & Compose Triggers ---------- */
   document.querySelectorAll('.shovel-btn:not([href])').forEach(function(btn){
     btn.addEventListener('click', function(){
       var card = btn.closest('.match-card, .sprint-card');
       var name = card ? (card.querySelector('.name, h4') ? card.querySelector('.name, h4').textContent : '') : '';
       var domain = card ? (card.getAttribute('data-domain') || '') : '';
-      openAppDrawer(name, domain ? 'Domain · ' + domain.toUpperCase() : '');
+      var id = card ? (card.getAttribute('data-id') || card.id || 'sp_1') : 'sp_1';
+      var isSprint = card ? card.classList.contains('sprint-card') : window.location.pathname.includes('sprint');
+
+      openAppDrawer(name, domain ? 'Domain · ' + domain.toUpperCase() : '', {
+        type: isSprint ? 'sprint' : 'match',
+        id: id,
+        title: name
+      });
     });
   });
 
   document.querySelectorAll('.compose-trigger').forEach(function(btn){
     btn.addEventListener('click', function(){
-      openAppDrawer('Compose Lab Notebook Entry', 'Document your process, snippets, or findings');
+      openAppDrawer('Compose Lab Notebook Entry', 'Document your process, snippets, or findings', {
+        type: 'notebook'
+      });
     });
   });
 })();

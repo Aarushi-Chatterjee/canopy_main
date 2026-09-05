@@ -1,22 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const { store } = require('../data/store');
+const { requireAuth, optionalAuth } = require('../middleware/auth');
 
-// GET /api/matches/sandbox
+// GET /api/matches/sandbox — Public Sandbox Explorer
 router.get('/sandbox', (req, res) => {
-  const { role, domain } = req.query;
+  const { domain, role } = req.query;
 
   let profiles = store.getCollection('profiles');
-  let calls = store.getCollection('build_calls');
+  let calls = store.getCollection('build_calls').filter(c => c.status === 'open');
 
-  if (role) {
-    const matchingUsers = store.getCollection('users').filter(u => u.role === role).map(u => u.id);
-    profiles = profiles.filter(p => matchingUsers.includes(p.userId));
-  }
-
-  if (domain) {
+  if (domain && domain !== 'all') {
     profiles = profiles.filter(p => p.primaryDomain.toLowerCase() === domain.toLowerCase());
     calls = calls.filter(c => c.domain.toLowerCase() === domain.toLowerCase());
+  }
+
+  if (role && role !== 'all') {
+    const roleSlug = role.toLowerCase().replace(' ', '_');
+    const usersInRole = store.getCollection('users').filter(u => u.role === roleSlug).map(u => u.id);
+    profiles = profiles.filter(p => usersInRole.includes(p.userId));
   }
 
   res.json({
@@ -27,37 +29,37 @@ router.get('/sandbox', (req, res) => {
   });
 });
 
-// GET /api/matches/connections
-router.get('/connections', (req, res) => {
-  const matches = store.getCollection('matches').filter(m => m.status === 'connected');
+// GET /api/matches/connections — Verified Peer Network (Protected PII Exposure)
+router.get('/connections', optionalAuth, (req, res) => {
+  const allMatches = store.getCollection('matches').filter(m => m.status === 'connected');
+  const currentUserId = req.user?.id;
 
-  // Enrich with user profile details
-  const connections = matches.map(match => {
+  const connections = allMatches.map(match => {
     const requester = store.getItem('users', u => u.id === match.requesterId);
     const recipient = store.getItem('users', u => u.id === match.recipientId);
-    const requesterProf = store.getItem('profiles', p => p.userId === match.requesterId);
-    const recipientProf = store.getItem('profiles', p => p.userId === match.recipientId);
+    const reqProfile = store.getItem('profiles', p => p.userId === match.requesterId);
+    const recProfile = store.getItem('profiles', p => p.userId === match.recipientId);
+
+    // Strict PII Gate: Only the two matched participants can inspect contact details
+    const isParticipant = currentUserId && (currentUserId === match.requesterId || currentUserId === match.recipientId);
+    const safeContact = isParticipant ? match.revealedContact : null;
 
     return {
-      matchId: match.id,
+      id: match.id,
       requester: {
         id: requester?.id,
-        name: requesterProf?.displayName || requester?.displayName,
-        role: requester?.role,
-        domain: requesterProf?.primaryDomain,
-        avatar: requesterProf?.avatarUrl
+        displayName: reqProfile?.displayName || requester?.displayName || 'Collaborator',
+        headline: reqProfile?.headline,
+        avatarUrl: reqProfile?.avatarUrl
       },
       recipient: {
         id: recipient?.id,
-        name: recipientProf?.displayName || recipient?.displayName,
-        role: recipient?.role,
-        domain: recipientProf?.primaryDomain,
-        avatar: recipientProf?.avatarUrl
+        displayName: recProfile?.displayName || recipient?.displayName || 'Peer',
+        headline: recProfile?.headline,
+        avatarUrl: recProfile?.avatarUrl
       },
-      intentNote: match.intentNote,
-      proposedRole: match.proposedRole,
       status: match.status,
-      revealedContact: match.revealedContact,
+      revealedContact: safeContact,
       createdAt: match.createdAt
     };
   });
@@ -68,12 +70,17 @@ router.get('/connections', (req, res) => {
   });
 });
 
-// POST /api/matches/handshake
-router.post('/handshake', (req, res) => {
-  const { requesterId = 'usr_elena', recipientId, buildCallId, intentNote, proposedRole } = req.body;
+// POST /api/matches/handshake or /api/matches/request — Send Match Handshake (Authenticated)
+const sendHandshake = (req, res) => {
+  const requesterId = req.user.id;
+  const { recipientId, buildCallId, intentNote, proposedRole } = req.body;
 
-  if (!recipientId || !intentNote) {
+  if (!recipientId || !intentNote || !intentNote.trim()) {
     return res.status(400).json({ error: 'Recipient ID and written intent note are required.' });
+  }
+
+  if (recipientId === requesterId) {
+    return res.status(400).json({ error: 'You cannot initiate a collaboration handshake with yourself.' });
   }
 
   const existing = store.getItem('matches', m => 
@@ -90,7 +97,7 @@ router.post('/handshake', (req, res) => {
     requesterId,
     recipientId,
     buildCallId: buildCallId || null,
-    intentNote,
+    intentNote: intentNote.trim(),
     proposedRole: proposedRole || 'Collaborator',
     status: 'pending',
     revealedContact: null,
@@ -101,15 +108,23 @@ router.post('/handshake', (req, res) => {
 
   res.status(201).json({
     match: newMatch,
-    message: 'High-context handshake sent. Contact details will unlock once accepted.'
+    message: 'High-context handshake sent. Contact details will unlock once accepted by recipient.'
   });
-});
+};
 
-// PATCH /api/matches/:id/accept
-router.patch('/:id/accept', (req, res) => {
+router.post('/handshake', requireAuth, sendHandshake);
+router.post('/request', requireAuth, sendHandshake);
+
+// PATCH /api/matches/:id/accept — Accept Handshake (Recipient Only)
+router.patch('/:id/accept', requireAuth, (req, res) => {
   const match = store.getItem('matches', m => m.id === req.params.id);
   if (!match) {
     return res.status(404).json({ error: 'Match record not found.' });
+  }
+
+  // Authorization: Only the designated recipient can accept
+  if (match.recipientId !== req.user.id && req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Forbidden. Only the recipient may accept this handshake.' });
   }
 
   const requester = store.getItem('users', u => u.id === match.requesterId);
@@ -126,15 +141,20 @@ router.patch('/:id/accept', (req, res) => {
 
   res.json({
     match: updated,
-    message: 'Handshake accepted! Peer channel is now verified and active.'
+    message: 'Handshake accepted! Peer communication channel is now verified and active.'
   });
 });
 
-// PATCH /api/matches/:id/decline
-router.patch('/:id/decline', (req, res) => {
+// PATCH /api/matches/:id/decline — Decline Handshake (Recipient Only)
+router.patch('/:id/decline', requireAuth, (req, res) => {
   const match = store.getItem('matches', m => m.id === req.params.id);
   if (!match) {
     return res.status(404).json({ error: 'Match record not found.' });
+  }
+
+  // Authorization: Only the recipient can decline
+  if (match.recipientId !== req.user.id && req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Forbidden. Only the recipient may decline this handshake.' });
   }
 
   const updated = store.updateItem('matches', m => m.id === req.params.id, {
