@@ -112,7 +112,7 @@ export const auth = {
     if (remote.ok && remote.data?.user) {
       setLocal(STORAGE_KEYS.USER, remote.data.user);
       if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
-      return { data: remote.data, error: null };
+      return { data: remote.data, user: remote.data.user, error: null };
     }
 
     throw new Error(remote.message || 'Verification failed.');
@@ -127,7 +127,7 @@ export const auth = {
     if (remote.ok && remote.data?.user) {
       setLocal(STORAGE_KEYS.USER, remote.data.user);
       if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
-      return { data: remote.data, error: null };
+      return { data: remote.data, user: remote.data.user, error: null };
     }
 
     throw new Error(remote.message || 'Invalid email or password.');

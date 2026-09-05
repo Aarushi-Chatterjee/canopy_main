@@ -380,9 +380,16 @@ router.get('/me', optionalAuth, async (req, res) => {
     if (req.user) {
       const user = await usersRepo.findById(req.user.id);
       const profile = await profilesRepo.findByUserId(req.user.id);
+      const safeUser = userMapper.toSafeUser(user || req.user);
+      const access = {
+        status: user?.isVerified ? 'access_approved' : 'email_pending',
+        roles: req.user.roles || []
+      };
+      safeUser.access = access;
       return res.json({
-        user: userMapper.toSafeUser(user || req.user),
+        user: safeUser,
         profile,
+        access,
         isGuest: false
       });
     }
@@ -391,6 +398,10 @@ router.get('/me', optionalAuth, async (req, res) => {
     res.json({
       user: null,
       profile: null,
+      access: {
+        status: 'visitor',
+        roles: ['visitor']
+      },
       isGuest: true
     });
   } catch (err) {

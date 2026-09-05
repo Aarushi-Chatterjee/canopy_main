@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canopy // Founder Console</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="/canopy-logo.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <style>
+    :root {
+      --admin-bg: #090e09;
+      --admin-panel: #0f1710;
+      --admin-border: #1c2e1f;
+      --admin-border-bright: #2d4a32;
+      --admin-accent: #4ade80;
+      --admin-accent-soft: rgba(74, 222, 128, 0.12);
+      --admin-amber: #ecc94b;
+      --admin-rose: #f87171;
+    }
+    body {
+      background-color: var(--admin-bg);
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .admin-sidebar {
+      width: 260px;
+      background: var(--admin-panel);
+      border-right: 1px solid var(--admin-border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .admin-brand {
+      padding: 24px;
+      border-bottom: 1px solid var(--admin-border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .admin-brand img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+    .admin-brand-title {
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+    .admin-brand-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--admin-accent);
+      background: var(--admin-accent-soft);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: auto;
+    }
+    .admin-nav {
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-grow: 1;
+    }
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+    .admin-nav-item:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .admin-nav-item.active {
+      color: var(--admin-accent);
+      background: var(--admin-accent-soft);
+      border-color: rgba(74, 222, 128, 0.2);
+    }
+    .admin-nav-icon {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+    .admin-user-bar {
+      padding: 16px;
+      border-top: 1px solid var(--admin-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+    .admin-main {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 32px 40px;
+      max-width: 1200px;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .admin-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.02em;
+    }
+    .admin-subtitle {
+      font-size: 14px;
+      color: #64748b;
+      margin: 0;
+    }
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    .metric-card {
+      background: var(--admin-panel);
+      border: 1px solid var(--admin-border);
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .metric-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+    .metric-card-val {
+      font-size: 28px;
+      font-weight: 700;
+      color: #ffffff;
+      font-family: monospace;
+    }
+    .admin-card {
+      background: var(--admin-panel);
+      border: 1px solid var(--admin-border);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .admin-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 0 0 16px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    .data-table th {
+      text-align: left;
+      padding: 12px 14px;
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid var(--admin-border);
+    }
+    .data-table td {
+      padding: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+      vertical-align: middle;
+    }
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-green { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+    .badge-amber { background: rgba(236, 201, 75, 0.15); color: #ecc94b; }
+    .badge-blue { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
+    .badge-rose { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+    .btn {
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary { background: #22543d; color: #68d391; }
+    .btn-primary:hover { background: #276749; color: #ffffff; }
+    .btn-secondary { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; }
+    .btn-secondary:hover { background: #334155; color: #ffffff; }
+    .btn-danger { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+    .btn-danger:hover { background: rgba(248, 113, 113, 0.25); }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: #090e09;
+      border: 1px solid var(--admin-border);
+      border-radius: 6px;
+      color: #ffffff;
+      padding: 10px 12px;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--admin-accent);
+    }
+    .auth-gate-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #090e09;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 24px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Security Gate Overlay: strictly validates session and founder role before DOM reveal -->
+  <div id="authGate" class="auth-gate-screen">
+    <img src="/canopy-logo.png" alt="Canopy" style="width: 42px; height: 42px; margin-bottom: 20px;">
+    <h2 id="gateTitle" style="color: #ffffff; margin: 0 0 10px 0; font-size: 20px;">Authenticating Operations Access...</h2>
+    <p id="gateMessage" style="color: #64748b; font-size: 14px; max-width: 440px; margin: 0 0 24px 0;">Verifying Field Station credentials and operational permissions.</p>
+    <a id="gateAction" href="/login.html" style="display: none; background: #22543d; color: #68d391; padding: 10px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px;">Return to Field Station Login</a>
+  </div>
+
+  <div class="admin-layout" id="adminApp" style="display: none;">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-brand">
+        <img src="/canopy-logo.png" alt="Logo">
+        <div>
+          <div class="admin-brand-title">Canopy</div>
+          <div style="font-size: 11px; color: #64748b;">Founder Console</div>
+        </div>
+        <span class="admin-brand-tag" id="staffRoleTag">OWNER</span>
+      </div>
+
+      <nav class="admin-nav">
+        <div class="admin-nav-item active" data-tab="overview"><span class="admin-nav-icon">📊</span> Overview</div>
+        <div class="admin-nav-item" data-tab="applications"><span class="admin-nav-icon">📋</span> Applications</div>
+        <div class="admin-nav-item" data-tab="users"><span class="admin-nav-icon">👥</span> User Access &amp; Roles</div>
+        <div class="admin-nav-item" data-tab="matching"><span class="admin-nav-icon">🤝</span> Manual Matching</div>
+        <div class="admin-nav-item" data-tab="calls"><span class="admin-nav-icon">🌱</span> Build Calls</div>
+        <div class="admin-nav-item" data-tab="content"><span class="admin-nav-icon">🎨</span> Content Studio</div>
+        <div class="admin-nav-item" data-tab="audit"><span class="admin-nav-icon">📜</span> Audit Log</div>
+      </nav>
+
+      <div class="admin-user-bar">
+        <div>
+          <div style="font-weight: 600; color: #cbd5e1;" id="staffUserEmail">founder@canopy.earth</div>
+          <a href="/" style="color: #64748b; text-decoration: none; font-size: 11px;">← Public Terminal</a>
+        </div>
+        <button id="adminSignOutBtn" class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px;">Out</button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="admin-main">
+      <!-- 1. OVERVIEW TAB -->
+      <section id="tab-overview" class="admin-tab-pane">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">Station Overview</h1>
+            <p class="admin-subtitle">Live health, review queues, and cohort intake telemetry.</p>
+          </div>
+        </div>
+
+        <div class="admin-grid">
+          <div class="metric-card">
+            <div class="metric-card-label">Pending Applications</div>
+            <div class="metric-card-val" id="metricApps">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">Active Matches</div>
+            <div class="metric-card-val" id="metricMatches">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">Build Calls Queued</div>
+            <div class="metric-card-val" id="metricCalls">0</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">Active Sprints</div>
+            <div class="metric-card-val" id="metricSprints">0</div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-title">Founder Action Priorities</div>
+          <p style="color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 0 0 16px 0;">
+            Welcome to the Canopy Founder Console. For the private beta launch, this station gives you personal, direct facilitation of cohort applications, match introductions, card uploads, and operational oversight before automated matching takes over.
+          </p>
+          <div style="display: flex; gap: 12px;">
+            <button class="btn btn-primary" onclick="switchTab('applications')">Review Applications →</button>
+            <button class="btn btn-secondary" onclick="switchTab('matching')">Facilitate Matches →</button>
+            <button class="btn btn-secondary" onclick="switchTab('content')">Edit Content Cards →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. APPLICATIONS TAB -->
+      <section id="tab-applications" class="admin-tab-pane" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">Cohort Applications</h1>
+            <p class="admin-subtitle">Evaluate builder, problem holder, and enabler intake submissions.</p>
+          </div>
+        </div>
+        <div class="admin-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Applicant</th>
+                <th>Role &amp; Domain</th>
+                <th>Status</th>
+                <th>Applied Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="applicationsTableBody">
+              <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading applications...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. USERS TAB -->
+      <section id="tab-users" class="admin-tab-pane" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">User Access &amp; Permissions</h1>
+            <p class="admin-subtitle">Manage verified credentials and discrete operational roles.</p>
+          </div>
+        </div>
+        <div class="admin-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User / Email</th>
+                <th>Status</th>
+                <th>Assigned Roles</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr><td colspan="4" style="text-align: center; color: #64748b;">Loading users...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 4. MATCHING TAB -->
+      <section id="tab-matching" class="admin-tab-pane" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">Manual Matching Console</h1>
+            <p class="admin-subtitle">Personally review and introduce peer collaboration inquiries.</p>
+          </div>
+        </div>
+        <div class="admin-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Requester</th>
+                <th>Recipient</th>
+                <th>Intent Note</th>
+                <th>Status</th>
+                <th>Curator Actions</th>
+              </tr>
+            </thead>
+            <tbody id="matchesTableBody">
+              <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading matches...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 5. BUILD CALLS TAB -->
+      <section id="tab-calls" class="admin-tab-pane" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">Build Calls Moderation</h1>
+            <p class="admin-subtitle">Review and publish challenges submitted to the matching directory.</p>
+          </div>
+        </div>
+        <div class="admin-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Organization</th>
+                <th>Domain</th>
+                <th>Status</th>
+                <th>Decision</th>
+              </tr>
+            </thead>
+            <tbody id="callsTableBody">
+              <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading build calls...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 6. CONTENT STUDIO TAB -->
+      <section id="tab-content" class="admin-tab-pane" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">Content Studio &amp; Direct Uploads</h1>
+            <p class="admin-subtitle">Publish dynamic card copy, active statements, and illustrative badges.</p>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-title">Compose / Edit Content Item</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Content Key</label>
+              <input type="text" id="contentKeyInput" class="form-input" placeholder="e.g. home.private_beta_banner">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Content Type</label>
+              <select id="contentTypeSelect" class="form-select">
+                <option value="statement">Active Statement</option>
+                <option value="announcement">Announcement Banner</option>
+                <option value="card">Product Card</option>
+                <option value="example_notice">Illustrative Example Notice</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Title / Heading</label>
+            <input type="text" id="contentTitleInput" class="form-input" placeholder="Display title">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Body Copy</label>
+            <textarea id="contentBodyInput" class="form-textarea" rows="3" placeholder="Card or banner body text..."></textarea>
+          </div>
+          <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="contentIllustrativeCheck">
+            <label for="contentIllustrativeCheck" style="font-size: 13px; color: #cbd5e1; cursor: pointer;">
+              Mark as Illustrative Example (Renders explicit non-deceptive demo disclaimer)
+            </label>
+          </div>
+          <button id="saveContentBtn" class="btn btn-primary">Save Content Draft</button>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-title">Published &amp; Draft Items</div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Type</th>
+                <th>Title / Preview</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="contentTableBody">
+              <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading content items...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 7. AUDIT LOG TAB -->
+      <section id="tab-audit" class="admin-tab-pane" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">System Audit Log</h1>
+            <p class="admin-subtitle">Chronological ledger of operational interventions, role changes, and decisions.</p>
+          </div>
+        </div>
+        <div class="admin-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Action</th>
+                <th>Actor</th>
+                <th>Target</th>
+              </tr>
+            </thead>
+            <tbody id="auditTableBody">
+              <tr><td colspan="4" style="text-align: center; color: #64748b;">Loading audit events...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { apiRequest } from '/src/db.js';
+
+    let currentUser = null;
+
+    // Strict authentication & role gate
+    async function checkAuth() {
+      const gate = document.getElementById('authGate');
+      const gateTitle = document.getElementById('gateTitle');
+      const gateMsg = document.getElementById('gateMessage');
+      const gateAction = document.getElementById('gateAction');
+
+      try {
+        const res = await apiRequest('/auth/me');
+        if (!res.ok || !res.data?.user || res.data.isGuest) {
+          gateTitle.textContent = 'Field Station Sign In Required';
+          gateMsg.textContent = 'Please sign in with your verified credentials to access the Founder Console.';
+          gateAction.textContent = 'Sign In to Canopy →';
+          gateAction.href = '/login.html?redirect=/admin';
+          gateAction.style.display = 'inline-block';
+          return;
+        }
+
+        currentUser = res.data;
+        const roles = currentUser.access?.roles || [];
+        const isFounderOrStaff = roles.includes('owner') || roles.includes('admin') || roles.includes('moderator') || roles.includes('match_curator') || roles.includes('content_editor');
+
+        if (!isFounderOrStaff) {
+          // Strictly display 403 Forbidden to non-founders
+          gateTitle.textContent = 'Access Restricted (403)';
+          gateMsg.textContent = 'This area is restricted to Canopy operations staff. Your account does not currently hold operational access permissions.';
+          gateAction.textContent = 'Return to Public Station';
+          gateAction.href = '/';
+          gateAction.style.display = 'inline-block';
+          return;
+        }
+
+        // Grant access: reveal Founder Console
+        gate.style.display = 'none';
+        document.getElementById('adminApp').style.display = 'flex';
+        document.getElementById('staffUserEmail').textContent = currentUser.user.email;
+        document.getElementById('staffRoleTag').textContent = roles.includes('owner') ? 'OWNER' : roles[0]?.toUpperCase();
+
+        loadOverview();
+        loadApplications();
+        loadUsers();
+        loadMatches();
+        loadCalls();
+        loadContent();
+        loadAudit();
+      } catch (err) {
+        gateTitle.textContent = 'Verification Error';
+        gateMsg.textContent = 'Could not communicate with the Canopy access service.';
+        gateAction.style.display = 'inline-block';
+      }
+    }
+
+    // Tab switching
+    window.switchTab = function(tabName) {
+      document.querySelectorAll('.admin-nav-item').forEach(el => {
+        el.classList.toggle('active', el.dataset.tab === tabName);
+      });
+      document.querySelectorAll('.admin-tab-pane').forEach(el => {
+        el.style.display = el.id === `tab-${tabName}` ? 'block' : 'none';
+      });
+    };
+
+    document.querySelectorAll('.admin-nav-item').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    // Sign out
+    document.getElementById('adminSignOutBtn').addEventListener('click', async () => {
+      await apiRequest('/auth/logout', { method: 'POST' });
+      window.location.href = '/login.html';
+    });
+
+    // 1. Overview Loader
+    async function loadOverview() {
+      const res = await apiRequest('/admin/overview');
+      if (res.ok && res.data?.metrics) {
+        const m = res.data.metrics;
+        document.getElementById('metricApps').textContent = m.pendingApplications;
+        document.getElementById('metricMatches').textContent = m.activeMatches;
+        document.getElementById('metricCalls').textContent = m.pendingBuildCalls;
+        document.getElementById('metricSprints').textContent = m.activeSprints;
+      }
+    }
+
+    // 2. Applications Loader
+    async function loadApplications() {
+      const res = await apiRequest('/admin/applications');
+      const tbody = document.getElementById('applicationsTableBody');
+      if (res.ok && res.data?.applications) {
+        if (res.data.applications.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;">No pending applications.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = res.data.applications.map(app => `
+          <tr>
+            <td><strong>${escapeHtml(app.fullName || 'Anonymous')}</strong><br><small style="color:#64748b;">${escapeHtml(app.email)}</small></td>
+            <td>${escapeHtml(app.role)} · <span style="color:#94a3b8;">${escapeHtml(app.domain)}</span></td>
+            <td><span class="badge ${app.status === 'approved' ? 'badge-green' : app.status === 'declined' ? 'badge-rose' : 'badge-amber'}">${escapeHtml(app.status)}</span></td>
+            <td style="font-size:12px;color:#64748b;">${new Date(app.appliedAt || app.createdAt).toLocaleDateString()}</td>
+            <td>
+              <button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="updateAppStatus('${app.id}', 'approved')">Approve</button>
+              <button class="btn btn-secondary" style="padding:4px 8px;font-size:11px;" onclick="updateAppStatus('${app.id}', 'waitlisted')">Waitlist</button>
+              <button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="updateAppStatus('${app.id}', 'declined')">Decline</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    window.updateAppStatus = async function(id, status) {
+      const note = prompt(`Optional feedback or curator note for applicant (${status}):`) || '';
+      const res = await apiRequest(`/admin/applications/${id}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status, note })
+      });
+      if (res.ok) {
+        loadApplications();
+        loadOverview();
+      } else {
+        alert(res.message || 'Status update failed.');
+      }
+    };
+
+    // 3. Users Loader
+    async function loadUsers() {
+      const res = await apiRequest('/admin/users');
+      const tbody = document.getElementById('usersTableBody');
+      if (res.ok && res.data?.users) {
+        tbody.innerHTML = res.data.users.map(u => `
+          <tr>
+            <td><strong>${escapeHtml(u.displayName)}</strong><br><small style="color:#64748b;">${escapeHtml(u.email)}</small></td>
+            <td><span class="badge ${u.isVerified ? 'badge-green' : 'badge-amber'}">${u.isVerified ? 'VERIFIED' : 'PENDING'}</span></td>
+            <td>${(u.roles || []).map(r => `<span class="badge badge-blue" style="margin-right:4px;">${escapeHtml(r)}</span>`).join('')}</td>
+            <td>
+              <button class="btn btn-secondary" style="padding:4px 8px;font-size:11px;" onclick="assignUserRole('${u.id}')">+ Assign Role</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    window.assignUserRole = async function(userId) {
+      const role = prompt('Enter role to grant (approved_builder, approved_problem_holder, approved_enabler, content_editor, match_curator, moderator, admin):');
+      if (!role) return;
+      const res = await apiRequest(`/admin/users/${userId}/role`, {
+        method: 'PATCH',
+        body: JSON.stringify({ role, action: 'grant' })
+      });
+      if (res.ok) {
+        loadUsers();
+      } else {
+        alert(res.message || 'Role grant failed.');
+      }
+    };
+
+    // 4. Matches Loader
+    async function loadMatches() {
+      const res = await apiRequest('/admin/matches');
+      const tbody = document.getElementById('matchesTableBody');
+      if (res.ok && res.data?.matches) {
+        if (res.data.matches.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;">No active match requests.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = res.data.matches.map(m => `
+          <tr>
+            <td><strong>${escapeHtml(m.requester?.displayName)}</strong><br><small style="color:#64748b;">${escapeHtml(m.requester?.email)}</small></td>
+            <td><strong>${escapeHtml(m.recipient?.displayName)}</strong><br><small style="color:#64748b;">${escapeHtml(m.recipient?.email)}</small></td>
+            <td style="max-width:240px;font-size:12px;color:#94a3b8;">${escapeHtml(m.matchMetadata?.intentNote || m.intentNote || 'No note')}</td>
+            <td><span class="badge ${m.status === 'introduced' ? 'badge-green' : 'badge-amber'}">${escapeHtml(m.status)}</span></td>
+            <td>
+              <button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="introduceMatch('${m.id}')">Send Intro</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    window.introduceMatch = async function(id) {
+      const notes = prompt('Curator scoping note to include in email:') || '';
+      const res = await apiRequest(`/admin/matches/${id}/introduce`, {
+        method: 'POST',
+        body: JSON.stringify({ contextNotes: notes })
+      });
+      if (res.ok) {
+        alert('Manual introduction dispatched to both collaborators!');
+        loadMatches();
+        loadOverview();
+      } else {
+        alert(res.message || 'Introduction dispatch failed.');
+      }
+    };
+
+    // 5. Calls Loader
+    async function loadCalls() {
+      const res = await apiRequest('/calls?status=all');
+      const tbody = document.getElementById('callsTableBody');
+      if (res.ok && res.data?.calls) {
+        tbody.innerHTML = res.data.calls.map(c => `
+          <tr>
+            <td><strong>${escapeHtml(c.title)}</strong></td>
+            <td>${escapeHtml(c.organization || c.orgName || 'Open Lab')}</td>
+            <td><span class="badge badge-blue">${escapeHtml(c.domain)}</span></td>
+            <td><span class="badge ${c.status === 'open' ? 'badge-green' : 'badge-amber'}">${escapeHtml(c.status)}</span></td>
+            <td>
+              ${c.status !== 'open' ? `<button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="approveCall('${c.id}')">Approve &amp; Publish</button>` : '<span style="color:#4ade80;font-size:12px;">Live</span>'}
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    window.approveCall = async function(id) {
+      const res = await apiRequest('/moderation/review', {
+        method: 'POST',
+        body: JSON.stringify({ entityType: 'build_call', entityId: id, action: 'approve' })
+      });
+      if (res.ok) {
+        loadCalls();
+        loadOverview();
+      } else {
+        alert(res.message || 'Moderation action failed.');
+      }
+    };
+
+    // 6. Content Studio Loader & Saver
+    async function loadContent() {
+      const res = await apiRequest('/admin/content');
+      const tbody = document.getElementById('contentTableBody');
+      if (res.ok && res.data?.contentItems) {
+        tbody.innerHTML = res.data.contentItems.map(c => `
+          <tr>
+            <td><code style="color:#68d391;">${escapeHtml(c.contentKey)}</code></td>
+            <td><span class="badge badge-blue">${escapeHtml(c.contentType)}</span></td>
+            <td><strong>${escapeHtml(c.title)}</strong><br><small style="color:#64748b;">${escapeHtml(c.body?.slice(0, 50))}...</small></td>
+            <td><span class="badge ${c.status === 'published' ? 'badge-green' : 'badge-amber'}">${escapeHtml(c.status)}</span></td>
+            <td>
+              ${c.status !== 'published' ? `<button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="publishContent('${c.id}')">Publish</button>` : '<span style="color:#4ade80;font-size:12px;">Published</span>'}
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    document.getElementById('saveContentBtn').addEventListener('click', async () => {
+      const contentKey = document.getElementById('contentKeyInput').value.trim();
+      const contentType = document.getElementById('contentTypeSelect').value;
+      const title = document.getElementById('contentTitleInput').value.trim();
+      const body = document.getElementById('contentBodyInput').value.trim();
+      const isIllustrative = document.getElementById('contentIllustrativeCheck').checked;
+
+      if (!contentKey || !title || !body) {
+        alert('Key, Title, and Body are required.');
+        return;
+      }
+
+      const res = await apiRequest('/admin/content', {
+        method: 'POST',
+        body: JSON.stringify({ contentKey, contentType, title, body, isIllustrative })
+      });
+
+      if (res.ok) {
+        alert('Draft saved successfully!');
+        document.getElementById('contentKeyInput').value = '';
+        document.getElementById('contentTitleInput').value = '';
+        document.getElementById('contentBodyInput').value = '';
+        loadContent();
+      } else {
+        alert(res.message || 'Save failed.');
+      }
+    });
+
+    window.publishContent = async function(id) {
+      const res = await apiRequest(`/admin/content/${id}/publish`, { method: 'POST' });
+      if (res.ok) {
+        loadContent();
+      } else {
+        alert(res.message || 'Publish failed.');
+      }
+    };
+
+    // 7. Audit Log Loader
+    async function loadAudit() {
+      const res = await apiRequest('/admin/audit');
+      const tbody = document.getElementById('auditTableBody');
+      if (res.ok && res.data?.auditEvents) {
+        tbody.innerHTML = res.data.auditEvents.slice(0, 30).map(a => `
+          <tr>
+            <td style="font-size:12px;color:#64748b;">${new Date(a.createdAt).toLocaleTimeString()}</td>
+            <td><code style="color:#ecc94b;">${escapeHtml(a.eventType || a.action)}</code></td>
+            <td style="font-size:12px;color:#94a3b8;">${escapeHtml(a.actorId || 'System')}</td>
+            <td style="font-size:12px;color:#cbd5e1;">${escapeHtml(a.targetEntityType || a.targetType || '')} #${escapeHtml(a.targetEntityId || a.targetId || '')}</td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    checkAuth();
+  </script>
+</body>
+</html>

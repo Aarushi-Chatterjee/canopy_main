@@ -21,7 +21,8 @@ export default defineConfig({
         login:          resolve(root, 'login.html'),
         privacy:        resolve(root, 'privacy.html'),
         terms:          resolve(root, 'terms.html'),
-        notFound:       resolve(root, '404.html')
+        notFound:       resolve(root, '404.html'),
+        admin:          resolve(root, 'admin.html')
       }
     }
   }

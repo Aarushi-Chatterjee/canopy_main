@@ -7,6 +7,7 @@ const notebook = require('./notebook');
 const applications = require('./applications');
 const moderationQueue = require('./moderation-queue');
 const auditEvents = require('./audit-events');
+const contentItems = require('./content-items');
 
 module.exports = {
   users,
@@ -17,5 +18,6 @@ module.exports = {
   notebook,
   applications,
   moderationQueue,
-  auditEvents
+  auditEvents,
+  contentItems
 };

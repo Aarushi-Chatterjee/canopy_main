@@ -9,6 +9,8 @@ const callsRouter = require('./routes/calls');
 const notebookRouter = require('./routes/notebook');
 const applicationsRouter = require('./routes/applications');
 const moderationRouter = require('./routes/moderation');
+const contentRouter = require('./routes/content');
+const adminRouter = require('./routes/admin');
 
 const { validateCsrf } = require('./middleware/auth');
 const { isConfigured, supabase } = require('./config/supabase');
@@ -106,6 +108,8 @@ app.use('/api/calls', callsRouter);
 app.use('/api/notebook', notebookRouter);
 app.use('/api/applications', applicationsRouter);
 app.use('/api/moderation', moderationRouter);
+app.use('/api/content', contentRouter);
+app.use('/api/admin', adminRouter);
 
 // 404 handler for API routes
 app.use('/api', (req, res) => {

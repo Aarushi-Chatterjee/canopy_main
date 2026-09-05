@@ -528,4 +528,46 @@ import { sprints, matches, notebook, auth } from './db.js';
       });
     });
   });
+
+  /* ---------- Discreet Founder / Staff Console Access Injection ---------- */
+  async function checkFounderAccess() {
+    try {
+      const user = await auth.getCurrentUser();
+      if (!user || !user.access?.roles) return;
+      const isStaff = user.access.roles.some(function(r) {
+        return ['owner', 'admin', 'moderator', 'match_curator', 'content_editor'].includes(r);
+      });
+      if (!isStaff) return;
+
+      // Discreetly inject Founder/Staff console button into header nav
+      const headerBtns = document.querySelector('header div[style*="align-items:center"]');
+      if (headerBtns && !document.getElementById('navFounderBtn')) {
+        const adminLink = document.createElement('a');
+        adminLink.id = 'navFounderBtn';
+        adminLink.href = 'admin.html';
+        adminLink.className = 'btn btn-stamp btn-sm';
+        adminLink.style.borderColor = 'var(--forest, #1b4332)';
+        adminLink.style.background = 'color-mix(in srgb, var(--forest, #1b4332) 12%, transparent)';
+        adminLink.style.color = 'var(--forest, #1b4332)';
+        adminLink.style.fontWeight = '700';
+        adminLink.innerHTML = '⚙️ Console';
+        headerBtns.insertBefore(adminLink, headerBtns.firstChild);
+      }
+
+      const drawer = document.getElementById('navDrawer');
+      if (drawer && !document.getElementById('drawerFounderBtn')) {
+        const drawerLink = document.createElement('a');
+        drawerLink.id = 'drawerFounderBtn';
+        drawerLink.href = 'admin.html';
+        drawerLink.className = 'nav-drawer-link';
+        drawerLink.style.color = 'var(--forest, #1b4332)';
+        drawerLink.style.fontWeight = '700';
+        drawerLink.innerHTML = '⚙️ Founder Console →';
+        drawer.appendChild(drawerLink);
+      }
+    } catch (e) {
+      // Graceful silence: zero UI disruption for regular visitors
+    }
+  }
+  checkFounderAccess();
 })();

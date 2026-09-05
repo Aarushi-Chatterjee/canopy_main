@@ -2,6 +2,7 @@ process.env.NODE_ENV = 'test';
 process.env.CANOPY_ISOLATE_STORE = 'true';
 process.env.EMAIL_PROVIDER = 'test';
 process.env.JWT_SECRET = 'canopy_test_jwt_secret_minimum_32_characters_for_security_spec';
+process.env.FOUNDER_EMAILS = 'founder@canopy.earth,aarushi@canopy.earth';
 
 const http = require('http');
 const { app } = require('./index.js');
@@ -287,6 +288,91 @@ const server = app.listen(PORT, async () => {
     });
     assert(appSubmission.status === 201 && appSubmission.data.application?.status === 'pending_review', 
       'Application Intake: creates application with pending_review status and enqueues for moderation');
+
+    console.log('\n--- 9. Production Launch: Founder Console, Roles & Content Studio ---');
+    // 9.1 Founder Bootstrap & Truthful Session
+    const founderToken = generateToken({ id: 'usr_founder_aarushi', email: 'aarushi@canopy.earth', role: 'registered_user' });
+    const founderHeaders = { Authorization: `Bearer ${founderToken}` };
+    const founderMe = await request('GET', '/api/auth/me', null, founderHeaders);
+    assert(founderMe.status === 200 && founderMe.data.user?.access?.roles?.includes('owner'),
+      'Founder Bootstrap: Verified founder email automatically bootstrapped with owner role');
+
+    // 9.2 Founder Secrecy & Route Protection (HTTP 403 for normal users)
+    const normalUserToken = generateToken({ id: 'usr_regular_builder', email: 'regular.builder@field.net', role: 'approved_builder' });
+    const regularHeaders = { Authorization: `Bearer ${normalUserToken}` };
+
+    const forbiddenOverview = await request('GET', '/api/admin/overview', null, regularHeaders);
+    assert(forbiddenOverview.status === 403, 
+      'Founder Secrecy Gate: Normal user rejected from /api/admin/overview with 403 Forbidden');
+
+    const forbiddenApplications = await request('GET', '/api/admin/applications', null, regularHeaders);
+    assert(forbiddenApplications.status === 403,
+      'Founder Secrecy Gate: Normal user rejected from /api/admin/applications with 403 Forbidden');
+
+    // 9.3 Founder Access to Console Endpoints
+    const adminOverview = await request('GET', '/api/admin/overview', null, founderHeaders);
+    assert(adminOverview.status === 200 && typeof adminOverview.data.totalUsers === 'number',
+      'Founder Console: GET /api/admin/overview returns complete telemetry metrics');
+
+    const founderApps = await request('GET', '/api/admin/applications', null, founderHeaders);
+    assert(founderApps.status === 200 && Array.isArray(founderApps.data.applications),
+      'Cohort Applications: GET /api/admin/applications returns cohort review queue');
+
+    // 9.4 Content Studio - Draft, MIME Validation, Publish
+    const invalidUpload = await request('POST', '/api/admin/content/upload', {
+      filename: 'exploit.exe',
+      dataUri: 'data:application/x-msdownload;base64,TVqQAAMAAAAEAAAA'
+    }, founderHeaders);
+    assert(invalidUpload.status === 400,
+      'Content Studio: Direct upload rejects non-image MIME types with 400 Bad Request');
+
+    const validUpload = await request('POST', '/api/admin/content/upload', {
+      filename: 'sensor-diagram.png',
+      dataUri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='
+    }, founderHeaders);
+    assert(validUpload.status === 200 && validUpload.data.url?.startsWith('/uploads/content/'),
+      'Content Studio: Direct image upload validates MIME and persists locally');
+
+    const draftItem = await request('POST', '/api/admin/content', {
+      page: 'index',
+      section: 'featured_calls',
+      key: 'call_solar_microgrid',
+      title: 'Decentralized Microgrid Telemetry',
+      body: 'Community solar microgrid requiring automated load-balancing firmware.',
+      isIllustrative: true,
+      mediaUrl: validUpload.data.url,
+      displayOrder: 1
+    }, founderHeaders);
+    assert(draftItem.status === 201 && draftItem.data.item?.status === 'draft',
+      'Content Studio: Creates content item in draft state with illustrative badge flag');
+
+    const publishRes = await request('POST', `/api/admin/content/${draftItem.data.item.id}/publish`, null, founderHeaders);
+    assert(publishRes.status === 200 && publishRes.data.item?.status === 'published',
+      'Content Studio: Publishes content item and increments version number');
+
+    const publicContent = await request('GET', '/api/content/index');
+    const hasPublishedCall = publicContent.status === 200 && publicContent.data.items?.some(i => i.id === draftItem.data.item.id && i.isIllustrative === true);
+    assert(hasPublishedCall,
+      'Public Content API: GET /api/content/:page serves published item with honest illustrative flag');
+
+    // 9.5 Manual Match Facilitation & Introduction Dispatch
+    const manualMatchRes = await request('POST', '/api/admin/matches/manual', {
+      initiatorId: 'usr_founder_aarushi',
+      recipientId: 'usr_water_ngo',
+      curatorNotes: 'Verified technical overlap in embedded telemetry. Introducing for 48-hr trial sprint.',
+      dispatchIntroEmail: true
+    }, founderHeaders);
+    assert(manualMatchRes.status === 201 && manualMatchRes.data.match?.stage === 'introduced',
+      'Manual Match Console: Founder curates match and elevates stage to introduced');
+
+    const introEmailDispatched = emailService.getTestInbox().some(m => m.subject.includes('[Canopy Intro]') || m.metadata?.type === 'curator_intro');
+    assert(introEmailDispatched,
+      'Transactional Mail: Curator introduction email dispatched to match participants');
+
+    // 9.6 Immutable Audit Trail
+    const auditResFinal = await request('GET', '/api/admin/audit', null, founderHeaders);
+    assert(auditResFinal.status === 200 && auditResFinal.data.events?.length > 0,
+      'Audit Logging: Complete immutable event ledger accessible in Founder Console');
 
     if (failures === 0) {
       console.log('\n✨ ALL CANOPY CRITICAL SYSTEM TESTS PASSED (0 failures)!');

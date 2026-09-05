@@ -425,6 +425,113 @@ const INITIAL_DATA = {
       status: 'verified',
       submittedAt: '2026-08-01T09:00:00Z'
     }
+  ],
+  user_roles: [
+    {
+      id: 'rol_aarushi_owner',
+      userId: 'usr_aarushi',
+      role: 'owner',
+      grantedBy: 'system_bootstrap',
+      grantedAt: '2026-01-01T00:00:00Z'
+    },
+    {
+      id: 'rol_elena_builder',
+      userId: 'usr_elena',
+      role: 'approved_builder',
+      grantedBy: 'usr_aarushi',
+      grantedAt: '2026-08-15T10:00:00Z'
+    },
+    {
+      id: 'rol_water_problem',
+      userId: 'usr_water_ngo',
+      role: 'approved_problem_holder',
+      grantedBy: 'usr_aarushi',
+      grantedAt: '2026-08-10T12:00:00Z'
+    },
+    {
+      id: 'rol_maya_enabler',
+      userId: 'usr_maya',
+      role: 'approved_enabler',
+      grantedBy: 'usr_aarushi',
+      grantedAt: '2026-08-18T16:00:00Z'
+    }
+  ],
+  content_items: [
+    {
+      id: 'cnt_hero_headline',
+      contentKey: 'home.hero.headline',
+      contentType: 'statement',
+      title: 'Home Hero Headline',
+      body: 'Where Capable People Build What Matters.',
+      summary: 'Main landing page bold mission headline',
+      status: 'published',
+      visibility: 'public',
+      isIllustrative: false,
+      sortOrder: 1,
+      version: 1,
+      publishedAt: '2026-08-01T00:00:00Z',
+      createdAt: '2026-08-01T00:00:00Z'
+    },
+    {
+      id: 'cnt_hero_subheadline',
+      contentKey: 'home.hero.subheadline',
+      contentType: 'statement',
+      title: 'Home Hero Subheadline',
+      body: 'Canopy connects engineers, researchers, and field specialists to scope, staff, and ship open climate & civic hardware and software.',
+      summary: 'Landing page secondary explanation copy',
+      status: 'published',
+      visibility: 'public',
+      isIllustrative: false,
+      sortOrder: 2,
+      version: 1,
+      publishedAt: '2026-08-01T00:00:00Z',
+      createdAt: '2026-08-01T00:00:00Z'
+    },
+    {
+      id: 'cnt_beta_announcement',
+      contentKey: 'home.private_beta_banner',
+      contentType: 'announcement',
+      title: 'Private Beta Announcement Banner',
+      body: '🌱 Private Beta Open: Cohort 1 submissions are being reviewed on a rolling basis.',
+      summary: 'Banner appearing across all marketing headers',
+      status: 'published',
+      visibility: 'public',
+      isIllustrative: false,
+      sortOrder: 3,
+      version: 1,
+      publishedAt: '2026-08-15T00:00:00Z',
+      createdAt: '2026-08-15T00:00:00Z'
+    },
+    {
+      id: 'cnt_founder_quote',
+      contentKey: 'home.founder_quote',
+      contentType: 'statement',
+      title: 'Founder Perspective Quote',
+      body: 'The talent is there. The problems are there. What is missing is the scaffold that turns good intentions into shipped reality.',
+      summary: 'Quote attributed to founder Aarushi Chatterjee',
+      status: 'published',
+      visibility: 'public',
+      isIllustrative: false,
+      sortOrder: 4,
+      version: 1,
+      publishedAt: '2026-08-01T00:00:00Z',
+      createdAt: '2026-08-01T00:00:00Z'
+    },
+    {
+      id: 'cnt_gw_notice',
+      contentKey: 'match.illustrative_example',
+      contentType: 'example_notice',
+      title: 'Illustrative Example Notice',
+      body: 'Illustrative Example — This workspace demonstrates how Canopy works. It is not a live opportunity and is not accepting applications.',
+      summary: 'Disclaimer badge on illustrative product loop demo',
+      status: 'published',
+      visibility: 'public',
+      isIllustrative: true,
+      sortOrder: 5,
+      version: 1,
+      publishedAt: '2026-08-20T00:00:00Z',
+      createdAt: '2026-08-20T00:00:00Z'
+    }
   ]
 };
 

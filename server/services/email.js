@@ -1,6 +1,6 @@
 /**
  * Canopy Email Dispatch Service
- * Handles transactional emails (verification OTPs, password resets, application notifications, match alerts).
+ * Handles transactional emails across founder operations, access, matching, and moderation.
  * 
  * Supports providers:
  * - 'test': Stores messages in an isolated in-memory FIFO queue for test assertions.
@@ -10,11 +10,32 @@
 
 const https = require('https');
 
+// Import branded templates
+const verifyAccountTemplate = require('../templates/verify-account');
+const passwordResetTemplate = require('../templates/password-reset');
+const appReceivedTemplate = require('../templates/application-received');
+const appDecisionTemplate = require('../templates/application-decision');
+const buildCallReviewTemplate = require('../templates/build-call-review');
+const matchRequestTemplate = require('../templates/match-request');
+const curatorIntroTemplate = require('../templates/curator-introduction');
+const sprintInviteTemplate = require('../templates/sprint-invitation');
+
 // In-memory inbox for test assertions
 const testInbox = [];
 
 /**
- * Retrieve the active provider name
+ * Sender Address Matrix
+ */
+const SENDERS = {
+  DEFAULT: process.env.MAIL_FROM || 'Canopy Dispatch <hello@canopy.earth>',
+  ACCESS: 'Canopy Access <access@canopy.earth>',
+  HELLO: 'Canopy Dispatch <hello@canopy.earth>',
+  SUPPORT: 'Canopy Operations <support@canopy.earth>',
+  PRIVACY: 'Canopy Privacy <privacy@canopy.earth>'
+};
+
+/**
+ * Retrieve active email provider name
  */
 function getProvider() {
   if (process.env.NODE_ENV === 'test' || process.env.EMAIL_PROVIDER === 'test') {
@@ -24,20 +45,13 @@ function getProvider() {
 }
 
 /**
- * Send an email message
- * @param {Object} options
- * @param {string} options.to - Recipient email address
- * @param {string} options.subject - Subject line
- * @param {string} options.text - Plaintext body
- * @param {string} [options.html] - HTML formatted body
- * @param {Object} [options.metadata] - Extra context (e.g. otp, template, etc.)
+ * Core sendEmail dispatcher
  */
-async function sendEmail({ to, subject, text, html, metadata = {} }) {
+async function sendEmail({ to, subject, text, html, from = SENDERS.DEFAULT, metadata = {} }) {
   if (!to || typeof to !== 'string' || !to.includes('@')) {
     throw new Error('Invalid recipient email address.');
   }
 
-  const from = process.env.EMAIL_FROM || 'Canopy Dispatch <noreply@canopy.earth>';
   const provider = getProvider();
   const timestamp = new Date().toISOString();
 
@@ -59,7 +73,7 @@ async function sendEmail({ to, subject, text, html, metadata = {} }) {
   }
 
   if (provider === 'resend' && process.env.RESEND_API_KEY) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const payload = JSON.stringify({
         from,
         to: [to],
@@ -88,7 +102,6 @@ async function sendEmail({ to, subject, text, html, metadata = {} }) {
               resolve({ success: true, messageId: message.id, provider: 'resend', data: responseData });
             } else {
               console.error(`[EMAIL:RESEND:ERROR] Status ${res.statusCode}:`, responseData);
-              // In dev fallback to console
               resolve({ success: false, error: responseData, provider: 'resend' });
             }
           });
@@ -107,7 +120,7 @@ async function sendEmail({ to, subject, text, html, metadata = {} }) {
 
   // Console provider (default development fallback)
   console.log('----------------------------------------------------');
-  console.log(`[CANOPY DISPATCH] Email to: ${to}`);
+  console.log(`[CANOPY DISPATCH] From: ${from} | To: ${to}`);
   console.log(`Subject: ${subject}`);
   console.log(`Time: ${timestamp}`);
   console.log('Body:');
@@ -117,100 +130,110 @@ async function sendEmail({ to, subject, text, html, metadata = {} }) {
   return { success: true, messageId: message.id, provider: 'console' };
 }
 
-/**
- * Send 6-digit verification code for new user registration or email verification
- */
+// -------------------------------------------------------------
+// Transactional Methods using Branded Templates
+// -------------------------------------------------------------
+
 async function sendVerificationCode(email, code) {
-  const subject = `[Canopy] Your Verification Code: ${code}`;
-  const text = [
-    `Welcome to the Canopy Field Station.`,
-    ``,
-    `Your single-use 6-digit verification code is: ${code}`,
-    ``,
-    `This code will expire in 15 minutes.`,
-    `If you did not request this code, you can safely disregard this message.`
-  ].join('\n');
-
-  const html = `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 520px; margin: 0 auto; padding: 32px; background-color: #0c120c; color: #e4e7e4; border: 1px solid #1c2b1e; border-radius: 12px;">
-      <h2 style="color: #4ade80; margin-top: 0; font-size: 20px; letter-spacing: -0.02em;">CANOPY // FIELD STATION</h2>
-      <p style="font-size: 15px; line-height: 1.6; color: #a1a8a2;">Welcome to the Canopy Field Station. Enter this single-use verification code to authenticate your field credentials:</p>
-      <div style="background-color: #142017; border: 1px dashed #22543d; border-radius: 8px; padding: 20px; text-align: center; margin: 24px 0;">
-        <span style="font-family: monospace; font-size: 32px; font-weight: 700; letter-spacing: 0.25em; color: #68d391;">${code}</span>
-      </div>
-      <p style="font-size: 13px; color: #718096; line-height: 1.5;">This code expires in <strong>15 minutes</strong> and will lock after 5 unsuccessful attempts. If you did not request this, ignore this email.</p>
-    </div>
-  `;
-
+  const { subject, text, html } = verifyAccountTemplate.render({ code });
   return sendEmail({
     to: email,
     subject,
     text,
     html,
+    from: SENDERS.ACCESS,
     metadata: { type: 'verification', code }
   });
 }
 
-/**
- * Send password reset code
- */
 async function sendPasswordResetCode(email, code) {
-  const subject = `[Canopy] Password Reset Request: ${code}`;
-  const text = [
-    `Canopy Field Station - Password Reset`,
-    ``,
-    `A password reset was requested for your account.`,
-    `Your reset verification code is: ${code}`,
-    ``,
-    `This code will expire in 15 minutes.`,
-    `If you did not request a password reset, please secure your account immediately.`
-  ].join('\n');
-
-  const html = `
-    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 520px; margin: 0 auto; padding: 32px; background-color: #0c120c; color: #e4e7e4; border: 1px solid #1c2b1e; border-radius: 12px;">
-      <h2 style="color: #ecc94b; margin-top: 0; font-size: 20px; letter-spacing: -0.02em;">CANOPY // CREDENTIAL RESET</h2>
-      <p style="font-size: 15px; line-height: 1.6; color: #a1a8a2;">We received a request to reset your Canopy Field Station pass credentials. Enter the single-use authorization code below:</p>
-      <div style="background-color: #1c1c14; border: 1px dashed #744210; border-radius: 8px; padding: 20px; text-align: center; margin: 24px 0;">
-        <span style="font-family: monospace; font-size: 32px; font-weight: 700; letter-spacing: 0.25em; color: #f6e05e;">${code}</span>
-      </div>
-      <p style="font-size: 13px; color: #718096; line-height: 1.5;">This code is valid for <strong>15 minutes</strong>. If you did not make this request, you can disregard this email.</p>
-    </div>
-  `;
-
+  const { subject, text, html } = passwordResetTemplate.render({ code });
   return sendEmail({
     to: email,
     subject,
     text,
     html,
+    from: SENDERS.ACCESS,
     metadata: { type: 'password_reset', code }
   });
 }
 
-/**
- * Send application status notification
- */
-async function sendApplicationStatus(email, status, callTitle) {
-  const subject = `[Canopy] Application Update: ${callTitle}`;
-  const text = `Your application for "${callTitle}" has been updated to: ${status}.`;
+async function sendApplicationReceipt({ email, applicantName, role, domain, applicationId }) {
+  const { subject, text, html } = appReceivedTemplate.render({ applicantName, role, domain, applicationId });
   return sendEmail({
     to: email,
     subject,
     text,
-    metadata: { type: 'application_status', status, callTitle }
+    html,
+    from: SENDERS.HELLO,
+    metadata: { type: 'application_receipt', applicationId }
   });
 }
 
-/**
- * Send match alert notification
- */
-async function sendMatchRequest(email, partnerName, sprintTopic) {
-  const subject = `[Canopy] New Sprint Match Invitation: ${sprintTopic}`;
-  const text = `${partnerName} invited you to join a sprint on "${sprintTopic}".`;
+async function sendApplicationDecision({ email, applicantName, role, status, note }) {
+  const { subject, text, html } = appDecisionTemplate.render({ applicantName, role, status, note });
   return sendEmail({
     to: email,
     subject,
     text,
-    metadata: { type: 'match_request', partnerName, sprintTopic }
+    html,
+    from: SENDERS.ACCESS,
+    metadata: { type: 'application_decision', status, note }
+  });
+}
+
+async function sendBuildCallReviewUpdate({ email, title, status, decisionNote }) {
+  const { subject, text, html } = buildCallReviewTemplate.render({ title, status, decisionNote });
+  return sendEmail({
+    to: email,
+    subject,
+    text,
+    html,
+    from: SENDERS.HELLO,
+    metadata: { type: 'build_call_review', status, title }
+  });
+}
+
+async function sendMatchRequest({ email, recipientName, senderName, intentNote, callTitle }) {
+  const { subject, text, html } = matchRequestTemplate.render({ recipientName, senderName, intentNote, callTitle });
+  return sendEmail({
+    to: email,
+    subject,
+    text,
+    html,
+    from: SENDERS.HELLO,
+    metadata: { type: 'match_request', senderName, intentNote }
+  });
+}
+
+async function sendCuratorIntroduction({ requesterName, requesterEmail, recipientName, recipientEmail, sprintTopic, contextNotes }) {
+  const { subject, text, html } = curatorIntroTemplate.render({
+    requesterName,
+    requesterEmail,
+    recipientName,
+    recipientEmail,
+    sprintTopic,
+    contextNotes
+  });
+  return sendEmail({
+    to: recipientEmail,
+    subject,
+    text,
+    html,
+    from: SENDERS.HELLO,
+    metadata: { type: 'curator_intro', requesterEmail, recipientEmail }
+  });
+}
+
+async function sendSprintInvitation({ email, inviteeName, sprintTitle, role, domain }) {
+  const { subject, text, html } = sprintInviteTemplate.render({ inviteeName, sprintTitle, role, domain });
+  return sendEmail({
+    to: email,
+    subject,
+    text,
+    html,
+    from: SENDERS.HELLO,
+    metadata: { type: 'sprint_invitation', sprintTitle }
   });
 }
 
@@ -232,11 +255,16 @@ function getLatestEmail(to) {
 }
 
 module.exports = {
+  SENDERS,
   sendEmail,
   sendVerificationCode,
   sendPasswordResetCode,
-  sendApplicationStatus,
+  sendApplicationReceipt,
+  sendApplicationDecision,
+  sendBuildCallReviewUpdate,
   sendMatchRequest,
+  sendCuratorIntroduction,
+  sendSprintInvitation,
   getTestInbox,
   clearTestInbox,
   getLatestEmail

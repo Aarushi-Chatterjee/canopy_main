@@ -434,7 +434,8 @@
       const res = await auth.signIn(email, pwd);
       if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
       showToast('🌱 Signed in: welcome to the terminal.');
-      setTimeout(() => { window.location.href = 'match.html'; }, 900);
+      const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
+      setTimeout(() => { window.location.href = isStaff ? 'admin.html' : 'match.html'; }, 900);
     } catch (err) {
       if (loginAlert) {
         loginAlert.className = 'status-alert status-alert-error';
@@ -517,10 +518,11 @@
     verifyBtn.innerHTML = 'Verifying...';
 
     try {
-      await auth.verifyOtp(pendingEmail, token);
+      const res = await auth.verifyOtp(pendingEmail, token);
       if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
       showToast('🌱 Pass verified: collaborator access active.');
-      setTimeout(() => { window.location.href = 'match.html'; }, 900);
+      const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
+      setTimeout(() => { window.location.href = isStaff ? 'admin.html' : 'match.html'; }, 900);
     } catch (err) {
       showToast('⚠️ ' + (err.message || 'Verification failed.'));
       verifyBtn.disabled = false;
