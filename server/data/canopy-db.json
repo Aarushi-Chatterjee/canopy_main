@@ -1,6 +1,15 @@
 {
   "users": [
     {
+      "id": "usr_1788587777925",
+      "email": "test.builder.1788587777410@canopy.earth",
+      "role": "builder",
+      "displayName": "Test Builder",
+      "is_verified": false,
+      "verification_token": "UR7OKR",
+      "created_at": "2026-09-05T05:56:17.925Z"
+    },
+    {
       "id": "usr_1788558019820",
       "email": "test.builder.1788558019805@canopy.earth",
       "role": "builder",
@@ -65,6 +74,17 @@
     }
   ],
   "profiles": [
+    {
+      "userId": "usr_1788587777925",
+      "displayName": "Test Builder",
+      "headline": "BUILDER at Canopy",
+      "bio": "",
+      "primaryDomain": "climate",
+      "skillTags": [],
+      "avatarUrl": "/avatars/avatar-builders.png",
+      "hoursPerWeek": 10,
+      "proofOfWork": []
+    },
     {
       "userId": "usr_1788558019820",
       "displayName": "Test Builder",
@@ -166,6 +186,23 @@
     }
   ],
   "build_calls": [
+    {
+      "id": "call_1788587777998",
+      "creatorId": "usr_elena",
+      "title": "Decentralized Water Filter Diagnostics",
+      "orgName": "Clean Water Project",
+      "problemStatement": "Automate membrane fouling detection.",
+      "domain": "climate",
+      "targetDeliverable": "Functional prototype code and field evaluation report",
+      "pilotBudget": "Community Supported",
+      "datasetAccessUrl": "",
+      "neededSkills": [
+        "Sensors",
+        "Embedded C"
+      ],
+      "status": "open",
+      "createdAt": "2026-09-05T05:56:17.998Z"
+    },
     {
       "id": "call_1788558019868",
       "creatorId": "usr_elena",
@@ -403,7 +440,7 @@
       "title": "Adaptive reading tutor for grade 3–5",
       "description": "The idea is vivid. What is missing is a technical co-builder to bring it to life on offline classroom tablets.",
       "domain": "education",
-      "stage": "forming",
+      "stage": "building",
       "teamCapacity": 2,
       "members": [
         {
@@ -411,6 +448,12 @@
           "squadRole": "Curriculum & Pedagogy",
           "displayName": "Marcus W.",
           "avatarSeed": "reading-tutor-1"
+        },
+        {
+          "userId": "usr_1788587777925",
+          "squadRole": "Full-stack UI",
+          "displayName": "Test Builder",
+          "joinedAt": "2026-09-05T05:56:17.989Z"
         }
       ],
       "skillTags": [
@@ -421,7 +464,8 @@
       "daysTotal": 14,
       "daysLeft": 14,
       "progressPct": 0,
-      "statusHint": "solo so far"
+      "statusHint": "team locked for this cycle",
+      "updatedAt": "2026-09-05T05:56:17.990Z"
     },
     {
       "id": "sp_3",
@@ -615,9 +659,20 @@
           "teaser": "calib_v2.py → accuracy: 98.4%",
           "bodyMarkdown": "Added test benchmarks across 10 rainfall cycles.",
           "createdAt": "2026-09-04T21:40:19.878Z"
+        },
+        {
+          "id": "branch_1788587778011",
+          "parentEntryId": "entry_1",
+          "authorId": "usr_elena",
+          "authorName": "Elena R.",
+          "title": "Follow-up dataset on sensor calibrations",
+          "summarySnippet": "Added test benchmarks across 10 rainfall cycles.",
+          "teaser": "calib_v2.py → accuracy: 98.4%",
+          "bodyMarkdown": "Added test benchmarks across 10 rainfall cycles.",
+          "createdAt": "2026-09-05T05:56:18.011Z"
         }
       ],
-      "updatedAt": "2026-09-04T21:40:19.880Z"
+      "updatedAt": "2026-09-05T05:56:18.012Z"
     },
     {
       "id": "entry_2",
@@ -697,6 +752,17 @@
     }
   ],
   "applications": [
+    {
+      "id": "app_1788587778015",
+      "fullName": "New Collaborator",
+      "email": "new.collab@canopy.earth",
+      "role": "Builder",
+      "domain": "Hardware",
+      "proofOfWorkLink": "",
+      "motivationNote": "Ready to build.",
+      "status": "verified",
+      "submittedAt": "2026-09-05T05:56:18.015Z"
+    },
     {
       "id": "app_1788558019884",
       "fullName": "New Collaborator",
