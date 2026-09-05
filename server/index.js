@@ -8,6 +8,10 @@ const sprintsRouter = require('./routes/sprints');
 const callsRouter = require('./routes/calls');
 const notebookRouter = require('./routes/notebook');
 const applicationsRouter = require('./routes/applications');
+const moderationRouter = require('./routes/moderation');
+
+const { validateCsrf } = require('./middleware/auth');
+const { isConfigured, supabase } = require('./config/supabase');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -25,7 +29,7 @@ const ALLOWED_ORIGINS = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow non-browser requests (curl, Postman, test suites) or allowed origins
+    // Allow non-browser requests (curl, server-to-server, tests) or authorized origins
     if (!origin || ALLOWED_ORIGINS.includes(origin) || origin.endsWith('.canopy.earth')) {
       return callback(null, true);
     }
@@ -33,17 +37,22 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-Canopy-Client']
 }));
 
-app.use(express.json());
+// Limit request payload to prevent Denial of Service via large memory buffers
+app.use(express.json({ limit: '100kb' }));
 
-// Enterprise Security Headers
+// Enterprise Security & Content Security Policy Headers
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' http://localhost:3001 http://127.0.0.1:3001 https://*.supabase.co https://*.canopy.earth;"
+  );
   next();
 });
 
@@ -57,10 +66,31 @@ app.use((req, res, next) => {
   next();
 });
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'healthy',
+// CSRF validation for cookie-authenticated mutating requests
+app.use('/api', validateCsrf);
+
+// Health check with honest DB status verification
+app.get('/api/health', async (req, res) => {
+  const isProd = process.env.NODE_ENV === 'production';
+  let dbStatus = 'local_resilient';
+
+  if (isConfigured() && supabase) {
+    try {
+      const { error } = await supabase.from('build_calls').select('id').limit(1);
+      dbStatus = error ? 'unhealthy' : 'connected';
+    } catch (e) {
+      dbStatus = 'unreachable';
+    }
+  } else if (isProd) {
+    dbStatus = 'unconfigured';
+  }
+
+  const isHealthy = !isProd || dbStatus === 'connected';
+  const statusCode = isHealthy ? 200 : 503;
+
+  res.status(statusCode).json({
+    status: isHealthy ? 'healthy' : 'degraded',
+    database: dbStatus,
     environment: process.env.NODE_ENV || 'development',
     service: 'Canopy Backend API Gateway',
     timestamp: new Date().toISOString(),
@@ -75,6 +105,7 @@ app.use('/api/sprints', sprintsRouter);
 app.use('/api/calls', callsRouter);
 app.use('/api/notebook', notebookRouter);
 app.use('/api/applications', applicationsRouter);
+app.use('/api/moderation', moderationRouter);
 
 // 404 handler for API routes
 app.use('/api', (req, res) => {
@@ -84,7 +115,8 @@ app.use('/api', (req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('[Canopy API Error]', err);
-  res.status(err.status || 500).json({
+  const status = err.statusCode || err.status || 500;
+  res.status(status).json({
     error: err.message || 'Internal Server Error'
   });
 });
@@ -99,6 +131,7 @@ if (require.main === module) {
     console.log(`   Sprint Board: http://localhost:${PORT}/api/sprints`);
     console.log(`   Build Calls: http://localhost:${PORT}/api/calls`);
     console.log(`   Lab Notebook: http://localhost:${PORT}/api/notebook`);
+    console.log(`   Moderation: http://localhost:${PORT}/api/moderation/queue`);
   });
 }
 

@@ -1,20 +1,24 @@
 const { BaseRepository } = require('./base');
+const { moderation } = require('../mappers');
 
 class AuditEventsRepository extends BaseRepository {
   constructor() {
-    super('audit_events', 'audit_events');
+    super('audit_events', 'audit_events', {
+      toDomain: moderation.toAuditDomain,
+      toDatabase: moderation.toAuditDatabase
+    });
   }
 
-  async logEvent({ actorId, action, targetType, targetId, metadata = {}, ip = null, userAgent = null }) {
+  async logEvent({ actorId, actorRole, action, targetType, targetId, payload = {}, ip = null }) {
     const event = {
       id: 'aud_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
       actorId,
-      action,
-      targetType,
-      targetId,
-      metadata,
+      actorRole,
+      eventType: action,
+      targetEntityType: targetType,
+      targetEntityId: targetId,
+      payload,
       ipAddress: ip,
-      userAgent,
       createdAt: new Date().toISOString()
     };
     return this.create(event);

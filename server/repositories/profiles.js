@@ -1,8 +1,9 @@
 const { BaseRepository } = require('./base');
+const { profile } = require('../mappers');
 
 class ProfilesRepository extends BaseRepository {
   constructor() {
-    super('profiles', 'profiles');
+    super('profiles', 'profiles', profile);
   }
 
   async findByUserId(userId) {

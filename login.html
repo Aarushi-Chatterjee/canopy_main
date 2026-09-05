@@ -440,11 +440,13 @@
         loginAlert.className = 'status-alert status-alert-error';
         loginAlert.innerHTML = `
           <div>
-            <strong>Authentication failed:</strong> ${err.message || 'Invalid credentials or network unreachable.'}
+            <strong>Authentication failed:</strong> <span class="err-desc"></span>
             <br><small style="color:var(--ink-soft);">Please check your email address or re-enter your passcode.</small>
             <br><button type="button" class="btn-retry" onclick="document.getElementById('loginPassword').focus();">↻ Try Again</button>
           </div>
         `;
+        const errSpan = loginAlert.querySelector('.err-desc');
+        if (errSpan) errSpan.textContent = err.message || 'Invalid credentials or network unreachable.';
         loginAlert.style.display = 'flex';
       }
       showToast('⚠️ ' + (err.message || 'Authentication failed.'));
@@ -489,10 +491,12 @@
         loginAlert.className = 'status-alert status-alert-error';
         loginAlert.innerHTML = `
           <div>
-            <strong>Registration failed:</strong> ${err.message || 'Unable to register.'}
+            <strong>Registration failed:</strong> <span class="err-desc"></span>
             <br><button type="button" class="btn-retry" onclick="document.getElementById('signUpSubmitBtn').click();">↻ Retry Registration</button>
           </div>
         `;
+        const errSpan = loginAlert.querySelector('.err-desc');
+        if (errSpan) errSpan.textContent = err.message || 'Unable to register.';
         loginAlert.style.display = 'flex';
       }
       showToast('⚠️ ' + (err.message || 'Registration failed.'));

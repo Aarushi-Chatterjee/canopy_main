@@ -1,92 +1,125 @@
 const express = require('express');
 const router = express.Router();
-const { store } = require('../data/store');
-const { requireAuth, optionalAuth } = require('../middleware/auth');
+const { buildCalls: callsRepo, users: usersRepo, profiles: profilesRepo, moderationQueue: modRepo, auditEvents: auditRepo } = require('../repositories');
+const { requireAuth } = require('../middleware/auth');
 
-// GET /api/calls — List all active Build Calls
-router.get('/', (req, res) => {
-  const { domain, status = 'open' } = req.query;
-  let calls = store.getCollection('build_calls');
+// GET /api/calls — List active Build Calls
+router.get('/', async (req, res) => {
+  try {
+    const { domain, status = 'open' } = req.query;
+    const calls = await callsRepo.find(c => {
+      if (domain && c.domain?.toLowerCase() !== domain.toLowerCase()) return false;
+      if (status && status !== 'all' && c.status !== status) return false;
+      return true;
+    });
 
-  if (domain) {
-    calls = calls.filter(c => c.domain.toLowerCase() === domain.toLowerCase());
+    res.json({
+      calls,
+      total: calls.length
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to list build calls.' });
   }
-
-  if (status && status !== 'all') {
-    calls = calls.filter(c => c.status === status);
-  }
-
-  res.json({
-    calls,
-    total: calls.length
-  });
 });
 
 // GET /api/calls/:id — Single Build Call details
-router.get('/:id', (req, res) => {
-  const call = store.getItem('build_calls', c => c.id === req.params.id);
-  if (!call) {
-    return res.status(404).json({ error: 'Build Call not found.' });
+router.get('/:id', async (req, res) => {
+  try {
+    const call = await callsRepo.findById(req.params.id);
+    if (!call) {
+      return res.status(404).json({ error: 'Build Call not found.' });
+    }
+
+    const creator = call.createdBy ? await usersRepo.findById(call.createdBy) : null;
+    const profile = creator ? await profilesRepo.findByUserId(creator.id) : null;
+
+    res.json({
+      call,
+      creator: {
+        id: creator?.id,
+        name: profile?.displayName || creator?.displayName || call.organization || 'Field Contributor',
+        role: creator?.role,
+        avatar: profile?.avatarUrl
+      }
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to retrieve build call.' });
   }
-
-  const creator = store.getItem('users', u => u.id === call.creatorId);
-  const profile = creator ? store.getItem('profiles', p => p.userId === creator.id) : null;
-  const sprints = store.getCollection('sprints').filter(s => s.buildCallId === call.id);
-
-  res.json({
-    call,
-    creator: {
-      id: creator?.id,
-      name: profile?.displayName || creator?.displayName || call.orgName,
-      role: creator?.role,
-      avatar: profile?.avatarUrl
-    },
-    sprints
-  });
 });
 
-// POST /api/calls — Post a new Build Call (Authenticated)
-router.post('/', optionalAuth, (req, res) => {
-  // Derive creator from authenticated session or explicit verified identity
-  const creatorId = req.user?.id || 'usr_community';
+// POST /api/calls — Submit a new Build Call (Strictly Authenticated)
+router.post('/', requireAuth, async (req, res) => {
+  try {
+    const creatorId = req.user.id;
+    const {
+      title,
+      organization = 'Open Lab Contributor',
+      orgName,
+      problemStatement,
+      domain = 'climate',
+      targetDeliverable = 'Functional prototype code and field evaluation report',
+      targetOutcomes,
+      timeline = '6 weeks',
+      rewardPool = 'Community Grant',
+      pilotBudget,
+      contactChannel = '',
+      datasetAccessUrl = '',
+      neededSkills = []
+    } = req.body;
 
-  const {
-    title,
-    orgName = 'Open Lab Contributor',
-    problemStatement,
-    domain = 'climate',
-    targetDeliverable = 'Functional prototype code and field evaluation report',
-    pilotBudget,
-    datasetAccessUrl,
-    neededSkills = []
-  } = req.body;
+    const finalTitle = (title || '').trim();
+    const finalProblem = (problemStatement || '').trim();
 
-  if (!title || !title.trim() || !problemStatement || !problemStatement.trim()) {
-    return res.status(400).json({ error: 'Title and problem statement are required.' });
+    if (!finalTitle || !finalProblem) {
+      return res.status(400).json({ error: 'Title and problem statement are required.' });
+    }
+
+    const callId = 'call_' + Date.now();
+    const newCall = {
+      id: callId,
+      createdBy: creatorId,
+      title: finalTitle,
+      organization: (orgName || organization).trim(),
+      problemStatement: finalProblem,
+      domain: domain.toLowerCase(),
+      targetOutcomes: Array.isArray(targetOutcomes) ? targetOutcomes : [targetDeliverable.trim()],
+      timeline: timeline.trim(),
+      rewardPool: (pilotBudget || rewardPool).trim(),
+      contactChannel: (contactChannel || datasetAccessUrl).trim(),
+      status: 'pending_review', // Strictly queued for review, not immediately public
+      createdAt: new Date().toISOString()
+    };
+
+    const savedCall = await callsRepo.create(newCall);
+
+    // Enqueue in moderation queue
+    await modRepo.create({
+      id: 'mod_' + Date.now(),
+      entityType: 'build_call',
+      entityId: callId,
+      status: 'pending',
+      flaggedReason: 'new_submission',
+      submittedBy: creatorId,
+      createdAt: new Date().toISOString()
+    });
+
+    // Log audit event
+    await auditRepo.logEvent({
+      actorId: creatorId,
+      actorRole: req.user.role,
+      action: 'build_call.submitted',
+      targetType: 'build_call',
+      targetId: callId,
+      payload: { title: finalTitle, domain }
+    });
+
+    res.status(201).json({
+      call: savedCall,
+      message: '🌱 Build Call submitted successfully. It is queued in pending review for curator approval before public broadcast.'
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to create build call.' });
   }
-
-  const callId = 'call_' + Date.now();
-  const newCall = {
-    id: callId,
-    creatorId,
-    title: title.trim(),
-    orgName: orgName.trim(),
-    problemStatement: problemStatement.trim(),
-    domain: domain.toLowerCase(),
-    targetDeliverable: targetDeliverable.trim(),
-    pilotBudget: pilotBudget ? pilotBudget.trim() : 'Community Grant',
-    datasetAccessUrl: datasetAccessUrl ? datasetAccessUrl.trim() : '',
-    neededSkills: Array.isArray(neededSkills) ? neededSkills : [neededSkills],
-    status: 'open',
-    createdAt: new Date().toISOString()
-  };
-
-  store.addItem('build_calls', newCall);
-
-  res.status(201).json({
-    call: newCall,
-    message: '🌱 Build Call successfully published to the matching directory.'
-  });
 });
 
 module.exports = router;

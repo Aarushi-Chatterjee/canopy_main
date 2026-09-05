@@ -1,71 +1,52 @@
-# Canopy Production Content Inventory (Source of Truth)
+# Canopy Production Content Inventory & Launch Readiness Register
 
-This inventory establishes the classification for every visible record, claim, and statistic across the Canopy platform.
+This inventory serves as Canopy's living source-of-truth register. Every visible platform claim, dataset, workflow, and user interface is audited across required operational standards.
 
-## Status Definitions
-- **Real**: Verified, founder-approved, permissioned, and operationally supported.
-- **Illustrative**: Clearly labeled example demonstrating product loop mechanics; non-deceptive; does not accept live actions.
+## Status Classifications
+- **Real**: Verified, founder-approved, permissioned, and backed by live database persistence.
+- **Illustrative**: Clearly labeled example demonstrating product loop mechanics; non-deceptive; disabled from live transactional mutation.
 - **Private Beta Only**: Available only to authenticated, approved cohort collaborators.
-- **Pending Review**: Submitted records awaiting administrator/moderator evaluation.
+- **Pending Review**: Queued records awaiting administrator/moderator evaluation before public broadcast.
 - **Archived**: Historical records retained for audit but hidden from discovery.
 
 ---
 
-## 1. The Single Illustrative Product-Loop Example
+## 1. Core Platform Surfaces & Operational Controls
 
-Per the One-Example Rule, Canopy maintains exactly one end-to-end illustrative demonstration:
-
-| Record Type | Title | Location | Status | Action Allowed | Label / Disclaimer |
+| Surface / Item | Target State | Current State | Launch-Blocking Gap | Owner | Completion Evidence |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Build Call** | Groundwater contamination sensor optical probe | `match.html`, `index.html` | **Illustrative** | View only (no live application) | "Illustrative Example — This workspace demonstrates how Canopy works. It is not a live opportunity and is not accepting applications." |
-| **Sprint Squad** | Groundwater contamination sensor calibration squad | `sprint.html` | **Illustrative** | View only (no shovel join) | "Illustrative Example — This workspace demonstrates how Canopy works." |
-| **Lab Notebook Entry** | Field calibration benchmarks under high turbidity | `notebook.html` | **Illustrative** | View only | "Illustrative Example — Field notes and post-mortem demonstration." |
+| **Authentication & Tokens** | HttpOnly cookie auth; strict 15m OTP expiry; 5-attempt lock; no token leaks in JSON responses | Fully enforced via `server/routes/auth.js` and `server/middleware/auth.js` | None (closed) | Security Lead | Automated test suite verifies cookie auth and rejection of leaked tokens |
+| **Email Delivery** | Pluggable Email Service (`console`, `test`, `resend`) with branded OTP & notification templates | Live in `server/services/email.js`; integrated in registration, verification, reset, application, and matching | Production SMTP/Resend API key configuration | Operations Lead | Test mail adapter assertions passing in CI/test runner |
+| **Build Call Creation** | Authenticated submissions only; initial status `pending_review`; enqueued to moderation queue | Implemented in `server/routes/calls.js` with `requireAuth` and `moderationQueue` integration | None (closed) | Product Lead | Automated tests confirm unauthenticated 401 and initial `pending_review` state |
+| **Moderation Engine** | Operational review queue (`/api/moderation/queue`), approve/reject workflows, immutable audit logging | Implemented in `server/routes/moderation.js` and `server/repositories/moderation-queue.js` | None (closed) | Admin Team | `/api/moderation/review` transitions entity states and logs to `audit_events` |
+| **Admin Authorization** | Strictly verified DB role (`admin` or `moderator`); no domain or enabler escalation bypasses | Enforced in `server/middleware/auth.js` (`requireAdmin`) | None (closed) | Security Lead | Test suite verifies escalation denial for `@canopy.earth` and `enabler` roles |
+| **Database Persistence** | Supabase PostgreSQL runtime; honest 503 errors on outage in production; no silent local JSON fallback in prod | Enforced in `server/repositories/base.js` with mappers | Supabase production migration apply | Infra Lead | `server/repositories/base.js` throws 503 in production mode on connection failure |
+| **CSRF & Security Headers** | CSP headers, `X-Canopy-Client` validation on mutating requests, nosniff, frame denial, 100kb payload limit | Configured in `server/index.js` and `server/middleware/auth.js` | None (closed) | Security Lead | Headers verified on `/api/health` and all API responses |
+| **Client Error Safety** | Safe textContent rendering; no raw server error insertion via `innerHTML` | Updated in `apply.html`, `post-call.html`, and `login.html` | None (closed) | Frontend Lead | Zero unescaped `${err.message}` in client innerHTML blocks |
 
 ---
 
-## 2. Page-by-Page Content Classification
+## 2. The Single Illustrative Product-Loop Register
 
-### Homepage (`index.html`)
-| Item / Section | Current Copy / Claim | Status | Action |
-| :--- | :--- | :--- | :--- |
-| **Brand Identity** | Canopy: Build · Connect · Ship | Real | Retained |
-| **Mission & Problem Statement** | "The Gap: Capable people want to build things that matter..." | Real | Retained |
-| **Problem Marketplace Deck** | Dynamic build call carousel | Real / Connected to API | Live API feed |
-| **Founder Quote** | Aarushi Chatterjee, Founder quote | Real | Retained |
-| **Activity Statistics** | Dynamic counters | Real | Sourced from actual database counts |
+Per the One-Example Rule, Canopy maintains exactly one end-to-end illustrative demonstration with explicit visual disclaimers:
 
-### Match Sandbox (`match.html`)
-| Item / Section | Current Copy / Claim | Status | Action |
-| :--- | :--- | :--- | :--- |
-| **Sandbox Banner** | Collaborative sandbox for vetted problem holders & builders | Real | Retained |
-| **Illustrative Call** | Groundwater sensor | Illustrative | Labeled with `ExampleNotice` badge |
-| **Collaborator Profiles** | Approved beta member profiles | Private Beta Only | Rendered only for authenticated users; empty state for visitors |
-| **Handshake Action** | "Request Connection" | Real | Requires authentication; triggers mutual contact consent |
+| Record Type | Title | Target State | Current State | Launch-Blocking Gap | Owner | Completion Evidence |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Build Call** | Groundwater contamination sensor optical probe | Read-only with prominent illustrative notice; application action disabled | Illustrative label rendered; direct mutation blocked | None (closed) | Content Lead | `ExampleNotice` badge displayed on call card and detail view |
+| **Sprint Squad** | Groundwater contamination sensor calibration squad | Read-only demonstration of sprint workflow; shovel action disabled | Illustrative badge rendered; join button inactive | None (closed) | Content Lead | Explicit notice rendered in `sprint.html` |
+| **Lab Notebook Entry** | Field calibration benchmarks under high turbidity | Read-only post-mortem demonstration; growth action restricted to example branch | Labeled as example post-mortem | None (closed) | Content Lead | Example banner verified in `notebook.html` |
 
-### Sprint Board (`sprint.html`)
-| Item / Section | Current Copy / Claim | Status | Action |
-| :--- | :--- | :--- | :--- |
-| **Board Columns** | Forming, Building, Shipped | Real | Live database stages |
-| **Illustrative Sprint** | Groundwater sensor sprint squad | Illustrative | Labeled with `ExampleNotice` badge |
-| **Shovel Action** | "Grab a shovel" | Real | Real backend join transaction with capacity check |
-| **Shipped Artifact** | Prototype release links | Real | Requires real artifact link |
+---
 
-### Lab Notebook (`notebook.html`)
-| Item / Section | Current Copy / Claim | Status | Action |
-| :--- | :--- | :--- | :--- |
-| **Notebook Feed** | Field notes, post-mortems, reflections | Real | Live database entries |
-| **Illustrative Entry** | Groundwater sensor calibration benchmarks | Illustrative | Labeled with `ExampleNotice` badge |
-| **Branch Action** | "Grow this entry" | Real | Real backend branch mutation |
+## 3. Surface-by-Surface Verification Matrix
 
-### Intake & Post Forms (`apply.html`, `post-call.html`)
-| Item / Section | Current Copy / Claim | Status | Action |
-| :--- | :--- | :--- | :--- |
-| **SLA Promise** | "Reviewed by Canopy curators within 24 hours" | Updated | Changed to: "Reviewed by our team on a rolling basis" |
-| **Application Submission** | New collaborator intake | Real | Saved to database with `pending_review` status |
-| **Build Call Submission** | Problem holder intake | Real | Saved to database with `pending_review` status |
-
-### Legal Pages (`privacy.html`, `terms.html`)
-| Item / Section | Current Copy / Claim | Status | Action |
-| :--- | :--- | :--- | :--- |
-| **Processors & Storage** | Encryption & infrastructure claims | Real | Reconciled with Supabase PostgreSQL & Node runtime |
-| **User Rights & Deletion** | Export & deletion instructions | Real | Reconciled with privacy contact procedure (`privacy@canopy.earth`) |
+| Page / Route | Target State | Current State | Launch-Blocking Gap | Owner | Completion Evidence |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Homepage (`index.html`)** | Truthful metrics, live calls feed, responsive layout | Fully functional, connected to `/api/calls` and `/api/health` | None (closed) | Frontend Lead | Page builds and renders verified real statistics |
+| **Match Sandbox (`match.html`)** | Vetted builder network; mutual handshake consent; PII protected until acceptance | Protected by authenticated session; contact info withheld until acceptance | None (closed) | Product Lead | Verified connections API test passing |
+| **Sprint Board (`sprint.html`)** | Dynamic capacity management; stage progression (`forming` -> `building` -> `shipped`) | Live in `/api/sprints` with repository backing | None (closed) | Product Lead | Squad member join tests passing |
+| **Lab Notebook (`notebook.html`)** | Sanitized field notes and branches; XSS prevention | Sanitized inputs in `/api/notebook` | None (closed) | Content Lead | Input sanitization test passing |
+| **Intake Form (`apply.html`)** | Honest rolling review timeline; client-side safe error alerts | Updated rolling SLA text; safe DOM alert | None (closed) | Frontend Lead | Form submits to `/api/applications` with `pending_review` |
+| **Post Call Form (`post-call.html`)** | Authenticated submission; queues for moderation | Strictly requires sign-in; sets `pending_review` | None (closed) | Frontend Lead | Submission test passing |
+| **Field Pass Login (`login.html`)** | Secure 6-digit OTP verification; rate limited; account-enumeration resistant | Full OTP flow with in-memory/email dispatch | None (closed) | Auth Lead | Integration test suite passing |
+| **Legal Pages (`privacy.html`, `terms.html`)** | Accurate data controller disclosures, contact info, and GDPR/CCPA rights | Reconciled with architecture | None (closed) | Legal Lead | Reviewed and updated |

@@ -247,11 +247,13 @@
           applyAlert.className = 'status-alert status-alert-error';
           applyAlert.innerHTML = `
             <div>
-              <strong>Submission could not be saved:</strong> ${err.message || 'The service is currently unreachable.'}
+              <strong>Submission could not be saved:</strong> <span class="err-desc"></span>
               <br><small style="color:var(--ink-soft);">Your drafted information has been preserved below.</small>
               <br><button type="button" class="btn-retry" onclick="document.getElementById('appSubmitBtn').click();">↻ Retry Submission</button>
             </div>
           `;
+          const errSpan = applyAlert.querySelector('.err-desc');
+          if (errSpan) errSpan.textContent = err.message || 'The service is currently unreachable.';
           applyAlert.style.display = 'flex';
         }
         if (toast) {

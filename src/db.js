@@ -50,6 +50,7 @@ export async function apiRequest(endpoint, options = {}) {
       signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
+        'X-Canopy-Client': 'web',
         ...getAuthHeader(),
         ...(options.headers || {})
       }
@@ -95,7 +96,6 @@ export const auth = {
 
     if (remote.ok && remote.data?.user) {
       setLocal(STORAGE_KEYS.USER, remote.data.user);
-      if (remote.data.sessionToken) localStorage.setItem(STORAGE_KEYS.TOKEN, remote.data.sessionToken);
       if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
       return { data: remote.data, error: null, verificationNotice: remote.data.verificationNotice };
     }
@@ -111,7 +111,6 @@ export const auth = {
 
     if (remote.ok && remote.data?.user) {
       setLocal(STORAGE_KEYS.USER, remote.data.user);
-      if (remote.data.sessionToken) localStorage.setItem(STORAGE_KEYS.TOKEN, remote.data.sessionToken);
       if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
       return { data: remote.data, error: null };
     }
@@ -127,7 +126,6 @@ export const auth = {
 
     if (remote.ok && remote.data?.user) {
       setLocal(STORAGE_KEYS.USER, remote.data.user);
-      if (remote.data.sessionToken) localStorage.setItem(STORAGE_KEYS.TOKEN, remote.data.sessionToken);
       if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
       return { data: remote.data, error: null };
     }
@@ -148,17 +146,18 @@ export const auth = {
   },
 
   async getCurrentUser() {
-    const localUser = getLocal(STORAGE_KEYS.USER, null);
-    const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
-    if (!token && !localUser) return null;
-
     const remote = await apiRequest('/auth/me');
     if (remote.ok && remote.data?.user && !remote.data.isGuest) {
       setLocal(STORAGE_KEYS.USER, remote.data.user);
       if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
       return remote.data.user;
     }
-    return localUser;
+    if (remote.ok && remote.data?.isGuest) {
+      localStorage.removeItem(STORAGE_KEYS.USER);
+      localStorage.removeItem(STORAGE_KEYS.PROFILE);
+      return null;
+    }
+    return getLocal(STORAGE_KEYS.USER, null);
   },
 
   getProfile() {

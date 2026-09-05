@@ -1,16 +1,17 @@
 const { BaseRepository } = require('./base');
+const { sprint } = require('../mappers');
 
 class SprintsRepository extends BaseRepository {
   constructor() {
-    super('sprints', 'sprints');
+    super('sprints', 'sprints', sprint);
   }
 
-  async findByStage(stage) {
-    return this.find(s => !stage || s.stage === stage);
+  async findByCallId(callId) {
+    return this.find(s => s.callId === callId, { eq: { call_id: callId } });
   }
 
-  async findByDomain(domain) {
-    return this.find(s => !domain || s.domain?.toLowerCase() === domain.toLowerCase());
+  async findByStatus(status) {
+    return this.find(s => !status || s.status === status, { eq: status ? { status } : null });
   }
 
   async findById(id) {

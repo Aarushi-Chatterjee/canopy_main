@@ -1,6 +1,22 @@
 const crypto = require('crypto');
 
-const JWT_SECRET = process.env.JWT_SECRET || process.env.SUPABASE_SECRET_KEY || 'canopy_secret_sig_k34duPsnsHG80Mug2TVwiA_OI1al6Ng';
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('[FATAL] JWT_SECRET environment variable must be defined in production.');
+    }
+    if (!global.__CANOPY_DEV_JWT_SECRET) {
+      global.__CANOPY_DEV_JWT_SECRET = crypto.randomBytes(32).toString('hex');
+      console.warn('[AUTH] Warning: No JWT_SECRET set. Using ephemeral random secret for development/test.');
+    }
+    return global.__CANOPY_DEV_JWT_SECRET;
+  }
+  if (process.env.NODE_ENV === 'production' && secret.length < 32) {
+    throw new Error('[FATAL] JWT_SECRET must be at least 32 characters in production.');
+  }
+  return secret;
+}
 
 function base64UrlEncode(str) {
   return Buffer.from(str)
@@ -34,7 +50,7 @@ function generateToken(user, expiresInSec = 7 * 24 * 3600) {
   const dataToSign = `${encodedHeader}.${encodedPayload}`;
 
   const signature = crypto
-    .createHmac('sha256', JWT_SECRET)
+    .createHmac('sha256', getJwtSecret())
     .update(dataToSign)
     .digest('base64')
     .replace(/=/g, '')
@@ -58,7 +74,7 @@ function verifyToken(token) {
   const dataToSign = `${encodedHeader}.${encodedPayload}`;
 
   const expectedSig = crypto
-    .createHmac('sha256', JWT_SECRET)
+    .createHmac('sha256', getJwtSecret())
     .update(dataToSign)
     .digest('base64')
     .replace(/=/g, '')
@@ -153,6 +169,26 @@ function clearSessionCookie(res) {
   res.setHeader('Set-Cookie', cookieParts.join('; '));
 }
 
+// Middleware: CSRF protection for cookie-authenticated mutating requests
+function validateCsrf(req, res, next) {
+  if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+    return next();
+  }
+  // If the request uses a session cookie, require custom client header
+  const cookieHeader = req.headers.cookie;
+  const hasSessionCookie = (req.cookies && req.cookies.canopy_session) || (cookieHeader && cookieHeader.includes('canopy_session='));
+  
+  if (hasSessionCookie) {
+    const customHeader = req.headers['x-canopy-client'] || req.headers['x-requested-with'];
+    if (!customHeader) {
+      return res.status(403).json({
+        error: 'CSRF validation failed. Missing X-Canopy-Client or X-Requested-With header.'
+      });
+    }
+  }
+  next();
+}
+
 // Middleware: Enforce authentic user
 function requireAuth(req, res, next) {
   const token = extractToken(req);
@@ -181,23 +217,26 @@ function optionalAuth(req, res, next) {
   next();
 }
 
-// Middleware: Enforce administrator role
+// Middleware: Enforce administrator or moderator role (strictly checked against authenticated user role)
 function requireAdmin(req, res, next) {
   requireAuth(req, res, () => {
-    if (req.user && (req.user.role === 'admin' || req.user.role === 'enabler' || (req.user.email && req.user.email.endsWith('@canopy.earth')))) {
+    const role = req.user && req.user.role;
+    if (role === 'admin' || role === 'moderator') {
       return next();
     }
-    return res.status(403).json({ error: 'Forbidden. Administrator credentials required.' });
+    return res.status(403).json({ error: 'Forbidden. Administrator or Moderator privileges required.' });
   });
 }
 
 module.exports = {
+  getJwtSecret,
   generateToken,
   verifyToken,
   parseCookies,
   extractToken,
   setSessionCookie,
   clearSessionCookie,
+  validateCsrf,
   requireAuth,
   optionalAuth,
   requireAdmin

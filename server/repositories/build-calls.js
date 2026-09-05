@@ -1,8 +1,9 @@
 const { BaseRepository } = require('./base');
+const { buildCall } = require('../mappers');
 
 class BuildCallsRepository extends BaseRepository {
   constructor() {
-    super('build_calls', 'build_calls');
+    super('build_calls', 'build_calls', buildCall);
   }
 
   async findScoped({ domain, status } = {}) {

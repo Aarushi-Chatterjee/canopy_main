@@ -239,11 +239,13 @@
           postCallAlert.className = 'status-alert status-alert-error';
           postCallAlert.innerHTML = `
             <div>
-              <strong>Build Call could not be published:</strong> ${err.message || 'The service is currently unreachable.'}
+              <strong>Build Call could not be published:</strong> <span class="err-desc"></span>
               <br><small style="color:var(--ink-soft);">Your drafted challenge details have been preserved below.</small>
               <br><button type="button" class="btn-retry" onclick="document.getElementById('postCallSubmitBtn').click();">↻ Retry Publishing</button>
             </div>
           `;
+          const errSpan = postCallAlert.querySelector('.err-desc');
+          if (errSpan) errSpan.textContent = err.message || 'The service is currently unreachable.';
           postCallAlert.style.display = 'flex';
         }
         if (toast) {

@@ -1,16 +1,17 @@
 const { BaseRepository } = require('./base');
+const { notebook } = require('../mappers');
 
 class NotebookRepository extends BaseRepository {
   constructor() {
-    super('notebook_entries', 'notebook_entries');
+    super('notebook_entries', 'notebook_entries', notebook);
   }
 
-  async findScoped({ domain, entryType } = {}) {
-    return this.find(e => {
-      if (domain && e.domain?.toLowerCase() !== domain.toLowerCase()) return false;
-      if (entryType && e.entryType !== entryType) return false;
-      return true;
-    });
+  async findPublic() {
+    return this.find(e => e.isPublic === true, { eq: { is_public: true } });
+  }
+
+  async findForUser(userId) {
+    return this.find(e => e.userId === userId, { eq: { user_id: userId } });
   }
 
   async findById(id) {

@@ -428,7 +428,20 @@ const INITIAL_DATA = {
   ]
 };
 
+let inMemoryDb = null;
+
+function isIsolated() {
+  return process.env.CANOPY_ISOLATE_STORE === 'true' || process.env.NODE_ENV === 'test';
+}
+
 function readDb() {
+  if (isIsolated()) {
+    if (!inMemoryDb) {
+      inMemoryDb = JSON.parse(JSON.stringify(INITIAL_DATA));
+    }
+    return inMemoryDb;
+  }
+
   try {
     if (!fs.existsSync(DB_FILE)) {
       fs.writeFileSync(DB_FILE, JSON.stringify(INITIAL_DATA, null, 2), 'utf-8');
@@ -443,6 +456,11 @@ function readDb() {
 }
 
 function writeDb(data) {
+  if (isIsolated()) {
+    inMemoryDb = data;
+    return true;
+  }
+
   try {
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
     return true;
@@ -453,6 +471,10 @@ function writeDb(data) {
 }
 
 const store = {
+  resetTestDb() {
+    inMemoryDb = JSON.parse(JSON.stringify(INITIAL_DATA));
+  },
+
   getCollection(name) {
     const db = readDb();
     return db[name] || [];
