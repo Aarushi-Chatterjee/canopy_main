@@ -62,7 +62,8 @@ const server = app.listen(PORT, async () => {
     console.log('✓ Sprint Board:', sprints.status, 'Forming:', sprints.data.forming.length, 'Building:', sprints.data.building.length, 'Shipped:', sprints.data.shipped.length);
 
     // 6. Sprints: Join ("Grab a shovel")
-    const join = await request('POST', `/api/sprints/${sprints.data.forming[0].id}/join`, {
+    const targetSprint = (sprints.data.forming && sprints.data.forming[0]) || (sprints.data.building && sprints.data.building[0]) || { id: 'sp_1' };
+    const join = await request('POST', `/api/sprints/${targetSprint.id}/join`, {
       userId: reg.data.user.id,
       displayName: 'Test Builder',
       squadRole: 'Full-stack UI'

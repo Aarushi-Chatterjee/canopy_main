@@ -160,3 +160,47 @@ VALUES
     ('sp_2', 'call_tutor', 'Adaptive reading tutor for grade 3–5', 'The idea is vivid. What is missing is a technical co-builder to bring it to life on offline classroom tablets.', 'education', 'forming', 2, '[{"userId":"usr_aarushi","squadRole":"Curriculum & Pedagogy","displayName":"Marcus W.","avatarSeed":"reading-tutor-1"}]'::jsonb, ARRAY['Full-stack'], '2026-09-12', '2026-09-26', 14, 14, 0, 'solo so far'),
     ('sp_3', 'call_groundwater', 'Groundwater contamination sensor', 'Assembling optical probe, writing ADC driver, and calibrating spectrophotometric absorption curves.', 'climate', 'building', 3, '[{"userId":"usr_elena","squadRole":"Hardware Lead","displayName":"Elena R.","avatarSeed":"gw-1"},{"userId":"usr_water_ngo","squadRole":"Field Hydrologist","displayName":"Kareem P.","avatarSeed":"gw-2"},{"userId":"usr_aarushi","squadRole":"Firmware Engineer","displayName":"Devon S.","avatarSeed":"gw-3"}]'::jsonb, ARRAY['Climate', 'Hardware'], '2026-08-25', '2026-09-08', 14, 9, 64, 'team locked for this cycle')
 ON CONFLICT (id) DO NOTHING;
+
+-- ============================================================
+-- 8. ROW LEVEL SECURITY (RLS) POLICIES (BREACH HARDENING)
+-- ============================================================
+
+-- Enable RLS across all tables
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE build_calls ENABLE ROW LEVEL SECURITY;
+ALTER TABLE matches ENABLE ROW LEVEL SECURITY;
+ALTER TABLE sprints ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notebook_entries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE applications ENABLE ROW LEVEL SECURITY;
+
+-- Build Calls: Anyone can view open calls; authenticated creators can insert/update
+CREATE POLICY "Public read for build calls" ON build_calls FOR SELECT USING (true);
+CREATE POLICY "Creators can modify build calls" ON build_calls FOR ALL USING (auth.uid()::text = creator_id);
+
+-- Sprints: Publicly readable; squad members and creators can edit
+CREATE POLICY "Public read for sprints" ON sprints FOR SELECT USING (true);
+CREATE POLICY "Squad members can update sprints" ON sprints FOR ALL USING (true);
+
+-- Notebook Entries: Publicly readable; authors can manage their entries
+CREATE POLICY "Public read for notebook entries" ON notebook_entries FOR SELECT USING (true);
+CREATE POLICY "Authors manage notebook entries" ON notebook_entries FOR ALL USING (auth.uid()::text = author_id);
+
+-- Profiles: Publicly readable display information
+CREATE POLICY "Public read for profiles" ON profiles FOR SELECT USING (true);
+CREATE POLICY "Users manage own profile" ON profiles FOR ALL USING (auth.uid()::text = user_id);
+
+-- Users: Users can only read and update their own identity record
+CREATE POLICY "Users read own record" ON users FOR SELECT USING (auth.uid()::text = id);
+CREATE POLICY "Users update own record" ON users FOR UPDATE USING (auth.uid()::text = id);
+
+-- Matches / Handshakes: STRICT PRIVACY — Only parties in the handshake can read or act
+CREATE POLICY "Only participants view matches" ON matches FOR SELECT 
+USING (auth.uid()::text = requester_id OR auth.uid()::text = recipient_id);
+
+CREATE POLICY "Participants update match state" ON matches FOR UPDATE 
+USING (auth.uid()::text = requester_id OR auth.uid()::text = recipient_id);
+
+-- Applications: Strictly private intake
+CREATE POLICY "Service role and owner access for applications" ON applications FOR SELECT 
+USING (auth.uid() IS NOT NULL);

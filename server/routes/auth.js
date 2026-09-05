@@ -1,6 +1,27 @@
 const express = require('express');
 const router = express.Router();
+const crypto = require('crypto');
 const { store } = require('../data/store');
+
+// Cryptographic Salted Hashing for Breached Database Resistance
+function hashPassword(password) {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.scryptSync(password, salt, 64).toString('hex');
+  return `${salt}:${hash}`;
+}
+
+function verifyPassword(password, storedHash) {
+  if (!storedHash || !storedHash.includes(':')) return false;
+  const [salt, key] = storedHash.split(':');
+  const derivedKey = crypto.scryptSync(password, salt, 64).toString('hex');
+  return crypto.timingSafeEqual(Buffer.from(key, 'hex'), Buffer.from(derivedKey, 'hex'));
+}
+
+function sanitizeUser(user) {
+  if (!user) return null;
+  const { password_hash, ...safeUser } = user;
+  return safeUser;
+}
 
 // POST /api/auth/register
 router.post('/register', (req, res) => {
@@ -22,6 +43,7 @@ router.post('/register', (req, res) => {
   const newUser = {
     id: userId,
     email: email.toLowerCase(),
+    password_hash: password ? hashPassword(password) : null,
     role: ['builder', 'problem_holder', 'enabler'].includes(role) ? role : 'builder',
     displayName: name,
     is_verified: false,
@@ -49,7 +71,7 @@ router.post('/register', (req, res) => {
   store.addItem('profiles', newProfile);
 
   res.status(201).json({
-    user: newUser,
+    user: sanitizeUser(newUser),
     profile: newProfile,
     sessionToken: 'sess_' + Buffer.from(userId + ':' + Date.now()).toString('base64'),
     verificationNotice: `Verification token issued for ${email}: ${token}. Enter this code to verify your Field Station Pass.`
@@ -78,7 +100,7 @@ router.post('/verify', (req, res) => {
     const profile = store.getItem('profiles', p => p.userId === user.id);
 
     return res.json({
-      user: updated,
+      user: sanitizeUser(updated),
       profile,
       sessionToken: 'sess_' + Buffer.from(user.id + ':' + Date.now()).toString('base64'),
       message: 'Field Station Pass successfully verified.'
@@ -99,6 +121,14 @@ router.post('/login', (req, res) => {
   let user = store.getItem('users', u => u.email.toLowerCase() === email.toLowerCase());
   let profile = user ? store.getItem('profiles', p => p.userId === user.id) : null;
 
+  // If user has a password set, verify cryptographic hash
+  if (user && user.password_hash && password) {
+    const isValid = verifyPassword(password, user.password_hash);
+    if (!isValid) {
+      return res.status(401).json({ error: 'Invalid credentials. Password does not match our records.' });
+    }
+  }
+
   // Auto-provision demo account for testing ease if not found
   if (!user) {
     const userId = 'usr_' + Date.now();
@@ -106,6 +136,7 @@ router.post('/login', (req, res) => {
     user = {
       id: userId,
       email: email.toLowerCase(),
+      password_hash: password ? hashPassword(password) : null,
       role: 'builder',
       displayName: name,
       is_verified: true,
@@ -128,7 +159,7 @@ router.post('/login', (req, res) => {
   }
 
   res.json({
-    user,
+    user: sanitizeUser(user),
     profile,
     sessionToken: 'sess_' + Buffer.from(user.id + ':' + Date.now()).toString('base64')
   });
@@ -141,7 +172,7 @@ router.get('/me', (req, res) => {
     // Default fallback to first verified user for sandbox browsing
     const fallbackUser = store.getItem('users', u => u.id === 'usr_elena');
     const fallbackProfile = store.getItem('profiles', p => p.userId === 'usr_elena');
-    return res.json({ user: fallbackUser, profile: fallbackProfile, isGuest: true });
+    return res.json({ user: sanitizeUser(fallbackUser), profile: fallbackProfile, isGuest: true });
   }
 
   const rawToken = authHeader.replace('Bearer ', '');
@@ -155,7 +186,7 @@ router.get('/me', (req, res) => {
       return res.status(401).json({ error: 'Session expired or user not found.' });
     }
 
-    res.json({ user, profile, isGuest: false });
+    res.json({ user: sanitizeUser(user), profile, isGuest: false });
   } catch (err) {
     res.status(401).json({ error: 'Malformed authorization token.' });
   }

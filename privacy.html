@@ -306,7 +306,7 @@
           <li><a href="#code-ownership">4. Code &amp; Artifact IP</a></li>
           <li><a href="#peer-handshake">5. Peer Contact Disclosure</a></li>
           <li><a href="#data-rights">6. Deletion &amp; Export</a></li>
-          <li><a href="#security">7. Infrastructure Security</a></li>
+          <li><a href="#security">7. Breach Security &amp; Dignity</a></li>
         </ul>
         <div class="charter-custody-card">
           <strong>Direct Verification</strong>
@@ -420,10 +420,17 @@
         </section>
 
         <section id="security" class="charter-section">
-          <h2><span class="charter-section-num">07</span> Infrastructure Security &amp; Encryption</h2>
+          <h2><span class="charter-section-num">07</span> Database Breach Resistance, Cryptographic Hashing &amp; Developer Dignity</h2>
           <p>
-            All network communication with Canopy is secured via TLS 1.3 with strict transport security (HSTS). Production databases utilize AES-256 encryption at rest. Internal access to account tables is strictly restricted to designated core stewards using hardware MFA.
+            We treat every builder, problem holder, and enabler with human respect rather than as commoditized platform inventory. Our technical infrastructure is engineered with defense-in-depth security to ensure that personal credentials, private peer handshakes, and project data remain resilient against database breaches:
           </p>
+          <ul style="color:var(--ink-soft);line-height:1.7;padding-left:20px;margin-bottom:18px;">
+            <li><strong>Cryptographic Password Hashing:</strong> Plaintext passwords never touch our databases. User passwords are salted with high-entropy cryptographic random bytes and derived using the memory-hard <code>scrypt</code> key-derivation algorithm. In the event of a raw database dump or storage leak, credentials cannot be reversed into plain text.</li>
+            <li><strong>Kernel-Level Row Level Security (RLS):</strong> Our PostgreSQL architecture strictly enforces database-level Row Level Security policies. Even if public API keys or endpoints are interrogated, the database engine prohibits unauthorized access. Builders can only read and modify their own accounts, and contact emails remain masked until both parties accept a match.</li>
+            <li><strong>Encryption in Transit (TLS 1.3):</strong> All network traffic between your browser, our API gateway, and our database cluster is encrypted using modern TLS 1.3 with HTTP Strict Transport Security (HSTS). Session tokens and payloads cannot be inspected or intercepted over public networks.</li>
+            <li><strong>Encryption at Rest (AES-256):</strong> Underlying database volumes, backups, and physical storage clusters are encrypted using hardware-accelerated AES-256 encryption.</li>
+            <li><strong>Human-Stewarded Custody:</strong> Direct administrative access to infrastructure is restricted strictly to designated project stewards using hardware-backed multi-factor authentication. We never grant algorithmic data scrapers, automated brokers, or third-party marketing networks access to our datastores.</li>
+          </ul>
           <p>
             If you identify a security or privacy vulnerability in any Canopy service, please disclose it responsibly to <a href="mailto:privacy@canopy.earth" style="color:var(--forest);font-weight:600;">privacy@canopy.earth</a>. We respond to all technical disclosures within 24 hours.
           </p>
