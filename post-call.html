@@ -140,8 +140,10 @@
         </label>
       </div>
 
+      <div id="postCallAlert" style="display:none;" role="alert"></div>
+
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:16px;border-top:1px solid var(--line);">
-        <span style="font-size:0.8rem;color:var(--ink-faint);">Reviewed by Canopy curators within 24 hours</span>
+        <span style="font-size:0.8rem;color:var(--ink-faint);">Reviewed by our team on a rolling basis</span>
         <button type="submit" id="postCallSubmitBtn" class="btn btn-stamp">Publish Build Call →</button>
       </div>
     </form>
@@ -215,6 +217,9 @@
       const activePill = form.querySelector('.pill[aria-pressed="true"]');
       const domain = activePill ? activePill.textContent : 'General';
 
+      const postCallAlert = document.getElementById('postCallAlert');
+      if (postCallAlert) postCallAlert.style.display = 'none';
+
       const origText = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -230,6 +235,17 @@
         form.reset();
         setTimeout(() => toast && toast.classList.remove('show'), 3500);
       } catch (err) {
+        if (postCallAlert) {
+          postCallAlert.className = 'status-alert status-alert-error';
+          postCallAlert.innerHTML = `
+            <div>
+              <strong>Build Call could not be published:</strong> ${err.message || 'The service is currently unreachable.'}
+              <br><small style="color:var(--ink-soft);">Your drafted challenge details have been preserved below.</small>
+              <br><button type="button" class="btn-retry" onclick="document.getElementById('postCallSubmitBtn').click();">↻ Retry Publishing</button>
+            </div>
+          `;
+          postCallAlert.style.display = 'flex';
+        }
         if (toast) {
           toast.textContent = '⚠️ ' + (err.message || 'Failed to submit Build Call.');
           toast.classList.add('show');

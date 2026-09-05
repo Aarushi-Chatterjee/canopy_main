@@ -86,16 +86,81 @@ function verifyToken(token) {
   }
 }
 
+// Parse Cookie header safely without external dependencies
+function parseCookies(cookieHeader) {
+  const cookies = {};
+  if (!cookieHeader || typeof cookieHeader !== 'string') return cookies;
+  const parts = cookieHeader.split(';');
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i].trim();
+    const eqIdx = part.indexOf('=');
+    if (eqIdx !== -1) {
+      const key = part.slice(0, eqIdx).trim();
+      const val = part.slice(eqIdx + 1).trim();
+      cookies[key] = decodeURIComponent(val);
+    }
+  }
+  return cookies;
+}
+
+// Extract session token from cookie first, then Authorization header
+function extractToken(req) {
+  // 1. Check req.cookies or raw Cookie header for canopy_session
+  if (req.cookies && req.cookies.canopy_session) {
+    return req.cookies.canopy_session;
+  }
+  if (req.headers.cookie) {
+    const parsed = parseCookies(req.headers.cookie);
+    if (parsed.canopy_session) return parsed.canopy_session;
+  }
+  // 2. Fallback to Authorization: Bearer <token>
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    return authHeader.replace('Bearer ', '').trim();
+  }
+  return null;
+}
+
+// Set HttpOnly, Secure session cookie on response
+function setSessionCookie(res, token, maxAgeSec = 7 * 24 * 3600) {
+  const isProd = process.env.NODE_ENV === 'production';
+  const cookieParts = [
+    `canopy_session=${encodeURIComponent(token)}`,
+    'Path=/',
+    'HttpOnly',
+    'SameSite=Lax',
+    `Max-Age=${maxAgeSec}`
+  ];
+  if (isProd) {
+    cookieParts.push('Secure');
+  }
+  res.setHeader('Set-Cookie', cookieParts.join('; '));
+}
+
+// Clear session cookie on logout
+function clearSessionCookie(res) {
+  const isProd = process.env.NODE_ENV === 'production';
+  const cookieParts = [
+    'canopy_session=',
+    'Path=/',
+    'HttpOnly',
+    'SameSite=Lax',
+    'Max-Age=0'
+  ];
+  if (isProd) {
+    cookieParts.push('Secure');
+  }
+  res.setHeader('Set-Cookie', cookieParts.join('; '));
+}
+
 // Middleware: Enforce authentic user
 function requireAuth(req, res, next) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  const token = extractToken(req);
+  if (!token) {
     return res.status(401).json({ error: 'Authentication required. Please sign in to your Field Station Pass.' });
   }
 
-  const token = authHeader.replace('Bearer ', '').trim();
   const user = verifyToken(token);
-
   if (!user) {
     return res.status(401).json({ error: 'Session invalid or expired. Please sign in again.' });
   }
@@ -106,9 +171,8 @@ function requireAuth(req, res, next) {
 
 // Middleware: Attach user if present, continue otherwise
 function optionalAuth(req, res, next) {
-  const authHeader = req.headers.authorization;
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    const token = authHeader.replace('Bearer ', '').trim();
+  const token = extractToken(req);
+  if (token) {
     const user = verifyToken(token);
     if (user) {
       req.user = user;
@@ -120,7 +184,7 @@ function optionalAuth(req, res, next) {
 // Middleware: Enforce administrator role
 function requireAdmin(req, res, next) {
   requireAuth(req, res, () => {
-    if (req.user && (req.user.role === 'admin' || req.user.role === 'enabler' || req.user.email.endsWith('@canopy.earth'))) {
+    if (req.user && (req.user.role === 'admin' || req.user.role === 'enabler' || (req.user.email && req.user.email.endsWith('@canopy.earth')))) {
       return next();
     }
     return res.status(403).json({ error: 'Forbidden. Administrator credentials required.' });
@@ -130,6 +194,10 @@ function requireAdmin(req, res, next) {
 module.exports = {
   generateToken,
   verifyToken,
+  parseCookies,
+  extractToken,
+  setSessionCookie,
+  clearSessionCookie,
   requireAuth,
   optionalAuth,
   requireAdmin

@@ -1,8 +1,9 @@
 /**
  * Canopy Unified Database & API Client Layer
- * Dual-Mode Hybrid Architecture:
- * 1. Primary: Communicates with Canopy Backend REST API Gateway (http://localhost:3001/api)
- * 2. Fallback: Automatically falls back to resilient LocalStorage adapter with real verification tokens when offline.
+ * Production Truth Standard:
+ * - Communicates with Canopy Backend API Gateway (http://localhost:3001/api)
+ * - Fails honestly: Never saves synthetic product records (applications, calls, sprints, matches, notes) to localStorage when offline.
+ * - Retains only user session credentials in secure client storage.
  */
 
 const API_BASE = import.meta.env?.VITE_API_URL || 'http://localhost:3001/api';
@@ -10,14 +11,10 @@ const API_BASE = import.meta.env?.VITE_API_URL || 'http://localhost:3001/api';
 const STORAGE_KEYS = {
   USER: 'canopy_auth_user',
   TOKEN: 'canopy_auth_token',
-  PROFILE: 'canopy_user_profile',
-  APPLICATIONS: 'canopy_applications',
-  BUILD_CALLS: 'canopy_build_calls',
-  NOTEBOOK: 'canopy_notebook_entries',
-  SPRINT_MEMBERSHIPS: 'canopy_sprint_memberships'
+  PROFILE: 'canopy_user_profile'
 };
 
-function getLocal(key, fallback = []) {
+function getLocal(key, fallback = null) {
   try {
     const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : fallback;
@@ -39,14 +36,17 @@ function getAuthHeader() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// Low-overhead fetch wrapper with timeout and distinction between network offline and HTTP status errors
-async function apiRequest(endpoint, options = {}) {
+// Low-overhead fetch wrapper with standard outcome contracts:
+// Success: { ok: true, data: Object }
+// Failure: { ok: false, status: Number, code: String, message: String }
+export async function apiRequest(endpoint, options = {}) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 4000);
+  const timeout = setTimeout(() => controller.abort(), 4500);
 
   try {
     const res = await fetch(`${API_BASE}${endpoint}`, {
       ...options,
+      credentials: 'include', // Support HttpOnly secure session cookies
       signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
@@ -60,10 +60,26 @@ async function apiRequest(endpoint, options = {}) {
     if (res.ok) {
       return { ok: true, data };
     }
-    return { ok: false, status: res.status, error: data.error || `HTTP error ${res.status}` };
+    const code = res.status === 401 ? 'UNAUTHORIZED' 
+      : res.status === 403 ? 'FORBIDDEN' 
+      : res.status === 404 ? 'NOT_FOUND' 
+      : res.status === 409 ? 'CONFLICT' 
+      : 'SERVER_ERROR';
+
+    return {
+      ok: false,
+      status: res.status,
+      code,
+      message: data.error || `Server responded with status ${res.status}.`
+    };
   } catch (networkErr) {
     clearTimeout(timeout);
-    return { ok: false, offline: true, error: networkErr.message };
+    return {
+      ok: false,
+      status: 0,
+      code: 'NETWORK_UNAVAILABLE',
+      message: 'Canopy could not reach the service. Nothing has been saved.'
+    };
   }
 }
 
@@ -84,30 +100,7 @@ export const auth = {
       return { data: remote.data, error: null, verificationNotice: remote.data.verificationNotice };
     }
 
-    if (!remote.ok && !remote.offline) {
-      throw new Error(remote.error || 'Registration failed.');
-    }
-
-    // Local fallback for offline mode
-    if (!email || !email.includes('@')) {
-      throw new Error('Please provide a valid email address.');
-    }
-    const token = Math.random().toString(36).substring(2, 8).toUpperCase();
-    const user = {
-      id: 'usr_' + Date.now(),
-      email,
-      role: metadata.role || 'builder',
-      displayName: metadata.displayName || email.split('@')[0],
-      is_verified: false,
-      verification_token: token,
-      created_at: new Date().toISOString()
-    };
-    setLocal(STORAGE_KEYS.USER, user);
-    return {
-      data: { user, session: null },
-      error: null,
-      verificationNotice: `Offline mode: verification code simulated. Code: ${token}`
-    };
+    throw new Error(remote.message || 'Registration failed.');
   },
 
   async verifyOtp(email, token) {
@@ -123,24 +116,7 @@ export const auth = {
       return { data: remote.data, error: null };
     }
 
-    if (!remote.ok && !remote.offline) {
-      throw new Error(remote.error || 'Verification failed.');
-    }
-
-    // Local fallback (strictly verifies token without backdoor)
-    const user = getLocal(STORAGE_KEYS.USER, null);
-    if (!user || user.email !== email) {
-      throw new Error('User not found or uninitiated.');
-    }
-    if (token.toUpperCase() === (user.verification_token || '').toUpperCase()) {
-      user.is_verified = true;
-      user.verified_at = new Date().toISOString();
-      setLocal(STORAGE_KEYS.USER, user);
-      const sessionToken = 'offline_token_' + Date.now();
-      localStorage.setItem(STORAGE_KEYS.TOKEN, sessionToken);
-      return { data: { user, session: { access_token: sessionToken } }, error: null };
-    }
-    throw new Error('Invalid verification code.');
+    throw new Error(remote.message || 'Verification failed.');
   },
 
   async signIn(email, password) {
@@ -156,16 +132,7 @@ export const auth = {
       return { data: remote.data, error: null };
     }
 
-    if (!remote.ok && !remote.offline) {
-      throw new Error(remote.error || 'Invalid email or password.');
-    }
-
-    // Local fallback: only allow if local verified record matches
-    const localUser = getLocal(STORAGE_KEYS.USER, null);
-    if (localUser && localUser.email.toLowerCase() === email.toLowerCase()) {
-      return { data: { user: localUser, session: { access_token: localStorage.getItem(STORAGE_KEYS.TOKEN) || 'offline_token' } }, error: null };
-    }
-    throw new Error('Canopy API offline and no verified local credentials found.');
+    throw new Error(remote.message || 'Invalid email or password.');
   },
 
   async signOut() {
@@ -183,7 +150,7 @@ export const auth = {
   async getCurrentUser() {
     const localUser = getLocal(STORAGE_KEYS.USER, null);
     const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
-    if (!token) return null;
+    if (!token && !localUser) return null;
 
     const remote = await apiRequest('/auth/me');
     if (remote.ok && remote.data?.user && !remote.data.isGuest) {
@@ -211,51 +178,19 @@ export const matches = {
     const remote = await apiRequest(`/matches/sandbox?${params.toString()}`);
     if (remote.ok && remote.data) return remote.data;
 
-    // Local fallback
     return {
-      profiles: [
-        {
-          userId: 'usr_elena',
-          displayName: 'Elena R.',
-          headline: 'Hardware Engineer · Soil Sensor',
-          primaryDomain: 'hardware',
-          avatarUrl: '/avatars/avatar-builders.png'
-        }
-      ],
-      calls: getLocal(STORAGE_KEYS.BUILD_CALLS, []),
-      totalProfiles: 1,
-      totalCalls: 6
+      profiles: [],
+      calls: [],
+      totalProfiles: 0,
+      totalCalls: 0,
+      error: remote.message
     };
   },
 
   async getConnections() {
     const remote = await apiRequest('/matches/connections');
     if (remote.ok && remote.data?.connections) return remote.data.connections;
-
-    // Local fallback with verified connections
-    return [
-      {
-        matchId: 'mtc_1',
-        requester: { name: 'Elena R.', role: 'builder', domain: 'hardware', avatar: '/avatars/avatar-builders.png' },
-        recipient: { name: 'Rural Water Alliance', role: 'problem_holder', domain: 'climate', avatar: '/avatars/avatar-problem-holders.png' },
-        status: 'connected',
-        stage: 'in_sprint'
-      },
-      {
-        matchId: 'mtc_2',
-        requester: { name: 'Maya L.', role: 'enabler', domain: 'climate', avatar: '/avatars/avatar-enablers.png' },
-        recipient: { name: 'Rural Water Alliance', role: 'problem_holder', domain: 'climate', avatar: '/avatars/avatar-problem-holders.png' },
-        status: 'connected',
-        stage: 'sprouting'
-      },
-      {
-        matchId: 'mtc_3',
-        requester: { name: 'Elena R.', role: 'builder', domain: 'hardware', avatar: '/avatars/avatar-builders.png' },
-        recipient: { name: 'Maya L.', role: 'enabler', domain: 'climate', avatar: '/avatars/avatar-enablers.png' },
-        status: 'connected',
-        stage: 'shipped'
-      }
-    ];
+    return [];
   },
 
   async sendHandshake(recipientId, intentNote, buildCallId = null) {
@@ -269,12 +204,7 @@ export const matches = {
     });
 
     if (remote.ok && remote.data) return remote.data;
-
-    if (!remote.ok && !remote.offline) {
-      throw new Error(remote.error || 'Failed to send handshake request.');
-    }
-
-    return { match: { id: 'mtc_' + Date.now(), status: 'pending' }, message: 'Handshake queued in local sandbox mode.' };
+    throw new Error(remote.message || 'Failed to dispatch handshake.');
   }
 };
 
@@ -292,7 +222,8 @@ export const sprints = {
       building: [],
       shipped: [],
       totalSprints: 0,
-      activeCycleDaysLeft: 12
+      activeCycleDaysLeft: 0,
+      error: remote.message
     };
   },
 
@@ -303,16 +234,7 @@ export const sprints = {
     });
 
     if (remote.ok && remote.data) return remote.data;
-
-    if (!remote.ok && !remote.offline) {
-      throw new Error(remote.error || 'Unable to join sprint squad.');
-    }
-
-    // Local fallback
-    const memberships = getLocal(STORAGE_KEYS.SPRINT_MEMBERSHIPS, []);
-    memberships.push({ sprintId, squadRole, joinedAt: new Date().toISOString() });
-    setLocal(STORAGE_KEYS.SPRINT_MEMBERSHIPS, memberships);
-    return { message: '🌱 Seat secured! Local sprint squad membership recorded.' };
+    throw new Error(remote.message || 'Unable to join sprint squad.');
   },
 
   async notifySprint(sprintId, email) {
@@ -322,8 +244,7 @@ export const sprints = {
     });
 
     if (remote.ok && remote.data) return remote.data;
-
-    return { success: true, message: '🔔 Subscribed for next sprint cycle notification.' };
+    throw new Error(remote.message || 'Unable to subscribe to sprint cycle.');
   }
 };
 
@@ -335,8 +256,7 @@ export const calls = {
     const query = domain ? `?domain=${encodeURIComponent(domain)}` : '';
     const remote = await apiRequest(`/calls${query}`);
     if (remote.ok && remote.data?.calls) return remote.data.calls;
-
-    return getLocal(STORAGE_KEYS.BUILD_CALLS, []);
+    return [];
   },
 
   async postBuildCall(callData) {
@@ -346,17 +266,7 @@ export const calls = {
     });
 
     if (remote.ok && remote.data) return remote.data;
-
-    if (!remote.ok && !remote.offline) {
-      throw new Error(remote.error || 'Failed to post Build Call.');
-    }
-
-    // Local fallback
-    const callsList = getLocal(STORAGE_KEYS.BUILD_CALLS, []);
-    const entry = { id: 'call_' + Date.now(), ...callData, createdAt: new Date().toISOString() };
-    callsList.unshift(entry);
-    setLocal(STORAGE_KEYS.BUILD_CALLS, callsList);
-    return { call: entry, message: '🌱 Build Call saved to local sandbox directory.' };
+    throw new Error(remote.message || 'Failed to publish Build Call.');
   }
 };
 
@@ -371,8 +281,7 @@ export const notebook = {
 
     const remote = await apiRequest(`/notebook?${params.toString()}`);
     if (remote.ok && remote.data?.entries) return remote.data.entries;
-
-    return getLocal(STORAGE_KEYS.NOTEBOOK, []);
+    return [];
   },
 
   async publishEntry(entryData) {
@@ -382,17 +291,7 @@ export const notebook = {
     });
 
     if (remote.ok && remote.data) return remote.data;
-
-    if (!remote.ok && !remote.offline) {
-      throw new Error(remote.error || 'Failed to publish notebook entry.');
-    }
-
-    // Local fallback
-    const list = getLocal(STORAGE_KEYS.NOTEBOOK, []);
-    const entry = { id: 'entry_' + Date.now(), ...entryData, createdAt: new Date().toISOString() };
-    list.unshift(entry);
-    setLocal(STORAGE_KEYS.NOTEBOOK, list);
-    return { entry, message: '🌿 Field note planted in local journal.' };
+    throw new Error(remote.message || 'Failed to plant notebook entry.');
   },
 
   async growEntry(entryId, branchData) {
@@ -402,15 +301,7 @@ export const notebook = {
     });
 
     if (remote.ok && remote.data) return remote.data;
-
-    if (!remote.ok && !remote.offline) {
-      throw new Error(remote.error || 'Failed to branch notebook entry.');
-    }
-
-    return {
-      branch: { id: 'branch_' + Date.now(), ...branchData },
-      message: '🌱 Reflection branched into local entry.'
-    };
+    throw new Error(remote.message || 'Failed to branch notebook entry.');
   }
 };
 
@@ -425,17 +316,7 @@ export const applications = {
     });
 
     if (remote.ok && remote.data) return remote.data;
-
-    if (!remote.ok && !remote.offline) {
-      throw new Error(remote.error || 'Failed to submit application.');
-    }
-
-    // Local fallback
-    const apps = getLocal(STORAGE_KEYS.APPLICATIONS, []);
-    const entry = { id: 'app_' + Date.now(), ...application, submittedAt: new Date().toISOString() };
-    apps.push(entry);
-    setLocal(STORAGE_KEYS.APPLICATIONS, apps);
-    return { application: entry, message: '🌱 Application planted in local sandbox.' };
+    throw new Error(remote.message || 'Failed to submit application.');
   }
 };
 

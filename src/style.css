@@ -1732,6 +1732,101 @@ body.page-entering {
   transition: transform 340ms cubic-bezier(0.18, 0.89, 0.32, 1.12);
 }
 
+/* ── HONEST STATUS, ALERTS & ILLUSTRATIVE BADGES ─── */
+.status-alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 12px 0;
+  border: 1px solid transparent;
+}
+.status-alert-error {
+  background: color-mix(in srgb, #e63946 12%, var(--card));
+  border-color: color-mix(in srgb, #e63946 35%, transparent);
+  color: color-mix(in srgb, #e63946 85%, var(--ink));
+}
+.status-alert-pending {
+  background: color-mix(in srgb, var(--sun) 14%, var(--card));
+  border-color: color-mix(in srgb, var(--sun) 40%, transparent);
+  color: var(--ink);
+}
+.status-alert-success {
+  background: color-mix(in srgb, var(--forest) 12%, var(--card));
+  border-color: color-mix(in srgb, var(--forest) 35%, transparent);
+  color: var(--forest);
+}
+
+.illustrative-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--forest) 10%, transparent);
+  border: 1px dashed var(--forest);
+  color: var(--forest);
+  font-size: 0.68rem;
+  font-family: 'Jost Var', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.illustrative-notice {
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--paper) 70%, var(--card));
+  border: 1px dashed var(--card-edge);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+.btn-retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--card-edge);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 180ms ease;
+  margin-top: 8px;
+}
+.btn-retry:hover {
+  border-color: var(--forest);
+  color: var(--forest);
+}
+
+.empty-state-card {
+  padding: 36px 24px;
+  text-align: center;
+  border-radius: 12px;
+  border: 1px dashed var(--card-edge);
+  background: color-mix(in srgb, var(--paper) 50%, var(--card));
+  color: var(--ink-soft);
+  margin: 16px 0;
+}
+.empty-state-card h4 {
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-size: 1.05rem;
+}
+.empty-state-card p {
+  font-size: 0.88rem;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-clip,
   .hero-clip.exiting { transition-duration: 0ms; }

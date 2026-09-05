@@ -43,6 +43,16 @@ router.get('/:id', (req, res) => {
   });
 });
 
+// Input Sanitization to prevent XSS and malicious payloads
+function sanitizeText(str) {
+  if (!str || typeof str !== 'string') return '';
+  return str
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/javascript:[^"'\s]*/gi, '')
+    .trim();
+}
+
 // POST /api/notebook
 router.post('/', requireAuth, (req, res) => {
   const {
@@ -57,7 +67,10 @@ router.post('/', requireAuth, (req, res) => {
     tags = []
   } = req.body;
 
-  if (!title || !summarySnippet) {
+  const cleanTitle = sanitizeText(title);
+  const cleanSnippet = sanitizeText(summarySnippet);
+
+  if (!cleanTitle || !cleanSnippet) {
     return res.status(400).json({ error: 'Title and summary snippet are required.' });
   }
 
@@ -70,14 +83,14 @@ router.post('/', requireAuth, (req, res) => {
     authorId,
     authorName,
     sprintId: sprintId || null,
-    grownFromLabel: grownFromLabel || 'Independent Field Note',
-    title,
+    grownFromLabel: sanitizeText(grownFromLabel) || 'Independent Field Note',
+    title: cleanTitle,
     domain: domain.toLowerCase(),
     entryType: entryType.toLowerCase(),
-    summarySnippet,
-    teaser: teaser || '',
-    bodyMarkdown: bodyMarkdown || summarySnippet,
-    tags: Array.isArray(tags) ? tags : [tags],
+    summarySnippet: cleanSnippet,
+    teaser: sanitizeText(teaser),
+    bodyMarkdown: sanitizeText(bodyMarkdown) || cleanSnippet,
+    tags: Array.isArray(tags) ? tags.map(sanitizeText) : [sanitizeText(tags)],
     branches: [],
     createdAt: new Date().toISOString()
   };
@@ -104,7 +117,10 @@ router.post('/:id/grow', requireAuth, (req, res) => {
     return res.status(404).json({ error: 'Parent notebook entry not found.' });
   }
 
-  if (!title || !summarySnippet) {
+  const cleanTitle = sanitizeText(title);
+  const cleanSnippet = sanitizeText(summarySnippet);
+
+  if (!cleanTitle || !cleanSnippet) {
     return res.status(400).json({ error: 'Title and note snippet are required to grow this entry.' });
   }
 
@@ -117,10 +133,10 @@ router.post('/:id/grow', requireAuth, (req, res) => {
     parentEntryId: parent.id,
     authorId,
     authorName,
-    title,
-    summarySnippet,
-    teaser: teaser || '',
-    bodyMarkdown: bodyMarkdown || summarySnippet,
+    title: cleanTitle,
+    summarySnippet: cleanSnippet,
+    teaser: sanitizeText(teaser),
+    bodyMarkdown: sanitizeText(bodyMarkdown) || cleanSnippet,
     createdAt: new Date().toISOString()
   };
 

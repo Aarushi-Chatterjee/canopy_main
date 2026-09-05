@@ -145,8 +145,10 @@
         </label>
       </div>
 
+      <div id="applyAlert" style="display:none;" role="alert"></div>
+
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:16px;border-top:1px solid var(--line);">
-        <span style="font-size:0.8rem;color:var(--ink-faint);">Generates your verified sandbox avatar</span>
+        <span style="font-size:0.8rem;color:var(--ink-faint);">Reviewed by our team on a rolling basis</span>
         <button type="submit" id="appSubmitBtn" class="btn btn-stamp">Plant My Profile →</button>
       </div>
     </form>
@@ -221,6 +223,9 @@
       const role = rolePill ? rolePill.textContent : 'Builder';
       const domain = domainPill ? domainPill.textContent : 'Climate';
 
+      const applyAlert = document.getElementById('applyAlert');
+      if (applyAlert) applyAlert.style.display = 'none';
+
       const origText = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -238,6 +243,17 @@
           window.location.href = 'match.html';
         }, 1300);
       } catch (err) {
+        if (applyAlert) {
+          applyAlert.className = 'status-alert status-alert-error';
+          applyAlert.innerHTML = `
+            <div>
+              <strong>Submission could not be saved:</strong> ${err.message || 'The service is currently unreachable.'}
+              <br><small style="color:var(--ink-soft);">Your drafted information has been preserved below.</small>
+              <br><button type="button" class="btn-retry" onclick="document.getElementById('appSubmitBtn').click();">↻ Retry Submission</button>
+            </div>
+          `;
+          applyAlert.style.display = 'flex';
+        }
         if (toast) {
           toast.textContent = '⚠️ ' + (err.message || 'Submission failed.');
           toast.classList.add('show');

@@ -227,16 +227,19 @@
       <button type="button" id="tabSignUp" class="pass-tab-btn" role="tab" aria-selected="false">New Pass (Register)</button>
     </div>
 
+    <div id="loginAlert" style="display:none;" role="alert"></div>
+
     <!-- Sign In Form -->
     <form id="signInForm" style="display:flex;flex-direction:column;gap:16px;">
       <div class="pass-input-group">
-        <label for="loginEmail">Registered Email</label>
-        <input type="email" id="loginEmail" required placeholder="collaborator@domain.org" autocomplete="email">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" required placeholder="your.name@domain.org" autocomplete="email">
       </div>
 
       <div class="pass-input-group">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <label for="loginPassword">Password / Passcode</label>
+          <label for="loginPassword">Passcode</label>
+          <button type="button" id="forgotPwdLink" style="background:none;border:none;padding:0;font-size:0.75rem;color:var(--forest);cursor:pointer;text-decoration:underline;">Forgot passcode?</button>
         </div>
         <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
       </div>
@@ -394,13 +397,32 @@
     setTimeout(() => toast.classList.remove('show'), 4000);
   }
 
+  const loginAlert = document.getElementById('loginAlert');
+  const forgotPwdLink = document.getElementById('forgotPwdLink');
+
+  if (forgotPwdLink) {
+    forgotPwdLink.addEventListener('click', () => {
+      const email = document.getElementById('loginEmail').value.trim();
+      if (loginAlert) {
+        loginAlert.className = 'status-alert status-alert-pending';
+        loginAlert.innerHTML = `
+          <div>
+            <strong>Passcode Reset:</strong> If an account exists for ${email || 'your email'}, a reset link or verification code can be dispatched. Please contact <a href="mailto:support@canopy.earth" style="color:var(--forest);text-decoration:underline;">support@canopy.earth</a> or re-verify via New Pass.
+          </div>
+        `;
+        loginAlert.style.display = 'flex';
+      }
+    });
+  }
+
   signInForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (loginAlert) loginAlert.style.display = 'none';
     const email = document.getElementById('loginEmail').value.trim();
     const pwd = document.getElementById('loginPassword').value;
 
     if (!email || !pwd) {
-      showToast('⚠️ Please provide both email and password.');
+      showToast('⚠️ Please provide both email and passcode.');
       return;
     }
 
@@ -414,7 +436,19 @@
       showToast('🌱 Signed in: welcome to the terminal.');
       setTimeout(() => { window.location.href = 'match.html'; }, 900);
     } catch (err) {
+      if (loginAlert) {
+        loginAlert.className = 'status-alert status-alert-error';
+        loginAlert.innerHTML = `
+          <div>
+            <strong>Authentication failed:</strong> ${err.message || 'Invalid credentials or network unreachable.'}
+            <br><small style="color:var(--ink-soft);">Please check your email address or re-enter your passcode.</small>
+            <br><button type="button" class="btn-retry" onclick="document.getElementById('loginPassword').focus();">↻ Try Again</button>
+          </div>
+        `;
+        loginAlert.style.display = 'flex';
+      }
       showToast('⚠️ ' + (err.message || 'Authentication failed.'));
+      document.getElementById('loginPassword').value = '';
       signInSubmitBtn.disabled = false;
       signInSubmitBtn.innerHTML = origText;
     }
@@ -422,6 +456,7 @@
 
   signUpForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (loginAlert) loginAlert.style.display = 'none';
     pendingEmail = document.getElementById('regEmail').value.trim();
     const pwd = document.getElementById('regPassword').value;
 
@@ -450,6 +485,16 @@
       signUpSubmitBtn.disabled = false;
       signUpSubmitBtn.innerHTML = origText;
     } catch (err) {
+      if (loginAlert) {
+        loginAlert.className = 'status-alert status-alert-error';
+        loginAlert.innerHTML = `
+          <div>
+            <strong>Registration failed:</strong> ${err.message || 'Unable to register.'}
+            <br><button type="button" class="btn-retry" onclick="document.getElementById('signUpSubmitBtn').click();">↻ Retry Registration</button>
+          </div>
+        `;
+        loginAlert.style.display = 'flex';
+      }
       showToast('⚠️ ' + (err.message || 'Registration failed.'));
       signUpSubmitBtn.disabled = false;
       signUpSubmitBtn.innerHTML = origText;

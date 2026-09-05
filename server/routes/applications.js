@@ -40,7 +40,7 @@ router.post('/', optionalAuth, (req, res) => {
       status: newApp.status,
       submittedAt: newApp.submittedAt
     },
-    message: '🌱 Application received! Our curation team reviews submissions within 24 hours.'
+    message: '🌱 Application received! Our team reviews submissions on a rolling basis.'
   });
 });
 
