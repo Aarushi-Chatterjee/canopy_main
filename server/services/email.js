@@ -26,12 +26,13 @@ const testInbox = [];
 /**
  * Sender Address Matrix
  */
+const defaultFrom = process.env.MAIL_FROM || 'Canopy Dispatch <hello@canopy.earth>';
 const SENDERS = {
-  DEFAULT: process.env.MAIL_FROM || 'Canopy Dispatch <hello@canopy.earth>',
-  ACCESS: 'Canopy Access <access@canopy.earth>',
-  HELLO: 'Canopy Dispatch <hello@canopy.earth>',
-  SUPPORT: 'Canopy Operations <support@canopy.earth>',
-  PRIVACY: 'Canopy Privacy <privacy@canopy.earth>'
+  DEFAULT: defaultFrom,
+  ACCESS: process.env.MAIL_FROM_ACCESS || (process.env.MAIL_FROM ? process.env.MAIL_FROM : 'Canopy Access <access@canopy.earth>'),
+  HELLO: process.env.MAIL_FROM_HELLO || (process.env.MAIL_FROM ? process.env.MAIL_FROM : 'Canopy Dispatch <hello@canopy.earth>'),
+  SUPPORT: process.env.MAIL_FROM_SUPPORT || (process.env.MAIL_FROM ? process.env.MAIL_FROM : 'Canopy Operations <support@canopy.earth>'),
+  PRIVACY: process.env.MAIL_FROM_PRIVACY || (process.env.MAIL_FROM ? process.env.MAIL_FROM : 'Canopy Privacy <privacy@canopy.earth>')
 };
 
 /**
@@ -41,7 +42,13 @@ function getProvider() {
   if (process.env.NODE_ENV === 'test' || process.env.EMAIL_PROVIDER === 'test') {
     return 'test';
   }
-  return process.env.EMAIL_PROVIDER || 'console';
+  if (process.env.EMAIL_PROVIDER) {
+    return process.env.EMAIL_PROVIDER.toLowerCase();
+  }
+  if (process.env.RESEND_API_KEY) {
+    return 'resend';
+  }
+  return 'console';
 }
 
 /**
