@@ -7,6 +7,14 @@
     {
       "source": "/api/(.*)",
       "destination": "/api/index.js"
+    },
+    {
+      "source": "/admin",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/admin.html",
+      "destination": "/api/index.js"
     }
   ],
   "headers": [

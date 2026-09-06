@@ -38,13 +38,13 @@ class BaseRepository {
 
   handleFailure(operation, err) {
     if (this.isProduction()) {
-      const error = new Error(`[Database Error] ${this.tableName}.${operation} failed: ${err.message}`);
+      const error = new Error(`[Database Error] Supabase is required in production. Operation failed: ${err.message}`);
       error.statusCode = 503;
       error.operational = true;
       throw error;
     }
     if (!this.hasWarned) {
-      console.warn(`[Repository:${this.tableName}] Remote ${operation} deferred to local store:`, err.message);
+      console.warn(`[Repository:${this.tableName}] Remote ${operation} deferred to local store (dev/test only):`, err.message);
       this.hasWarned = true;
     }
   }
@@ -72,12 +72,18 @@ class BaseRepository {
         this.handleFailure('find', err);
       }
     } else if (this.isProduction()) {
-      const error = new Error(`[Database Error] Supabase is not configured in production.`);
+      const error = new Error(`[Database Error] Supabase database client is not configured in production.`);
       error.statusCode = 503;
       throw error;
     }
 
-    // Resilient local store fallback (development/test)
+    if (this.isProduction()) {
+      const error = new Error(`[Database Error] Table "${this.tableName}" query returned no data from production database.`);
+      error.statusCode = 503;
+      throw error;
+    }
+
+    // Resilient local store fallback (strictly development/test only)
     const rawItems = store.getCollection(this.collectionName);
     const domainItems = rawItems.map(item => this.mapToDomain(item));
     return filterFn ? domainItems.filter(filterFn) : domainItems;
@@ -99,10 +105,14 @@ class BaseRepository {
       } catch (err) {
         this.handleFailure('findOne', err);
       }
-    } else if (this.isProduction() && !this.client) {
-      const error = new Error(`[Database Error] Supabase is not configured in production.`);
+    } else if (this.isProduction()) {
+      const error = new Error(`[Database Error] Supabase database is required for findOne in production.`);
       error.statusCode = 503;
       throw error;
+    }
+
+    if (this.isProduction()) {
+      return null;
     }
 
     const raw = store.getItem(this.collectionName, predicate);
@@ -119,14 +129,22 @@ class BaseRepository {
           this.handleFailure('create', error);
         } else if (data) {
           const domain = this.mapToDomain(data);
-          store.addItem(this.collectionName, domain);
+          if (!this.isProduction()) {
+            store.addItem(this.collectionName, domain);
+          }
           return domain;
         }
       } catch (err) {
         this.handleFailure('create', err);
       }
     } else if (this.isProduction()) {
-      const error = new Error(`[Database Error] Supabase is not configured in production.`);
+      const error = new Error(`[Database Error] Supabase database is required for create in production.`);
+      error.statusCode = 503;
+      throw error;
+    }
+
+    if (this.isProduction()) {
+      const error = new Error(`[Database Error] Failed to persist ${this.tableName} in production database.`);
       error.statusCode = 503;
       throw error;
     }
@@ -150,14 +168,22 @@ class BaseRepository {
           this.handleFailure('update', error);
         } else if (data) {
           const domain = this.mapToDomain(data);
-          store.updateItem(this.collectionName, predicate, domain);
+          if (!this.isProduction()) {
+            store.updateItem(this.collectionName, predicate, domain);
+          }
           return domain;
         }
       } catch (err) {
         this.handleFailure('update', err);
       }
-    } else if (this.isProduction() && !this.client) {
-      const error = new Error(`[Database Error] Supabase is not configured in production.`);
+    } else if (this.isProduction()) {
+      const error = new Error(`[Database Error] Supabase database is required for update in production.`);
+      error.statusCode = 503;
+      throw error;
+    }
+
+    if (this.isProduction()) {
+      const error = new Error(`[Database Error] Failed to update ${this.tableName} in production database.`);
       error.statusCode = 503;
       throw error;
     }
@@ -176,11 +202,25 @@ class BaseRepository {
         const { error } = await query;
         if (error) {
           this.handleFailure('delete', error);
+        } else {
+          if (!this.isProduction()) {
+            store.deleteItem && store.deleteItem(this.collectionName, predicate);
+          }
+          return true;
         }
       } catch (err) {
         this.handleFailure('delete', err);
       }
+    } else if (this.isProduction()) {
+      const error = new Error(`[Database Error] Supabase database is required for delete in production.`);
+      error.statusCode = 503;
+      throw error;
     }
+
+    if (this.isProduction()) {
+      return false;
+    }
+
     return store.deleteItem ? store.deleteItem(this.collectionName, predicate) : true;
   }
 }

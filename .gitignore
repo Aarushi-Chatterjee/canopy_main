@@ -10,3 +10,5 @@ Thumbs.db
 skills/
 .impeccable/
 *.mp4
+public/uploads/
+canopy-db.json

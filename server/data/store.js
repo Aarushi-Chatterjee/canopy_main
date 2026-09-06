@@ -4,458 +4,71 @@ const path = require('path');
 const DB_FILE = path.join(__dirname, 'canopy-db.json');
 
 const INITIAL_DATA = {
-  users: [
-    {
-      id: 'usr_elena',
-      email: 'elena.r@example.org',
-      role: 'builder',
-      displayName: 'Elena R.',
-      is_verified: true,
-      verified_at: '2026-08-15T10:00:00Z',
-      created_at: '2026-08-01T09:00:00Z'
-    },
-    {
-      id: 'usr_water_ngo',
-      email: 'team@ruralwateralliance.org',
-      role: 'problem_holder',
-      displayName: 'Rural Water Alliance',
-      is_verified: true,
-      verified_at: '2026-08-10T12:00:00Z',
-      created_at: '2026-07-25T14:30:00Z'
-    },
-    {
-      id: 'usr_maya',
-      email: 'maya.l@catalystfund.org',
-      role: 'enabler',
-      displayName: 'Maya L.',
-      is_verified: true,
-      verified_at: '2026-08-18T16:00:00Z',
-      created_at: '2026-08-05T11:00:00Z'
-    },
-    {
-      id: 'usr_aarushi',
-      email: 'aarushi@canopy.earth',
-      role: 'builder',
-      displayName: 'Aarushi Chatterjee',
-      is_verified: true,
-      verified_at: '2026-01-01T00:00:00Z',
-      created_at: '2026-01-01T00:00:00Z'
-    }
-  ],
-  profiles: [
-    {
-      userId: 'usr_elena',
-      displayName: 'Elena R.',
-      headline: 'Hardware & Embedded Systems Engineer',
-      bio: 'Designing low-power LoRa telemetry boards for remote soil and water sensing in drought-stressed basins.',
-      primaryDomain: 'hardware',
-      skillTags: ['Hardware', 'Embedded C', 'LoRaWAN', 'PCB Design', 'Field Testing'],
-      avatarUrl: '/avatars/avatar-builders.png',
-      hoursPerWeek: 15,
-      proofOfWork: [{ title: 'GitHub Open Hardware', url: 'https://github.com/example/lora-soil' }]
-    },
-    {
-      userId: 'usr_water_ngo',
-      displayName: 'Rural Water Alliance',
-      headline: 'Community Watershed Stewardship',
-      bio: 'Monitoring municipal and agrarian aquifers across 14 rural districts facing seasonal arsenic intrusion.',
-      primaryDomain: 'climate',
-      skillTags: ['Hydrology', 'Field Research', 'Civic Action', 'Open Data'],
-      avatarUrl: '/avatars/avatar-problem-holders.png',
-      hoursPerWeek: 20,
-      proofOfWork: [{ title: 'Annual Watershed Report 2025', url: 'https://example.org/report' }]
-    },
-    {
-      userId: 'usr_maya',
-      displayName: 'Maya L.',
-      headline: 'Catalytic Climate Grant Steward',
-      bio: 'Deploying non-dilutive prototype micro-grants and open hardware stipends to grassroots climate execution squads.',
-      primaryDomain: 'climate',
-      skillTags: ['Grant Catalysis', 'Ecosystem Scaffolding', 'Hardware Stipends'],
-      avatarUrl: '/avatars/avatar-enablers.png',
-      hoursPerWeek: 8,
-      proofOfWork: [{ title: 'Catalyst Pilot Portfolio', url: 'https://example.org/fund' }]
-    }
-  ],
+  users: [],
+  profiles: [],
   build_calls: [
     {
       id: 'call_groundwater',
-      creatorId: 'usr_water_ngo',
-      title: 'Groundwater contamination sensor',
-      orgName: 'Rural Water Alliance',
-      problemStatement: 'Build a low-cost optical sensor that flags chemical contamination in real time. Pilot budget and an open dataset are already secured.',
+      creatorId: 'usr_canopy_illustrative',
+      title: 'Groundwater contamination sensor optical probe',
+      orgName: 'Community Hydrology Initiative (Illustrative)',
+      problemStatement: 'Illustrative Example: Build an optical sensor that flags chemical contamination in real time. This is a reference demonstration of a Canopy Build Call.',
       domain: 'climate',
-      targetDeliverable: 'Working optical sensing probe schematic and real-time telemetry firmware.',
-      pilotBudget: '$8,500 deployment grant',
-      datasetAccessUrl: 'https://data.canopy.earth/sets/gw-sensor-2026',
-      neededSkills: ['Hardware', 'Embedded C', 'Chemistry', 'LoRa'],
-      status: 'open',
+      targetDeliverable: 'Open-source spectrophotometric probe schematic and telemetry firmware.',
+      pilotBudget: 'Sample deployment budget (demonstration only)',
+      datasetAccessUrl: 'https://data.canopy.earth/sets/gw-sensor-sample',
+      neededSkills: ['Hardware', 'Embedded C', 'Spectroscopy'],
+      status: 'illustrative_sample',
+      isIllustrative: true,
       createdAt: '2026-08-20T10:00:00Z'
-    },
-    {
-      id: 'call_budget',
-      creatorId: 'usr_aarushi',
-      title: 'A plain-language city budget explorer',
-      orgName: 'Civic Open Data Collective',
-      problemStatement: 'Municipal budget PDFs are technically public but unreadable to everyday citizens. We need an interactive reconciliation explorer.',
-      domain: 'civic',
-      targetDeliverable: 'Interactive line-item difference engine and visual allocation treemap.',
-      pilotBudget: '$5,000 micro-grant',
-      datasetAccessUrl: 'https://data.canopy.earth/sets/city-budget-csv',
-      neededSkills: ['Data Viz', 'Full-stack', 'Civic Policy'],
-      status: 'open',
-      createdAt: '2026-08-22T14:30:00Z'
-    },
-    {
-      id: 'call_tutor',
-      creatorId: 'usr_aarushi',
-      title: 'Adaptive reading tutor for grade 3–5',
-      orgName: 'Rural Literacy Foundation',
-      problemStatement: 'Low-latency phonics recognition capable of running fully offline on low-spec donated classroom Android tablets.',
-      domain: 'education',
-      targetDeliverable: 'Offline WebAssembly phonics scoring engine with touch-first accessibility.',
-      pilotBudget: '$6,000 pilot support',
-      datasetAccessUrl: 'https://data.canopy.earth/sets/phonics-audio-sample',
-      neededSkills: ['Full-stack', 'WebAssembly', 'Audio DSP'],
-      status: 'open',
-      createdAt: '2026-08-24T09:15:00Z'
-    },
-    {
-      id: 'call_deforestation',
-      creatorId: 'usr_maya',
-      title: 'Deforestation tracker from satellite feeds',
-      orgName: 'Canopy Forest Watch',
-      problemStatement: 'Automated weekly Sentinel-2 change detection pipeline flagging unauthorized road-building canopy incisions within 48 hours.',
-      domain: 'ai',
-      targetDeliverable: 'PyTorch/ONNX inference worker emitting geoJSON bounding alerts.',
-      pilotBudget: '$10,000 compute credits',
-      datasetAccessUrl: 'https://data.canopy.earth/sets/sentinel-slices',
-      neededSkills: ['Computer Vision', 'PyTorch', 'GIS', 'Python'],
-      status: 'open',
-      createdAt: '2026-08-26T16:00:00Z'
-    },
-    {
-      id: 'call_solar',
-      creatorId: 'usr_elena',
-      title: 'Fault detection for village solar microgrids',
-      orgName: 'SunShare Energy Access',
-      problemStatement: 'Current inverter fault logs are siloed and unmonitored. We need a plug-and-play current sensing clip that alerts local technicians before battery banks drain.',
-      domain: 'hardware',
-      targetDeliverable: 'ESP32 current-loop clamp sensor and alert daemon.',
-      pilotBudget: '$7,200 hardware stipend',
-      datasetAccessUrl: 'https://data.canopy.earth/sets/inverter-telemetry',
-      neededSkills: ['Hardware', 'Firmware', 'Power Electronics'],
-      status: 'open',
-      createdAt: '2026-08-28T11:00:00Z'
-    },
-    {
-      id: 'call_triage',
-      creatorId: 'usr_aarushi',
-      title: 'Offline sync architecture for clinic triage',
-      orgName: 'Frontier Health Labs',
-      problemStatement: 'Rural clinics operate with intermittent 2G coverage. Patient intake records collide and overwrite when reconnecting to central servers.',
-      domain: 'health',
-      targetDeliverable: 'Conflict-free replicated data types (CRDT) sync client in TypeScript.',
-      pilotBudget: '$9,000 deployment pilot',
-      datasetAccessUrl: 'https://data.canopy.earth/sets/clinic-records-anon',
-      neededSkills: ['CRDTs', 'TypeScript', 'Offline First', 'Security'],
-      status: 'open',
-      createdAt: '2026-08-30T13:45:00Z'
     }
   ],
-  matches: [
-    {
-      id: 'mtc_1',
-      requesterId: 'usr_elena',
-      recipientId: 'usr_water_ngo',
-      buildCallId: 'call_groundwater',
-      intentNote: 'I have designed low-power LoRa sensor nodes for agricultural run-off. I can build the physical optical probe enclosure and write the calibration firmware.',
-      proposedRole: 'Hardware Lead',
-      status: 'connected',
-      revealedContact: {
-        email: 'elena.r@example.org',
-        matrixChannel: '#water-probe-sprint:canopy.earth'
-      },
-      createdAt: '2026-08-22T11:00:00Z'
-    },
-    {
-      id: 'mtc_2',
-      requesterId: 'usr_maya',
-      recipientId: 'usr_water_ngo',
-      buildCallId: 'call_groundwater',
-      intentNote: 'We have approved an $8,500 prototype deployment grant for field calibration kits once the team locks.',
-      proposedRole: 'Catalyst Grant Sponsor',
-      status: 'connected',
-      revealedContact: {
-        email: 'maya.l@catalystfund.org',
-        directPhone: '+1-555-019-4820'
-      },
-      createdAt: '2026-08-23T15:30:00Z'
-    },
-    {
-      id: 'mtc_3',
-      requesterId: 'usr_elena',
-      recipientId: 'usr_maya',
-      buildCallId: 'call_solar',
-      intentNote: 'Requesting hardware prototyping credits for PCB fabrication batches for our microgrid sensor testing.',
-      proposedRole: 'Hardware Prototyper',
-      status: 'connected',
-      revealedContact: {
-        email: 'elena.r@example.org',
-        github: 'https://github.com/example'
-      },
-      createdAt: '2026-08-25T09:00:00Z'
-    }
-  ],
+  matches: [],
   sprints: [
     {
-      id: 'sp_1',
-      buildCallId: 'call_budget',
-      title: 'A plain-language city budget explorer',
-      description: 'Municipal budget data is public but unreadable: the team is still coming together before the clock starts.',
-      domain: 'civic',
-      stage: 'forming',
-      teamCapacity: 3,
-      members: [
-        { userId: 'usr_aarushi', squadRole: 'Data Cleaning', displayName: 'Aarushi C.', avatarSeed: 'civic-budget-1' }
-      ],
-      skillTags: ['Data Viz', 'Design'],
-      startDate: '2026-09-10',
-      endDate: '2026-09-24',
-      daysTotal: 14,
-      daysLeft: 14,
-      progressPct: 0,
-      statusHint: '1 of 3 spots filled'
-    },
-    {
-      id: 'sp_2',
-      buildCallId: 'call_tutor',
-      title: 'Adaptive reading tutor for grade 3–5',
-      description: 'The idea is vivid. What is missing is a technical co-builder to bring it to life on offline classroom tablets.',
-      domain: 'education',
-      stage: 'forming',
-      teamCapacity: 2,
-      members: [
-        { userId: 'usr_aarushi', squadRole: 'Curriculum & Pedagogy', displayName: 'Marcus W.', avatarSeed: 'reading-tutor-1' }
-      ],
-      skillTags: ['Full-stack'],
-      startDate: '2026-09-12',
-      endDate: '2026-09-26',
-      daysTotal: 14,
-      daysLeft: 14,
-      progressPct: 0,
-      statusHint: 'solo so far'
-    },
-    {
-      id: 'sp_3',
+      id: 'sp_groundwater_sample',
       buildCallId: 'call_groundwater',
-      title: 'Groundwater contamination sensor',
-      description: 'Assembling optical probe, writing ADC driver, and calibrating spectrophotometric absorption curves.',
+      title: 'Groundwater optical probe calibration squad',
+      description: 'Illustrative Demonstration: Assembling optical probe enclosure, testing ADC response curves, and validating telemetry.',
       domain: 'climate',
-      stage: 'building',
+      stage: 'forming',
       teamCapacity: 3,
       members: [
-        { userId: 'usr_elena', squadRole: 'Hardware Lead', displayName: 'Elena R.', avatarSeed: 'gw-1' },
-        { userId: 'usr_water_ngo', squadRole: 'Field Hydrologist', displayName: 'Kareem P.', avatarSeed: 'gw-2' },
-        { userId: 'usr_aarushi', squadRole: 'Firmware Engineer', displayName: 'Devon S.', avatarSeed: 'gw-3' }
+        { userId: 'usr_illustrative_1', squadRole: 'Hardware Lead', displayName: 'Field Engineer (Sample)', avatarSeed: 'gw-1' }
       ],
       skillTags: ['Climate', 'Hardware'],
       startDate: '2026-08-25',
       endDate: '2026-09-08',
       daysTotal: 14,
       daysLeft: 9,
-      progressPct: 64,
-      statusHint: 'team locked for this cycle'
-    },
-    {
-      id: 'sp_4',
-      buildCallId: 'call_deforestation',
-      title: 'Deforestation tracker from satellite feeds',
-      description: 'Weekly inference pipeline processing Sentinel multispectral bands and dispatching GeoJSON alerts.',
-      domain: 'ai',
-      stage: 'building',
-      teamCapacity: 2,
-      members: [
-        { userId: 'usr_maya', squadRole: 'Computer Vision', displayName: 'Priya N.', avatarSeed: 'dfr-1' },
-        { userId: 'usr_aarushi', squadRole: 'GIS Pipeline', displayName: 'Tomas H.', avatarSeed: 'dfr-2' }
-      ],
-      skillTags: ['AI / ML', 'Computer Vision'],
-      startDate: '2026-08-18',
-      endDate: '2026-09-08',
-      daysTotal: 21,
-      daysLeft: 5,
-      progressPct: 24,
-      statusHint: 'team locked for this cycle'
-    },
-    {
-      id: 'sp_5',
-      buildCallId: 'call_solar',
-      title: 'Fault detection for village solar microgrids',
-      description: 'ESP32 current-loop clamp sensor and edge vibration monitor alerting technicians before battery collapse.',
-      domain: 'hardware',
-      stage: 'building',
-      teamCapacity: 4,
-      members: [
-        { userId: 'usr_elena', squadRole: 'PCB Lead', displayName: 'Ines F.', avatarSeed: 'solar-1' },
-        { userId: 'usr_aarushi', squadRole: 'Embedded ML', displayName: 'Tariq M.', avatarSeed: 'solar-2' },
-        { userId: 'usr_water_ngo', squadRole: 'Field Coordinator', displayName: 'Lina B.', avatarSeed: 'solar-3' },
-        { userId: 'usr_maya', squadRole: 'Systems Tester', displayName: 'Nico S.', avatarSeed: 'solar-4' }
-      ],
-      skillTags: ['Hardware', 'ML'],
-      startDate: '2026-08-20',
-      endDate: '2026-09-07',
-      daysTotal: 18,
-      daysLeft: 15,
-      progressPct: 83,
-      statusHint: 'team locked for this cycle'
-    },
-    {
-      id: 'sp_6',
-      buildCallId: 'call_triage',
-      title: 'Offline clinic triage client',
-      description: 'CRDT sync client deployed to 4 pilot health clinics across rural district centers.',
-      domain: 'health',
-      stage: 'shipped',
-      teamCapacity: 3,
-      members: [
-        { userId: 'usr_aarushi', squadRole: 'CRDT Architect', displayName: 'Rohan M.', avatarSeed: 'clinic-1' },
-        { userId: 'usr_water_ngo', squadRole: 'Field Nurse liaison', displayName: 'Amina K.', avatarSeed: 'clinic-2' }
-      ],
-      skillTags: ['CRDT', 'Offline'],
-      startDate: '2026-07-01',
-      endDate: '2026-07-28',
-      daysTotal: 28,
-      daysLeft: 0,
-      progressPct: 100,
-      shippedArtifactUrl: 'https://github.com/canopy-earth/crdt-clinic-sync',
-      statusHint: 'shipped to Library'
+      progressPct: 33,
+      isIllustrative: true,
+      statusHint: 'Illustrative demonstration cycle'
     }
   ],
   notebook_entries: [
     {
-      id: 'entry_1',
-      authorId: 'usr_maya',
-      authorName: 'Priya Nandan',
-      sprintId: 'sp_3',
-      grownFromLabel: 'grown from Sprint: Groundwater Sensor',
-      title: 'Why my groundwater model kept overfitting on rainy days',
+      id: 'entry_groundwater_sample',
+      authorId: 'usr_illustrative_1',
+      authorName: 'Canopy Research Note (Sample)',
+      sprintId: 'sp_groundwater_sample',
+      grownFromLabel: 'grown from Sprint: Groundwater Sensor (Sample)',
+      title: 'Field calibration benchmarks under high turbidity (Illustrative)',
       domain: 'climate',
       entryType: 'post-mortem',
-      summarySnippet: 'Turns out three sensors were miscalibrated after the last storm and I was training on noise. Here is how I caught it.',
-      teaser: 'rmse_by_weather.py:14 → std(residual | rain) >> std(residual | dry)',
-      bodyMarkdown: '### The Problem\nEvery time rain exceeded 15mm/hr, our prediction error blew up by 300%...\n\n### Diagnosis\nPlotting sensor ground-truth against precipitation records revealed baseline drift due to unsealed analog pins.\n\n### The Fix\nWe added conformal silicone coating and software median-window filtering.',
-      tags: ['Climate', 'post-mortem'],
+      summarySnippet: 'Illustrative Sample: Baseline drift analysis during high sediment conditions with median window filtering.',
+      teaser: 'cal_curve.py → median_filter(raw_adc, window=5)',
+      bodyMarkdown: '### Illustrative Demonstration Note\nThis note illustrates how Canopy teams publish candid teardowns and post-mortems after sprint cycles.\n\n### Finding\nSediment scattering produced analog drift; resolved with physical baffles and software filtering.',
+      tags: ['Climate', 'illustrative-sample'],
+      isIllustrative: true,
       createdAt: '2026-09-02T10:00:00Z',
       branches: []
-    },
-    {
-      id: 'entry_2',
-      authorId: 'usr_elena',
-      authorName: 'Ines Falk',
-      sprintId: 'sp_5',
-      grownFromLabel: 'grown from Sprint: Fault Detection',
-      title: 'First failed prototype of the fault-detection board',
-      domain: 'hardware',
-      entryType: 'teardown',
-      summarySnippet: 'The enclosure trapped heat and cooked the sensor by hour six. Redesigned the vent pattern: full teardown notes inside.',
-      teaser: 'thermal_log.csv → 84°C at t+6h, spec max 65°C',
-      bodyMarkdown: '### Enclosure Heat Runaway\nUsing standard 3D printed PETG without convection chimneys created an internal thermal envelope reaching 84°C.\n\n### Redesign\nWe added angled louvers with internal airflow baffles.',
-      tags: ['Hardware', 'teardown'],
-      createdAt: '2026-08-31T15:00:00Z',
-      branches: []
-    },
-    {
-      id: 'entry_3',
-      authorId: 'usr_aarushi',
-      authorName: 'Deshi Osei',
-      sprintId: 'sp_1',
-      grownFromLabel: 'grown from Sprint: City Budget Explorer',
-      title: "A dataset that surprised me: the line-items don't sum to the total",
-      domain: 'civic',
-      entryType: 'data-cleaning',
-      summarySnippet: "The city's published budget PDF and its open data export disagree by 4%. Wrote a reconciliation script before touching any UI.",
-      teaser: 'reconcile.js → drift: +$2.3M unattributed',
-      bodyMarkdown: '### Budget Reconciliation\nBefore rendering charts, we automated checksum matching across council fiscal datasets.\n\n### Finding\nA 4% unaccounted delta stemmed from retroactive emergency stormwater amendments.',
-      tags: ['Civic Tech', 'data cleaning'],
-      createdAt: '2026-08-29T11:20:00Z',
-      branches: []
-    },
-    {
-      id: 'entry_4',
-      authorId: 'usr_aarushi',
-      authorName: 'Marcus Webb',
-      sprintId: 'sp_2',
-      grownFromLabel: 'grown from Sprint: Adaptive Reading Tutor',
-      title: 'The small fix that made the tutor usable on a cracked screen',
-      domain: 'education',
-      entryType: 'field-testing',
-      summarySnippet: 'Touch targets were fine in the simulator and unusable on the actual donated classroom tablets. One line, huge difference.',
-      teaser: 'tutor.css:212 → min-height: 44px !important;',
-      bodyMarkdown: '### Field Reality\nClassroom tablets had shattered bottom digitizers. Increasing target heights from 32px to 48px recovered 100% completion.',
-      tags: ['Education', 'field-testing'],
-      createdAt: '2026-08-25T08:45:00Z',
-      branches: []
-    },
-    {
-      id: 'entry_5',
-      authorId: 'usr_aarushi',
-      authorName: 'Rohan Malhotra',
-      sprintId: 'sp_6',
-      grownFromLabel: 'grown from Sprint: Clinic Triage',
-      title: 'Post-mortem: our offline sync merge conflicts',
-      domain: 'health',
-      entryType: 'sync-architecture',
-      summarySnippet: 'Two clinics editing the same patient record offline, no server to arbitrate. Landed on last-write-wins plus a visible conflict flag.',
-      teaser: 'sync.md → conflicts/day: 40 → 3 after v2',
-      bodyMarkdown: '### Distributed Clinic Conflicts\nImplemented Automerge state documents with manual medical supervisor resolution flags.',
-      tags: ['Health', 'sync-architecture'],
-      createdAt: '2026-08-23T14:10:00Z',
-      branches: []
     }
   ],
-  applications: [
-    {
-      id: 'app_seed_1',
-      fullName: 'Elena R.',
-      email: 'elena.r@example.org',
-      role: 'Builder',
-      domain: 'Hardware',
-      proofOfWorkLink: 'https://github.com/example/lora-soil',
-      motivationNote: 'I want to build real hardware sensors that matter rather than another SaaS dashboard.',
-      status: 'verified',
-      submittedAt: '2026-08-01T09:00:00Z'
-    }
-  ],
-  user_roles: [
-    {
-      id: 'rol_aarushi_owner',
-      userId: 'usr_aarushi',
-      role: 'owner',
-      grantedBy: 'system_bootstrap',
-      grantedAt: '2026-01-01T00:00:00Z'
-    },
-    {
-      id: 'rol_elena_builder',
-      userId: 'usr_elena',
-      role: 'approved_builder',
-      grantedBy: 'usr_aarushi',
-      grantedAt: '2026-08-15T10:00:00Z'
-    },
-    {
-      id: 'rol_water_problem',
-      userId: 'usr_water_ngo',
-      role: 'approved_problem_holder',
-      grantedBy: 'usr_aarushi',
-      grantedAt: '2026-08-10T12:00:00Z'
-    },
-    {
-      id: 'rol_maya_enabler',
-      userId: 'usr_maya',
-      role: 'approved_enabler',
-      grantedBy: 'usr_aarushi',
-      grantedAt: '2026-08-18T16:00:00Z'
-    }
-  ],
+  applications: [],
+  moderation_queue: [],
+  audit_events: [],
+  user_roles: [],
   content_items: [
     {
       id: 'cnt_hero_headline',
@@ -538,7 +151,7 @@ const INITIAL_DATA = {
 let inMemoryDb = null;
 
 function isIsolated() {
-  return process.env.CANOPY_ISOLATE_STORE === 'true' || process.env.NODE_ENV === 'test';
+  return process.env.CANOPY_ISOLATE_STORE === 'true' || process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production';
 }
 
 function readDb() {
@@ -563,6 +176,11 @@ function readDb() {
 }
 
 function writeDb(data) {
+  if (process.env.NODE_ENV === 'production') {
+    // Zero disk persistence in production serverless environments
+    return true;
+  }
+
   if (isIsolated()) {
     inMemoryDb = data;
     return true;

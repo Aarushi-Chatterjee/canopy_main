@@ -12,8 +12,9 @@ const moderationRouter = require('./routes/moderation');
 const contentRouter = require('./routes/content');
 const adminRouter = require('./routes/admin');
 
-const { validateCsrf } = require('./middleware/auth');
+const { validateCsrf, optionalAuth } = require('./middleware/auth');
 const { isConfigured, supabase } = require('./config/supabase');
+const { requireDatabaseReady } = require('./middleware/readiness');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -70,6 +71,21 @@ app.use((req, res, next) => {
 
 // CSRF validation for cookie-authenticated mutating requests
 app.use('/api', validateCsrf);
+
+// Production database readiness gate (P0-1)
+app.use('/api', requireDatabaseReady);
+
+// Server-Side Protected Founder Console Route (P0-4)
+// Requires active staff role before serving admin.html
+app.get(['/admin', '/admin.html'], optionalAuth, (req, res) => {
+  const staffRoles = ['owner', 'admin', 'moderator', 'match_curator', 'content_editor'];
+  const hasStaffRole = req.user && req.user.roles && req.user.roles.some(r => staffRoles.includes(r));
+  if (!hasStaffRole) {
+    return res.redirect('/login.html?redirect=/admin');
+  }
+  const adminHtmlPath = path.join(__dirname, '../admin.html');
+  res.sendFile(adminHtmlPath);
+});
 
 // Health check with honest DB status verification
 app.get('/api/health', async (req, res) => {

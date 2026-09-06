@@ -10,10 +10,12 @@ const {
   notebook: notebookRepo,
   moderationQueue: modRepo,
   auditEvents: auditRepo,
-  contentItems: contentRepo
+  contentItems: contentRepo,
+  userRoles: userRolesRepo
 } = require('../repositories');
 const { requireRole, requireAnyRole } = require('../middleware/auth');
 const emailService = require('../services/email');
+const storageService = require('../services/storage');
 const { store } = require('../data/store');
 
 // Base gate: Operational staff credentials required
@@ -210,18 +212,15 @@ router.patch('/users/:id/role', requireAnyRole(['admin', 'owner']), async (req, 
     }
 
     if (action === 'grant') {
-      store.addItem('user_roles', {
-        id: 'rol_' + Date.now(),
-        userId: targetUser.id,
-        role,
-        grantedBy: req.user.id,
-        grantedAt: new Date().toISOString()
-      });
+      await userRolesRepo.grantRole(targetUser.id, role, req.user.id);
     } else {
-      store.updateItem('user_roles', r => r.userId === targetUser.id && r.role === role, {
-        revokedAt: new Date().toISOString(),
-        revokedBy: req.user.id
-      });
+      await userRolesRepo.revokeRole(targetUser.id, role, req.user.id);
+      // Invalidate existing sessions for security on role revocation (P1-3)
+      await usersRepo.update(
+        u => u.id === targetUser.id,
+        { revokedAfter: new Date().toISOString(), updatedAt: new Date().toISOString() },
+        { eq: { id: targetUser.id } }
+      );
     }
 
     // Log audit event
@@ -521,41 +520,53 @@ router.post('/content/:id/publish', requireAnyRole(['moderator', 'admin', 'owner
   }
 });
 
-// Upload media asset for content cards (gated to PNG, JPEG, WebP, SVG, max 5MB)
-router.post('/content/upload', requireAnyRole(['content_editor', 'moderator', 'admin', 'owner']), (req, res) => {
-  let { fileName, filename, mimeType, base64Data, dataUri } = req.body;
-  fileName = fileName || filename || 'asset.png';
+// Upload media asset for content cards (gated to PNG, JPEG, WebP, SVG, max 5MB, deep magic-byte verified)
+router.post('/content/upload', requireAnyRole(['content_editor', 'moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    let { fileName, filename, mimeType, base64Data, dataUri } = req.body;
+    fileName = fileName || filename || 'asset.png';
 
-  if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:')) {
-    const matches = dataUri.match(/^data:([^;]+);base64,(.+)$/);
-    if (matches) {
-      mimeType = matches[1];
-      base64Data = matches[2];
-    } else {
-      return res.status(400).json({ error: 'Malformed data URI provided.' });
+    if (dataUri && typeof dataUri === 'string' && dataUri.startsWith('data:')) {
+      const matches = dataUri.match(/^data:([^;]+);base64,(.+)$/);
+      if (matches) {
+        mimeType = matches[1];
+        base64Data = matches[2];
+      } else {
+        return res.status(400).json({ error: 'Malformed data URI provided.' });
+      }
     }
-  }
 
-  if (!fileName || !mimeType || !base64Data) {
-    return res.status(400).json({ error: 'fileName, mimeType, and base64Data (or dataUri) are required.' });
-  }
+    if (!fileName || !mimeType || !base64Data) {
+      return res.status(400).json({ error: 'fileName, mimeType, and base64Data (or dataUri) are required.' });
+    }
 
-  const allowedMimes = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'];
-  if (!allowedMimes.includes(mimeType.toLowerCase())) {
-    return res.status(400).json({ error: 'Invalid file format. Allowed: PNG, JPEG, WebP, SVG.' });
-  }
+    const result = await storageService.uploadMedia({
+      fileName,
+      mimeType,
+      base64Data,
+      userId: req.user.id
+    });
 
-  // Size limit: 5MB
-  if (base64Data.length > 5 * 1024 * 1024 * 1.37) {
-    return res.status(400).json({ error: 'File exceeds maximum 5MB size limit.' });
-  }
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'content.media_uploaded',
+      targetType: 'media',
+      targetId: result.storageKey,
+      payload: { mimeType: result.mimeType, sizeBytes: result.sizeBytes, provider: result.storageProvider }
+    });
 
-  const assetUrl = `/uploads/content/${Date.now()}_${fileName.replace(/[^a-zA-Z0-9._-]/g, '')}`;
-  res.json({
-    success: true,
-    url: assetUrl,
-    message: 'Asset validated and stored.'
-  });
+    res.json({
+      success: true,
+      url: result.url,
+      storageKey: result.storageKey,
+      mimeType: result.mimeType,
+      sizeBytes: result.sizeBytes,
+      message: 'Asset validated via magic bytes and persisted to durable storage.'
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'File upload failed.' });
+  }
 });
 
 // -------------------------------------------------------------

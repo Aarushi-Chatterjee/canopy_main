@@ -204,7 +204,10 @@ async function sendVerificationCode(email, code) {
     text,
     html,
     from: SENDERS.ACCESS,
-    metadata: { type: 'verification', code }
+    metadata: { 
+      type: 'verification',
+      ...(process.env.NODE_ENV === 'test' || getProvider() === 'test' ? { code } : {})
+    }
   });
 }
 
@@ -216,7 +219,10 @@ async function sendPasswordResetCode(email, code) {
     text,
     html,
     from: SENDERS.ACCESS,
-    metadata: { type: 'password_reset', code }
+    metadata: { 
+      type: 'password_reset',
+      ...(process.env.NODE_ENV === 'test' || getProvider() === 'test' ? { code } : {})
+    }
   });
 }
 

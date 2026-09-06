@@ -19,5 +19,6 @@ module.exports = {
   applications,
   moderationQueue,
   auditEvents,
-  contentItems
+  contentItems,
+  userRoles: require('./user-roles')
 };

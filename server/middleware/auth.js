@@ -95,7 +95,8 @@ function verifyToken(token) {
       id: payload.sub,
       email: payload.email,
       role: payload.role,
-      displayName: payload.displayName
+      displayName: payload.displayName,
+      iat: payload.iat
     };
   } catch (err) {
     return null;
@@ -191,7 +192,7 @@ function validateCsrf(req, res, next) {
 
 // Helper: Resolve active roles for user including server-side founder allowlist bootstrap
 async function getUserRoles(userId, email, baseRole = null) {
-  const { store } = require('../data/store');
+  const { userRoles: userRolesRepo, auditEvents: auditRepo } = require('../repositories');
   const roles = new Set();
 
   // 0. Base role from verified cryptographic token or user record if provided
@@ -199,9 +200,15 @@ async function getUserRoles(userId, email, baseRole = null) {
     roles.add(baseRole);
   }
 
-  // 1. Query database/store for assigned roles
-  const assigned = store.getCollection('user_roles').filter(r => r.userId === userId && !r.revokedAt);
-  assigned.forEach(r => roles.add(r.role));
+  // 1. Query database for assigned persistent roles (P0-2)
+  try {
+    const assignedRoles = await userRolesRepo.findActiveRolesByUserId(userId);
+    assignedRoles.forEach(r => roles.add(r));
+  } catch (err) {
+    if (process.env.NODE_ENV === 'production') {
+      throw err;
+    }
+  }
 
   // 2. Server-side Founder Bootstrap (via FOUNDER_EMAILS env variable only)
   const founderEnv = process.env.FOUNDER_EMAILS || '';
@@ -211,16 +218,24 @@ async function getUserRoles(userId, email, baseRole = null) {
       roles.add('owner');
       roles.add('admin');
 
-      // Ensure persistent role record exists in store
-      const hasOwnerRecord = assigned.some(r => r.role === 'owner');
-      if (!hasOwnerRecord) {
-        store.addItem('user_roles', {
-          id: 'rol_boot_' + Date.now(),
-          userId,
-          role: 'owner',
-          grantedBy: 'system_bootstrap',
-          grantedAt: new Date().toISOString()
-        });
+      // Ensure persistent role record exists in database
+      try {
+        const assignedRoles = await userRolesRepo.findActiveRolesByUserId(userId);
+        if (!assignedRoles.includes('owner')) {
+          await userRolesRepo.grantRole(userId, 'owner', 'system_founder_bootstrap');
+          await auditRepo.logEvent({
+            actorId: userId,
+            actorRole: 'owner',
+            action: 'founder.bootstrap_granted',
+            targetType: 'user_roles',
+            targetId: userId,
+            payload: { role: 'owner', email }
+          });
+        }
+      } catch (err) {
+        if (process.env.NODE_ENV === 'production') {
+          console.error('[AUTH:BOOTSTRAP:ERROR] Failed to persist founder role to database:', err.message);
+        }
       }
     }
   }
@@ -233,7 +248,7 @@ async function getUserRoles(userId, email, baseRole = null) {
   return Array.from(roles);
 }
 
-// Middleware: Enforce authentic user and populate verified database roles
+// Middleware: Enforce authentic user, session revocation validation, and database roles
 async function requireAuth(req, res, next) {
   const token = extractToken(req);
   if (!token) {
@@ -245,19 +260,58 @@ async function requireAuth(req, res, next) {
     return res.status(401).json({ error: 'Session invalid or expired. Please sign in again.' });
   }
 
-  req.user = user;
-  req.user.roles = await getUserRoles(user.id, user.email, user.role);
-  next();
+  // Session Revocation & Suspension Check (P1-3)
+  const { users: usersRepo } = require('../repositories');
+  try {
+    const dbUser = await usersRepo.findById(user.id);
+    if (dbUser) {
+      if (dbUser.isSuspended || dbUser.suspendedAt) {
+        return res.status(403).json({ error: 'Your Canopy access pass has been suspended. Please contact support@canopy.earth.' });
+      }
+      if (dbUser.revokedAfter && user.iat) {
+        const revokedTime = Math.floor(new Date(dbUser.revokedAfter).getTime() / 1000);
+        if (user.iat < revokedTime) {
+          return res.status(401).json({ error: 'Session was revoked following a security update. Please sign in again.' });
+        }
+      }
+    }
+
+    req.user = user;
+    req.user.roles = await getUserRoles(user.id, user.email, dbUser?.role || user.role);
+    next();
+  } catch (err) {
+    if (process.env.NODE_ENV === 'production' && err.statusCode === 503) {
+      return res.status(503).json({ error: 'Canopy authentication service is currently unavailable.' });
+    }
+    next(err);
+  }
 }
 
-// Middleware: Attach user and roles if present, continue otherwise
+// Middleware: Attach user and roles if present, validate session revocation
 async function optionalAuth(req, res, next) {
   const token = extractToken(req);
   if (token) {
     const user = verifyToken(token);
     if (user) {
-      req.user = user;
-      req.user.roles = await getUserRoles(user.id, user.email, user.role);
+      const { users: usersRepo } = require('../repositories');
+      try {
+        const dbUser = await usersRepo.findById(user.id);
+        if (dbUser) {
+          if (dbUser.isSuspended || dbUser.suspendedAt) {
+            return next();
+          }
+          if (dbUser.revokedAfter && user.iat) {
+            const revokedTime = Math.floor(new Date(dbUser.revokedAfter).getTime() / 1000);
+            if (user.iat < revokedTime) {
+              return next();
+            }
+          }
+        }
+        req.user = user;
+        req.user.roles = await getUserRoles(user.id, user.email, dbUser?.role || user.role);
+      } catch (err) {
+        // Continue unauthenticated on transient failure in optionalAuth
+      }
     }
   }
   next();
