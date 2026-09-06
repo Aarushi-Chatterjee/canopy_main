@@ -20,7 +20,8 @@
     "animejs": "^4.5.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "nodemailer": "^10.0.0"
   },
   "devDependencies": {
     "sharp": "^0.35.3",

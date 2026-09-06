@@ -103,8 +103,43 @@
   color-scheme: dark;
 }
 
+:root[data-theme="light"]{
+  --paper:#f4efdc;
+  --paper-deep:#e9e0c2;
+  --card:#fcf8ea;
+  --card-edge:#e4dabb;
+  --ink:#26241a;
+  --ink-soft:#5c5744;
+  --ink-faint:#716b58;
+  --forest:#1f5c40;
+  --forest-deep:#123a28;
+  --leaf:#5f9a4c;
+  --leaf-bright:#82b969;
+  --sun:#e3b23f;
+  --sun-soft:#f2d99a;
+  --coral:#cf5f45;
+  --twine:#a68955;
+  --teal:#7eaab3;
+  --teal-soft:#b8d5da;
+  --amber:#d4a373;
+  --amber-soft:#eddcca;
+  --line: rgba(38,36,26,.16);
+  --shadow: rgba(38,32,16,.22);
+  --accent: var(--forest);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] #ambientPlateCanvas {
+  opacity: 0.38;
+  mix-blend-mode: screen;
+}
+
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth; scrollbar-color:var(--forest) var(--paper-deep);}
+html{
+  scroll-behavior:smooth;
+  scrollbar-color:var(--forest) var(--paper-deep);
+  transition: background-color 220ms ease, color 220ms ease;
+}
 @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
 
 ::selection{ background:var(--forest); color:var(--paper); }

@@ -32,7 +32,7 @@ const ALLOWED_ORIGINS = [
 app.use(cors({
   origin: (origin, callback) => {
     // Allow non-browser requests (curl, server-to-server, tests) or authorized origins
-    if (!origin || ALLOWED_ORIGINS.includes(origin) || origin.endsWith('.canopy.earth')) {
+    if (!origin || ALLOWED_ORIGINS.includes(origin) || origin.endsWith('.canopy.earth') || origin.endsWith('.vercel.app')) {
       return callback(null, true);
     }
     return callback(new Error('CORS policy does not allow access from origin: ' + origin), false);
@@ -53,7 +53,7 @@ app.use((req, res, next) => {
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' http://localhost:3001 http://127.0.0.1:3001 https://*.supabase.co https://*.canopy.earth;"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' http://localhost:3001 http://127.0.0.1:3001 https://*.supabase.co https://*.canopy.earth https://*.vercel.app;"
   );
   next();
 });

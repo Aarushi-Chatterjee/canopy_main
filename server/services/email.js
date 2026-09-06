@@ -9,6 +9,37 @@
  */
 
 const https = require('https');
+let nodemailer = null;
+try {
+  nodemailer = require('nodemailer');
+} catch (e) {
+  // Graceful fallback if nodemailer is not installed
+}
+
+// Cached SMTP transporter
+let smtpTransporter = null;
+function getSmtpTransporter() {
+  if (!smtpTransporter && nodemailer) {
+    const host = (process.env.SMTP_HOST || 'smtp.gmail.com').trim();
+    const port = parseInt(process.env.SMTP_PORT || '465', 10);
+    const secure = process.env.SMTP_SECURE === 'true' || port === 465;
+    const rawUser = process.env.SMTP_USER || '';
+    const user = rawUser.replace(/^["']|["']$/g, '').trim();
+    const rawPass = process.env.SMTP_PASS || '';
+    // Gmail app passwords can be copied with spaces (e.g. 4x4) or surrounded with quotes
+    const pass = rawPass.replace(/^["']|["']$/g, '').replace(/\s+/g, '');
+
+    if (user && pass) {
+      smtpTransporter = nodemailer.createTransport({
+        host,
+        port,
+        secure,
+        auth: { user, pass }
+      });
+    }
+  }
+  return smtpTransporter;
+}
 
 // Import branded templates
 const verifyAccountTemplate = require('../templates/verify-account');
@@ -44,6 +75,9 @@ function getProvider() {
   }
   if (process.env.EMAIL_PROVIDER) {
     return process.env.EMAIL_PROVIDER.toLowerCase();
+  }
+  if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+    return 'smtp';
   }
   if (process.env.RESEND_API_KEY) {
     return 'resend';
@@ -123,6 +157,27 @@ async function sendEmail({ to, subject, text, html, from = SENDERS.DEFAULT, meta
       req.write(payload);
       req.end();
     });
+  }
+
+  if (provider === 'smtp') {
+    const transporter = getSmtpTransporter();
+    if (transporter) {
+      try {
+        const info = await transporter.sendMail({
+          from,
+          to,
+          subject,
+          text,
+          html: html || text
+        });
+        return { success: true, messageId: info.messageId || message.id, provider: 'smtp' };
+      } catch (err) {
+        console.error('[EMAIL:SMTP:ERROR]', err.message);
+        return { success: false, error: err.message, provider: 'smtp' };
+      }
+    } else {
+      console.warn('[EMAIL:SMTP:WARN] SMTP credentials missing in environment. Falling back to console dispatch.');
+    }
   }
 
   // Console provider (default development fallback)

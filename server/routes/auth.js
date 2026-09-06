@@ -6,6 +6,7 @@ const { user: userMapper } = require('../mappers');
 const { generateToken, setSessionCookie, clearSessionCookie, optionalAuth } = require('../middleware/auth');
 const { rateLimit } = require('../middleware/rate-limit');
 const emailService = require('../services/email');
+const { supabase, isConfigured } = require('../config/supabase');
 
 // Auth endpoints rate limiting: 15 attempts per minute per IP
 const authLimiter = rateLimit({
@@ -406,6 +407,107 @@ router.get('/me', optionalAuth, async (req, res) => {
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to resolve session.' });
+  }
+});
+
+// GET /api/auth/oauth/config
+router.get('/oauth/config', (req, res) => {
+  const supabaseUrl = process.env.SUPABASE_URL || '';
+  res.json({
+    enabled: !!supabaseUrl,
+    supabaseUrl,
+    provider: 'google'
+  });
+});
+
+// POST /api/auth/oauth/callback
+router.post('/oauth/callback', authLimiter, async (req, res) => {
+  try {
+    const { access_token, code } = req.body;
+
+    if (!access_token && !code) {
+      return res.status(400).json({ error: 'OAuth authorization token or code is required.' });
+    }
+
+    let authUser = null;
+
+    if (isConfigured() && supabase) {
+      if (code) {
+        const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+        if (!error && data?.user) {
+          authUser = data.user;
+        } else if (error) {
+          return res.status(401).json({ error: error.message || 'Failed to exchange OAuth code.' });
+        }
+      } else if (access_token) {
+        const { data, error } = await supabase.auth.getUser(access_token);
+        if (!error && data?.user) {
+          authUser = data.user;
+        } else if (error) {
+          return res.status(401).json({ error: error.message || 'Invalid or expired OAuth token.' });
+        }
+      }
+    } else {
+      return res.status(503).json({ error: 'OAuth service is not configured on the server.' });
+    }
+
+    if (!authUser || !authUser.email) {
+      return res.status(400).json({ error: 'OAuth provider did not supply a verified email address.' });
+    }
+
+    const email = authUser.email.toLowerCase().trim();
+    let user = await usersRepo.findByEmail(email);
+    const meta = authUser.user_metadata || {};
+    const displayName = meta.full_name || meta.name || email.split('@')[0];
+
+    if (!user) {
+      const userId = 'usr_g_' + Date.now();
+      user = {
+        id: userId,
+        email,
+        displayName,
+        role: 'builder',
+        isVerified: true,
+        oauthProvider: 'google',
+        createdAt: new Date().toISOString()
+      };
+      await usersRepo.create(user);
+
+      const profile = {
+        id: 'prof_' + Date.now(),
+        userId,
+        displayName,
+        headline: 'BUILDER at Canopy',
+        bio: '',
+        primaryDomain: 'climate',
+        skillTags: [],
+        avatarUrl: meta.avatar_url || meta.picture || '/avatars/avatar-builders.png',
+        hoursPerWeek: 10,
+        proofOfWork: []
+      };
+      await profilesRepo.create(profile);
+    } else {
+      if (!user.isVerified) {
+        user = await usersRepo.update(
+          u => u.id === user.id,
+          { isVerified: true, updatedAt: new Date().toISOString() },
+          { eq: { id: user.id } }
+        );
+      }
+    }
+
+    const profile = await profilesRepo.findByUserId(user.id);
+    const sessionToken = generateToken(user);
+    setSessionCookie(res, sessionToken);
+
+    res.json({
+      user: userMapper.toSafeUser(user),
+      profile,
+      message: 'Google authentication successful.'
+    });
+  } catch (err) {
+    console.error('[AUTH:OAUTH:ERROR]', err);
+    res.status(err.statusCode || 500).json({ error: err.message || 'OAuth authentication failed.' });
   }
 });
 

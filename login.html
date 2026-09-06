@@ -111,6 +111,52 @@
     border-color: var(--forest);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--forest) 15%, transparent);
   }
+  .btn-google {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 11px 16px;
+    background: var(--paper);
+    border: 1px solid var(--card-edge);
+    border-radius: 6px;
+    font-family: 'Jost Var', sans-serif;
+    font-size: 0.94rem;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 140ms ease;
+    box-shadow: 0 2px 6px -2px var(--shadow);
+  }
+  .btn-google:hover {
+    border-color: var(--forest);
+    box-shadow: 0 4px 12px -2px var(--shadow);
+    transform: translateY(-1px);
+  }
+  .btn-google:active {
+    transform: scale(0.98);
+  }
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    margin: 18px 0 16px;
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .auth-divider::before,
+  .auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--card-edge);
+  }
+  .auth-divider span {
+    padding: 0 14px;
+  }
 </style>
 </head>
 <body class="interior-page">
@@ -217,9 +263,24 @@
     <p class="lede" style="margin:10px auto 0;font-size:1.02rem;">Authenticate with your registered email to track active sprints, team responses, and notebook drafts.</p>
   </div>
 
-  <!-- The Field Pass Card -->
+    <!-- The Field Pass Card -->
   <div class="field-pass-card reveal">
     <div class="field-pass-stamp" id="passStatusStamp">Field Station Pass · Entry Gate</div>
+
+    <!-- Google OAuth Button -->
+    <button type="button" id="googleAuthBtn" class="btn-google">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/>
+        <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+      </svg>
+      <span>Continue with Google</span>
+    </button>
+
+    <div class="auth-divider">
+      <span>or authenticate with pass</span>
+    </div>
 
     <!-- Tab Toggle -->
     <div class="pass-segmented" role="tablist">
@@ -348,6 +409,72 @@
   const passStatusStamp = document.getElementById('passStatusStamp');
 
   let pendingEmail = '';
+
+  const googleAuthBtn = document.getElementById('googleAuthBtn');
+  if (googleAuthBtn) {
+    googleAuthBtn.addEventListener('click', async () => {
+      googleAuthBtn.disabled = true;
+      googleAuthBtn.style.opacity = '0.7';
+      googleAuthBtn.innerHTML = 'Connecting to Google Station...';
+      try {
+        await auth.signInWithGoogle();
+      } catch (err) {
+        googleAuthBtn.disabled = false;
+        googleAuthBtn.style.opacity = '1';
+        googleAuthBtn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          <span>Continue with Google</span>
+        `;
+        showToast('⚠️ Unable to initiate Google Sign-In: ' + err.message);
+      }
+    });
+  }
+
+  // Handle OAuth Redirect Callback (#access_token=... or ?code=...)
+  async function checkOAuthCallback() {
+    const hash = window.location.hash.substring(1);
+    const searchParams = new URLSearchParams(window.location.search);
+    let payload = null;
+
+    if (hash) {
+      const hashParams = new URLSearchParams(hash);
+      const accessToken = hashParams.get('access_token');
+      if (accessToken) {
+        payload = { access_token: accessToken };
+      }
+    }
+
+    if (!payload && searchParams.get('code')) {
+      payload = { code: searchParams.get('code') };
+    }
+
+    if (payload) {
+      if (passStatusStamp) passStatusStamp.textContent = 'Verifying Google Authentication...';
+      showToast('🌱 Verifying Google authentication credentials...');
+      try {
+        const res = await auth.handleOAuthCallback(payload);
+        if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
+        showToast('🌱 Authentication successful: Welcome to Canopy.');
+        window.history.replaceState({}, document.title, window.location.pathname);
+        const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
+        setTimeout(() => { window.location.href = isStaff ? 'admin.html' : 'match.html'; }, 800);
+      } catch (err) {
+        if (loginAlert) {
+          loginAlert.className = 'status-alert status-alert-error';
+          loginAlert.innerHTML = `<div><strong>OAuth Failed:</strong> ${err.message}</div>`;
+          loginAlert.style.display = 'flex';
+        }
+        showToast('⚠️ Google authentication failed: ' + err.message);
+      }
+    }
+  }
+
+  checkOAuthCallback();
 
   // Check active session status to show authentic user state
   auth.getCurrentUser().then(user => {

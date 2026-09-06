@@ -6,7 +6,7 @@
  * - Retains only user session credentials in secure client storage.
  */
 
-const API_BASE = import.meta.env?.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE = import.meta.env?.VITE_API_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? '/api' : 'http://localhost:3001/api');
 
 const STORAGE_KEYS = {
   USER: 'canopy_auth_user',
@@ -131,6 +131,37 @@ export const auth = {
     }
 
     throw new Error(remote.message || 'Invalid email or password.');
+  },
+
+  async signInWithGoogle() {
+    let supabaseUrl = 'https://khaifxlcttjpguqzvwai.supabase.co';
+    try {
+      const cfg = await apiRequest('/auth/oauth/config');
+      if (cfg.ok && cfg.data?.supabaseUrl) {
+        supabaseUrl = cfg.data.supabaseUrl;
+      }
+    } catch (e) {
+      // fallback to default project URL
+    }
+
+    const redirectUri = encodeURIComponent(`${window.location.origin}/login.html`);
+    const authUrl = `${supabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectUri}`;
+    window.location.href = authUrl;
+  },
+
+  async handleOAuthCallback(payload) {
+    const remote = await apiRequest('/auth/oauth/callback', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+
+    if (remote.ok && remote.data?.user) {
+      setLocal(STORAGE_KEYS.USER, remote.data.user);
+      if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
+      return { data: remote.data, user: remote.data.user, error: null };
+    }
+
+    throw new Error(remote.message || 'Google authentication failed.');
   },
 
   async signOut() {

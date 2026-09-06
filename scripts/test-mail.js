@@ -9,8 +9,10 @@ async function main() {
   const recipient = process.argv[2] || process.env.FOUNDER_EMAILS?.split(',')[0] || 'founder@canopy.earth';
   console.log('\n🌿 Canopy Transactional Mail Tester');
   console.log('--------------------------------------------------');
-  console.log(`Configured Provider : ${process.env.EMAIL_PROVIDER || (process.env.RESEND_API_KEY ? 'resend' : 'console')}`);
-  console.log(`Resend API Key      : ${process.env.RESEND_API_KEY ? 'Present (re_...)' : 'Not configured (using console mock)'}`);
+  const provider = process.env.EMAIL_PROVIDER || (process.env.SMTP_USER ? 'smtp' : (process.env.RESEND_API_KEY ? 'resend' : 'console'));
+  console.log(`Configured Provider : ${provider}`);
+  console.log(`SMTP User           : ${process.env.SMTP_USER || 'Not configured'}`);
+  console.log(`Resend API Key      : ${process.env.RESEND_API_KEY ? 'Configured' : 'Not configured'}`);
   console.log(`Default Sender      : ${process.env.MAIL_FROM || 'Canopy Dispatch <hello@canopy.earth>'}`);
   console.log(`Target Recipient    : ${recipient}`);
   console.log('--------------------------------------------------');
@@ -22,8 +24,10 @@ async function main() {
     console.log(result);
     console.log('\n✨ Test completed successfully.');
     if (result.provider === 'console') {
-      console.log('💡 Note: Provider is currently set to "console" (printed above).');
-      console.log('   To send real emails to inboxes, add RESEND_API_KEY=re_... in .env');
+      console.log('💡 Note: Provider is currently set to "console" (mock preview).');
+      console.log('   To send real emails via Gmail SMTP, configure SMTP_USER & SMTP_PASS in .env');
+    } else if (result.provider === 'smtp') {
+      console.log('🚀 Successfully dispatched via Nodemailer Gmail SMTP!');
     }
   } catch (err) {
     console.error('❌ Dispatch Error:', err.message);
