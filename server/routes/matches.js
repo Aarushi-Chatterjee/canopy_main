@@ -125,12 +125,16 @@ const sendHandshake = async (req, res) => {
 
     const saved = await matchesRepo.create(newMatch);
 
-    // Notify recipient via email if possible
+    // Notify recipient via email if possible (awaited to avoid lambda freeze truncation)
     const recipientUser = await usersRepo.findById(targetUserId);
     if (recipientUser && recipientUser.email) {
       const senderProfile = await profilesRepo.findByUserId(requesterId);
       const senderName = senderProfile?.displayName || req.user.displayName || 'A fellow builder';
-      emailService.sendMatchRequest(recipientUser.email, senderName, intentNote.trim()).catch(() => {});
+      try {
+        await emailService.sendMatchRequest(recipientUser.email, senderName, intentNote.trim());
+      } catch (emailErr) {
+        console.error('[EMAIL:ERROR] Failed to send match notification email:', emailErr.message);
+      }
     }
 
     res.status(201).json({

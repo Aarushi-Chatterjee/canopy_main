@@ -38,6 +38,12 @@
   --line: rgba(38,36,26,.16);
   --shadow: rgba(38,32,16,.22);
   --accent: var(--forest);
+  --footer-bg: #123a28;
+  --footer-text: #f4efdc;
+  --footer-heading: #e3b23f;
+  --footer-link: rgba(244,239,220,.78);
+  --footer-link-hover: #e3b23f;
+  --footer-border: rgba(255,255,255,.14);
   /* deliberately theme-invariant: --leaf stays a bright-ish green in both
      themes, so the text on it needs to stay near-black in both too — the
      theme-swapped --forest-deep token fails contrast on it in dark mode. */
@@ -75,6 +81,12 @@
     --amber-soft:#3d2f21;
     --line: rgba(238,233,214,.14);
     --shadow: rgba(0,0,0,.45);
+    --footer-bg: #09130d;
+    --footer-text: #e2ded0;
+    --footer-heading: #e9c364;
+    --footer-link: rgba(226,222,208,.74);
+    --footer-link-hover: #8fe39b;
+    --footer-border: rgba(238,233,214,.12);
     color-scheme: dark;
   }
 }
@@ -100,6 +112,12 @@
   --amber-soft:#3d2f21;
   --line: rgba(238,233,214,.14);
   --shadow: rgba(0,0,0,.45);
+  --footer-bg: #09130d;
+  --footer-text: #e2ded0;
+  --footer-heading: #e9c364;
+  --footer-link: rgba(226,222,208,.74);
+  --footer-link-hover: #8fe39b;
+  --footer-border: rgba(238,233,214,.12);
   color-scheme: dark;
 }
 
@@ -126,6 +144,12 @@
   --line: rgba(38,36,26,.16);
   --shadow: rgba(38,32,16,.22);
   --accent: var(--forest);
+  --footer-bg: #123a28;
+  --footer-text: #f4efdc;
+  --footer-heading: #e3b23f;
+  --footer-link: rgba(244,239,220,.78);
+  --footer-link-hover: #e3b23f;
+  --footer-border: rgba(255,255,255,.14);
   color-scheme: light;
 }
 
@@ -151,9 +175,6 @@ html{
 
 body{
   margin:0;
-  /* Explicit warm paper base in both bright and dark modes — prevents
-     the blank/washed-out background that occurs when the WebGL canvas
-     overlay at opacity:.65 is the only visible surface. */
   background-color: var(--paper);
   background-image:
     radial-gradient(1200px 700px at 8% -10%, rgba(255,255,255,.35), transparent 60%);
@@ -165,10 +186,42 @@ body{
   position:relative;
 }
 
-/* Interior workspace pages stripe pattern.
-   Applied by adding .interior-page to <body> on all pages EXCEPT index.html.
-   The landing page (index.html) is strictly excluded — its ambient WebGL
-   canvas and vine growth system need a clean unstriped surface. */
+/* Landing page rich textured paper backdrop (Light & Dark adaptive) */
+body.landing-page{
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(1200px 750px at 15% 5%, color-mix(in srgb, var(--leaf) 7%, transparent), transparent 65%),
+    radial-gradient(1000px 600px at 85% 30%, color-mix(in srgb, var(--sun) 8%, transparent), transparent 60%),
+    radial-gradient(1200px 800px at 10% 65%, color-mix(in srgb, var(--forest) 6%, transparent), transparent 70%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 35px,
+      color-mix(in srgb, var(--ink) 3.2%, transparent) 35px,
+      color-mix(in srgb, var(--ink) 3.2%, transparent) 36px
+    );
+}
+
+/* Landing page section depth & alternating paper contrast */
+.landing-page #problem{
+  background: radial-gradient(ellipse 950px 520px at 50% 25%, color-mix(in srgb, var(--teal-soft) 26%, transparent), transparent 75%);
+}
+
+.landing-page #solution{
+  background: color-mix(in srgb, var(--paper-deep) 42%, transparent);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.landing-page .keychain-section{
+  background: radial-gradient(ellipse 900px 500px at 50% 45%, color-mix(in srgb, var(--sun-soft) 24%, transparent), transparent 72%);
+}
+
+.landing-page #connect{
+  background: radial-gradient(circle at 50% 75%, color-mix(in srgb, var(--leaf-bright) 10%, transparent), transparent 75%);
+}
+
+/* Interior workspace pages stripe pattern. */
 body.interior-page{
   background-image:
     repeating-linear-gradient(
@@ -1166,7 +1219,137 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 .ambient-clock-text .days{ font-family:'Caveat Var',cursive; font-size:1.1rem; font-weight:700; color:var(--forest); }
 .ambient-clock-text .voice{ font-family:'Caveat Var',cursive; font-size:.85rem; color:var(--twine); }
 
-/* ---- lab notebook field journal styling ---- */
+/* ---- Google OAuth Button & Auth Divider ---- */
+.btn-google{
+  display:inline-flex; align-items:center; justify-content:center; gap:12px;
+  width:100%; padding:11px 18px; border-radius:6px;
+  border:1.5px solid var(--card-edge); background:var(--card);
+  color:var(--ink); font-family:inherit; font-size:0.92rem; font-weight:600;
+  cursor:pointer; box-shadow:0 2px 8px -2px var(--shadow);
+  transition:transform .14s var(--ease-out), background-color .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+.btn-google:hover{
+  background:color-mix(in srgb, var(--forest) 7%, var(--card));
+  border-color:var(--forest);
+  transform:translateY(-1px);
+  box-shadow:0 4px 14px -3px var(--shadow);
+}
+.btn-google:active{ transform:scale(.98); }
+.btn-google svg{ flex:0 0 auto; width:18px; height:18px; }
+
+.auth-divider{
+  display:flex; align-items:center; gap:12px;
+  margin:8px 0 12px; color:var(--ink-faint); font-size:0.75rem;
+  text-transform:uppercase; letter-spacing:0.08em; font-weight:600;
+}
+.auth-divider::before,
+.auth-divider::after{
+  content:""; flex:1; height:1px; background:var(--line);
+}
+
+/* ---- Lab Notebook feed toolbar & compose trigger ---- */
+.feed-toolbar{
+  margin-top:28px; margin-bottom:20px;
+}
+.compose-trigger{
+  width:100%; display:flex; align-items:center; gap:12px;
+  padding:14px 20px; border-radius:10px;
+  background:var(--card); border:1.5px dashed var(--card-edge);
+  color:var(--ink-soft); font-family:inherit; font-size:0.95rem; font-style:italic;
+  cursor:pointer; box-shadow:0 4px 14px -4px var(--shadow);
+  transition:all 180ms var(--ease-out); text-align:left;
+}
+.compose-trigger:hover{
+  border-color:var(--forest); border-style:solid;
+  color:var(--forest);
+  background:color-mix(in srgb, var(--forest) 5%, var(--card));
+  box-shadow:0 8px 22px -6px var(--shadow);
+  transform:translateY(-2px);
+}
+.compose-trigger .plus-badge{
+  width:26px; height:26px; border-radius:50%;
+  background:var(--forest); color:var(--paper);
+  display:inline-flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:1.1rem; font-style:normal; flex:0 0 auto;
+}
+
+/* ---- Lab Notebook card grid & alignment ---- */
+.feed-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));
+  gap:24px;
+  align-items:stretch;
+  margin-top:24px;
+  margin-bottom:48px;
+}
+
+.entry-card{
+  display:flex; flex-direction:column;
+  padding:24px 22px 20px; border-radius:10px;
+  background:var(--card); border:1px solid var(--card-edge);
+  box-shadow:0 4px 16px -6px var(--shadow);
+  position:relative;
+  transition:transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+.entry-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 30px -8px var(--shadow);
+  border-color:var(--forest);
+}
+
+.entry-top{
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:12px; flex-wrap:wrap;
+}
+.entry-top .avatar{ flex:0 0 auto; }
+.entry-top .name{
+  font-family:'Fraunces Var',serif; font-weight:600; font-size:0.95rem; color:var(--ink);
+}
+.entry-top .when{
+  font-size:0.78rem; color:var(--ink-faint); margin-left:2px;
+}
+
+.entry-breadcrumb{
+  font-family:'Caveat Var',cursive; font-size:1.02rem; font-weight:600;
+  color:var(--forest); margin-bottom:10px; display:block; line-height:1.3;
+}
+
+.entry-card h4{
+  font-family:'Fraunces Var',serif; font-size:1.15rem; font-weight:600;
+  line-height:1.38; color:var(--ink); margin:0 0 10px 0;
+}
+
+.entry-card .snippet{
+  font-size:0.92rem; line-height:1.55; color:var(--ink-soft);
+  margin:0 0 14px 0; flex-grow:1;
+}
+
+.entry-card .teaser{
+  background:color-mix(in srgb, var(--paper-deep) 65%, transparent);
+  border-left:3px solid var(--forest);
+  padding:8px 12px; border-radius:0 6px 6px 0;
+  font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+  font-size:0.78rem; color:var(--forest-deep);
+  margin:0 0 16px 0; overflow-x:auto; white-space:nowrap;
+}
+:root[data-theme="dark"] .entry-card .teaser{
+  color:var(--forest); background:rgba(255,255,255,0.04);
+}
+
+.entry-card .illustrative-notice{
+  font-size:0.78rem; color:var(--ink-faint);
+  background:color-mix(in srgb, var(--twine) 12%, transparent);
+  border:1px dashed var(--twine);
+  padding:6px 10px; border-radius:4px;
+  margin-bottom:14px; line-height:1.4;
+}
+
+.entry-bottom{
+  display:flex; align-items:center; gap:8px;
+  margin-top:auto; padding-top:14px;
+  border-top:1px dashed var(--line); flex-wrap:wrap;
+}
+
 .entry-card.torn::after{
   content:""; position:absolute; left:0; right:0; bottom:-8px; height:12px;
   background:
@@ -1175,10 +1358,7 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
   background-position: 0 0, 6px 0;
   opacity:1;
 }
-.entry-breadcrumb{
-  font-family:'Caveat Var',cursive; font-size:.92rem; color:var(--forest);
-  padding:2px 20px 0; display:block;
-}
+
 .grow-btn{
   background:none; border:none; cursor:pointer; color:var(--forest); font-weight:600; font-size:.82rem;
   display:inline-flex; align-items:center; gap:5px; margin-left:auto; padding:2px 4px; border-radius:3px;
@@ -1208,18 +1388,23 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 @media (max-width:980px){
   .match-grid{ grid-template-columns:repeat(2,1fr); }
   .board{ grid-template-columns:1fr; }
-  .feed-grid{ columns:2 220px; }
+  .feed-grid{ grid-template-columns:repeat(2, 1fr); gap:20px; }
 }
 @media (max-width:640px){
   .match-grid{ grid-template-columns:1fr; }
-  .feed-grid{ columns:1; }
+  .feed-grid{ grid-template-columns:1fr; gap:18px; }
   .profile-strip{ flex-direction:column; align-items:flex-start; }
 }
 
 /* ---------- footer ---------- */
 footer{
-  background:var(--forest-deep); color:var(--paper);
-  padding:64px 0 28px; position:relative; z-index:1;
+  background:var(--footer-bg);
+  color:var(--footer-text);
+  border-top:1px solid var(--footer-border);
+  padding:64px 0 28px;
+  position:relative;
+  z-index:1;
+  transition:background-color 220ms ease, color 220ms ease, border-color 220ms ease;
 }
 footer .wrap{
   display:grid;
@@ -1231,39 +1416,40 @@ footer .logo{
   display:flex; align-items:center; gap:8px;
   font-family:'Fraunces Var',serif; font-weight:700;
   font-size:1.15rem; letter-spacing:.04em;
-  color:var(--paper); margin-bottom:18px;
+  color:var(--footer-text); margin-bottom:18px;
 }
 footer h5{
   font-family:'Caveat Var',cursive;
   font-variation-settings:'wght' 650;
   font-size:1.15rem;
-  color:var(--sun); margin-bottom:14px;
+  color:var(--footer-heading); margin-bottom:14px;
 }
 footer a{
   display:block;
-  color:color-mix(in srgb, var(--paper) 75%, transparent);
+  color:var(--footer-link);
   text-decoration:none; font-size:.9rem;
   margin-bottom:10px; line-height:1.4;
   transition:color .14s ease;
 }
-footer a:hover{ color:var(--sun); }
+footer a:hover{ color:var(--footer-link-hover); }
 .founder-quote{
   font-family:'Fraunces Var',serif; font-style:italic; font-size:.98rem;
-  color:color-mix(in srgb, var(--paper) 88%, transparent);
+  color:var(--footer-text);
+  opacity:0.92;
   line-height:1.65; max-width:38ch;
 }
 .founder-quote cite{
   display:block; margin-top:12px;
-  font-style:normal; font-size:.8rem; color:var(--sun);
+  font-style:normal; font-size:.8rem; color:var(--footer-heading);
   letter-spacing:.03em;
 }
 .foot-bottom{
   max-width:1180px; margin:44px auto 0;
   padding:22px clamp(18px,5vw,56px) 0;
-  border-top:1px solid rgba(255,255,255,.12);
+  border-top:1px solid var(--footer-border);
   display:flex; justify-content:space-between; align-items:center;
   font-size:.8rem;
-  color:color-mix(in srgb, var(--paper) 55%, transparent);
+  color:var(--footer-link);
   flex-wrap:wrap; gap:10px;
 }
 

@@ -133,7 +133,7 @@ export const auth = {
     throw new Error(remote.message || 'Invalid email or password.');
   },
 
-  async signInWithGoogle() {
+  async signInWithGoogle(redirectTo = null) {
     let supabaseUrl = 'https://khaifxlcttjpguqzvwai.supabase.co';
     try {
       const cfg = await apiRequest('/auth/oauth/config');
@@ -144,7 +144,10 @@ export const auth = {
       // fallback to default project URL
     }
 
-    const redirectUri = encodeURIComponent(`${window.location.origin}/login.html`);
+    const currentParams = new URLSearchParams(window.location.search);
+    const redirectTarget = redirectTo || currentParams.get('redirect') || '';
+    const redirectQuery = redirectTarget ? `?redirect=${encodeURIComponent(redirectTarget)}` : '';
+    const redirectUri = encodeURIComponent(`${window.location.origin}/login.html${redirectQuery}`);
     const authUrl = `${supabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectUri}`;
     window.location.href = authUrl;
   },

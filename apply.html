@@ -92,6 +92,35 @@
     <span class="kicker" style="font-size:1.15rem;">Sandbox Membership</span>
     <h1 style="font-size:clamp(2rem,3.8vw,2.8rem);margin-top:4px;">Yes, plant me into Canopy</h1>
     <p class="lede">A few honest lines beat a long resume. Takes about ninety seconds to build your verified collaborator profile.</p>
+
+    <!-- Auth Notice Banner (shown when unauthenticated) -->
+    <div id="authGateNotice" class="paper-card" style="display:none;margin-top:20px;padding:18px 22px;background:color-mix(in srgb, var(--coral) 8%, var(--paper));border:1px solid color-mix(in srgb, var(--coral) 35%, transparent);border-radius:12px;text-align:left;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:0.98rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;">
+            <span>🔒</span> Field Station Pass Required to Plant Your Profile
+          </div>
+          <p style="margin:4px 0 0;font-size:0.84rem;color:var(--ink-soft);max-width:440px;">
+            Please log in or create an account first so your application progress is saved and linked to your verified pass.
+          </p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button type="button" id="applyGoogleAuthBtn" class="btn-google" style="width:auto;padding:7px 14px;font-size:0.84rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+            <span>Google</span>
+          </button>
+          <a href="login.html?redirect=/apply.html" id="applySignInBtn" class="btn btn-stamp btn-sm">Log In / Sign Up →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verified User Badge (shown when authenticated) -->
+    <div id="authIdentityBadge" class="paper-card" style="display:none;margin-top:20px;padding:12px 18px;background:color-mix(in srgb, var(--forest) 8%, var(--paper));border:1px solid color-mix(in srgb, var(--forest) 25%, transparent);border-radius:10px;display:flex;align-items:center;justify-content:space-between;font-size:0.88rem;text-align:left;">
+      <span style="color:var(--forest);font-weight:600;display:flex;align-items:center;gap:6px;">
+        <span>🌱</span> Submitting as: <strong id="authUserName" style="color:var(--ink);"></strong> (<span id="authUserEmail" style="color:var(--ink-soft);"></span>)
+      </span>
+      <span style="font-size:0.78rem;color:var(--forest);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;background:rgba(255,255,255,0.7);padding:3px 8px;border-radius:4px;">Pass Verified ✓</span>
+    </div>
   </div>
 
   <div class="elevated-card paper-card" style="padding:36px clamp(20px,5vw,40px);border-radius:14px;margin-top:24px;">
@@ -206,14 +235,120 @@
 
 <script type="module" src="/src/main.js"></script>
 <script type="module">
-  import { db } from '/src/db.js';
+  import { db, auth } from '/src/db.js';
   const form = document.getElementById('fullApplyForm');
   const toast = document.getElementById('toast');
   const submitBtn = document.getElementById('appSubmitBtn');
+  const authGateNotice = document.getElementById('authGateNotice');
+  const authIdentityBadge = document.getElementById('authIdentityBadge');
+  const authUserName = document.getElementById('authUserName');
+  const authUserEmail = document.getElementById('authUserEmail');
+  const applyGoogleAuthBtn = document.getElementById('applyGoogleAuthBtn');
+  const applySignInBtn = document.getElementById('applySignInBtn');
+
+  const DRAFT_KEY = 'canopy_apply_draft';
+  let currentUser = null;
+
+  // Helper: Save draft to sessionStorage
+  function saveDraft() {
+    const rolePill = form ? form.querySelector('[data-group="role"] .pill[aria-pressed="true"]') : null;
+    const domainPill = form ? form.querySelector('[data-group="domain"] .pill[aria-pressed="true"]') : null;
+    const draft = {
+      name: document.getElementById('appName')?.value || '',
+      email: document.getElementById('appEmail')?.value || '',
+      link: document.getElementById('appLink')?.value || '',
+      note: document.getElementById('appNote')?.value || '',
+      role: rolePill ? rolePill.textContent : 'Builder',
+      domain: domainPill ? domainPill.textContent : 'Climate'
+    };
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  }
+
+  // Helper: Restore draft from sessionStorage
+  function restoreDraft() {
+    try {
+      const raw = sessionStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      const draft = JSON.parse(raw);
+      if (draft.name && document.getElementById('appName')) document.getElementById('appName').value = draft.name;
+      if (draft.email && document.getElementById('appEmail')) document.getElementById('appEmail').value = draft.email;
+      if (draft.link && document.getElementById('appLink')) document.getElementById('appLink').value = draft.link;
+      if (draft.note && document.getElementById('appNote')) document.getElementById('appNote').value = draft.note;
+    } catch (_) {}
+  }
+
+  // Monitor form input changes to auto-save draft
+  if (form) {
+    form.addEventListener('input', saveDraft);
+  }
+
+  // Hook Google Auth on Apply page
+  if (applyGoogleAuthBtn) {
+    applyGoogleAuthBtn.addEventListener('click', async () => {
+      saveDraft();
+      applyGoogleAuthBtn.disabled = true;
+      applyGoogleAuthBtn.innerHTML = 'Connecting...';
+      try {
+        await auth.signInWithGoogle('/apply.html');
+      } catch (err) {
+        applyGoogleAuthBtn.disabled = false;
+        applyGoogleAuthBtn.innerHTML = 'Google';
+        alert('Could not start Google Sign-In: ' + err.message);
+      }
+    });
+  }
+
+  if (applySignInBtn) {
+    applySignInBtn.addEventListener('click', () => {
+      saveDraft();
+    });
+  }
+
+  // Initial Auth Check
+  async function checkAuth() {
+    restoreDraft();
+    try {
+      currentUser = await auth.getCurrentUser();
+      if (currentUser && !currentUser.isGuest) {
+        if (authGateNotice) authGateNotice.style.display = 'none';
+        if (authIdentityBadge) {
+          authIdentityBadge.style.display = 'flex';
+          if (authUserName) authUserName.textContent = currentUser.displayName || currentUser.email?.split('@')[0] || 'Collaborator';
+          if (authUserEmail) authUserEmail.textContent = currentUser.email || '';
+        }
+        // Auto-fill user email & name if empty
+        const emailInput = document.getElementById('appEmail');
+        const nameInput = document.getElementById('appName');
+        if (emailInput && (!emailInput.value || emailInput.value === 'elena@domain.org')) {
+          emailInput.value = currentUser.email || '';
+        }
+        if (nameInput && (!nameInput.value || nameInput.value === 'Elena Rostova')) {
+          nameInput.value = currentUser.displayName || '';
+        }
+      } else {
+        if (authGateNotice) authGateNotice.style.display = 'block';
+        if (authIdentityBadge) authIdentityBadge.style.display = 'none';
+      }
+    } catch (_) {
+      if (authGateNotice) authGateNotice.style.display = 'block';
+    }
+  }
+
+  checkAuth();
 
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // Enforce baseline login before submission
+      if (!currentUser || currentUser.isGuest) {
+        saveDraft();
+        if (confirm('A verified Field Station Pass is required to submit. Would you like to log in or create your pass now? Your drafted information has been saved.')) {
+          window.location.href = 'login.html?redirect=/apply.html';
+        }
+        return;
+      }
+
       const name = document.getElementById('appName').value.trim();
       const email = document.getElementById('appEmail').value.trim();
       const link = document.getElementById('appLink').value.trim();
@@ -233,8 +368,9 @@
       }
 
       try {
-        await db.submitApplication({ name, email, role, domain, link, note });
+        await db.submitApplication({ fullName: name, name, email, role, domain, link, proofOfWorkLink: link, motivationNote: note, note });
         db.saveProfile({ name, email, role, domain });
+        sessionStorage.removeItem(DRAFT_KEY);
         if (toast) {
           toast.textContent = '🌱 Application received: queued for curator review.';
           toast.classList.add('show');

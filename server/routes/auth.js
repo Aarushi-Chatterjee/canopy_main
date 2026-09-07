@@ -83,8 +83,16 @@ router.post('/register', authLimiter, async (req, res) => {
       proofOfWork: []
     };
 
+    // Atomic Registration: Rollback user if profile creation fails
     await usersRepo.create(newUser);
-    await profilesRepo.create(newProfile);
+    try {
+      await profilesRepo.create(newProfile);
+    } catch (profileErr) {
+      try {
+        await usersRepo.delete(u => u.id === userId, { eq: { id: userId } });
+      } catch (_) {}
+      throw profileErr;
+    }
 
     // Dispatch verification code via Email Service (no token leak in response payload)
     await emailService.sendVerificationCode(newUser.email, token);

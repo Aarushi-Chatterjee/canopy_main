@@ -16,7 +16,6 @@ const {
 const { requireRole, requireAnyRole } = require('../middleware/auth');
 const emailService = require('../services/email');
 const storageService = require('../services/storage');
-const { store } = require('../data/store');
 
 // Base gate: Operational staff credentials required
 router.use(requireAnyRole(['content_editor', 'match_curator', 'moderator', 'admin', 'owner']));
@@ -115,26 +114,23 @@ router.patch('/applications/:id/status', requireAnyRole(['moderator', 'admin', '
           : app.role === 'enabler' ? 'approved_enabler' 
           : 'approved_builder';
 
-        store.addItem('user_roles', {
-          id: 'rol_' + Date.now(),
-          userId: user.id,
-          role: approvedRole,
-          grantedBy: req.user.id,
-          grantedAt: new Date().toISOString(),
-          internalNote: `Elevated upon application ${app.id} approval.`
-        });
+        await userRolesRepo.grantRole(user.id, approvedRole, req.user.id);
       }
     }
 
-    // Dispatch branded decision email
+    // Dispatch branded decision email (safely awaited to prevent serverless promise termination)
     if (app.email) {
-      emailService.sendApplicationDecision({
-        email: app.email,
-        applicantName: app.fullName,
-        role: app.role || 'Collaborator',
-        status,
-        note
-      }).catch(e => console.error('[EMAIL:ERROR]', e.message));
+      try {
+        await emailService.sendApplicationDecision({
+          email: app.email,
+          applicantName: app.fullName,
+          role: app.role || 'Collaborator',
+          status,
+          note
+        });
+      } catch (e) {
+        console.error('[EMAIL:ERROR] Failed to dispatch decision email:', e.message);
+      }
     }
 
     // Record audit event
@@ -160,7 +156,7 @@ router.get('/users', requireAnyRole(['admin', 'owner']), async (req, res) => {
   try {
     const allUsers = await usersRepo.find();
     const allProfiles = await profilesRepo.find();
-    const allRoles = store.getCollection('user_roles');
+    const allRoles = await userRolesRepo.find();
 
     const enriched = allUsers.map(u => {
       const profile = allProfiles.find(p => p.userId === u.id);

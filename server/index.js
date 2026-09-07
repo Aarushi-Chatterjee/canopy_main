@@ -17,6 +17,8 @@ const { isConfigured, supabase } = require('./config/supabase');
 const { requireDatabaseReady } = require('./middleware/readiness');
 
 const app = express();
+// Enable trust proxy for accurate client IP extraction behind reverse proxies (Vercel, Cloudflare)
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3001;
 
 const ALLOWED_ORIGINS = [

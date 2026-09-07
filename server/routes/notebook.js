@@ -3,13 +3,18 @@ const router = express.Router();
 const { notebook: notebookRepo, users: usersRepo, profiles: profilesRepo, sprints: sprintsRepo } = require('../repositories');
 const { requireAuth } = require('../middleware/auth');
 
-// Input Sanitization to prevent XSS and malicious payloads
+// Robust Input Sanitization to prevent XSS, script injection, and event handler exploits
 function sanitizeText(str) {
   if (!str || typeof str !== 'string') return '';
   return str
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
     .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '')
+    .replace(/on\w+\s*=\s*(["'][^"']*["']|[^\s>]+)/gi, '')
     .replace(/javascript:[^"'\s]*/gi, '')
+    .replace(/<(?!\/?(b|i|em|strong|p|br|code|pre)\b)[^>]+>/gi, '')
     .trim();
 }
 

@@ -179,8 +179,9 @@
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
       <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--forest);text-decoration:none;padding:6px 10px;border-radius:6px;background:color-mix(in srgb, var(--forest) 8%, transparent);">Log In</a>
-      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Build Call</a>
-      <a class="btn btn-stamp btn-sm" href="apply.html">Apply / Sign Up</a>
+      <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Call</a>
+      <a class="btn btn-stamp btn-sm" href="apply.html">Apply</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -267,21 +268,6 @@
   <div class="field-pass-card reveal">
     <div class="field-pass-stamp" id="passStatusStamp">Field Station Pass · Entry Gate</div>
 
-    <!-- Google OAuth Button -->
-    <button type="button" id="googleAuthBtn" class="btn-google">
-      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/>
-        <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-      </svg>
-      <span>Continue with Google</span>
-    </button>
-
-    <div class="auth-divider">
-      <span>or authenticate with pass</span>
-    </div>
-
     <!-- Tab Toggle -->
     <div class="pass-segmented" role="tablist">
       <button type="button" id="tabSignIn" class="pass-tab-btn active" role="tab" aria-selected="true">Collaborator Pass (Sign In)</button>
@@ -292,6 +278,21 @@
 
     <!-- Sign In Form -->
     <form id="signInForm" style="display:flex;flex-direction:column;gap:16px;">
+      <!-- Google Sign In Button -->
+      <button type="button" class="btn-google googleAuthBtn" style="width:100%;margin-bottom:2px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        <span>Continue with Google</span>
+      </button>
+
+      <div class="auth-divider">
+        <span>or sign in with email passcode</span>
+      </div>
+
       <div class="pass-input-group">
         <label for="loginEmail">Email Address</label>
         <input type="email" id="loginEmail" required placeholder="your.name@domain.org" autocomplete="email">
@@ -310,6 +311,21 @@
 
     <!-- Sign Up Form (hidden by default) -->
     <form id="signUpForm" style="display:none;flex-direction:column;gap:16px;">
+      <!-- Google Sign Up Button -->
+      <button type="button" class="btn-google googleAuthBtn" style="width:100%;margin-bottom:2px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        <span>Create Account with Google</span>
+      </button>
+
+      <div class="auth-divider">
+        <span>or create pass with email</span>
+      </div>
+
       <div class="pass-input-group">
         <label for="regEmail">Email Address</label>
         <input type="email" id="regEmail" required placeholder="your.name@domain.org" autocomplete="email">
@@ -410,30 +426,24 @@
 
   let pendingEmail = '';
 
-  const googleAuthBtn = document.getElementById('googleAuthBtn');
-  if (googleAuthBtn) {
-    googleAuthBtn.addEventListener('click', async () => {
-      googleAuthBtn.disabled = true;
-      googleAuthBtn.style.opacity = '0.7';
-      googleAuthBtn.innerHTML = 'Connecting to Google Station...';
+  // Attach Google Authentication handler to all Google buttons across both tabs
+  document.querySelectorAll('.googleAuthBtn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+      const origText = btn.innerHTML;
+      btn.innerHTML = 'Connecting to Google Station...';
       try {
-        await auth.signInWithGoogle();
+        const searchParams = new URLSearchParams(window.location.search);
+        await auth.signInWithGoogle(searchParams.get('redirect'));
       } catch (err) {
-        googleAuthBtn.disabled = false;
-        googleAuthBtn.style.opacity = '1';
-        googleAuthBtn.innerHTML = `
-          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/>
-            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-          </svg>
-          <span>Continue with Google</span>
-        `;
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.innerHTML = origText;
         showToast('⚠️ Unable to initiate Google Sign-In: ' + err.message);
       }
     });
-  }
+  });
 
   // Handle OAuth Redirect Callback (#access_token=... or ?code=...)
   async function checkOAuthCallback() {
@@ -462,7 +472,10 @@
         showToast('🌱 Authentication successful: Welcome to Canopy.');
         window.history.replaceState({}, document.title, window.location.pathname);
         const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
-        setTimeout(() => { window.location.href = isStaff ? 'admin.html' : 'match.html'; }, 800);
+        const redirectParam = searchParams.get('redirect');
+        const defaultDest = isStaff ? 'admin.html' : 'match.html';
+        const targetDest = redirectParam && redirectParam.startsWith('/') ? redirectParam : defaultDest;
+        setTimeout(() => { window.location.href = targetDest; }, 800);
       } catch (err) {
         if (loginAlert) {
           loginAlert.className = 'status-alert status-alert-error';
@@ -478,7 +491,7 @@
 
   // Check active session status to show authentic user state
   auth.getCurrentUser().then(user => {
-    if (user && user.is_verified) {
+    if (user && (user.isVerified || user.is_verified)) {
       if (passStatusStamp) passStatusStamp.textContent = `Pass · ${user.displayName || 'Collaborator'} (Verified)`;
     }
   }).catch(() => {});
@@ -562,7 +575,10 @@
       if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
       showToast('🌱 Signed in: welcome to the terminal.');
       const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
-      setTimeout(() => { window.location.href = isStaff ? 'admin.html' : 'match.html'; }, 900);
+      const redirectParam = new URLSearchParams(window.location.search).get('redirect');
+      const defaultDest = isStaff ? 'admin.html' : 'match.html';
+      const targetDest = redirectParam && redirectParam.startsWith('/') ? redirectParam : defaultDest;
+      setTimeout(() => { window.location.href = targetDest; }, 900);
     } catch (err) {
       if (loginAlert) {
         loginAlert.className = 'status-alert status-alert-error';
@@ -649,7 +665,10 @@
       if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
       showToast('🌱 Pass verified: collaborator access active.');
       const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
-      setTimeout(() => { window.location.href = isStaff ? 'admin.html' : 'match.html'; }, 900);
+      const redirectParam = new URLSearchParams(window.location.search).get('redirect');
+      const defaultDest = isStaff ? 'admin.html' : 'match.html';
+      const targetDest = redirectParam && redirectParam.startsWith('/') ? redirectParam : defaultDest;
+      setTimeout(() => { window.location.href = targetDest; }, 900);
     } catch (err) {
       showToast('⚠️ ' + (err.message || 'Verification failed.'));
       verifyBtn.disabled = false;

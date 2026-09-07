@@ -18,12 +18,13 @@ function rateLimit({
   message = 'Too many requests. Please slow down and try again shortly.' 
 } = {}) {
   return (req, res, next) => {
-    // Determine client IP safely
-    let ip = req.socket?.remoteAddress || '127.0.0.1';
-    if (req.app?.get && req.app.get('trust proxy')) {
-      const forwarded = req.headers['x-forwarded-for'];
-      if (forwarded) ip = forwarded.split(',')[0].trim();
-    }
+    // Determine client IP safely across edge proxies (Cloudflare, Vercel, AWS ALB)
+    let ip = req.headers['cf-connecting-ip'] || 
+             req.headers['x-real-ip'] || 
+             (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : null) || 
+             req.ip || 
+             req.socket?.remoteAddress || 
+             '127.0.0.1';
 
     const key = `${req.baseUrl || ''}${req.path}:${ip}`;
     const now = Date.now();
