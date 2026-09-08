@@ -281,6 +281,12 @@ export const matches = {
 
     if (remote.ok && remote.data) return remote.data;
     throw new Error(remote.message || 'Failed to dispatch handshake.');
+  },
+
+  async getMyMatches() {
+    const remote = await apiRequest('/matches/my');
+    if (remote.ok && remote.data) return remote.data;
+    return { matches: [], outbound: [], inbound: [], total: 0, error: remote.message };
   }
 };
 

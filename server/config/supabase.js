@@ -24,6 +24,10 @@ if (SUPABASE_URL && SUPABASE_KEY && !SUPABASE_URL.includes('your-project-id')) {
       }
     });
     isConfigured = true;
+    const hasServiceRoleKey = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY);
+    if (process.env.NODE_ENV === 'production' && !hasServiceRoleKey) {
+      console.warn('⚠️ [SECURITY WARNING] SUPABASE_SERVICE_ROLE_KEY is not set. Backend queries may be denied by PostgreSQL Row Level Security (RLS) policies on users, user_roles, and audit_events tables.');
+    }
     console.log('⚡ Connected to live Supabase project:', SUPABASE_URL);
   } catch (err) {
     if (process.env.NODE_ENV === 'production') {

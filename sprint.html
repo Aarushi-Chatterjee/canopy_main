@@ -232,9 +232,12 @@
             <div class="avatar sm" data-seed="dfr-2" aria-hidden="true"></div>
           </div>
           <div class="chip-row"><span class="tag-chip" data-domain="ai">AI / ML</span><span class="tag-chip skill">Computer Vision</span></div>
-          <div class="card-foot">
-            <span class="hint-small">team locked for this cycle</span>
-            <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
+          <div class="card-foot" style="flex-wrap:wrap;gap:6px;">
+            <span class="hint-small">team capped (3/3)</span>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
+              <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify next cycle</button>
+              <a href="post-call.html?mode=parallel&ref=sp_deforestation" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:4px 8px;text-decoration:none;">⚡ Form parallel track →</a>
+            </div>
           </div>
         </article>
         <article class="elevated-card sprint-card reveal" data-domain="hardware" data-id="sp_solar_microgrid">
@@ -253,9 +256,12 @@
             <div class="avatar sm" data-seed="solar-4" aria-hidden="true"></div>
           </div>
           <div class="chip-row"><span class="tag-chip" data-domain="hardware">Hardware</span><span class="tag-chip skill">ML</span></div>
-          <div class="card-foot">
-            <span class="hint-small">team locked for this cycle</span>
-            <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
+          <div class="card-foot" style="flex-wrap:wrap;gap:6px;">
+            <span class="hint-small">team capped (3/3)</span>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
+              <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify next cycle</button>
+              <a href="post-call.html?mode=parallel&ref=sp_solar_microgrid" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:4px 8px;text-decoration:none;">⚡ Form parallel track →</a>
+            </div>
           </div>
         </article>
       </div>
@@ -298,6 +304,19 @@
         </article>
       </div>
     </div>
+  </div>
+
+  <!-- Parallel Squad Formation Banner -->
+  <div class="parallel-squad-callout elevated-card reveal" style="margin:28px 0;padding:22px 28px;border-left:4px solid var(--forest);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;background:color-mix(in srgb, var(--paper) 60%, var(--card));border-radius:12px;">
+    <div style="max-width:620px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--forest);">Parallel Exploration Standard</span>
+        <span class="growth-badge" data-stage="sprouting" style="font-size:0.7rem;padding:1px 6px;">Zero Waitlists</span>
+      </div>
+      <h3 style="margin:0 0 6px;font-size:1.1rem;color:var(--ink);">Is your target sprint already capped at 3 builders?</h3>
+      <p style="margin:0;font-size:0.86rem;color:var(--ink-soft);line-height:1.45;">Canopy doesn't make builders wait in line. When an active sprint reaches capacity (3/3), you can fork the challenge to form a parallel squad tackling an alternative technical angle, architecture, or dataset.</p>
+    </div>
+    <a href="post-call.html?mode=parallel" class="btn btn-stamp btn-sm" style="white-space:nowrap;">Form a Parallel Squad →</a>
   </div>
 
   <div class="stage-cta elevated-card reveal">
@@ -435,9 +454,16 @@
         <span class="plus">Live</span>
       </div>
       <div class="chip-row">${chips}</div>
-      <div class="card-foot">
-        <span class="hint-small">Active Cycle</span>
-        <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+      <div class="card-foot" style="flex-wrap:wrap;gap:6px;">
+        <span class="hint-small">${stage === 'building' ? 'team capped (3/3)' : (stage === 'shipped' ? 'Shipped in cycle' : 'Active Cycle')}</span>
+        ${stage === 'building' 
+          ? `<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
+              <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify next cycle</button>
+              <a href="post-call.html?mode=parallel&ref=${encodeURIComponent(sprint.id || '')}" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:4px 8px;text-decoration:none;">⚡ Form parallel track →</a>
+             </div>`
+          : (stage === 'shipped' 
+            ? `<a class="shovel-btn" href="notebook.html" style="text-decoration:none;">Read Notebook Log →</a>`
+            : `<button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>`)}
       </div>
     `;
     return card;

@@ -217,7 +217,7 @@ router.patch('/:id/stage', requireAuth, async (req, res) => {
     const members = sprint.members || sprint.participants || [];
     const isMember = members.some(m => m.userId === req.user.id);
     const isCreator = sprint.creatorId === req.user.id;
-    const isAdmin = req.user.role === 'admin' || req.user.role === 'moderator';
+    const isAdmin = (req.user.roles || []).some(r => ['admin', 'owner', 'moderator'].includes(r)) || req.user.role === 'admin' || req.user.role === 'moderator';
 
     if (!isMember && !isCreator && !isAdmin) {
       return res.status(403).json({ error: 'Only squad members, the sprint creator, or an administrator can transition sprint stages.' });

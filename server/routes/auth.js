@@ -29,6 +29,31 @@ function verifyPassword(password, storedHash) {
   return crypto.timingSafeEqual(Buffer.from(key, 'hex'), Buffer.from(derivedKey, 'hex'));
 }
 
+// Cryptographic Token Hashing (SHA-256 for OTP & Password Reset codes - SEC-01)
+function hashToken(token) {
+  if (!token) return null;
+  return crypto.createHash('sha256').update(String(token).trim()).digest('hex');
+}
+
+function verifyTokenHash(candidate, storedValue) {
+  if (!candidate || !storedValue) return false;
+  const candidateStr = String(candidate).trim();
+  const storedStr = String(storedValue).trim();
+
+  // If stored as 64-char SHA-256 hex hash
+  if (storedStr.length === 64 && /^[0-9a-fA-F]+$/.test(storedStr)) {
+    const candidateHash = hashToken(candidateStr);
+    try {
+      return crypto.timingSafeEqual(Buffer.from(candidateHash, 'hex'), Buffer.from(storedStr, 'hex'));
+    } catch (_) {
+      return false;
+    }
+  }
+
+  // Graceful fallback for legacy plaintext fixtures (dev/test backward compatibility)
+  return candidateStr === storedStr;
+}
+
 // POST /api/auth/register
 router.post('/register', authLimiter, async (req, res) => {
   try {
@@ -59,7 +84,7 @@ router.post('/register', authLimiter, async (req, res) => {
       role: ['builder', 'problem_holder', 'enabler'].includes(role) ? role : 'builder',
       displayName: name,
       isVerified: false,
-      verificationToken: token,
+      verificationToken: hashToken(token),
       verificationExpiresAt: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
       verificationAttempts: 0,
       lastVerificationSentAt: new Date().toISOString(),
@@ -147,7 +172,7 @@ router.post('/verify', authLimiter, async (req, res) => {
     }
 
     const submittedToken = String(token).trim();
-    if (!user.verificationToken || submittedToken !== String(user.verificationToken).trim()) {
+    if (!user.verificationToken || !verifyTokenHash(submittedToken, user.verificationToken)) {
       const nextAttempts = attempts + 1;
       await usersRepo.update(
         u => u.id === user.id,
@@ -223,7 +248,7 @@ router.post('/resend-verification', authLimiter, async (req, res) => {
     await usersRepo.update(
       u => u.id === user.id,
       {
-        verificationToken: newToken,
+        verificationToken: hashToken(newToken),
         verificationExpiresAt: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
         verificationAttempts: 0,
         lastVerificationSentAt: new Date().toISOString()
@@ -305,7 +330,7 @@ router.post('/reset-password-request', authLimiter, async (req, res) => {
       await usersRepo.update(
         u => u.id === user.id,
         {
-          resetToken,
+          resetToken: hashToken(resetToken),
           resetExpiresAt: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
           resetAttempts: 0
         },
@@ -358,7 +383,7 @@ router.post('/reset-password-confirm', authLimiter, async (req, res) => {
       return res.status(400).json({ error: 'Passcode reset code has expired. Please request a new one.' });
     }
 
-    if (String(user.resetToken).trim() !== String(token).trim()) {
+    if (!user.resetToken || !verifyTokenHash(token, user.resetToken)) {
       await usersRepo.update(
         u => u.id === user.id,
         { resetAttempts: attempts + 1 },
@@ -575,9 +600,16 @@ router.delete('/me', requireAuth, async (req, res) => {
       return res.status(404).json({ error: 'User record not found.' });
     }
 
-    // Scrub user profile and delete account
-    await profilesRepo.delete(p => p.userId === userId, { eq: { user_id: userId } });
-    await usersRepo.delete(u => u.id === userId, { eq: { id: userId } });
+    // Scrub user profile, roles, applications, and delete account (Privacy Charter 06)
+    const { userRoles: userRolesRepo, applications: appsRepo } = require('../repositories');
+    try {
+      await profilesRepo.delete(p => p.userId === userId, { eq: { user_id: userId } });
+      await userRolesRepo.delete(r => r.userId === userId, { eq: { user_id: userId } });
+      await appsRepo.delete(a => a.builderId === userId || a.email === user.email, { eq: { builder_id: userId } });
+      await usersRepo.delete(u => u.id === userId, { eq: { id: userId } });
+    } catch (cleanErr) {
+      console.warn('[AUTH:PURGE:WARN] Partial cascade deletion warning:', cleanErr.message);
+    }
     clearSessionCookie(res);
 
     res.json({

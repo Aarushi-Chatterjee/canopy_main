@@ -90,7 +90,7 @@ router.patch('/applications/:id/status', requireAnyRole(['moderator', 'admin', '
       return res.status(400).json({ error: `Invalid status. Allowed: ${allowed.join(', ')}` });
     }
 
-    const app = await appsRepo.findOne(a => a.id === req.params.id);
+    const app = await appsRepo.findById(req.params.id);
     if (!app) {
       return res.status(404).json({ error: 'Application record not found.' });
     }
@@ -282,7 +282,7 @@ router.get('/matches', requireAnyRole(['match_curator', 'moderator', 'admin', 'o
 router.post('/matches/:id/introduce', requireAnyRole(['match_curator', 'moderator', 'admin', 'owner']), async (req, res) => {
   try {
     const { contextNotes = '' } = req.body;
-    const match = await matchesRepo.findOne(m => m.id === req.params.id);
+    const match = await matchesRepo.findById(req.params.id);
     if (!match) {
       return res.status(404).json({ error: 'Match record not found.' });
     }

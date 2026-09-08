@@ -2028,24 +2028,33 @@ body.page-entering {
   color: var(--forest);
 }
 
+.empty-state,
 .empty-state-card {
+  display: none;
   padding: 36px 24px;
   text-align: center;
   border-radius: 12px;
   border: 1px dashed var(--card-edge);
   background: color-mix(in srgb, var(--paper) 50%, var(--card));
   color: var(--ink-soft);
-  margin: 16px 0;
+  margin: 20px 0;
 }
+.empty-state.show,
+.empty-state-card.show {
+  display: block;
+}
+.empty-state h4,
 .empty-state-card h4 {
   color: var(--ink);
   margin-bottom: 6px;
   font-size: 1.05rem;
 }
+.empty-state p,
 .empty-state-card p {
   font-size: 0.88rem;
-  max-width: 420px;
+  max-width: 460px;
   margin: 0 auto;
+  line-height: 1.5;
 }
 
 @media (prefers-reduced-motion: reduce) {

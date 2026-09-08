@@ -81,6 +81,54 @@ router.get('/connections', optionalAuth, async (req, res) => {
   }
 });
 
+// GET /api/matches/my — User Handshake Outbox & Inbox (Authenticated)
+router.get('/my', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const allMatches = await matchesRepo.find(m => 
+      m.userId === userId || m.requesterId === userId || m.matchUserId === userId || m.recipientId === userId
+    );
+
+    const enriched = await Promise.all(
+      allMatches.map(async m => {
+        const otherUserId = (m.userId === userId || m.requesterId === userId)
+          ? (m.matchUserId || m.recipientId)
+          : (m.userId || m.requesterId);
+        const otherUser = await usersRepo.findById(otherUserId);
+        const otherProfile = otherUser ? await profilesRepo.findByUserId(otherUser.id) : null;
+        const call = m.callId ? await callsRepo.findById(m.callId) : null;
+        const isRequester = m.userId === userId || m.requesterId === userId;
+
+        return {
+          id: m.id,
+          direction: isRequester ? 'outbound' : 'inbound',
+          status: m.status,
+          intentNote: m.matchMetadata?.intentNote || m.intentNote || '',
+          partner: {
+            id: otherUserId,
+            displayName: otherProfile?.displayName || otherUser?.displayName || 'Collaborator',
+            headline: otherProfile?.headline,
+            avatarUrl: otherProfile?.avatarUrl,
+            email: m.status === 'connected' ? otherUser?.email : null
+          },
+          buildCall: call ? { id: call.id, title: call.title, domain: call.domain } : null,
+          revealedContact: m.status === 'connected' ? (m.matchMetadata?.revealedContact || m.revealedContact) : null,
+          createdAt: m.createdAt
+        };
+      })
+    );
+
+    res.json({
+      matches: enriched,
+      outbound: enriched.filter(m => m.direction === 'outbound'),
+      inbound: enriched.filter(m => m.direction === 'inbound'),
+      total: enriched.length
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to list user matches.' });
+  }
+});
+
 // POST /api/matches/handshake or /api/matches/request — Send Match Handshake (Authenticated)
 const sendHandshake = async (req, res) => {
   try {
@@ -152,15 +200,16 @@ router.post('/request', requireAuth, sendHandshake);
 // PATCH /api/matches/:id/accept — Accept Handshake (Recipient Only)
 router.patch('/:id/accept', requireAuth, async (req, res) => {
   try {
-    const match = await matchesRepo.findOne(m => m.id === req.params.id);
+    const match = await matchesRepo.findById(req.params.id);
     if (!match) {
       return res.status(404).json({ error: 'Match record not found.' });
     }
 
     const recipientId = match.matchUserId || match.recipientId;
     const requesterId = match.userId || match.requesterId;
+    const isStaff = (req.user.roles || []).some(r => ['admin', 'owner'].includes(r)) || req.user.role === 'admin';
 
-    if (recipientId !== req.user.id && req.user.role !== 'admin') {
+    if (recipientId !== req.user.id && !isStaff) {
       return res.status(403).json({ error: 'Forbidden. Only the recipient may accept this handshake.' });
     }
 
@@ -195,13 +244,14 @@ router.patch('/:id/accept', requireAuth, async (req, res) => {
 // PATCH /api/matches/:id/decline — Decline Handshake (Recipient Only)
 router.patch('/:id/decline', requireAuth, async (req, res) => {
   try {
-    const match = await matchesRepo.findOne(m => m.id === req.params.id);
+    const match = await matchesRepo.findById(req.params.id);
     if (!match) {
       return res.status(404).json({ error: 'Match record not found.' });
     }
 
     const recipientId = match.matchUserId || match.recipientId;
-    if (recipientId !== req.user.id && req.user.role !== 'admin') {
+    const isStaff = (req.user.roles || []).some(r => ['admin', 'owner'].includes(r)) || req.user.role === 'admin';
+    if (recipientId !== req.user.id && !isStaff) {
       return res.status(403).json({ error: 'Forbidden. Only the recipient may decline this handshake.' });
     }
 

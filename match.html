@@ -177,6 +177,10 @@
             <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true" style="margin-right:2px;"><circle cx="4" cy="8" r="2.5"/><circle cx="12" cy="4" r="2.5"/><circle cx="12" cy="12" r="2.5"/><path d="M4 8l8-4M4 8l8 4" stroke="currentColor" stroke-width="1.5"/></svg>
             Verified Connections (3)
           </button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btnToggleMyHandshakes" aria-expanded="false">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true" style="margin-right:2px;"><path d="M7 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm-2-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-2-2a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-2-2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z"/><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h11A1.5 1.5 0 0 1 15 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13.5v-11zM2.5 2a.5.5 0 0 0-.5.5v11a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-11a.5.5 0 0 0-.5-.5h-11z"/></svg>
+            My Handshakes (<span id="myHandshakeCount">0</span>)
+          </button>
           <a href="apply.html" class="btn btn-stamp btn-sm">Complete Verified Profile →</a>
         </div>
       </div>
@@ -216,6 +220,22 @@
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-size:0.8rem;flex-wrap:wrap;gap:8px;">
           <span style="color:var(--ink-soft);">Verified collaborators receive direct sprint notifications and invitation channels.</span>
           <a href="apply.html" style="color:var(--forest);font-weight:600;text-decoration:none;">Update Verification Intake →</a>
+        </div>
+      </div>
+
+      <!-- My Handshakes & Notes Outbox Deck -->
+      <div class="my-handshakes-panel" id="myHandshakesPanel" style="display:none;background:color-mix(in srgb, var(--paper) 60%, var(--card));border:1px solid var(--card-edge);border-radius:10px;padding:16px 18px;margin-top:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+          <div>
+            <span style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--forest);">Your Sent Notes &amp; Handshakes</span>
+            <span style="font-size:0.75rem;color:var(--ink-faint);margin-left:8px;" id="myHandshakesSub">Live status of collaborative notes you have planted</span>
+          </div>
+          <button type="button" id="btnRefreshHandshakes" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:3px 8px;">↻ Refresh</button>
+        </div>
+        <div id="myHandshakesList" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;">
+          <div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--ink-faint);font-size:0.88rem;">
+            Loading your handshakes...
+          </div>
         </div>
       </div>
     </div>
@@ -552,7 +572,7 @@
 
 <script type="module" src="/src/main.js"></script>
 <script type="module">
-  import { calls } from '/src/db.js';
+  import { calls, matches, auth } from '/src/db.js';
 
   function escapeHtml(str) {
     if (!str) return '';
@@ -620,6 +640,115 @@
     } catch (err) {
       console.warn('[Canopy] Could not load live calls:', err.message);
     }
+  }
+
+  /* ============ My Handshakes Outbox & Inbox Tracking ============ */
+  const btnToggleMyHandshakes = document.getElementById('btnToggleMyHandshakes');
+  const myHandshakesPanel = document.getElementById('myHandshakesPanel');
+  const myHandshakesList = document.getElementById('myHandshakesList');
+  const myHandshakeCount = document.getElementById('myHandshakeCount');
+  const btnRefreshHandshakes = document.getElementById('btnRefreshHandshakes');
+
+  async function renderMyHandshakes() {
+    if (!myHandshakesList) return;
+    const user = auth.getUser();
+    if (!user) {
+      myHandshakesList.innerHTML = `
+        <div style="grid-column:1/-1;padding:24px;text-align:center;background:var(--card);border:1px dashed var(--line);border-radius:8px;">
+          <p style="font-size:0.92rem;color:var(--ink);font-weight:600;margin-bottom:6px;">Sign in to inspect your collaborative handshakes</p>
+          <p style="font-size:0.8rem;color:var(--ink-soft);margin-bottom:14px;">Review real-time status of notes you've dispatched to Call creators.</p>
+          <a href="login.html?redirect=match.html" class="btn btn-stamp btn-sm">Log In →</a>
+        </div>
+      `;
+      if (myHandshakeCount) myHandshakeCount.textContent = '0';
+      return;
+    }
+
+    myHandshakesList.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--ink-faint);font-size:0.85rem;">Checking for updates...</div>`;
+
+    try {
+      const res = await matches.getMyMatches();
+      const all = res.matches || [];
+      if (myHandshakeCount) myHandshakeCount.textContent = String(all.length);
+
+      if (!all.length) {
+        myHandshakesList.innerHTML = `
+          <div style="grid-column:1/-1;padding:22px;text-align:center;background:var(--card);border:1px dashed var(--line);border-radius:8px;">
+            <p style="font-size:0.88rem;color:var(--ink);font-weight:600;margin-bottom:4px;">No handshakes planted yet</p>
+            <p style="font-size:0.78rem;color:var(--ink-faint);margin-bottom:0;">Pick any Build Call below and click &quot;Grab a shovel&quot; to plant a direct note to collaborate.</p>
+          </div>
+        `;
+        return;
+      }
+
+      myHandshakesList.innerHTML = all.map(m => {
+        const isOutbound = m.direction === 'outbound';
+        let statusBadge = `<span class="growth-badge" data-stage="seed" style="padding:2px 8px;font-size:0.72rem;background:#fef3c7;color:#92400e;border:1px solid #fcd34d;">⏳ Awaiting Review</span>`;
+        if (m.status === 'connected' || m.status === 'accepted') {
+          statusBadge = `<span class="growth-badge" data-stage="shipped" style="padding:2px 8px;font-size:0.72rem;background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;">✅ Connected</span>`;
+        } else if (m.status === 'declined') {
+          statusBadge = `<span class="growth-badge" style="padding:2px 8px;font-size:0.72rem;background:#f3f4f6;color:#4b5563;">Resolved</span>`;
+        }
+
+        const partnerName = escapeHtml(m.partner?.displayName || 'Collaborator');
+        const partnerRole = escapeHtml(m.partner?.headline || (isOutbound ? 'Build Call Creator' : 'Interested Builder'));
+        const callTitle = m.buildCall ? escapeHtml(m.buildCall.title) : null;
+        const noteSnippet = escapeHtml(m.intentNote || 'Handshake note dispatched.');
+        const contactReveal = (m.status === 'connected' && (m.revealedContact || m.partner?.email))
+          ? `<div style="margin-top:10px;padding:8px 10px;background:rgba(31,92,64,0.08);border-radius:6px;font-size:0.78rem;color:var(--forest);font-weight:600;word-break:break-all;">
+              Direct Channel: ${escapeHtml(m.revealedContact || m.partner?.email)}
+            </div>`
+          : '';
+
+        return `
+          <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;">
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
+                <div>
+                  <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">${isOutbound ? 'Outbound Note' : 'Incoming Note'}</span>
+                  <div style="font-size:0.92rem;font-weight:600;color:var(--ink);margin-top:2px;">${partnerName}</div>
+                  <div style="font-size:0.75rem;color:var(--ink-faint);">${partnerRole}</div>
+                </div>
+                ${statusBadge}
+              </div>
+              ${callTitle ? `<div style="font-size:0.78rem;color:var(--forest);font-weight:600;margin-bottom:6px;">🎯 Call: ${callTitle}</div>` : ''}
+              <p style="font-size:0.8rem;color:var(--ink-soft);font-style:italic;margin:6px 0;line-height:1.35;">&ldquo;${noteSnippet}&rdquo;</p>
+            </div>
+            ${contactReveal}
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      myHandshakesList.innerHTML = `
+        <div style="grid-column:1/-1;padding:16px;text-align:center;color:var(--ink-faint);font-size:0.82rem;">
+          Could not load handshakes at this moment.
+        </div>
+      `;
+    }
+  }
+
+  if (btnToggleMyHandshakes && myHandshakesPanel) {
+    btnToggleMyHandshakes.addEventListener('click', () => {
+      const isExpanded = btnToggleMyHandshakes.getAttribute('aria-expanded') === 'true';
+      btnToggleMyHandshakes.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+      myHandshakesPanel.style.display = isExpanded ? 'none' : 'block';
+      if (!isExpanded) {
+        renderMyHandshakes();
+      }
+    });
+  }
+
+  if (btnRefreshHandshakes) {
+    btnRefreshHandshakes.addEventListener('click', renderMyHandshakes);
+  }
+
+  // Preload count if logged in
+  if (auth.getUser()) {
+    matches.getMyMatches().then(res => {
+      if (res && res.total !== undefined && myHandshakeCount) {
+        myHandshakeCount.textContent = String(res.total);
+      }
+    }).catch(() => {});
   }
 
   loadLiveCalls();

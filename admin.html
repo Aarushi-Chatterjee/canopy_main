@@ -6,7 +6,6 @@
   <title>Canopy // Founder Console</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/png" href="/canopy-logo.png">
-  <link rel="stylesheet" href="/src/style.css">
   <style>
     :root {
       --admin-bg: #090e09;
@@ -554,7 +553,32 @@
   </div>
 
   <script type="module">
-    import { apiRequest } from '/src/db.js';
+    const API_BASE = (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')
+      ? '/api'
+      : 'http://localhost:3001/api';
+
+    async function apiRequest(endpoint, options = {}) {
+      const token = localStorage.getItem('canopy_auth_token');
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-Canopy-Client': 'web',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        ...(options.headers || {})
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}${endpoint}`, {
+          ...options,
+          credentials: 'include',
+          headers
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok) return { ok: true, data };
+        return { ok: false, status: res.status, message: data.error || `Error ${res.status}` };
+      } catch (err) {
+        return { ok: false, status: 0, message: err.message || 'Network request failed' };
+      }
+    }
 
     let currentUser = null;
 

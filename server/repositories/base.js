@@ -90,10 +90,11 @@ class BaseRepository {
   }
 
   async findOne(predicate, options = {}) {
-    if (this.client && options.eq) {
+    const queryEq = options.eq || (options.id ? { id: options.id } : null);
+    if (this.client && queryEq) {
       try {
         let query = this.client.from(this.tableName).select(options.select || '*');
-        for (const [col, val] of Object.entries(options.eq)) {
+        for (const [col, val] of Object.entries(queryEq)) {
           query = query.eq(col, val);
         }
         const { data, error } = await query.maybeSingle();
@@ -102,6 +103,15 @@ class BaseRepository {
         } else if (data) {
           return this.mapToDomain(data);
         }
+      } catch (err) {
+        this.handleFailure('findOne', err);
+      }
+    } else if (this.client && typeof predicate === 'function') {
+      // In production, if options.eq was omitted, query domain items and evaluate predicate safely
+      try {
+        const allItems = await this.find();
+        const found = allItems.find(predicate);
+        if (found) return found;
       } catch (err) {
         this.handleFailure('findOne', err);
       }
@@ -117,6 +127,11 @@ class BaseRepository {
 
     const raw = store.getItem(this.collectionName, predicate);
     return raw ? this.mapToDomain(raw) : null;
+  }
+
+  async findById(id) {
+    if (!id) return null;
+    return this.findOne(item => item.id === id, { eq: { id } });
   }
 
   async create(item) {

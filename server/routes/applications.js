@@ -85,7 +85,7 @@ router.patch('/:id/status', requireAdmin, async (req, res) => {
       return res.status(400).json({ error: 'Invalid status value.' });
     }
 
-    const app = await appsRepo.findOne(a => a.id === req.params.id);
+    const app = await appsRepo.findById(req.params.id);
     if (!app) {
       return res.status(404).json({ error: 'Application not found.' });
     }
@@ -108,9 +108,19 @@ router.patch('/:id/status', requireAdmin, async (req, res) => {
       payload: { note, status }
     });
 
-    // Dispatch status email
+    // Dispatch decision email via valid method
     if (app.email) {
-      emailService.sendApplicationStatus(app.email, status, app.role || 'Canopy Fellowship').catch(() => {});
+      try {
+        await emailService.sendApplicationDecision({
+          email: app.email,
+          applicantName: app.fullName || 'Collaborator',
+          role: app.role || 'Canopy Fellowship',
+          status,
+          note: note || ''
+        });
+      } catch (mailErr) {
+        console.error('[EMAIL:DECISION:ERROR]', mailErr.message);
+      }
     }
 
     res.json({

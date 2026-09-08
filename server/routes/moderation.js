@@ -26,7 +26,7 @@ router.get('/queue', async (req, res) => {
         if (item.entityType === 'build_call') {
           entityData = await callsRepo.findById(item.entityId);
         } else if (item.entityType === 'application') {
-          entityData = await appsRepo.findOne(a => a.id === item.entityId);
+          entityData = await appsRepo.findById(item.entityId);
         }
 
         const submitter = item.submittedBy ? await usersRepo.findById(item.submittedBy) : null;
@@ -81,7 +81,7 @@ router.post('/review', async (req, res) => {
         { eq: { id: entityId } }
       );
     } else if (entityType === 'application') {
-      const app = await appsRepo.findOne(a => a.id === entityId);
+      const app = await appsRepo.findById(entityId);
       if (!app) {
         return res.status(404).json({ error: 'Target Application not found.' });
       }
@@ -96,7 +96,17 @@ router.post('/review', async (req, res) => {
       );
 
       if (app.email) {
-        emailService.sendApplicationStatus(app.email, isApprove ? 'accepted' : 'rejected', app.role || 'Canopy Fellowship').catch(() => {});
+        try {
+          await emailService.sendApplicationDecision({
+            email: app.email,
+            applicantName: app.fullName || 'Collaborator',
+            role: app.role || 'Canopy Fellowship',
+            status: isApprove ? 'approved' : 'declined',
+            note: note || ''
+          });
+        } catch (mailErr) {
+          console.error('[EMAIL:DECISION:ERROR]', mailErr.message);
+        }
       }
     }
 

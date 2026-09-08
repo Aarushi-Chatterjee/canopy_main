@@ -135,6 +135,12 @@
         <input type="email" id="appEmail" required placeholder="elena@domain.org" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
 
+      <div class="field" id="appPasswordGroup">
+        <label for="appPassword" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Create Passcode (min 8 characters)</label>
+        <input type="password" id="appPassword" placeholder="Create a password to secure your Field Station Pass" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <span style="font-size:0.78rem;color:var(--ink-faint);margin-top:2px;">Secures your pass and enables sprint tracking.</span>
+      </div>
+
       <div class="field">
         <label style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Your Community Role</label>
         <div class="pill-group" data-group="role" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
@@ -311,6 +317,8 @@
       currentUser = await auth.getCurrentUser();
       if (currentUser && !currentUser.isGuest) {
         if (authGateNotice) authGateNotice.style.display = 'none';
+        const pwdGroup = document.getElementById('appPasswordGroup');
+        if (pwdGroup) pwdGroup.style.display = 'none';
         if (authIdentityBadge) {
           authIdentityBadge.style.display = 'flex';
           if (authUserName) authUserName.textContent = currentUser.displayName || currentUser.email?.split('@')[0] || 'Collaborator';
@@ -327,6 +335,8 @@
         }
       } else {
         if (authGateNotice) authGateNotice.style.display = 'block';
+        const pwdGroup = document.getElementById('appPasswordGroup');
+        if (pwdGroup) pwdGroup.style.display = 'flex';
         if (authIdentityBadge) authIdentityBadge.style.display = 'none';
       }
     } catch (_) {
@@ -340,17 +350,9 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Enforce baseline login before submission
-      if (!currentUser || currentUser.isGuest) {
-        saveDraft();
-        if (confirm('A verified Field Station Pass is required to submit. Would you like to log in or create your pass now? Your drafted information has been saved.')) {
-          window.location.href = 'login.html?redirect=/apply.html';
-        }
-        return;
-      }
-
       const name = document.getElementById('appName').value.trim();
       const email = document.getElementById('appEmail').value.trim();
+      const password = document.getElementById('appPassword')?.value || '';
       const link = document.getElementById('appLink').value.trim();
       const note = document.getElementById('appNote').value.trim();
       const rolePill = form.querySelector('[data-group="role"] .pill[aria-pressed="true"]');
@@ -361,6 +363,106 @@
       const applyAlert = document.getElementById('applyAlert');
       if (applyAlert) applyAlert.style.display = 'none';
 
+      // Atomic Registration if not already authenticated
+      if (!currentUser || currentUser.isGuest) {
+        if (!password || password.length < 8) {
+          if (applyAlert) {
+            applyAlert.className = 'status-alert status-alert-error';
+            applyAlert.innerHTML = '<div><strong>Passcode Required:</strong> Please enter a password of at least 8 characters to secure your Field Station Pass.</div>';
+            applyAlert.style.display = 'flex';
+          }
+          document.getElementById('appPassword')?.focus();
+          return;
+        }
+
+        const origText = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = 'Creating Pass & Planting Profile...';
+        }
+
+        try {
+          // 1. Create account pass
+          let regResult = null;
+          try {
+            regResult = await auth.signUp(email, password, { displayName: name, role: role.toLowerCase().replace(' ', '_') });
+          } catch (signUpErr) {
+            // If already registered, attempt login
+            if (signUpErr.message.includes('already exists')) {
+              await auth.signIn(email, password);
+            } else {
+              throw signUpErr;
+            }
+          }
+
+          // 2. Submit application
+          await db.submitApplication({ fullName: name, name, email, role, domain, link, proofOfWorkLink: link, motivationNote: note, note });
+          db.saveProfile({ name, email, role, domain });
+          sessionStorage.removeItem(DRAFT_KEY);
+
+          // 3. Render inline OTP verification card
+          if (applyAlert) {
+            applyAlert.className = 'status-alert status-alert-pending';
+            applyAlert.innerHTML = `
+              <div style="width:100%;text-align:left;">
+                <div style="font-weight:700;font-size:1.02rem;color:var(--forest);margin-bottom:6px;">🌱 Profile Planted &amp; Pass Dispatched!</div>
+                <p style="margin:0 0 12px;font-size:0.86rem;color:var(--ink-soft);line-height:1.4;">
+                  A 6-digit verification code has been dispatched to <strong>${email}</strong>. Enter it below to activate your Field Station Pass:
+                </p>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                  <input type="text" id="inlineOtpInput" placeholder="6-digit code" maxlength="6" style="padding:9px 12px;border:1px solid var(--card-edge);border-radius:6px;font-size:1.1rem;font-family:monospace;letter-spacing:0.2em;width:150px;text-align:center;background:var(--paper);color:var(--ink);">
+                  <button type="button" id="inlineVerifyBtn" class="btn btn-stamp btn-sm">Activate Pass →</button>
+                </div>
+                <div id="inlineOtpErr" style="color:var(--coral);font-size:0.82rem;margin-top:8px;"></div>
+              </div>
+            `;
+            applyAlert.style.display = 'flex';
+
+            const inlineBtn = document.getElementById('inlineVerifyBtn');
+            const inlineInput = document.getElementById('inlineOtpInput');
+            const inlineErr = document.getElementById('inlineOtpErr');
+
+            inlineBtn.addEventListener('click', async () => {
+              const code = inlineInput.value.trim();
+              if (!code || code.length < 6) {
+                inlineErr.textContent = 'Please enter the complete 6-digit code.';
+                return;
+              }
+              inlineBtn.disabled = true;
+              inlineBtn.textContent = 'Verifying...';
+              try {
+                await auth.verifyOtp(email, code);
+                applyAlert.className = 'status-alert status-alert-success';
+                applyAlert.innerHTML = '<div><strong>🌱 Pass Activated:</strong> Welcome to Canopy! Redirecting to Match Sandbox...</div>';
+                setTimeout(() => { window.location.href = 'match.html'; }, 1000);
+              } catch (verifyErr) {
+                inlineBtn.disabled = false;
+                inlineBtn.textContent = 'Activate Pass →';
+                inlineErr.textContent = verifyErr.message || 'Invalid code. Please re-enter.';
+              }
+            });
+          }
+
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Profile Planted ✓';
+          }
+          return;
+        } catch (err) {
+          if (applyAlert) {
+            applyAlert.className = 'status-alert status-alert-error';
+            applyAlert.innerHTML = `<div><strong>Error:</strong> ${err.message || 'Submission could not be completed.'}</div>`;
+            applyAlert.style.display = 'flex';
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origText;
+          }
+          return;
+        }
+      }
+
+      // Existing Authenticated User submission:
       const origText = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -377,25 +479,18 @@
         }
         setTimeout(() => {
           window.location.href = 'match.html';
-        }, 1300);
+        }, 1200);
       } catch (err) {
         if (applyAlert) {
           applyAlert.className = 'status-alert status-alert-error';
           applyAlert.innerHTML = `
             <div>
-              <strong>Submission could not be saved:</strong> <span class="err-desc"></span>
+              <strong>Submission could not be saved:</strong> <span class="err-desc">${err.message || 'The service is currently unreachable.'}</span>
               <br><small style="color:var(--ink-soft);">Your drafted information has been preserved below.</small>
               <br><button type="button" class="btn-retry" onclick="document.getElementById('appSubmitBtn').click();">↻ Retry Submission</button>
             </div>
           `;
-          const errSpan = applyAlert.querySelector('.err-desc');
-          if (errSpan) errSpan.textContent = err.message || 'The service is currently unreachable.';
           applyAlert.style.display = 'flex';
-        }
-        if (toast) {
-          toast.textContent = '⚠️ ' + (err.message || 'Submission failed.');
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 4000);
         }
         if (submitBtn) {
           submitBtn.disabled = false;
