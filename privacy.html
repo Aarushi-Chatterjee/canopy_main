@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Covenant - Canopy</title>
 <meta name="description" content="Canopy Privacy Covenant. Zero data brokerage, no behavioral ad tracking, and absolute ownership of sprint artifacts.">
-<link rel="canonical" href="https://canopy.earth/privacy.html">
+<link rel="canonical" href="/privacy.html">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
@@ -289,7 +289,7 @@
         <div class="charter-meta-item">·</div>
         <div class="charter-meta-item">Steward: Aarushi Chatterjee</div>
         <div class="charter-meta-item">·</div>
-        <div class="charter-meta-item">Contact: privacy@canopy.earth</div>
+        <div class="charter-meta-item">Contact: canopy.connect.collaborate@gmail.com</div>
       </div>
     </div>
 
@@ -312,7 +312,7 @@
           <strong>Direct Verification</strong>
           Requests for data retrieval or token resets are processed by human maintainers within 48 hours.
           <div style="margin-top:10px;">
-            <a href="mailto:privacy@canopy.earth" style="color:var(--forest);font-weight:600;text-decoration:none;">privacy@canopy.earth</a>
+            <a href="mailto:canopy.connect.collaborate@gmail.com" style="color:var(--forest);font-weight:600;text-decoration:none;">canopy.connect.collaborate@gmail.com</a>
           </div>
         </div>
       </aside>
@@ -413,8 +413,8 @@
             You retain absolute autonomy over your account records:
           </p>
           <ul style="color:var(--ink-soft);line-height:1.7;padding-left:20px;">
-            <li><strong>Complete Data Export:</strong> You can request a clean JSON bundle of your profile, applications, and sprint history at any time.</li>
-            <li><strong>Right to Deletion:</strong> Upon email request to <code>privacy@canopy.earth</code>, we will delete your credentials and profile records from our primary databases within 48 hours.</li>
+            <li><strong>Complete Data Export:</strong> You can download a clean JSON bundle of your profile, submitted applications, and sprint history directly via the authenticated <code>/api/auth/export</code> endpoint or by contacting support.</li>
+            <li><strong>Right to Deletion:</strong> You can purge your account and records at any time using the self-service deletion method (<code>DELETE /api/auth/me</code>) or via email request to <code>canopy.connect.collaborate@gmail.com</code>.</li>
             <li><strong>Public Notebook Contributions:</strong> Publicly submitted open-source notes in the Lab Notebook may remain in public archives with your name unlinked or replaced by an anonymous contributor tag.</li>
           </ul>
         </section>
@@ -429,10 +429,10 @@
             <li><strong>Kernel-Level Row Level Security (RLS):</strong> Our PostgreSQL architecture strictly enforces database-level Row Level Security policies. Even if public API keys or endpoints are interrogated, the database engine prohibits unauthorized access. Builders can only read and modify their own accounts, and contact emails remain masked until both parties accept a match.</li>
             <li><strong>Encryption in Transit (TLS 1.3):</strong> All network traffic between your browser, our API gateway, and our database cluster is encrypted using modern TLS 1.3 with HTTP Strict Transport Security (HSTS). Session tokens and payloads cannot be inspected or intercepted over public networks.</li>
             <li><strong>Encryption at Rest (AES-256):</strong> Underlying database volumes, backups, and physical storage clusters are encrypted using hardware-accelerated AES-256 encryption.</li>
-            <li><strong>Human-Stewarded Custody:</strong> Direct administrative access to infrastructure is restricted strictly to designated project stewards using hardware-backed multi-factor authentication. We never grant algorithmic data scrapers, automated brokers, or third-party marketing networks access to our datastores.</li>
+            <li><strong>Human-Stewarded Custody:</strong> Direct administrative access to the Founder Console is strictly locked to verified steward accounts with defense-in-depth secondary founder authentication passphrases (<code>FOUNDER_CONSOLE_KEY</code>). We never grant algorithmic data scrapers, automated brokers, or third-party marketing networks access to our datastores.</li>
           </ul>
           <p>
-            If you identify a security or privacy vulnerability in any Canopy service, please disclose it responsibly to <a href="mailto:privacy@canopy.earth" style="color:var(--forest);font-weight:600;">privacy@canopy.earth</a>. We respond to all technical disclosures within 24 hours.
+            If you identify a security or privacy vulnerability in any Canopy service, please disclose it responsibly to <a href="mailto:canopy.connect.collaborate@gmail.com" style="color:var(--forest);font-weight:600;">canopy.connect.collaborate@gmail.com</a>. We respond to all technical disclosures within 24 hours.
           </p>
         </section>
 
@@ -479,7 +479,7 @@
       <h5>Legal &amp; Connect</h5>
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms and Conditions</a>
-      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
       <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>

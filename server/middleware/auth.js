@@ -40,6 +40,7 @@ function generateToken(user, expiresInSec = 7 * 24 * 3600) {
     sub: user.id,
     email: user.email,
     role: user.role || 'builder',
+    isVerified: user.isVerified !== undefined ? Boolean(user.isVerified) : true,
     displayName: user.displayName || user.display_name,
     iat: now,
     exp: now + expiresInSec
@@ -95,6 +96,7 @@ function verifyToken(token) {
       id: payload.sub,
       email: payload.email,
       role: payload.role,
+      isVerified: Boolean(payload.isVerified),
       displayName: payload.displayName,
       iat: payload.iat
     };
@@ -191,7 +193,7 @@ function validateCsrf(req, res, next) {
 }
 
 // Helper: Resolve active roles for user including server-side founder allowlist bootstrap
-async function getUserRoles(userId, email, baseRole = null) {
+async function getUserRoles(userId, email, baseRole = null, isVerified = false) {
   const { userRoles: userRolesRepo, auditEvents: auditRepo } = require('../repositories');
   const roles = new Set();
 
@@ -211,8 +213,9 @@ async function getUserRoles(userId, email, baseRole = null) {
   }
 
   // 2. Server-side Founder Bootstrap (via FOUNDER_EMAILS env variable only)
+  // CRITICAL: Strictly require verified email status before granting founder role
   const founderEnv = process.env.FOUNDER_EMAILS || '';
-  if (email && founderEnv) {
+  if (email && founderEnv && isVerified) {
     const founderEmails = founderEnv.split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
     if (founderEmails.includes(email.toLowerCase())) {
       roles.add('owner');
@@ -266,7 +269,7 @@ async function requireAuth(req, res, next) {
     const dbUser = await usersRepo.findById(user.id);
     if (dbUser) {
       if (dbUser.isSuspended || dbUser.suspendedAt) {
-        return res.status(403).json({ error: 'Your Canopy access pass has been suspended. Please contact support@canopy.earth.' });
+        return res.status(403).json({ error: 'Your Canopy access pass has been suspended. Please contact support.' });
       }
       if (dbUser.revokedAfter && user.iat) {
         const revokedTime = Math.floor(new Date(dbUser.revokedAfter).getTime() / 1000);
@@ -276,8 +279,10 @@ async function requireAuth(req, res, next) {
       }
     }
 
+    const isVerified = Boolean(dbUser ? dbUser.isVerified : (user.isVerified !== undefined ? user.isVerified : false));
     req.user = user;
-    req.user.roles = await getUserRoles(user.id, user.email, dbUser?.role || user.role);
+    req.user.isVerified = isVerified;
+    req.user.roles = await getUserRoles(user.id, user.email, dbUser?.role || user.role, isVerified);
     next();
   } catch (err) {
     if (process.env.NODE_ENV === 'production' && err.statusCode === 503) {
@@ -307,8 +312,10 @@ async function optionalAuth(req, res, next) {
             }
           }
         }
+        const isVerified = Boolean(dbUser ? dbUser.isVerified : (user.isVerified !== undefined ? user.isVerified : false));
         req.user = user;
-        req.user.roles = await getUserRoles(user.id, user.email, dbUser?.role || user.role);
+        req.user.isVerified = isVerified;
+        req.user.roles = await getUserRoles(user.id, user.email, dbUser?.role || user.role, isVerified);
       } catch (err) {
         // Continue unauthenticated on transient failure in optionalAuth
       }
@@ -319,8 +326,9 @@ async function optionalAuth(req, res, next) {
 
 // Middleware factory: Enforce specific single role (Owner always inherits full access)
 function requireRole(role) {
-  return async (req, res, next) => {
-    await requireAuth(req, res, () => {
+  return (req, res, next) => {
+    requireAuth(req, res, (err) => {
+      if (err) return next(err);
       const roles = req.user?.roles || (req.user?.role ? [req.user.role] : []);
       if (roles.includes('owner') || roles.includes(role)) {
         return next();
@@ -332,8 +340,9 @@ function requireRole(role) {
 
 // Middleware factory: Enforce any of the specified roles (Owner always inherits full access)
 function requireAnyRole(allowedRoles = []) {
-  return async (req, res, next) => {
-    await requireAuth(req, res, () => {
+  return (req, res, next) => {
+    requireAuth(req, res, (err) => {
+      if (err) return next(err);
       const roles = req.user?.roles || (req.user?.role ? [req.user.role] : []);
       if (roles.includes('owner') || allowedRoles.some(r => roles.includes(r))) {
         return next();

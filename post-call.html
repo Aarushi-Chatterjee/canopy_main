@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Post a Build Call - Canopy</title>
 <meta name="description" content="Submit a structured Build Call for your organization, lab, or startup. Define the challenge, resources, and reward to attract verified builders.">
-<link rel="canonical" href="https://canopy.earth/post-call.html">
+<link rel="canonical" href="/post-call.html">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
@@ -189,7 +189,7 @@
       <h5>Legal &amp; Connect</h5>
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms and Conditions</a>
-      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
       <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
@@ -201,10 +201,27 @@
 
 <script type="module" src="/src/main.js"></script>
 <script type="module">
-  import { db } from '/src/db.js';
+  import { db, auth } from '/src/db.js';
   const form = document.getElementById('postCallForm');
   const toast = document.getElementById('toast');
   const submitBtn = document.getElementById('postCallSubmitBtn');
+  const postCallAlert = document.getElementById('postCallAlert');
+
+  // Verify authentication state on load
+  auth.getCurrentUser().then(user => {
+    if (!user) {
+      if (postCallAlert) {
+        postCallAlert.className = 'status-alert status-alert-pending';
+        postCallAlert.innerHTML = `
+          <div>
+            <strong>Field Station Pass Required:</strong> Submitting a Build Call requires an active Canopy account.
+            <a href="/login.html?redirect=/post-call.html" style="margin-left:6px;font-weight:600;color:var(--forest);text-decoration:underline;">Sign In / Access Pass →</a>
+          </div>
+        `;
+        postCallAlert.style.display = 'flex';
+      }
+    }
+  }).catch(() => {});
 
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -217,8 +234,22 @@
       const activePill = form.querySelector('.pill[aria-pressed="true"]');
       const domain = activePill ? activePill.textContent : 'General';
 
-      const postCallAlert = document.getElementById('postCallAlert');
       if (postCallAlert) postCallAlert.style.display = 'none';
+
+      const user = await auth.getCurrentUser().catch(() => null);
+      if (!user) {
+        if (postCallAlert) {
+          postCallAlert.className = 'status-alert status-alert-pending';
+          postCallAlert.innerHTML = `
+            <div>
+              <strong>Sign In Required:</strong> Please sign in to verify your identity before publishing a Build Call.
+              <a href="/login.html?redirect=/post-call.html" style="margin-left:6px;font-weight:600;color:var(--forest);text-decoration:underline;">Sign In Now →</a>
+            </div>
+          `;
+          postCallAlert.style.display = 'flex';
+        }
+        return;
+      }
 
       const origText = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
@@ -227,7 +258,17 @@
       }
 
       try {
-        await db.postBuildCall({ org, email, title, desc, reward, domain });
+        await db.postBuildCall({
+          title,
+          orgName: org,
+          organization: org,
+          contactChannel: email,
+          problemStatement: desc,
+          desc,
+          rewardPool: reward,
+          reward,
+          domain: domain.toLowerCase()
+        });
         if (toast) {
           toast.textContent = '🌱 Build Call submitted: queued for curator review.';
           toast.classList.add('show');

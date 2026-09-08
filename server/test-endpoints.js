@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'test';
 process.env.CANOPY_ISOLATE_STORE = 'true';
 process.env.EMAIL_PROVIDER = 'test';
 process.env.JWT_SECRET = 'canopy_test_jwt_secret_minimum_32_characters_for_security_spec';
-process.env.FOUNDER_EMAILS = 'founder@canopy.earth,aarushi@canopy.earth';
+process.env.FOUNDER_EMAILS = 'canopy.connect.collaborate@gmail.com,aarushichatterjee27@gmail.com';
 
 const http = require('http');
 const { app } = require('./index.js');
@@ -87,23 +87,23 @@ const server = app.listen(PORT, async () => {
     const builderApps = await request('GET', '/api/applications', null, { Authorization: `Bearer ${builderToken}` });
     assert(builderApps.status === 403, 'Privilege Gate: builder role rejected from admin endpoint with 403');
 
-    // 2.3 Escalation test: @canopy.earth email domain does NOT grant admin privileges
-    const spoofDomainToken = generateToken({ id: 'usr_b2', email: 'intruder@canopy.earth', role: 'builder' });
+    // 2.3 Escalation test: @canopy.test email domain does NOT grant admin privileges
+    const spoofDomainToken = generateToken({ id: 'usr_b2', email: 'intruder@canopy.test', isVerified: true, role: 'builder' });
     const spoofDomainApps = await request('GET', '/api/applications', null, { Authorization: `Bearer ${spoofDomainToken}` });
-    assert(spoofDomainApps.status === 403, 'Privilege Escalation Blocked: @canopy.earth email domain cannot escalate to admin');
+    assert(spoofDomainApps.status === 403, 'Privilege Escalation Blocked: @canopy.test email domain cannot escalate to admin');
 
     // 2.4 Escalation test: 'enabler' role does NOT grant admin privileges
-    const enablerToken = generateToken({ id: 'usr_e1', email: 'funder@example.org', role: 'enabler' });
+    const enablerToken = generateToken({ id: 'usr_e1', email: 'funder@example.org', isVerified: true, role: 'enabler' });
     const enablerApps = await request('GET', '/api/applications', null, { Authorization: `Bearer ${enablerToken}` });
     assert(enablerApps.status === 403, 'Privilege Escalation Blocked: enabler role cannot escalate to admin');
 
     // 2.5 Legitimate admin role is accepted
-    const adminToken = generateToken({ id: 'usr_admin', email: 'admin@canopy.earth', role: 'admin' });
+    const adminToken = generateToken({ id: 'usr_admin', email: 'admin@canopy.test', isVerified: true, role: 'admin' });
     const adminApps = await request('GET', '/api/applications', null, { Authorization: `Bearer ${adminToken}` });
     assert(adminApps.status === 200 && Array.isArray(adminApps.data.applications), 'Admin Access: verified admin token accesses intake queue');
 
     console.log('\n--- 3. Cryptographic Auth, Email Dispatch & OTP Expiry ---');
-    const testEmail = `builder.${Date.now()}@canopy.earth`;
+    const testEmail = `builder.${Date.now()}@canopy.test`;
     const shortPwd = await request('POST', '/api/auth/register', {
       email: testEmail,
       password: 'short',
@@ -120,8 +120,8 @@ const server = app.listen(PORT, async () => {
     });
     assert(regRes.status === 201 && regRes.data.user?.id, 'Registration: creates user account with password hash');
     assert(regRes.data._testVerificationToken === undefined, 'P0 Security Leak Fix: _testVerificationToken is NOT in response JSON');
-    assert(regRes.headers['set-cookie']?.some(c => c.includes('canopy_session=') && c.includes('HttpOnly')), 
-      'Cookie Auth: Set-Cookie contains HttpOnly canopy_session cookie');
+    assert(!regRes.headers['set-cookie']?.some(c => c.includes('canopy_session=')), 
+      'P0 Security Hardening: Registration does NOT grant session cookie before email verification');
 
     // Inspect in-memory email service test inbox
     const sentEmail = emailService.getLatestEmail(testEmail);
@@ -143,6 +143,8 @@ const server = app.listen(PORT, async () => {
     });
     assert(verifyRes.status === 200 && verifyRes.data.user?.isVerified === true, 
       'Pass Verification: marks user account verified and consumes OTP');
+    assert(verifyRes.headers['set-cookie']?.some(c => c.includes('canopy_session=') && c.includes('HttpOnly')),
+      'Cookie Auth: Set-Cookie contains HttpOnly canopy_session cookie after successful OTP verification');
 
     // Test resend verification cooldown (60s)
     const cooldownRes = await request('POST', '/api/auth/resend-verification', { email: testEmail });
@@ -222,7 +224,7 @@ const server = app.listen(PORT, async () => {
     assert(!isPubliclyVisible, 'Content Gate: pending_review call is NOT publicly broadcast in open calls directory');
 
     // 4.3 Moderation Queue Inspection
-    const modToken = generateToken({ id: 'usr_mod', email: 'moderator@canopy.earth', role: 'moderator' });
+    const modToken = generateToken({ id: 'usr_mod', email: 'moderator@canopy.test', isVerified: true, role: 'moderator' });
     const modQueueRes = await request('GET', '/api/moderation/queue', null, { Authorization: `Bearer ${modToken}` });
     assert(modQueueRes.status === 200 && Array.isArray(modQueueRes.data.queue), 'Moderation Queue: moderator retrieves review queue');
     const queuedItem = modQueueRes.data.queue.find(item => item.entityId === createdCallId);
@@ -291,7 +293,7 @@ const server = app.listen(PORT, async () => {
 
     console.log('\n--- 9. Production Launch: Founder Console, Roles & Content Studio ---');
     // 9.1 Founder Bootstrap & Truthful Session
-    const founderToken = generateToken({ id: 'usr_founder_aarushi', email: 'aarushi@canopy.earth', role: 'registered_user' });
+    const founderToken = generateToken({ id: 'usr_founder_aarushi', email: 'canopy.connect.collaborate@gmail.com', isVerified: true, role: 'registered_user' });
     const founderHeaders = { Authorization: `Bearer ${founderToken}` };
     const founderMe = await request('GET', '/api/auth/me', null, founderHeaders);
     assert(founderMe.status === 200 && founderMe.data.user?.access?.roles?.includes('owner'),
@@ -373,6 +375,17 @@ const server = app.listen(PORT, async () => {
     const auditResFinal = await request('GET', '/api/admin/audit', null, founderHeaders);
     assert(auditResFinal.status === 200 && auditResFinal.data.events?.length > 0,
       'Audit Logging: Complete immutable event ledger accessible in Founder Console');
+
+    console.log('\n--- 10. Privacy & Data Rights: Export & Deletion ---');
+    // 10.1 Data Export
+    const exportRes = await request('GET', '/api/auth/export', null, cookieHeaders);
+    assert(exportRes.status === 200 && exportRes.data.user?.email === testEmail,
+      'Privacy Charter: Authenticated user can export complete data bundle');
+
+    // 10.2 Account Erasure
+    const deleteRes = await request('DELETE', '/api/auth/me', { confirmation: 'DELETE MY ACCOUNT' }, { ...cookieHeaders, 'X-Canopy-Client': 'web' });
+    assert(deleteRes.status === 200 && deleteRes.data.success === true,
+      'Privacy Charter: Authenticated user can securely delete and purge account');
 
     if (failures === 0) {
       console.log('\n✨ ALL CANOPY CRITICAL SYSTEM TESTS PASSED (0 failures)!');

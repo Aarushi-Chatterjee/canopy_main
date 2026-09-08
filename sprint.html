@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sprints - Canopy</title>
 <meta name="description" content="A sprint is where an idea becomes something you can point to. Two to four weeks, a real team, a visible clock, and a shipped outcome in the Canopy Library.">
-<link rel="canonical" href="https://canopy.earth/sprint.html">
+<link rel="canonical" href="/sprint.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Canopy">
-<meta property="og:url" content="https://canopy.earth/sprint.html">
+<meta property="og:url" content="/sprint.html">
 <meta property="og:title" content="Sprints - Canopy">
 <meta property="og:description" content="Two to four weeks, start to shipped. A team forms around one Build Call and ships a real, tangible outcome.">
-<meta property="og:image" content="https://canopy.earth/og-image.png">
+<meta property="og:image" content="/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Sprints - Canopy">
 <meta name="twitter:description" content="Two to four weeks, start to shipped. A team forms around one Build Call and ships a real, tangible outcome.">
-<meta name="twitter:image" content="https://canopy.earth/og-image.png">
+<meta name="twitter:image" content="/og-image.png">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
@@ -159,7 +159,7 @@
         <span class="n">2</span>
       </div>
       <div class="board-col-body">
-        <article class="elevated-card sprint-card reveal" data-domain="civic">
+        <article class="elevated-card sprint-card reveal" data-domain="civic" data-id="sp_city_budget">
           <h4>A plain-language city budget explorer</h4>
           <p class="line" style="color:var(--ink-soft);font-size:.9rem;">Municipal budget data is public but unreadable: the team is still coming together before the clock starts.</p>
           <div class="team-row">
@@ -172,7 +172,7 @@
             <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
           </div>
         </article>
-        <article class="elevated-card sprint-card reveal" data-domain="education">
+        <article class="elevated-card sprint-card reveal" data-domain="education" data-id="sp_reading_tutor">
           <h4>Adaptive reading tutor for grade 3–5</h4>
           <p class="line" style="color:var(--ink-soft);font-size:.9rem;">"The idea is vivid. What is missing is a technical co-builder to bring it to life."</p>
           <div class="team-row">
@@ -194,7 +194,7 @@
         <span class="n">3</span>
       </div>
       <div class="board-col-body">
-        <article class="elevated-card sprint-card reveal" data-domain="climate">
+        <article class="elevated-card sprint-card reveal" data-domain="climate" data-id="sp_groundwater_sample">
           <span class="illustrative-badge" style="margin-bottom: 8px;">Illustrative Example</span>
           <h4>Groundwater contamination sensor</h4>
           <div class="clock-row">
@@ -218,7 +218,7 @@
             <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
           </div>
         </article>
-        <article class="elevated-card sprint-card reveal" data-domain="ai">
+        <article class="elevated-card sprint-card reveal" data-domain="ai" data-id="sp_deforestation">
           <h4>Deforestation tracker from satellite feeds</h4>
           <div class="clock-row">
             <svg class="clock-ring" viewBox="0 0 36 36" data-pct="24" aria-hidden="true">
@@ -237,7 +237,7 @@
             <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
           </div>
         </article>
-        <article class="elevated-card sprint-card reveal" data-domain="hardware">
+        <article class="elevated-card sprint-card reveal" data-domain="hardware" data-id="sp_solar_microgrid">
           <h4>Fault detection for village solar microgrids</h4>
           <div class="clock-row">
             <svg class="clock-ring" viewBox="0 0 36 36" data-pct="83" aria-hidden="true">
@@ -269,7 +269,7 @@
         <img src="/avatars/avatar-shipping-impact.png" alt="Shipping Impact" style="width:24px;height:24px;object-fit:contain;margin-left:auto;">
       </div>
       <div class="board-col-body">
-        <article class="elevated-card sprint-card shipped reveal" data-domain="climate">
+        <article class="elevated-card sprint-card shipped reveal" data-domain="climate" data-id="sp_water_quality">
           <span class="shipped-badge">✓ Added to the Library</span>
           <h4>Water-quality dashboard for 40 rural wells</h4>
           <div class="team-row">
@@ -282,7 +282,7 @@
             <a class="shovel-btn" href="notebook.html" style="text-decoration:none;">Read Notebook Log →</a>
           </div>
         </article>
-        <article class="elevated-card sprint-card shipped reveal" data-domain="education">
+        <article class="elevated-card sprint-card shipped reveal" data-domain="education" data-id="sp_peer_tutoring">
           <span class="shipped-badge">✓ Added to the Library</span>
           <h4>Peer-tutoring matcher for after-school programs</h4>
           <div class="team-row">
@@ -347,7 +347,7 @@
       <h5>Legal &amp; Connect</h5>
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms and Conditions</a>
-      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
       <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
@@ -405,5 +405,72 @@
 <div class="toast" id="toast">🌱 Note planted: we will be in touch soon.</div>
 
 <script type="module" src="/src/main.js"></script>
+<script type="module">
+  import { sprints } from '/src/db.js';
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>"']/g, m => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[m]);
+  }
+
+  function createSprintCard(sprint, stage) {
+    const card = document.createElement('article');
+    const domain = escapeHtml(sprint.domain || 'general').toLowerCase();
+    card.className = 'elevated-card sprint-card reveal';
+    card.setAttribute('data-domain', domain);
+    card.setAttribute('data-id', sprint.id || '');
+
+    const title = escapeHtml(sprint.title || 'Untitled Sprint');
+    const desc = escapeHtml(sprint.objective || sprint.problemStatement || '');
+    const neededRoles = Array.isArray(sprint.neededRoles) ? sprint.neededRoles : ['Technical Contributor'];
+    const chips = neededRoles.map(r => `<span class="tag-chip skill">${escapeHtml(r)}</span>`).join('');
+
+    card.innerHTML = `
+      <h4>${title}</h4>
+      ${desc ? `<p class="line" style="color:var(--ink-soft);font-size:.9rem;">${desc}</p>` : ''}
+      <div class="team-row">
+        <div class="avatar sm" data-seed="${sprint.id}" aria-hidden="true"></div>
+        <span class="plus">Live</span>
+      </div>
+      <div class="chip-row">${chips}</div>
+      <div class="card-foot">
+        <span class="hint-small">Active Cycle</span>
+        <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+      </div>
+    `;
+    return card;
+  }
+
+  async function loadLiveSprints() {
+    try {
+      const board = await sprints.getBoard();
+      if (!board) return;
+
+      const stages = ['forming', 'building', 'shipped'];
+      stages.forEach(stage => {
+        const col = document.querySelector(`.board-col[data-stage="${stage}"] .board-col-body`);
+        if (!col) return;
+        const items = board[stage] || [];
+        items.forEach(sprint => {
+          if (!document.querySelector(`[data-id="${sprint.id}"]`)) {
+            const card = createSprintCard(sprint, stage);
+            col.prepend(card);
+          }
+        });
+
+        const countEl = document.querySelector(`.board-col[data-stage="${stage}"] .board-col-head .n`);
+        if (countEl) {
+          countEl.textContent = col.querySelectorAll('.sprint-card').length;
+        }
+      });
+    } catch (err) {
+      console.warn('[Canopy] Could not load live sprints:', err.message);
+    }
+  }
+
+  loadLiveSprints();
+</script>
 </body>
 </html>

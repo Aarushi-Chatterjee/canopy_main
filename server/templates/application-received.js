@@ -1,6 +1,6 @@
 /**
  * Canopy Field Station - Application Received Confirmation
- * Sender: Canopy <hello@canopy.earth>
+ * Sender: Canopy <canopy.connect.collaborate@gmail.com>
  */
 
 function render({ applicantName, role, domain, applicationId }) {
@@ -17,7 +17,7 @@ function render({ applicantName, role, domain, applicationId }) {
     ``,
     `Best regards,`,
     `Aarushi Chatterjee & The Canopy Operations Team`,
-    `hello@canopy.earth`
+    `canopy.connect.collaborate@gmail.com`
   ].join('\n');
 
   const html = `
@@ -25,14 +25,14 @@ function render({ applicantName, role, domain, applicationId }) {
       <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.2em; color: #4ade80; text-transform: uppercase; margin-bottom: 16px;">CANOPY // INTAKE CONFIRMATION</div>
       <h2 style="color: #ffffff; margin: 0 0 16px 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em;">Application Successfully Queued</h2>
       <p style="font-size: 15px; line-height: 1.6; color: #a1a8a2; margin: 0 0 20px 0;">Hello ${applicantName || 'Collaborator'},</p>
-      <p style="font-size: 15px; line-height: 1.6; color: #a1a8a2; margin: 0 0 24px 0;">We have received your application to join Canopy's initial beta cohort as a <strong>${role}</strong> focusing on <strong>${domain}</strong>.</p>
+      <p style="font-size: 15px; line-height: 1.6; color: #a1a8a2; margin: 0 0 24px 0;">We have received your application to join Canopy's initial cohort as a <strong>${role}</strong> focusing on <strong>${domain}</strong>.</p>
       <div style="background-color: #142017; border-left: 3px solid #4ade80; padding: 16px; margin: 0 0 24px 0; border-radius: 0 6px 6px 0;">
         <div style="font-size: 12px; color: #68d391; margin-bottom: 4px;">REFERENCE ID</div>
         <div style="font-family: monospace; font-size: 16px; color: #ffffff;">${applicationId}</div>
       </div>
       <p style="font-size: 14px; line-height: 1.6; color: #718096; margin: 0 0 24px 0;">Our operations team evaluates submissions manually on a rolling basis. You will receive an update once your credentials have been reviewed.</p>
       <div style="border-top: 1px solid #1c2b1e; padding-top: 16px; font-size: 12px; color: #4a5568;">
-        Canopy Platform · <a href="https://canopy.earth" style="color: #4ade80; text-decoration: none;">canopy.earth</a> · hello@canopy.earth
+        Canopy Platform · Build · Connect · Ship · canopy.connect.collaborate@gmail.com
       </div>
     </div>
   `;

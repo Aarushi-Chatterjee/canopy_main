@@ -1,6 +1,6 @@
 /**
  * Canopy Field Station - Account Verification Template
- * Sender: Canopy Access <access@canopy.earth>
+ * Sender: Canopy Access <canopy.connect.collaborate@gmail.com>
  */
 
 function render({ code, expiresInMinutes = 15 }) {
@@ -13,7 +13,7 @@ function render({ code, expiresInMinutes = 15 }) {
     `This code will expire in ${expiresInMinutes} minutes and lock after 5 unsuccessful attempts.`,
     `If you did not request this verification, you can safely disregard this message.`,
     ``,
-    `Canopy Operations — access@canopy.earth`
+    `Canopy Operations — canopy.connect.collaborate@gmail.com`
   ].join('\n');
 
   const html = `
@@ -26,7 +26,7 @@ function render({ code, expiresInMinutes = 15 }) {
       </div>
       <p style="font-size: 13px; color: #718096; line-height: 1.5; margin: 0 0 24px 0;">This code expires in <strong>${expiresInMinutes} minutes</strong>. If you did not initiate this request, no action is needed.</p>
       <div style="border-top: 1px solid #1c2b1e; padding-top: 16px; font-size: 12px; color: #4a5568;">
-        Canopy Platform · <a href="https://canopy.earth" style="color: #4ade80; text-decoration: none;">canopy.earth</a> · access@canopy.earth
+        Canopy Platform · Build · Connect · Ship · canopy.connect.collaborate@gmail.com
       </div>
     </div>
   `;

@@ -1,6 +1,6 @@
 /**
- * Canopy Field Station - Password Reset Template
- * Sender: Canopy Access <access@canopy.earth>
+ * Canopy Field Station - Passcode Reset Verification Template
+ * Sender: Canopy Access <canopy.connect.collaborate@gmail.com>
  */
 
 function render({ code, expiresInMinutes = 15 }) {
@@ -12,7 +12,7 @@ function render({ code, expiresInMinutes = 15 }) {
     `Your single-use passcode reset code is: ${code}`,
     ``,
     `This code will expire in ${expiresInMinutes} minutes.`,
-    `If you did not request this update, please contact access@canopy.earth immediately.`
+    `If you did not request this update, please contact canopy.connect.collaborate@gmail.com immediately.`
   ].join('\n');
 
   const html = `
@@ -25,7 +25,7 @@ function render({ code, expiresInMinutes = 15 }) {
       </div>
       <p style="font-size: 13px; color: #718096; line-height: 1.5; margin: 0 0 24px 0;">Valid for <strong>${expiresInMinutes} minutes</strong>. If you did not make this request, your account remains secure.</p>
       <div style="border-top: 1px solid #1c2b1e; padding-top: 16px; font-size: 12px; color: #4a5568;">
-        Canopy Platform · <a href="https://canopy.earth" style="color: #4ade80; text-decoration: none;">canopy.earth</a> · access@canopy.earth
+        Canopy Platform · Build · Connect · Ship · canopy.connect.collaborate@gmail.com
       </div>
     </div>
   `;

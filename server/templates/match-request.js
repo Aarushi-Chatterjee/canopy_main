@@ -1,6 +1,6 @@
 /**
  * Canopy Field Station - New Match Inquiry
- * Sender: Canopy <hello@canopy.earth>
+ * Sender: Canopy <canopy.connect.collaborate@gmail.com>
  */
 
 function render({ recipientName, senderName, intentNote, callTitle }) {
@@ -15,11 +15,11 @@ function render({ recipientName, senderName, intentNote, callTitle }) {
     `"${intentNote}"`,
     ``,
     `To review their credentials and accept or decline the handshake, sign in to your Canopy Match Sandbox:`,
-    `https://canopy.earth/match.html`,
+    `/match.html`,
     ``,
     `Direct contact information remains private until you choose to accept.`,
     ``,
-    `Canopy Operations — hello@canopy.earth`
+    `Canopy Operations — canopy.connect.collaborate@gmail.com`
   ].join('\n');
 
   const html = `
@@ -33,10 +33,10 @@ function render({ recipientName, senderName, intentNote, callTitle }) {
       </div>
       <p style="font-size: 13px; color: #718096; line-height: 1.5; margin: 0 0 24px 0;">🔒 Privacy Protection: Your direct email is withheld until you accept the handshake.</p>
       <div style="text-align: center; margin: 24px 0;">
-        <a href="https://canopy.earth/match.html" style="background-color: #22543d; color: #68d391; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; display: inline-block;">Review Handshake in Sandbox →</a>
+        <a href="/match.html" style="background-color: #22543d; color: #68d391; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; display: inline-block;">Review Handshake in Sandbox →</a>
       </div>
       <div style="border-top: 1px solid #1c2b1e; padding-top: 16px; font-size: 12px; color: #4a5568;">
-        Canopy Platform · <a href="https://canopy.earth" style="color: #4ade80; text-decoration: none;">canopy.earth</a> · hello@canopy.earth
+        Canopy Platform · Build · Connect · Ship · canopy.connect.collaborate@gmail.com
       </div>
     </div>
   `;

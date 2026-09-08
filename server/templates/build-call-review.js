@@ -1,6 +1,6 @@
 /**
  * Canopy Field Station - Build Call Review Status Update
- * Sender: Canopy <hello@canopy.earth>
+ * Sender: Canopy <canopy.connect.collaborate@gmail.com>
  */
 
 function render({ title, status, decisionNote }) {
@@ -16,7 +16,7 @@ function render({ title, status, decisionNote }) {
       ? `Your challenge is now live in the Canopy directory. Builders can submit collaboration inquiries.` 
       : `Your challenge submission has been reviewed by Canopy operations.`,
     ``,
-    `Canopy Operations — hello@canopy.earth`
+    `Canopy Operations — canopy.connect.collaborate@gmail.com`
   ].join('\n');
 
   const html = `
@@ -30,7 +30,7 @@ function render({ title, status, decisionNote }) {
         ${decisionNote ? `<div style="margin-top: 8px; font-size: 13px; color: #a1a8a2;">${decisionNote}</div>` : ''}
       </div>
       <div style="border-top: 1px solid #1c2b1e; padding-top: 16px; font-size: 12px; color: #4a5568;">
-        Canopy Platform · <a href="https://canopy.earth" style="color: #4ade80; text-decoration: none;">canopy.earth</a> · hello@canopy.earth
+        Canopy Platform · Build · Connect · Ship · canopy.connect.collaborate@gmail.com
       </div>
     </div>
   `;

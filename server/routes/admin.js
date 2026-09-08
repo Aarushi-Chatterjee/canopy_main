@@ -340,7 +340,7 @@ router.post('/matches/manual', requireAnyRole(['match_curator', 'moderator', 'ad
 
     const initiator = (await usersRepo.findById(initiatorId)) || {
       displayName: req.user?.displayName || 'Canopy Founder',
-      email: req.user?.email || 'founder@canopy.earth'
+      email: req.user?.email || 'canopy.connect.collaborate@gmail.com'
     };
     const recipient = (await usersRepo.findById(recipientId)) || {
       displayName: 'Collaborator Partner',

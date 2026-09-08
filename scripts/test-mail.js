@@ -6,14 +6,14 @@ require('dotenv').config();
 const emailService = require('../server/services/email');
 
 async function main() {
-  const recipient = process.argv[2] || process.env.FOUNDER_EMAILS?.split(',')[0] || 'founder@canopy.earth';
+  const recipient = process.argv[2] || process.env.FOUNDER_EMAILS?.split(',')[0] || 'canopy.connect.collaborate@gmail.com';
   console.log('\n🌿 Canopy Transactional Mail Tester');
   console.log('--------------------------------------------------');
   const provider = process.env.EMAIL_PROVIDER || (process.env.SMTP_USER ? 'smtp' : (process.env.RESEND_API_KEY ? 'resend' : 'console'));
   console.log(`Configured Provider : ${provider}`);
   console.log(`SMTP User           : ${process.env.SMTP_USER || 'Not configured'}`);
   console.log(`Resend API Key      : ${process.env.RESEND_API_KEY ? 'Configured' : 'Not configured'}`);
-  console.log(`Default Sender      : ${process.env.MAIL_FROM || 'Canopy Dispatch <hello@canopy.earth>'}`);
+  console.log(`Default Sender      : ${process.env.MAIL_FROM || 'Canopy Dispatch <canopy.connect.collaborate@gmail.com>'}`);
   console.log(`Target Recipient    : ${recipient}`);
   console.log('--------------------------------------------------');
   console.log('Dispatching test verification pass email...\n');

@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lab Notebook - Canopy</title>
 <meta name="description" content="The Lab Notebook is where process lives: the raw record of how builders work, not just their wins. Browse real entries or publish your own.">
-<link rel="canonical" href="https://canopy.earth/notebook.html">
+<link rel="canonical" href="/notebook.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Canopy">
-<meta property="og:url" content="https://canopy.earth/notebook.html">
+<meta property="og:url" content="/notebook.html">
 <meta property="og:title" content="Lab Notebook - Canopy">
 <meta property="og:description" content="The raw, honest record of how builders work: the half-baked idea, the failed model, the fix that finally worked.">
-<meta property="og:image" content="https://canopy.earth/og-image.png">
+<meta property="og:image" content="/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Lab Notebook - Canopy">
 <meta name="twitter:description" content="The raw, honest record of how builders work: the half-baked idea, the failed model, the fix that finally worked.">
-<meta name="twitter:image" content="https://canopy.earth/og-image.png">
+<meta name="twitter:image" content="/og-image.png">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
@@ -348,7 +348,7 @@
       <h5>Legal &amp; Connect</h5>
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms and Conditions</a>
-      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
       <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
@@ -399,5 +399,72 @@
 <div class="toast" id="toast">🌱 Entry logged: added to public library.</div>
 
 <script type="module" src="/src/main.js"></script>
+<script type="module">
+  import { notebook } from '/src/db.js';
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>"']/g, m => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[m]);
+  }
+
+  function renderCard(item) {
+    const domain = escapeHtml(item.domain || 'climate');
+    const author = escapeHtml(item.authorName || item.displayName || 'Field Contributor');
+    const title = escapeHtml(item.title || 'Field Observation');
+    const snippet = escapeHtml(item.summarySnippet || item.content || '');
+    const teaser = item.teaserCodeSnippet ? `<div class="teaser"><span>${escapeHtml(item.teaserCodeSnippet)}</span></div>` : '';
+    const breadcrumb = item.grownFromLabel ? `<span class="entry-breadcrumb">grown from Sprint: ${escapeHtml(item.grownFromLabel)}</span>` : '';
+    const typeLabel = escapeHtml(item.entryType || 'field-report');
+
+    const card = document.createElement('article');
+    card.className = 'elevated-card interactive entry-card reveal';
+    card.setAttribute('data-domain', domain.toLowerCase());
+    card.setAttribute('data-id', item.id || '');
+    card.tabIndex = 0;
+    card.innerHTML = `
+      <div class="entry-top">
+        <div class="avatar sm" data-seed="${author}" aria-hidden="true"></div>
+        <span class="name">${author}</span>
+        <span class="when">Live Entry</span>
+      </div>
+      ${breadcrumb}
+      <h4>${title}</h4>
+      <p class="snippet">${snippet}</p>
+      ${teaser}
+      <div class="entry-bottom">
+        <span class="tag-chip" data-domain="${domain.toLowerCase()}">${domain}</span>
+        <span class="tag-chip skill">${typeLabel}</span>
+        <button type="button" class="grow-btn compose-trigger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Grow entry
+          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
+        </button>
+      </div>
+    `;
+    return card;
+  }
+
+  async function loadLiveEntries() {
+    const grid = document.getElementById('entryGrid');
+    if (!grid) return;
+    try {
+      const entries = await notebook.getEntries();
+      if (Array.isArray(entries) && entries.length > 0) {
+        entries.forEach(entry => {
+          if (!grid.querySelector(`[data-id="${entry.id}"]`)) {
+            const el = renderCard(entry);
+            grid.prepend(el);
+          }
+        });
+      }
+    } catch (err) {
+      console.warn('[Canopy] Could not fetch live notebook entries:', err.message);
+    }
+  }
+
+  loadLiveEntries();
+</script>
 </body>
 </html>

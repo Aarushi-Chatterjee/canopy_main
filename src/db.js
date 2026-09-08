@@ -196,6 +196,49 @@ export const auth = {
 
   getProfile() {
     return getLocal(STORAGE_KEYS.PROFILE, null);
+  },
+
+  async requestPasswordReset(email) {
+    const remote = await apiRequest('/auth/reset-password-request', {
+      method: 'POST',
+      body: JSON.stringify({ email })
+    });
+    if (remote.ok) {
+      return { ok: true, message: remote.data?.message || 'Passcode reset instructions dispatched.' };
+    }
+    throw new Error(remote.message || 'Passcode reset request failed.');
+  },
+
+  async confirmPasswordReset(email, token, newPassword) {
+    const remote = await apiRequest('/auth/reset-password-confirm', {
+      method: 'POST',
+      body: JSON.stringify({ email, token, newPassword })
+    });
+    if (remote.ok) {
+      if (remote.data?.user) setLocal(STORAGE_KEYS.USER, remote.data.user);
+      return { ok: true, message: 'Passcode updated successfully.' };
+    }
+    throw new Error(remote.message || 'Passcode reset failed.');
+  },
+
+  async exportData() {
+    const remote = await apiRequest('/auth/export');
+    if (remote.ok) return remote.data;
+    throw new Error(remote.message || 'Data export failed.');
+  },
+
+  async deleteAccount(confirmationText) {
+    const remote = await apiRequest('/auth/me', {
+      method: 'DELETE',
+      body: JSON.stringify({ confirmation: confirmationText })
+    });
+    if (remote.ok) {
+      localStorage.removeItem(STORAGE_KEYS.USER);
+      localStorage.removeItem(STORAGE_KEYS.TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.PROFILE);
+      return remote.data;
+    }
+    throw new Error(remote.message || 'Account deletion failed.');
   }
 };
 

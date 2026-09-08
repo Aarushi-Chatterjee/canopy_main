@@ -176,7 +176,7 @@ router.patch('/:id/accept', requireAuth, async (req, res) => {
           revealedContact: {
             requesterEmail: requester?.email,
             recipientEmail: recipient?.email,
-            matrixChannel: `#sprint-${match.id}:canopy.earth`
+            matrixChannel: `#sprint-${match.id}:canopy.internal`
           }
         }
       },

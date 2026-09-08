@@ -21,6 +21,7 @@ const app = express();
 app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3001;
 
+const configuredOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').map(o => o.trim()).filter(Boolean);
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://localhost:5174',
@@ -28,21 +29,20 @@ const ALLOWED_ORIGINS = [
   'http://localhost:3001',
   'http://127.0.0.1:5173',
   'http://127.0.0.1:5174',
-  'https://canopy.earth',
-  'https://www.canopy.earth'
+  ...configuredOrigins
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow non-browser requests (curl, server-to-server, tests) or authorized origins
-    if (!origin || ALLOWED_ORIGINS.includes(origin) || origin.endsWith('.canopy.earth') || origin.endsWith('.vercel.app')) {
+    if (!origin || ALLOWED_ORIGINS.includes(origin) || origin.endsWith('.vercel.app')) {
       return callback(null, true);
     }
     return callback(new Error('CORS policy does not allow access from origin: ' + origin), false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-Canopy-Client']
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-Canopy-Client', 'X-Founder-Key']
 }));
 
 // Limit request payload to prevent Denial of Service via large memory buffers
@@ -56,7 +56,7 @@ app.use((req, res, next) => {
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' http://localhost:3001 http://127.0.0.1:3001 https://*.supabase.co https://*.canopy.earth https://*.vercel.app;"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' http://localhost:3001 http://127.0.0.1:3001 https://*.supabase.co https://*.vercel.app;"
   );
   next();
 });
@@ -77,14 +77,41 @@ app.use('/api', validateCsrf);
 // Production database readiness gate (P0-1)
 app.use('/api', requireDatabaseReady);
 
-// Server-Side Protected Founder Console Route (P0-4)
-// Requires active staff role before serving admin.html
+// Server-Side Protected Founder Console Route
+// Requires active verified staff/owner role before serving admin.html
 app.get(['/admin', '/admin.html'], optionalAuth, (req, res) => {
   const staffRoles = ['owner', 'admin', 'moderator', 'match_curator', 'content_editor'];
   const hasStaffRole = req.user && req.user.roles && req.user.roles.some(r => staffRoles.includes(r));
   if (!hasStaffRole) {
     return res.redirect('/login.html?redirect=/admin');
   }
+
+  // Secondary Founder Console Key Check (if configured)
+  const requiredFounderKey = process.env.FOUNDER_CONSOLE_KEY;
+  if (requiredFounderKey) {
+    const providedKey = req.query.key || req.headers['x-founder-key'] || req.cookies?.canopy_founder_key;
+    if (providedKey && providedKey === requiredFounderKey) {
+      // Set cookie for session convenience
+      res.cookie('canopy_founder_key', providedKey, { httpOnly: true, sameSite: 'Lax' });
+    } else if (!req.cookies?.canopy_founder_key || req.cookies.canopy_founder_key !== requiredFounderKey) {
+      // Prompt for secondary key if accessing directly in browser
+      return res.status(403).send(`
+        <!DOCTYPE html>
+        <html>
+        <head><title>Canopy // Console Authentication Gate</title><style>body{background:#090e09;color:#e2e8f0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;}form{background:#0f1710;padding:32px;border-radius:8px;border:1px solid #1c2e1f;max-width:360px;width:100%;}input{width:100%;padding:10px;margin:12px 0 16px;background:#090e09;border:1px solid #2d4a32;border-radius:4px;color:#fff;box-sizing:border-box;}button{width:100%;padding:10px;background:#4ade80;border:none;border-radius:4px;color:#090e09;font-weight:bold;cursor:pointer;}</style></head>
+        <body>
+          <form method="GET" action="/admin">
+            <h3 style="margin-top:0;color:#4ade80;">Founder Station Gate</h3>
+            <p style="font-size:13px;color:#94a3b8;">Enter your secondary founder key to unlock operations:</p>
+            <input type="password" name="key" placeholder="Founder Access Key" required autofocus />
+            <button type="submit">Unlock Console →</button>
+          </form>
+        </body>
+        </html>
+      `);
+    }
+  }
+
   const adminHtmlPath = path.join(__dirname, '../admin.html');
   res.sendFile(adminHtmlPath);
 });

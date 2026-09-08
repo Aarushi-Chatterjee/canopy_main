@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://canopy.earth/</loc>
+    <loc>/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://canopy.earth/match.html</loc>
+    <loc>/match.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://canopy.earth/sprint.html</loc>
+    <loc>/sprint.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://canopy.earth/notebook.html</loc>
+    <loc>/notebook.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://canopy.earth/builders.html</loc>
+    <loc>/builders.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://canopy.earth/problem-holders.html</loc>
+    <loc>/problem-holders.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://canopy.earth/enablers.html</loc>
+    <loc>/enablers.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://canopy.earth/post-call.html</loc>
+    <loc>/post-call.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://canopy.earth/apply.html</loc>
+    <loc>/apply.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://canopy.earth/privacy.html</loc>
+    <loc>/privacy.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://canopy.earth/terms.html</loc>
+    <loc>/terms.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

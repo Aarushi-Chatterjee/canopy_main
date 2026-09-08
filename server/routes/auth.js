@@ -97,12 +97,13 @@ router.post('/register', authLimiter, async (req, res) => {
     // Dispatch verification code via Email Service (no token leak in response payload)
     await emailService.sendVerificationCode(newUser.email, token);
 
-    const sessionToken = generateToken(newUser);
-    setSessionCookie(res, sessionToken);
+    // SECURITY HARDENING: Do NOT issue session cookie prior to OTP verification!
+    // Prevents unverified session elevation and account takeover of founder emails.
 
     res.status(201).json({
       user: userMapper.toSafeUser(newUser),
       profile: newProfile,
+      verificationRequired: true,
       verificationNotice: `Verification code dispatched to ${email}. Please check your inbox and enter the 6-digit code to activate your pass.`
     });
   } catch (err) {
@@ -266,6 +267,15 @@ router.post('/login', authLimiter, async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password. Please check your credentials.' });
     }
 
+    // Require email verification before issuing authenticated pass
+    if (!user.isVerified) {
+      return res.status(403).json({
+        error: 'Your Field Station Pass requires email verification. Please check your inbox for the 6-digit verification code.',
+        verificationRequired: true,
+        email: user.email
+      });
+    }
+
     const profile = await profilesRepo.findByUserId(user.id);
     const sessionToken = generateToken(user);
     setSessionCookie(res, sessionToken);
@@ -390,8 +400,9 @@ router.get('/me', optionalAuth, async (req, res) => {
       const user = await usersRepo.findById(req.user.id);
       const profile = await profilesRepo.findByUserId(req.user.id);
       const safeUser = userMapper.toSafeUser(user || req.user);
+      const isVerified = Boolean(user ? user.isVerified : req.user?.isVerified);
       const access = {
-        status: user?.isVerified ? 'access_approved' : 'email_pending',
+        status: isVerified ? 'access_approved' : 'email_pending',
         roles: req.user.roles || []
       };
       safeUser.access = access;
@@ -523,6 +534,59 @@ router.post('/oauth/callback', authLimiter, async (req, res) => {
 router.post('/logout', (req, res) => {
   clearSessionCookie(res);
   res.json({ success: true, message: 'Signed out successfully.' });
+});
+
+// GET /api/auth/export (User Data Portability - Privacy Charter 06)
+const { requireAuth } = require('../middleware/auth');
+router.get('/export', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await usersRepo.findById(userId);
+    const profile = await profilesRepo.findByUserId(userId);
+    const { applications: appsRepo, notebook: notebookRepo, matches: matchesRepo } = require('../repositories');
+
+    const applications = await appsRepo.find(a => a.builderId === userId || a.email === user?.email);
+    const notebookEntries = await notebookRepo.find(n => n.userId === userId || n.authorId === userId);
+    const matches = await matchesRepo.find(m => m.userId === userId || m.matchUserId === userId || m.requesterId === userId || m.recipientId === userId);
+
+    res.json({
+      exportMetadata: {
+        exportedAt: new Date().toISOString(),
+        format: 'Canopy Open Data Bundle v1',
+        userId
+      },
+      user: userMapper.toSafeUser(user),
+      profile,
+      applications,
+      notebookEntries,
+      matches
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to export user archive.' });
+  }
+});
+
+// DELETE /api/auth/me (Account Deletion & Data Scrubbing - Privacy Charter 06)
+router.delete('/me', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await usersRepo.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User record not found.' });
+    }
+
+    // Scrub user profile and delete account
+    await profilesRepo.delete(p => p.userId === userId, { eq: { user_id: userId } });
+    await usersRepo.delete(u => u.id === userId, { eq: { id: userId } });
+    clearSessionCookie(res);
+
+    res.json({
+      success: true,
+      message: 'Your Canopy Pass, credentials, and profile have been permanently deleted.'
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to delete account.' });
+  }
 });
 
 module.exports = router;

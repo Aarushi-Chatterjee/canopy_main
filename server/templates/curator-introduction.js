@@ -1,6 +1,6 @@
 /**
  * Canopy Field Station - Founder / Curator Manual Introduction
- * Sender: Canopy <hello@canopy.earth>
+ * Sender: Canopy <canopy.connect.collaborate@gmail.com>
  */
 
 function render({ requesterName, requesterEmail, recipientName, recipientEmail, sprintTopic, contextNotes }) {
@@ -16,8 +16,8 @@ function render({ requesterName, requesterEmail, recipientName, recipientEmail, 
     ``,
     `Best regards,`,
     `Aarushi Chatterjee`,
-    `Founder, Canopy Earth`,
-    `hello@canopy.earth`
+    `Founder, Canopy`,
+    `canopy.connect.collaborate@gmail.com`
   ].join('\n');
 
   const html = `
@@ -41,7 +41,7 @@ function render({ requesterName, requesterEmail, recipientName, recipientEmail, 
       </div>
       <p style="font-size: 14px; line-height: 1.6; color: #718096; margin: 0 0 24px 0;">You can reply directly to this email to coordinate your initial sync, deliverables, and repo access.</p>
       <div style="border-top: 1px solid #1c2b1e; padding-top: 16px; font-size: 12px; color: #4a5568;">
-        Canopy Platform · Aarushi Chatterjee, Founder · <a href="https://canopy.earth" style="color: #4ade80; text-decoration: none;">canopy.earth</a>
+        Canopy Platform · Aarushi Chatterjee, Founder · Build · Connect · Ship · canopy.connect.collaborate@gmail.com
       </div>
     </div>
   `;

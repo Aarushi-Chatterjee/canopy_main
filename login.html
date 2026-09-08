@@ -6,7 +6,7 @@
 <title>Sandbox Access - Canopy</title>
 <meta name="description" content="Access your Canopy sandbox account, verify your collaborator pass, and track active sprints and teammates.">
 <meta name="robots" content="noindex, nofollow">
-<link rel="canonical" href="https://canopy.earth/login.html">
+<link rel="canonical" href="/login.html">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
@@ -400,7 +400,7 @@
       <h5>Legal &amp; Connect</h5>
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms and Conditions</a>
-      <a href="mailto:hello@canopy.earth">hello@canopy.earth</a>
+      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
       <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
@@ -543,15 +543,111 @@
   if (forgotPwdLink) {
     forgotPwdLink.addEventListener('click', () => {
       const email = document.getElementById('loginEmail').value.trim();
-      if (loginAlert) {
-        loginAlert.className = 'status-alert status-alert-pending';
-        loginAlert.innerHTML = `
-          <div>
-            <strong>Passcode Reset:</strong> If an account exists for ${email || 'your email'}, a reset link or verification code can be dispatched. Please contact <a href="mailto:support@canopy.earth" style="color:var(--forest);text-decoration:underline;">support@canopy.earth</a> or re-verify via New Pass.
+      if (!loginAlert) return;
+      loginAlert.className = 'status-alert status-alert-pending';
+      loginAlert.style.display = 'block';
+      loginAlert.innerHTML = `
+        <div style="font-size:13px;line-height:1.5;">
+          <div style="font-weight:700;color:var(--forest);margin-bottom:6px;">🔑 Reset Passcode</div>
+          <p style="margin:0 0 8px 0;color:var(--ink-light);">Enter your verified email to dispatch a 6-digit reset code.</p>
+          <div style="display:flex;gap:8px;margin-bottom:8px;">
+            <input type="email" id="resetEmailInput" value="${email}" placeholder="your.email@domain.com" style="flex:1;padding:8px 10px;font-size:13px;border:1px solid var(--border);border-radius:6px;background:var(--paper);color:var(--ink);" />
+            <button type="button" id="sendResetCodeBtn" class="btn btn-primary" style="padding:8px 14px;font-size:12px;">Dispatch Code</button>
           </div>
-        `;
-        loginAlert.style.display = 'flex';
-      }
+          <div id="resetErrorMsg" style="color:var(--rust, #c53030);font-size:12px;margin-bottom:6px;display:none;"></div>
+          <button type="button" id="cancelResetBtn" style="background:none;border:none;color:var(--ink-light);cursor:pointer;font-size:12px;padding:0;">Cancel</button>
+        </div>
+      `;
+
+      const resetEmailInput = document.getElementById('resetEmailInput');
+      const sendResetCodeBtn = document.getElementById('sendResetCodeBtn');
+      const resetErrorMsg = document.getElementById('resetErrorMsg');
+      const cancelResetBtn = document.getElementById('cancelResetBtn');
+
+      cancelResetBtn.addEventListener('click', () => {
+        loginAlert.style.display = 'none';
+      });
+
+      sendResetCodeBtn.addEventListener('click', async () => {
+        const targetEmail = resetEmailInput.value.trim();
+        if (!targetEmail || !targetEmail.includes('@')) {
+          resetErrorMsg.textContent = 'Please enter a valid email address.';
+          resetErrorMsg.style.display = 'block';
+          return;
+        }
+        sendResetCodeBtn.disabled = true;
+        sendResetCodeBtn.textContent = 'Sending...';
+        resetErrorMsg.style.display = 'none';
+
+        try {
+          await auth.requestPasswordReset(targetEmail);
+          loginAlert.innerHTML = `
+            <div style="font-size:13px;line-height:1.5;">
+              <div style="font-weight:700;color:var(--forest);margin-bottom:6px;">✉️ Code Dispatched</div>
+              <p style="margin:0 0 8px 0;color:var(--ink-light);">A 6-digit reset code was dispatched to <strong>${targetEmail}</strong>.</p>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
+                <input type="text" id="resetTokenInput" placeholder="6-digit code (e.g. 123456)" maxlength="6" style="padding:8px 10px;font-size:13px;border:1px solid var(--border);border-radius:6px;background:var(--paper);color:var(--ink);" />
+                <input type="password" id="resetNewPassInput" placeholder="New passcode (min 8 characters)" style="padding:8px 10px;font-size:13px;border:1px solid var(--border);border-radius:6px;background:var(--paper);color:var(--ink);" />
+                <button type="button" id="confirmResetBtn" class="btn btn-primary" style="padding:8px 14px;font-size:12px;width:100%;">Set New Passcode</button>
+              </div>
+              <div id="confirmErrorMsg" style="color:var(--rust, #c53030);font-size:12px;margin-bottom:6px;display:none;"></div>
+              <button type="button" id="cancelConfirmBtn" style="background:none;border:none;color:var(--ink-light);cursor:pointer;font-size:12px;padding:0;">Cancel</button>
+            </div>
+          `;
+
+          const resetTokenInput = document.getElementById('resetTokenInput');
+          const resetNewPassInput = document.getElementById('resetNewPassInput');
+          const confirmResetBtn = document.getElementById('confirmResetBtn');
+          const confirmErrorMsg = document.getElementById('confirmErrorMsg');
+          const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
+
+          cancelConfirmBtn.addEventListener('click', () => {
+            loginAlert.style.display = 'none';
+          });
+
+          confirmResetBtn.addEventListener('click', async () => {
+            const token = resetTokenInput.value.trim();
+            const newPass = resetNewPassInput.value;
+            if (!token || token.length < 6) {
+              confirmErrorMsg.textContent = 'Please enter the complete 6-digit code.';
+              confirmErrorMsg.style.display = 'block';
+              return;
+            }
+            if (!newPass || newPass.length < 8) {
+              confirmErrorMsg.textContent = 'Passcode must be at least 8 characters.';
+              confirmErrorMsg.style.display = 'block';
+              return;
+            }
+
+            confirmResetBtn.disabled = true;
+            confirmResetBtn.textContent = 'Updating...';
+            confirmErrorMsg.style.display = 'none';
+
+            try {
+              await auth.confirmPasswordReset(targetEmail, token, newPass);
+              loginAlert.className = 'status-alert status-alert-accepted';
+              loginAlert.innerHTML = `
+                <div style="font-size:13px;line-height:1.5;">
+                  <div style="font-weight:700;color:var(--forest);margin-bottom:4px;">✅ Passcode Updated</div>
+                  <p style="margin:0;color:var(--ink-light);">Your passcode was successfully updated. Sign in with your new passcode.</p>
+                </div>
+              `;
+              document.getElementById('loginEmail').value = targetEmail;
+              document.getElementById('loginPassword').value = newPass;
+            } catch (err) {
+              confirmResetBtn.disabled = false;
+              confirmResetBtn.textContent = 'Set New Passcode';
+              confirmErrorMsg.textContent = err.message || 'Passcode reset failed.';
+              confirmErrorMsg.style.display = 'block';
+            }
+          });
+        } catch (err) {
+          sendResetCodeBtn.disabled = false;
+          sendResetCodeBtn.textContent = 'Dispatch Code';
+          resetErrorMsg.textContent = err.message || 'Could not dispatch reset code.';
+          resetErrorMsg.style.display = 'block';
+        }
+      });
     });
   }
 

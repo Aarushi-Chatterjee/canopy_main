@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://canopy.earth/sitemap.xml
+Sitemap: /sitemap.xml

@@ -438,14 +438,21 @@ import { sprints, matches, notebook, auth } from './db.js';
         });
         showToast('🌱 Entry planted in your Lab Notebook: added to library.');
       } else if (currentDrawerContext.type === 'sprint' || window.location.pathname.includes('sprint')) {
-        var sprintId = currentDrawerContext.id || 'sp_1';
+        var sprintId = currentDrawerContext.id;
+        if (!sprintId) {
+          throw new Error('Please select an active sprint cycle to join.');
+        }
         var activeSkillPill = this.querySelector('[data-group="drawer-skills"] .pill[aria-pressed="true"]');
         var role = activeSkillPill ? activeSkillPill.textContent : 'Technical Contributor';
         await sprints.joinSprint(sprintId, role);
         showToast('🌱 Seat secured! Joined sprint squad as ' + role + '.');
       } else {
-        var recipientId = currentDrawerContext.id || 'usr_elena';
-        await matches.sendHandshake(recipientId, note);
+        var recipientId = currentDrawerContext.creatorId || currentDrawerContext.id;
+        var callId = currentDrawerContext.creatorId ? currentDrawerContext.id : (currentDrawerContext.callId || null);
+        if (!recipientId) {
+          throw new Error('Please select a collaborator or Build Call to initiate a handshake.');
+        }
+        await matches.sendHandshake(recipientId, note, callId);
         showToast('🌱 Handshake dispatched: sent to collaborator.');
       }
       closeAppDrawer();
@@ -577,19 +584,21 @@ import { sprints, matches, notebook, auth } from './db.js';
   });
 
   /* ---------- Shovel & Compose Triggers ---------- */
-  document.querySelectorAll('.shovel-btn:not([href])').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var card = btn.closest('.match-card, .sprint-card');
-      var name = card ? (card.querySelector('.name, h4') ? card.querySelector('.name, h4').textContent : '') : '';
-      var domain = card ? (card.getAttribute('data-domain') || '') : '';
-      var id = card ? (card.getAttribute('data-id') || card.id || 'sp_1') : 'sp_1';
-      var isSprint = card ? card.classList.contains('sprint-card') : window.location.pathname.includes('sprint');
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.shovel-btn:not([href])');
+    if(!btn) return;
+    var card = btn.closest('.match-card, .sprint-card, [data-domain]');
+    var name = card ? (card.querySelector('.name, h4, .call-title') ? card.querySelector('.name, h4, .call-title').textContent.trim() : '') : '';
+    var domain = card ? (card.getAttribute('data-domain') || '') : '';
+    var id = card ? (card.getAttribute('data-id') || card.id) : null;
+    var creatorId = card ? card.getAttribute('data-creator-id') : null;
+    var isSprint = card ? card.classList.contains('sprint-card') : window.location.pathname.includes('sprint');
 
-      openAppDrawer(name, domain ? 'Domain · ' + domain.toUpperCase() : '', {
-        type: isSprint ? 'sprint' : 'match',
-        id: id,
-        title: name
-      });
+    openAppDrawer(name, domain ? 'Domain · ' + domain.toUpperCase() : '', {
+      type: isSprint ? 'sprint' : 'match',
+      id: id,
+      creatorId: creatorId,
+      title: name
     });
   });
 

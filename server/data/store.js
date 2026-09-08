@@ -16,7 +16,7 @@ const INITIAL_DATA = {
       domain: 'climate',
       targetDeliverable: 'Open-source spectrophotometric probe schematic and telemetry firmware.',
       pilotBudget: 'Sample deployment budget (demonstration only)',
-      datasetAccessUrl: 'https://data.canopy.earth/sets/gw-sensor-sample',
+      datasetAccessUrl: 'https://data.canopy.internal/sets/gw-sensor-sample',
       neededSkills: ['Hardware', 'Embedded C', 'Spectroscopy'],
       status: 'illustrative_sample',
       isIllustrative: true,

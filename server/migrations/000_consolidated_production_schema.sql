@@ -1,5 +1,5 @@
 -- ============================================================================
--- CANOPY EARTH: CONSOLIDATED PRODUCTION DATABASE SCHEMA
+-- CANOPY: CONSOLIDATED PRODUCTION DATABASE SCHEMA
 -- Version: 2.5.0
 -- Idempotent: Can be safely executed in Supabase SQL Editor multiple times
 -- ============================================================================

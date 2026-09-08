@@ -1,6 +1,6 @@
 /**
  * Canopy Field Station - Application Decision Notification
- * Sender: Canopy Access <access@canopy.earth>
+ * Sender: Canopy <canopy.connect.collaborate@gmail.com>
  */
 
 function render({ applicantName, role, status, note }) {
@@ -24,7 +24,7 @@ function render({ applicantName, role, status, note }) {
     note ? `Curator Note: ${note}\n` : '',
     isApproved ? `You can now sign in with your verified email to participate in Matches, Sprint Squads, and Lab Notebook entries.` : `Thank you for your interest in Canopy. We will reach out when the next cohort opens.`,
     ``,
-    `Canopy Operations — access@canopy.earth`
+    `Canopy Operations — canopy.connect.collaborate@gmail.com`
   ].join('\n');
 
   const html = `
@@ -40,13 +40,13 @@ function render({ applicantName, role, status, note }) {
       ${isApproved ? `
         <p style="font-size: 15px; line-height: 1.6; color: #a1a8a2; margin: 0 0 24px 0;">Your Field Station credentials have been enabled. You can now access the full Match Sandbox, join active Sprint Squads, and contribute to the Lab Notebook.</p>
         <div style="text-align: center; margin: 24px 0;">
-          <a href="https://canopy.earth/login.html" style="background-color: #22543d; color: #68d391; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; display: inline-block;">Sign In to Field Station →</a>
+          <a href="/login.html" style="background-color: #22543d; color: #68d391; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; display: inline-block;">Sign In to Field Station →</a>
         </div>
       ` : `
         <p style="font-size: 14px; line-height: 1.6; color: #718096; margin: 0 0 24px 0;">We appreciate your dedication to high-impact technical work. We will keep your portfolio on file as new opportunities unlock.</p>
       `}
       <div style="border-top: 1px solid #1c2b1e; padding-top: 16px; font-size: 12px; color: #4a5568;">
-        Canopy Platform · <a href="https://canopy.earth" style="color: #4ade80; text-decoration: none;">canopy.earth</a> · access@canopy.earth
+        Canopy Platform · Build · Connect · Ship · canopy.connect.collaborate@gmail.com
       </div>
     </div>
   `;

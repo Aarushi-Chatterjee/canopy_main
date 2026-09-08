@@ -1,6 +1,6 @@
 /**
  * Canopy Field Station - Sprint Squad Invitation
- * Sender: Canopy <hello@canopy.earth>
+ * Sender: Canopy <canopy.connect.collaborate@gmail.com>
  */
 
 function render({ inviteeName, sprintTitle, role, domain }) {
@@ -15,9 +15,9 @@ function render({ inviteeName, sprintTitle, role, domain }) {
     `Cycle Timeline: 14 Days`,
     ``,
     `Visit your Sprint Board to review the squad manifest and confirm your seat:`,
-    `https://canopy.earth/sprint.html`,
+    `/sprint.html`,
     ``,
-    `Canopy Operations — hello@canopy.earth`
+    `Canopy Operations — canopy.connect.collaborate@gmail.com`
   ].join('\n');
 
   const html = `
@@ -30,10 +30,10 @@ function render({ inviteeName, sprintTitle, role, domain }) {
         <div style="font-size: 13px; color: #68d391; margin-top: 4px;">Cycle Duration: 14 Days · Active Stage: Building</div>
       </div>
       <div style="text-align: center; margin: 24px 0;">
-        <a href="https://canopy.earth/sprint.html" style="background-color: #22543d; color: #68d391; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; display: inline-block;">Review Squad Manifest →</a>
+        <a href="/sprint.html" style="background-color: #22543d; color: #68d391; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; display: inline-block;">Review Squad Manifest →</a>
       </div>
       <div style="border-top: 1px solid #1c2b1e; padding-top: 16px; font-size: 12px; color: #4a5568;">
-        Canopy Platform · <a href="https://canopy.earth" style="color: #4ade80; text-decoration: none;">canopy.earth</a> · hello@canopy.earth
+        Canopy Platform · Build · Connect · Ship · canopy.connect.collaborate@gmail.com
       </div>
     </div>
   `;

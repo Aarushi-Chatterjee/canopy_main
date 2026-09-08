@@ -57,13 +57,14 @@ const testInbox = [];
 /**
  * Sender Address Matrix
  */
-const defaultFrom = process.env.MAIL_FROM || 'Canopy Dispatch <hello@canopy.earth>';
+const defaultFrom = process.env.MAIL_FROM || 'Canopy Dispatch <canopy.connect.collaborate@gmail.com>';
+const defaultEmail = process.env.SUPPORT_EMAIL || 'canopy.connect.collaborate@gmail.com';
 const SENDERS = {
   DEFAULT: defaultFrom,
-  ACCESS: process.env.MAIL_FROM_ACCESS || (process.env.MAIL_FROM ? process.env.MAIL_FROM : 'Canopy Access <access@canopy.earth>'),
-  HELLO: process.env.MAIL_FROM_HELLO || (process.env.MAIL_FROM ? process.env.MAIL_FROM : 'Canopy Dispatch <hello@canopy.earth>'),
-  SUPPORT: process.env.MAIL_FROM_SUPPORT || (process.env.MAIL_FROM ? process.env.MAIL_FROM : 'Canopy Operations <support@canopy.earth>'),
-  PRIVACY: process.env.MAIL_FROM_PRIVACY || (process.env.MAIL_FROM ? process.env.MAIL_FROM : 'Canopy Privacy <privacy@canopy.earth>')
+  ACCESS: process.env.MAIL_FROM_ACCESS || defaultFrom,
+  HELLO: process.env.MAIL_FROM_HELLO || defaultFrom,
+  SUPPORT: process.env.MAIL_FROM_SUPPORT || `Canopy Support <${defaultEmail}>`,
+  PRIVACY: process.env.MAIL_FROM_PRIVACY || `Canopy Privacy <${defaultEmail}>`
 };
 
 /**

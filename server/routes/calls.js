@@ -56,11 +56,13 @@ router.post('/', requireAuth, async (req, res) => {
       organization = 'Open Lab Contributor',
       orgName,
       problemStatement,
+      desc,
       domain = 'climate',
       targetDeliverable = 'Functional prototype code and field evaluation report',
       targetOutcomes,
       timeline = '6 weeks',
       rewardPool = 'Community Grant',
+      reward,
       pilotBudget,
       contactChannel = '',
       datasetAccessUrl = '',
@@ -68,7 +70,7 @@ router.post('/', requireAuth, async (req, res) => {
     } = req.body;
 
     const finalTitle = (title || '').trim();
-    const finalProblem = (problemStatement || '').trim();
+    const finalProblem = (problemStatement || desc || '').trim();
 
     if (!finalTitle || !finalProblem) {
       return res.status(400).json({ error: 'Title and problem statement are required.' });
