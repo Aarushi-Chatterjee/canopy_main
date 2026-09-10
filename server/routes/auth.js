@@ -15,44 +15,12 @@ const authLimiter = rateLimit({
   message: 'Too many authentication attempts. Please wait one minute before trying again.'
 });
 
-// Cryptographic Salted Hashing
-function hashPassword(password) {
-  const salt = crypto.randomBytes(16).toString('hex');
-  const hash = crypto.scryptSync(password, salt, 64).toString('hex');
-  return `${salt}:${hash}`;
-}
-
-function verifyPassword(password, storedHash) {
-  if (!storedHash || !storedHash.includes(':')) return false;
-  const [salt, key] = storedHash.split(':');
-  const derivedKey = crypto.scryptSync(password, salt, 64).toString('hex');
-  return crypto.timingSafeEqual(Buffer.from(key, 'hex'), Buffer.from(derivedKey, 'hex'));
-}
-
-// Cryptographic Token Hashing (SHA-256 for OTP & Password Reset codes - SEC-01)
-function hashToken(token) {
-  if (!token) return null;
-  return crypto.createHash('sha256').update(String(token).trim()).digest('hex');
-}
-
-function verifyTokenHash(candidate, storedValue) {
-  if (!candidate || !storedValue) return false;
-  const candidateStr = String(candidate).trim();
-  const storedStr = String(storedValue).trim();
-
-  // If stored as 64-char SHA-256 hex hash
-  if (storedStr.length === 64 && /^[0-9a-fA-F]+$/.test(storedStr)) {
-    const candidateHash = hashToken(candidateStr);
-    try {
-      return crypto.timingSafeEqual(Buffer.from(candidateHash, 'hex'), Buffer.from(storedStr, 'hex'));
-    } catch (_) {
-      return false;
-    }
-  }
-
-  // Graceful fallback for legacy plaintext fixtures (dev/test backward compatibility)
-  return candidateStr === storedStr;
-}
+const {
+  hashPassword,
+  verifyPassword,
+  hashToken,
+  verifyTokenHash
+} = require('../utils/crypto');
 
 // POST /api/auth/register
 router.post('/register', authLimiter, async (req, res) => {

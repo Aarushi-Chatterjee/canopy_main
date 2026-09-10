@@ -100,15 +100,7 @@ app.use('/api', validateCsrf);
 // Production database readiness gate (P0-1)
 app.use('/api', requireDatabaseReady);
 
-// Constant-time key comparison to prevent character-by-character timing side-channel attacks (SEC-02, CWE-208)
-function timingSafeKeyMatch(candidate, expected) {
-  if (!candidate || !expected || typeof candidate !== 'string' || typeof expected !== 'string') {
-    return false;
-  }
-  const h1 = crypto.createHash('sha256').update(candidate).digest();
-  const h2 = crypto.createHash('sha256').update(expected).digest();
-  return crypto.timingSafeEqual(h1, h2);
-}
+const { timingSafeMatch: timingSafeKeyMatch } = require('./utils/crypto');
 
 // Unified Founder Console & API Security Gate (SEC-02, SEC-04, SEC-05)
 function founderGate(req, res, next) {

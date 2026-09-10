@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server/index.js",
-    "test:api": "node server/test-endpoints.js"
+    "test": "node server/tests/run-all.js",
+    "test:auth": "node server/tests/auth-login.test.js",
+    "test:api": "node server/tests/api-endpoints.test.js"
   },
   "keywords": [],
   "author": "",
