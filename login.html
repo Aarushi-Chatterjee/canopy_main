@@ -451,8 +451,20 @@
     const searchParams = new URLSearchParams(window.location.search);
     let payload = null;
 
-    if (hash) {
-      const hashParams = new URLSearchParams(hash);
+    const hashParams = hash ? new URLSearchParams(hash) : null;
+    const oauthError = hashParams?.get('error_description') || hashParams?.get('error') || searchParams.get('error_description') || searchParams.get('error');
+    if (oauthError) {
+      if (loginAlert) {
+        loginAlert.className = 'status-alert status-alert-error';
+        loginAlert.innerHTML = `<div><strong>OAuth Provider Error:</strong> ${oauthError}</div>`;
+        loginAlert.style.display = 'flex';
+      }
+      showToast('⚠️ Google authentication rejected: ' + oauthError);
+      window.history.replaceState({}, document.title, window.location.pathname);
+      return;
+    }
+
+    if (hashParams) {
       const accessToken = hashParams.get('access_token');
       if (accessToken) {
         payload = { access_token: accessToken };

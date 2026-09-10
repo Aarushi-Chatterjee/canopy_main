@@ -174,20 +174,40 @@ async function sendEmail({ to, subject, text, html, from = SENDERS.DEFAULT, meta
         return { success: true, messageId: info.messageId || message.id, provider: 'smtp' };
       } catch (err) {
         console.error('[EMAIL:SMTP:ERROR]', err.message);
+        if (process.env.NODE_ENV === 'production') {
+          const sendErr = new Error(`[EMAIL:ERROR] SMTP dispatch failed: ${err.message}`);
+          sendErr.statusCode = 502;
+          throw sendErr;
+        }
         return { success: false, error: err.message, provider: 'smtp' };
       }
     } else {
+      if (process.env.NODE_ENV === 'production') {
+        const err = new Error('[EMAIL:ERROR] SMTP credentials missing in production environment.');
+        err.statusCode = 503;
+        throw err;
+      }
       console.warn('[EMAIL:SMTP:WARN] SMTP credentials missing in environment. Falling back to console dispatch.');
     }
   }
 
-  // Console provider (default development fallback)
+  // In production, strictly reject console fallback to prevent silent email drops (P1-1)
+  if (process.env.NODE_ENV === 'production' && provider === 'console') {
+    const err = new Error('[EMAIL:ERROR] Transactional email provider (SMTP or Resend) is required in production. Dispatches cannot fall back to console.');
+    err.statusCode = 503;
+    err.operational = true;
+    throw err;
+  }
+
+  // Console provider (development / preview mode only)
   console.log('----------------------------------------------------');
   console.log(`[CANOPY DISPATCH] From: ${from} | To: ${to}`);
   console.log(`Subject: ${subject}`);
   console.log(`Time: ${timestamp}`);
   console.log('Body:');
-  console.log(text);
+  // Mask sensitive 6-digit OTP codes if present in development logs
+  const maskedText = text.replace(/(\b\d{2})\d{4}(\b)/g, '$1****');
+  console.log(maskedText);
   console.log('----------------------------------------------------');
 
   return { success: true, messageId: message.id, provider: 'console' };

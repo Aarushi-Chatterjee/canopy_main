@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const crypto = require('crypto');
 
 const authRouter = require('./routes/auth');
 const matchesRouter = require('./routes/matches');
@@ -47,6 +48,7 @@ app.use(cors({
 
 // Limit request payload to prevent Denial of Service via large memory buffers
 app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({ extended: false, limit: '100kb' }));
 
 // Native zero-dependency cookie parser (SEC-04)
 app.use((req, res, next) => {
@@ -98,21 +100,27 @@ app.use('/api', validateCsrf);
 // Production database readiness gate (P0-1)
 app.use('/api', requireDatabaseReady);
 
-// Unified Founder Console & API Security Gate (SEC-04, SEC-05)
+// Constant-time key comparison to prevent character-by-character timing side-channel attacks (SEC-02, CWE-208)
+function timingSafeKeyMatch(candidate, expected) {
+  if (!candidate || !expected || typeof candidate !== 'string' || typeof expected !== 'string') {
+    return false;
+  }
+  const h1 = crypto.createHash('sha256').update(candidate).digest();
+  const h2 = crypto.createHash('sha256').update(expected).digest();
+  return crypto.timingSafeEqual(h1, h2);
+}
+
+// Unified Founder Console & API Security Gate (SEC-02, SEC-04, SEC-05)
 function founderGate(req, res, next) {
   const staffRoles = ['owner', 'admin', 'moderator', 'match_curator', 'content_editor'];
   const hasStaffRole = req.user && req.user.roles && req.user.roles.some(r => staffRoles.includes(r));
   const isOwner = req.user && req.user.roles && req.user.roles.includes('owner');
   const requiredFounderKey = process.env.FOUNDER_CONSOLE_KEY;
-  const providedKey = req.query?.key || req.headers['x-founder-key'] || req.cookies?.canopy_founder_key;
+  // SEC-02 HARDENING: Strictly reject keys in query parameters (CWE-598) to prevent leakage in URLs, browser history, and referer headers.
+  const providedKey = req.headers['x-founder-key'] || req.cookies?.canopy_founder_key;
 
-  // 1. If a valid secondary founder console key is explicitly provided, allow access and set cookie
-  if (requiredFounderKey && providedKey === requiredFounderKey) {
-    res.cookie('canopy_founder_key', providedKey, {
-      httpOnly: true,
-      sameSite: 'Lax',
-      secure: process.env.NODE_ENV === 'production'
-    });
+  // 1. If a valid secondary founder console key is explicitly provided via header or cookie, allow access
+  if (requiredFounderKey && timingSafeKeyMatch(providedKey, requiredFounderKey)) {
     return next();
   }
 
@@ -133,14 +141,20 @@ function founderGate(req, res, next) {
     return res.status(403).json({ error: 'Forbidden. Founder or Platform Administrator credentials required.' });
   }
 
-  // 5. For /admin UI: If secondary key is configured, prompt for it; otherwise redirect to login
+  // 5. For /admin UI: If secondary key is configured, prompt for it via secure POST form challenge; otherwise redirect to login
   if (requiredFounderKey) {
     return res.status(403).send(`
       <!DOCTYPE html>
-      <html>
-      <head><title>Canopy // Console Authentication Gate</title><style>body{background:#090e09;color:#e2e8f0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;}form{background:#0f1710;padding:32px;border-radius:8px;border:1px solid #1c2e1f;max-width:360px;width:100%;}input{width:100%;padding:10px;margin:12px 0 16px;background:#090e09;border:1px solid #2d4a32;border-radius:4px;color:#fff;box-sizing:border-box;}button{width:100%;padding:10px;background:#4ade80;border:none;border-radius:4px;color:#090e09;font-weight:bold;cursor:pointer;}</style></head>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Canopy // Console Authentication Gate</title>
+        <meta name="robots" content="noindex, nofollow">
+        <style>body{background:#090e09;color:#e2e8f0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;}form{background:#0f1710;padding:32px;border-radius:8px;border:1px solid #1c2e1f;max-width:360px;width:100%;}input{width:100%;padding:10px;margin:12px 0 16px;background:#090e09;border:1px solid #2d4a32;border-radius:4px;color:#fff;box-sizing:border-box;}button{width:100%;padding:10px;background:#4ade80;border:none;border-radius:4px;color:#090e09;font-weight:bold;cursor:pointer;}</style>
+      </head>
       <body>
-        <form method="GET" action="/admin">
+        <form method="POST" action="/admin/unlock">
           <h3 style="margin-top:0;color:#4ade80;">Founder Station Gate</h3>
           <p style="font-size:13px;color:#94a3b8;">Enter your secondary founder key to unlock operations:</p>
           <input type="password" name="key" placeholder="Founder Access Key" required autofocus />
@@ -154,11 +168,51 @@ function founderGate(req, res, next) {
   return res.redirect('/login.html?redirect=/admin');
 }
 
+// Secure POST unlock endpoint for founder console (SEC-02)
+app.post('/admin/unlock', (req, res) => {
+  const requiredFounderKey = process.env.FOUNDER_CONSOLE_KEY;
+  const candidateKey = req.body?.key;
+
+  if (requiredFounderKey && timingSafeKeyMatch(candidateKey, requiredFounderKey)) {
+    res.cookie('canopy_founder_key', candidateKey, {
+      httpOnly: true,
+      sameSite: 'Lax',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 8 * 3600 * 1000 // 8 hours
+    });
+    return res.redirect('/admin');
+  }
+
+  return res.status(403).send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8"><title>Canopy // Access Denied</title>
+      <meta name="robots" content="noindex, nofollow">
+      <style>body{background:#090e09;color:#e2e8f0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;}div{background:#0f1710;padding:32px;border-radius:8px;border:1px solid #7f1d1d;max-width:360px;text-align:center;}a{color:#4ade80;text-decoration:none;display:inline-block;margin-top:16px;}</style>
+    </head>
+    <body>
+      <div>
+        <h3 style="color:#f87171;margin-top:0;">Access Denied</h3>
+        <p style="font-size:13px;color:#94a3b8;">Invalid founder station access key provided.</p>
+        <a href="/admin">← Try Again</a>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
+app.post('/admin/lock', (req, res) => {
+  res.clearCookie('canopy_founder_key');
+  res.redirect('/login.html');
+});
+
 // Server-Side Protected Founder Console Route
 app.get(['/admin', '/admin.html'], optionalAuth, founderGate, (req, res) => {
   const adminHtmlPath = path.join(__dirname, '../admin.html');
   res.sendFile(adminHtmlPath);
 });
+
 
 // Health check with honest DB status verification
 app.get('/api/health', async (req, res) => {
@@ -190,7 +244,7 @@ app.get('/api/health', async (req, res) => {
 });
 
 // Mount modular API domain routers
-app.use('/api/auth', authRouter);
+app.use(['/api/auth', '/auth'], authRouter);
 app.use('/api/matches', matchesRouter);
 app.use('/api/sprints', sprintsRouter);
 app.use('/api/calls', callsRouter);

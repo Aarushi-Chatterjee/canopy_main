@@ -3,6 +3,7 @@ process.env.CANOPY_ISOLATE_STORE = 'true';
 process.env.EMAIL_PROVIDER = 'test';
 process.env.JWT_SECRET = 'canopy_test_jwt_secret_minimum_32_characters_for_security_spec';
 process.env.FOUNDER_EMAILS = 'canopy.connect.collaborate@gmail.com,aarushichatterjee27@gmail.com';
+process.env.FOUNDER_CONSOLE_KEY = 'canopy_test_founder_key_secure_secret';
 
 const http = require('http');
 const { app } = require('./index.js');
@@ -386,6 +387,54 @@ const server = app.listen(PORT, async () => {
     const deleteRes = await request('DELETE', '/api/auth/me', { confirmation: 'DELETE MY ACCOUNT' }, { ...cookieHeaders, 'X-Canopy-Client': 'web' });
     assert(deleteRes.status === 200 && deleteRes.data.success === true,
       'Privacy Charter: Authenticated user can securely delete and purge account');
+
+    console.log('\n--- 11. Production Hardening: Founder Secrecy & Defense-in-Depth ---');
+    // 11.1 Query parameter key leak rejection (CWE-598)
+    const queryKeyRes = await request('GET', '/admin?key=canopy_test_founder_key_secure_secret');
+    assert(queryKeyRes.status === 403 && typeof queryKeyRes.data === 'string' && queryKeyRes.data.includes('Founder Station Gate'),
+      'Founder Gate: Query parameter ?key= is strictly rejected to prevent URL credential leaks');
+
+    // 11.2 Insecure key unlock rejection
+    const invalidUnlock = await request('POST', '/admin/unlock', { key: 'wrong_founder_passphrase' });
+    assert(invalidUnlock.status === 403 && typeof invalidUnlock.data === 'string' && invalidUnlock.data.includes('Access Denied'),
+      'Founder Gate: Invalid key unlock rejected with 403 Access Denied challenge');
+
+    // 11.3 Secure constant-time unlock
+    const validUnlock = await request('POST', '/admin/unlock', { key: 'canopy_test_founder_key_secure_secret' });
+    assert(validUnlock.status === 302 && validUnlock.headers['set-cookie'],
+      'Founder Gate: Valid key unlock redirects (302) and sets HttpOnly canopy_founder_key cookie');
+
+    const founderCookie = validUnlock.headers['set-cookie'][0].split(';')[0];
+    const unlockedAdmin = await request('GET', '/admin', null, { 'Cookie': founderCookie });
+    assert(unlockedAdmin.status === 200 && typeof unlockedAdmin.data === 'string' && unlockedAdmin.data.includes('Founder Console'),
+      'Founder Gate: Authorized cookie unlocks full Founder Console station');
+
+    // 11.4 Robots.txt Bot Disallows
+    const fs = require('fs');
+    const path = require('path');
+    const robotsTxt = fs.readFileSync(path.join(__dirname, '../public/robots.txt'), 'utf8');
+    assert(robotsTxt.includes('Disallow: /admin') && robotsTxt.includes('Disallow: /api/'),
+      'Bot Governance: robots.txt strictly disallows crawling /admin and /api/');
+
+    // 11.5 Email Service Production Fallback Rejection
+    const origEnv = process.env.NODE_ENV;
+    const origProvider = process.env.EMAIL_PROVIDER;
+    try {
+      process.env.NODE_ENV = 'production';
+      process.env.EMAIL_PROVIDER = 'console';
+      let threw = false;
+      try {
+        await emailService.sendVerificationCode('test.user@canopy.test', '123456');
+      } catch (e) {
+        threw = true;
+        assert(e.statusCode === 503, 'Email Transport: Throws 503 when email provider is console in production');
+      }
+      assert(threw, 'Email Transport: Strictly prohibits silent console fallback in production environment');
+    } finally {
+      process.env.NODE_ENV = origEnv;
+      process.env.EMAIL_PROVIDER = origProvider;
+    }
+
 
     if (failures === 0) {
       console.log('\n✨ ALL CANOPY CRITICAL SYSTEM TESTS PASSED (0 failures)!');

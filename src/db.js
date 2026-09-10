@@ -6,7 +6,7 @@
  * - Retains only user session credentials in secure client storage.
  */
 
-const API_BASE = import.meta.env?.VITE_API_URL || (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? '/api' : 'http://localhost:3001/api');
+const API_BASE = import.meta.env?.VITE_API_URL || (typeof window !== 'undefined' && window.location.port === '5173' ? '/api' : (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? '/api' : 'http://localhost:3001/api'));
 
 const STORAGE_KEYS = {
   USER: 'canopy_auth_user',
@@ -41,7 +41,7 @@ function getAuthHeader() {
 // Failure: { ok: false, status: Number, code: String, message: String }
 export async function apiRequest(endpoint, options = {}) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 4500);
+  const timeout = setTimeout(() => controller.abort(), 6000);
 
   try {
     const res = await fetch(`${API_BASE}${endpoint}`, {
@@ -67,11 +67,15 @@ export async function apiRequest(endpoint, options = {}) {
       : res.status === 409 ? 'CONFLICT' 
       : 'SERVER_ERROR';
 
+    const defaultMsg = res.status === 404
+      ? 'Canopy API gateway endpoint not found (HTTP 404). Please ensure the backend server is running via `npm run server`.'
+      : `Server responded with status ${res.status}.`;
+
     return {
       ok: false,
       status: res.status,
       code,
-      message: data.error || `Server responded with status ${res.status}.`
+      message: data.error || defaultMsg
     };
   } catch (networkErr) {
     clearTimeout(timeout);
@@ -79,7 +83,7 @@ export async function apiRequest(endpoint, options = {}) {
       ok: false,
       status: 0,
       code: 'NETWORK_UNAVAILABLE',
-      message: 'Canopy could not reach the service. Nothing has been saved.'
+      message: 'Canopy could not reach the backend service. Ensure `npm run server` is running on port 3001.'
     };
   }
 }

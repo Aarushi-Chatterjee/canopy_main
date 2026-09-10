@@ -416,6 +416,76 @@ import { sprints, matches, notebook, auth } from './db.js';
   appDrawerClose && appDrawerClose.addEventListener('click', closeAppDrawer);
 
   var appDrawerForm = document.getElementById('appDrawerForm');
+
+  function showShovelAuthPrompt(draft) {
+    var promptEl = document.getElementById('drawerAuthPrompt');
+    if (!promptEl) {
+      promptEl = document.createElement('div');
+      promptEl.id = 'drawerAuthPrompt';
+      promptEl.className = 'paper-card';
+      promptEl.style.cssText = 'margin-top:16px;padding:16px 18px;background:color-mix(in srgb, var(--coral) 8%, var(--card));border:1px solid color-mix(in srgb, var(--coral) 30%, transparent);border-radius:10px;text-align:left;';
+      var formFoot = appDrawerForm.querySelector('.form-foot');
+      if (formFoot) formFoot.before(promptEl);
+      else appDrawerForm.appendChild(promptEl);
+    }
+
+    var returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+    promptEl.innerHTML = `
+      <div style="font-size:0.92rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;">
+        <span>🔒</span> Field Station Pass Required to Dispatch Note
+      </div>
+      <p style="margin:6px 0 12px;font-size:0.84rem;color:var(--ink-soft);line-height:1.4;">
+        Your proposal note is <strong>safely saved</strong>. Sign in or activate your pass so the team can verify and respond to your note.
+      </p>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <a href="/login.html?redirect=${returnUrl}&resume=shovel" class="btn btn-stamp btn-sm" style="text-decoration:none;">Sign In / Activate Pass →</a>
+        <button type="button" class="btn btn-ghost btn-sm" id="dismissDrawerAuth">Keep Editing</button>
+      </div>
+    `;
+    promptEl.style.display = 'block';
+
+    document.getElementById('dismissDrawerAuth')?.addEventListener('click', function() {
+      promptEl.style.display = 'none';
+    });
+  }
+
+  async function checkShovelDraftResume() {
+    try {
+      var raw = sessionStorage.getItem('canopy_shovel_draft');
+      if (!raw) return;
+      var draft = JSON.parse(raw);
+      if (!draft || !draft.note) return;
+
+      var user = await auth.getCurrentUser().catch(function(){ return null; });
+      if (user && !user.isGuest) {
+        if (document.getElementById('dNote')) document.getElementById('dNote').value = draft.note;
+        if (draft.link && document.getElementById('dLink')) document.getElementById('dLink').value = draft.link;
+        if (draft.title && drawerTitle) drawerTitle.textContent = draft.title;
+        if (draft.sub && drawerSub) drawerSub.textContent = draft.sub;
+        if (draft.context) currentDrawerContext = draft.context;
+
+        if (draft.skill) {
+          appDrawerForm?.querySelectorAll('[data-group="drawer-skills"] .pill').forEach(function(p){
+            p.setAttribute('aria-pressed', p.textContent === draft.skill ? 'true' : 'false');
+          });
+        }
+        if (draft.availability) {
+          appDrawerForm?.querySelectorAll('[data-group="drawer-avail"] .pill').forEach(function(p){
+            p.setAttribute('aria-pressed', p.textContent === draft.availability ? 'true' : 'false');
+          });
+        }
+
+        sessionStorage.removeItem('canopy_shovel_draft');
+        if (appDrawer && appDrawerBackdrop) {
+          appDrawer.classList.add('is-open');
+          appDrawerBackdrop.classList.add('is-open');
+          showToast('🌱 Draft restored! Click "Plant this note" to dispatch.');
+        }
+      }
+    } catch (e) {}
+  }
+  checkShovelDraftResume();
+
   appDrawerForm && appDrawerForm.addEventListener('submit', async function(e){
     e.preventDefault();
     var note = document.getElementById('dNote')?.value || '';
@@ -428,6 +498,33 @@ import { sprints, matches, notebook, auth } from './db.js';
 
     try {
       var isNotebook = window.location.pathname.indexOf('notebook') !== -1 || (drawerTitle && drawerTitle.textContent.indexOf('Notebook') !== -1) || currentDrawerContext.type === 'notebook';
+
+      // Zero-Data-Loss Pre-flight Auth Gate (P2-1)
+      var currentUser = await auth.getCurrentUser().catch(function(){ return null; });
+      if (!currentUser || currentUser.isGuest) {
+        var activeSkillPill = this.querySelector('[data-group="drawer-skills"] .pill[aria-pressed="true"]');
+        var activeAvailPill = this.querySelector('[data-group="drawer-avail"] .pill[aria-pressed="true"]');
+        var dLink = document.getElementById('dLink')?.value || '';
+
+        var draftData = {
+          context: currentDrawerContext,
+          title: drawerTitle ? drawerTitle.textContent : '',
+          sub: drawerSub ? drawerSub.textContent : '',
+          note: note,
+          skill: activeSkillPill ? activeSkillPill.textContent : '',
+          availability: activeAvailPill ? activeAvailPill.textContent : '',
+          link: dLink,
+          savedAt: new Date().toISOString()
+        };
+        sessionStorage.setItem('canopy_shovel_draft', JSON.stringify(draftData));
+
+        showShovelAuthPrompt(draftData);
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origText;
+        }
+        return;
+      }
 
       if (isNotebook) {
         await notebook.publishEntry({

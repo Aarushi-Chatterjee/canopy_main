@@ -205,6 +205,7 @@ router.post('/verify', authLimiter, async (req, res) => {
     res.json({
       user: userMapper.toSafeUser(updatedUser),
       profile,
+      token: sessionToken,
       message: 'Field Station Pass successfully verified and active.'
     });
   } catch (err) {
@@ -307,7 +308,8 @@ router.post('/login', authLimiter, async (req, res) => {
 
     res.json({
       user: userMapper.toSafeUser(user),
-      profile
+      profile,
+      token: sessionToken
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Login failed.' });
@@ -315,7 +317,7 @@ router.post('/login', authLimiter, async (req, res) => {
 });
 
 // POST /api/auth/reset-password-request (Account-enumeration resistant)
-router.post('/reset-password-request', authLimiter, async (req, res) => {
+router.post(['/reset-password-request', '/password-reset/request'], authLimiter, async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -350,7 +352,7 @@ router.post('/reset-password-request', authLimiter, async (req, res) => {
 });
 
 // POST /api/auth/reset-password-confirm
-router.post('/reset-password-confirm', authLimiter, async (req, res) => {
+router.post(['/reset-password-confirm', '/password-reset/confirm'], authLimiter, async (req, res) => {
   try {
     const { email, token, newPassword } = req.body;
 

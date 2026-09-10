@@ -342,3 +342,60 @@ CREATE POLICY "Published content is viewable by everyone" ON content_items FOR S
 
 DROP POLICY IF EXISTS "Anyone can submit an intake application" ON applications;
 CREATE POLICY "Anyone can submit an intake application" ON applications FOR INSERT WITH CHECK (true);
+
+-- ============================================================================
+-- 13. OBJECT STORAGE: CANOPY-MEDIA BUCKET & ACCESS POLICIES
+-- ============================================================================
+-- Ensure the storage schema extension is ready and bucket exists for Content Studio & media uploads
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES (
+    'canopy-media',
+    'canopy-media',
+    true,
+    5242880, -- 5MB limit
+    ARRAY['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml']
+)
+ON CONFLICT (id) DO UPDATE SET
+    public = true,
+    file_size_limit = 5242880,
+    allowed_mime_types = ARRAY['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml'];
+
+-- Storage RLS: Public can read published media assets
+DROP POLICY IF EXISTS "Public can view canopy-media" ON storage.objects;
+CREATE POLICY "Public can view canopy-media"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'canopy-media');
+
+-- Storage RLS: Service role and authenticated operations staff can insert/update assets
+DROP POLICY IF EXISTS "Authenticated staff can upload canopy-media" ON storage.objects;
+CREATE POLICY "Authenticated staff can upload canopy-media"
+ON storage.objects FOR INSERT
+WITH CHECK (bucket_id = 'canopy-media');
+
+-- ============================================================================
+-- 14. OPTIONAL FOUNDER SEED TEMPLATE (OFFLINE INITIALIZATION)
+-- Run this block once to initialize the platform founder without dynamic registration race conditions.
+-- Replace 'founder@yourdomain.com' and hash with your designated credentials.
+-- ============================================================================
+-- INSERT INTO users (id, email, password_hash, role, display_name, is_verified, verified_at)
+-- VALUES (
+--     'usr_founder_primary',
+--     'canopy.connect.collaborate@gmail.com',
+--     NULL, -- Pre-seed with hash generated via: node -e "const crypto=require('crypto'); const s=crypto.randomBytes(16).toString('hex'); console.log(s+':'+crypto.scryptSync('YOUR_PASSWORD',s,64).toString('hex'));"
+--     'builder',
+--     'Canopy Founder',
+--     TRUE,
+--     NOW()
+-- )
+-- ON CONFLICT (email) DO UPDATE SET is_verified = TRUE;
+--
+-- INSERT INTO user_roles (id, user_id, role, granted_by, granted_at)
+-- VALUES (
+--     'role_founder_owner',
+--     'usr_founder_primary',
+--     'owner',
+--     'system_bootstrap',
+--     NOW()
+-- )
+-- ON CONFLICT (id) DO NOTHING;
+

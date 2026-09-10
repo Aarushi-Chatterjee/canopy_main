@@ -1,6 +1,23 @@
 {
   "users": [
     {
+      "id": "usr_g_1789049666425",
+      "email": "canopy.connect.collaborate@gmail.com",
+      "role": "builder",
+      "displayName": "Canopy",
+      "passwordHash": null,
+      "isVerified": true,
+      "verificationToken": null,
+      "verificationExpiresAt": null,
+      "verificationAttempts": 0,
+      "lastVerificationSentAt": null,
+      "resetToken": null,
+      "resetExpiresAt": null,
+      "resetAttempts": 0,
+      "createdAt": "2026-09-10T14:14:26.425Z",
+      "updatedAt": null
+    },
+    {
       "id": "usr_1788601947981",
       "email": "builder.1788601947679@canopy.earth",
       "password_hash": "c9c74bd5dbeccdb18333d22112ccdfc3:56dfb9aec001b0f5cbcc8bec1eb32c25d48aec79fad941645160215df91109c11e56e2273fa3ee1e90934fd0f62004e63638e76e01aee41578d9f0a3a40af1a7",
@@ -193,6 +210,20 @@
     }
   ],
   "profiles": [
+    {
+      "id": "prof_1789049666770",
+      "userId": "usr_g_1789049666425",
+      "displayName": "Canopy",
+      "headline": "BUILDER at Canopy",
+      "bio": "",
+      "primaryDomain": "climate",
+      "skillTags": [],
+      "avatarUrl": "https://lh3.googleusercontent.com/a/ACg8ocKzW2QC9mYfmU-6cI_5NEOknz0yAcwWh74Iy7lA21CEqqqJwhQ=s96-c",
+      "hoursPerWeek": 10,
+      "proofOfWork": [],
+      "createdAt": "2026-09-10T14:14:27.149Z",
+      "updatedAt": null
+    },
     {
       "userId": "usr_1788601947981",
       "displayName": "Elena Test",
@@ -1380,6 +1411,52 @@
       "motivationNote": "I want to build real hardware sensors that matter rather than another SaaS dashboard.",
       "status": "verified",
       "submittedAt": "2026-08-01T09:00:00Z"
+    }
+  ],
+  "user_roles": [
+    {
+      "id": "rol_1789049669766_2nkp",
+      "userId": "usr_g_1789049666425",
+      "role": "owner",
+      "grantedBy": "system_founder_bootstrap",
+      "grantedAt": "2026-09-10T14:14:29.766Z"
+    },
+    {
+      "id": "rol_1789049669584_1keu",
+      "userId": "usr_g_1789049666425",
+      "role": "owner",
+      "grantedBy": "system_founder_bootstrap",
+      "grantedAt": "2026-09-10T14:14:29.584Z"
+    }
+  ],
+  "audit_events": [
+    {
+      "id": "aud_1789049670065_shamr",
+      "eventType": "founder.bootstrap_granted",
+      "actorId": "usr_g_1789049666425",
+      "actorRole": "owner",
+      "targetEntityType": "user_roles",
+      "targetEntityId": "usr_g_1789049666425",
+      "payload": {
+        "role": "owner",
+        "email": "canopy.connect.collaborate@gmail.com"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-09-10T14:14:30.065Z"
+    },
+    {
+      "id": "aud_1789049669828_jwdw2",
+      "eventType": "founder.bootstrap_granted",
+      "actorId": "usr_g_1789049666425",
+      "actorRole": "owner",
+      "targetEntityType": "user_roles",
+      "targetEntityId": "usr_g_1789049666425",
+      "payload": {
+        "role": "owner",
+        "email": "canopy.connect.collaborate@gmail.com"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-09-10T14:14:29.828Z"
     }
   ]
 }
