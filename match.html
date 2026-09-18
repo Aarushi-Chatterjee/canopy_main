@@ -145,7 +145,7 @@
 
   <!-- ---- Profile Builder with Verified Connections Network ---- -->
   <div class="profile-builder elevated-card reveal" id="profileBuilderModule" data-domain="design">
-    <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+    <div class="profile-builder-header" style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
       <img src="/avatars/avatar-builders.png" id="activeAvatarImg" alt="Selected Persona Avatar" style="width:64px;height:64px;object-fit:contain;border-radius:12px;background:rgba(31,92,64,0.08);padding:6px;flex:0 0 auto;">
       <div style="flex:1;min-width:240px;">
         <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--forest);">Build Your Sandbox Profile</span>
@@ -170,13 +170,13 @@
     </div>
 
     <div style="border-top:1px solid var(--line);padding-top:16px;margin-top:16px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+      <div class="profile-builder-bar" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
           <span style="font-size:0.8rem;color:var(--ink-soft);font-weight:600;">Active tags:</span>
           <span class="tag-chip skill" id="profileTagRole">Builder</span>
           <span class="tag-chip" data-domain="climate">Climate &amp; AI Focus</span>
         </div>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="profile-builder-actions" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           <button type="button" class="btn btn-ghost btn-sm" id="btnToggleConnections" aria-expanded="false">
             <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true" style="margin-right:2px;"><circle cx="4" cy="8" r="2.5"/><circle cx="12" cy="4" r="2.5"/><circle cx="12" cy="12" r="2.5"/><path d="M4 8l8-4M4 8l8 4" stroke="currentColor" stroke-width="1.5"/></svg>
             Verified Connections (3)
@@ -192,8 +192,11 @@
       <!-- Verified Connections Expandable Deck -->
       <div class="verified-connections-panel" id="verifiedConnectionsPanel" style="display:none;background:color-mix(in srgb, var(--paper) 60%, var(--card));border:1px solid var(--card-edge);border-radius:10px;padding:16px 18px;margin-top:14px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-          <span style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--forest);">Verified Peer Connections</span>
-          <span style="font-size:0.75rem;color:var(--ink-faint);">3 direct collaborator channels active this cycle</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--forest);">Verified Peer Connections</span>
+            <span class="illustrative-badge" style="font-size:0.7rem;padding:2px 6px;">Demo Sandbox</span>
+          </div>
+          <span style="font-size:0.75rem;color:var(--ink-faint);">3 sample collaborator channels demonstrating active cycle matching</span>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;">
           <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
@@ -260,10 +263,11 @@
       <button type="button" class="filter-chip" data-domain="civic" aria-pressed="false">Civic Tech</button>
       <button type="button" class="filter-chip" data-domain="hardware" aria-pressed="false">Hardware</button>
       <button type="button" class="filter-chip" data-domain="ai" aria-pressed="false">AI / ML</button>
+      <button type="button" class="filter-chip" data-domain="design" aria-pressed="false">Design</button>
     </div>
 
     <div class="match-grid" id="callGrid">
-      <article class="elevated-card interactive match-card reveal" data-domain="climate" data-id="call_groundwater" data-creator-id="usr_water_ngo" tabindex="0">
+      <article class="elevated-card interactive match-card reveal" data-domain="climate" data-id="call_groundwater" data-creator-id="usr_water_ngo" data-illustrative="true" tabindex="0">
         <div class="head-row">
           <div class="avatar" data-seed="groundwater-sensor" aria-hidden="true"></div>
           <div class="head-title">
@@ -288,16 +292,20 @@
         </div>
       </article>
 
-      <article class="elevated-card interactive match-card reveal" data-domain="ai" data-id="call_deforestation" data-creator-id="usr_maya" tabindex="0">
+      <article class="elevated-card interactive match-card reveal" data-domain="ai" data-id="call_deforestation" data-creator-id="usr_maya" data-illustrative="true" tabindex="0">
         <div class="head-row">
           <div class="avatar" data-seed="deforestation-tracker" aria-hidden="true"></div>
           <div class="head-title">
             <div class="name">Deforestation tracker from satellite feeds</div>
             <div class="sub">posted by an independent researcher</div>
           </div>
+          <span class="illustrative-badge">Illustrative Example</span>
           <span class="growth-badge" data-stage="seed"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Seed</span>
         </div>
         <p class="line">"I need a computer vision engineer to help me turn public satellite imagery into a weekly change-detection map."</p>
+        <div class="illustrative-notice">
+          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
+        </div>
         <div class="chip-row">
           <span class="tag-chip" data-domain="ai">AI / ML</span>
           <span class="tag-chip skill">Computer Vision</span>
@@ -309,16 +317,20 @@
         </div>
       </article>
 
-      <article class="elevated-card interactive match-card reveal" data-domain="health" data-id="call_triage" data-creator-id="usr_aarushi" tabindex="0">
+      <article class="elevated-card interactive match-card reveal" data-domain="health" data-id="call_triage" data-creator-id="usr_aarushi" data-illustrative="true" tabindex="0">
         <div class="head-row">
           <div class="avatar" data-seed="clinic-triage" aria-hidden="true"></div>
           <div class="head-title">
             <div class="name">Offline-first triage tool for rural clinics</div>
             <div class="sub">posted by a public health fellow</div>
           </div>
+          <span class="illustrative-badge">Illustrative Example</span>
           <span class="growth-badge" data-stage="in_sprint"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> In Sprint</span>
         </div>
         <p class="line">A scoped problem with real clinic partners lined up: needs someone who's shipped for low-connectivity Android before.</p>
+        <div class="illustrative-notice">
+          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
+        </div>
         <div class="chip-row">
           <span class="tag-chip" data-domain="health">Health</span>
           <span class="tag-chip skill">Android</span>
@@ -330,16 +342,20 @@
         </div>
       </article>
 
-      <article class="elevated-card interactive match-card reveal" data-domain="civic" data-id="call_budget" data-creator-id="usr_aarushi" tabindex="0">
+      <article class="elevated-card interactive match-card reveal" data-domain="civic" data-id="call_budget" data-creator-id="usr_aarushi" data-illustrative="true" tabindex="0">
         <div class="head-row">
           <div class="avatar" data-seed="civic-budget" aria-hidden="true"></div>
           <div class="head-title">
             <div class="name">A plain-language city budget explorer</div>
             <div class="sub">posted by a civic tech collective</div>
           </div>
+          <span class="illustrative-badge">Illustrative Example</span>
           <span class="growth-badge" data-stage="sprouting"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Sprouting</span>
         </div>
         <p class="line">Municipal budget data is public but unreadable. Wants a designer and a data person to make it legible.</p>
+        <div class="illustrative-notice">
+          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
+        </div>
         <div class="chip-row">
           <span class="tag-chip" data-domain="civic">Civic Tech</span>
           <span class="tag-chip skill">Data Viz</span>
@@ -351,16 +367,20 @@
         </div>
       </article>
 
-      <article class="elevated-card interactive match-card reveal" data-domain="education" data-id="call_tutor" data-creator-id="usr_aarushi" tabindex="0">
+      <article class="elevated-card interactive match-card reveal" data-domain="education" data-id="call_tutor" data-creator-id="usr_aarushi" data-illustrative="true" tabindex="0">
         <div class="head-row">
           <div class="avatar" data-seed="reading-tutor" aria-hidden="true"></div>
           <div class="head-title">
             <div class="name">Adaptive reading tutor for grade 3–5</div>
             <div class="sub">posted by a former teacher, now founder</div>
           </div>
+          <span class="illustrative-badge">Illustrative Example</span>
           <span class="growth-badge" data-stage="seed"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Seed</span>
         </div>
         <p class="line">"The idea is vivid. What's missing is a technical co-builder to bring it to life." Looking for a full-stack partner.</p>
+        <div class="illustrative-notice">
+          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
+        </div>
         <div class="chip-row">
           <span class="tag-chip" data-domain="education">Education</span>
           <span class="tag-chip skill">Full-stack</span>
@@ -372,16 +392,20 @@
         </div>
       </article>
 
-      <article class="elevated-card interactive match-card reveal" data-domain="hardware" data-id="call_solar" data-creator-id="usr_elena" tabindex="0">
+      <article class="elevated-card interactive match-card reveal" data-domain="hardware" data-id="call_solar" data-creator-id="usr_elena" data-illustrative="true" tabindex="0">
         <div class="head-row">
           <div class="avatar" data-seed="solar-microgrid" aria-hidden="true"></div>
           <div class="head-title">
             <div class="name">Fault detection for village solar microgrids</div>
             <div class="sub">posted by a hardware collective</div>
           </div>
+          <span class="illustrative-badge">Illustrative Example</span>
           <span class="growth-badge" data-stage="sprouting"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Sprouting</span>
         </div>
         <p class="line">Field-tested hardware, no software layer yet. Wants an ML engineer ready to work from real sensor logs.</p>
+        <div class="illustrative-notice">
+          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
+        </div>
         <div class="chip-row">
           <span class="tag-chip" data-domain="hardware">Hardware</span>
           <span class="tag-chip skill">ML</span>
@@ -629,6 +653,11 @@
 
       const grid = document.getElementById('callGrid');
       if (!grid) return;
+
+      // Real community calls are available — remove static illustrative fallback cards
+      // so visitors are never confused by placeholder copy alongside authentic posts.
+      const illustrativeCards = grid.querySelectorAll('[data-illustrative="true"]');
+      illustrativeCards.forEach(card => card.remove());
 
       liveCalls.forEach(call => {
         if (!document.querySelector(`[data-id="${call.id}"]`)) {

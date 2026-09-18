@@ -107,19 +107,23 @@
       </div>
 
       <div class="field">
-        <label for="callTitle" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Build Call Headline (1 line)</label>
-        <input type="text" id="callTitle" required placeholder="e.g. Build an offline telemetry node for agricultural microgrids" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <label for="callTitle" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Build Call Headline (1 line)</label>
+          <span id="callTitleCount" style="font-size:0.75rem;color:var(--ink-faint);">0 / 80</span>
+        </div>
+        <input type="text" id="callTitle" required maxlength="80" placeholder="e.g. Build an offline telemetry node for agricultural microgrids" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
 
       <div class="field">
         <label style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Primary Domain</label>
         <div class="pill-group" data-group="domain" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
-          <button type="button" class="pill" aria-pressed="true">Climate</button>
-          <button type="button" class="pill" aria-pressed="false">Health</button>
-          <button type="button" class="pill" aria-pressed="false">Education</button>
-          <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
-          <button type="button" class="pill" aria-pressed="false">Hardware</button>
-          <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+          <button type="button" class="pill" data-domain="climate" aria-pressed="true">Climate</button>
+          <button type="button" class="pill" data-domain="health" aria-pressed="false">Health</button>
+          <button type="button" class="pill" data-domain="education" aria-pressed="false">Education</button>
+          <button type="button" class="pill" data-domain="civic" aria-pressed="false">Civic Tech</button>
+          <button type="button" class="pill" data-domain="hardware" aria-pressed="false">Hardware</button>
+          <button type="button" class="pill" data-domain="ai" aria-pressed="false">AI / ML</button>
+          <button type="button" class="pill" data-domain="design" aria-pressed="false">Design</button>
         </div>
       </div>
 
@@ -223,6 +227,20 @@
     }
   }).catch(() => {});
 
+  const callTitleInput = document.getElementById('callTitle');
+  const callTitleCount = document.getElementById('callTitleCount');
+  if (callTitleInput && callTitleCount) {
+    callTitleInput.addEventListener('input', () => {
+      const len = callTitleInput.value.length;
+      callTitleCount.textContent = `${len} / 80`;
+      if (len >= 75) {
+        callTitleCount.style.color = 'var(--amber, #d97706)';
+      } else {
+        callTitleCount.style.color = 'var(--ink-faint)';
+      }
+    });
+  }
+
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -232,7 +250,7 @@
       const desc = document.getElementById('callDesc').value.trim();
       const reward = document.getElementById('callReward').value.trim();
       const activePill = form.querySelector('.pill[aria-pressed="true"]');
-      const domain = activePill ? activePill.textContent : 'General';
+      const domain = activePill ? (activePill.dataset.domain || activePill.textContent.trim().toLowerCase()) : 'climate';
 
       if (postCallAlert) postCallAlert.style.display = 'none';
 
@@ -274,6 +292,10 @@
           toast.classList.add('show');
         }
         form.reset();
+        if (callTitleCount) {
+          callTitleCount.textContent = '0 / 80';
+          callTitleCount.style.color = 'var(--ink-faint)';
+        }
         setTimeout(() => toast && toast.classList.remove('show'), 3500);
       } catch (err) {
         if (postCallAlert) {
