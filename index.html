@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="/src/style.css">
 </head>
 
-<body>
+<body class="landing-page">
 
   <!-- ============ HEADER ============ -->
   <header>
@@ -48,10 +48,12 @@
         <a href="notebook.html">Lab Notebook</a>
       </nav>
       <div style="display:flex;align-items:center;gap:10px;">
-        <a class="nav-auth-link" href="login.html"
-          style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
-        <a class="nav-auth-link" href="login.html?tab=signup"
-          style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+        <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+          <a class="nav-auth-link" href="login.html"
+            style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
+          <a class="nav-auth-link" href="login.html?tab=signup"
+            style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+        </div>
         <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Call</a>
         <a class="btn btn-stamp btn-sm" href="apply.html">Apply</a>
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
@@ -108,8 +110,10 @@
 
     <div class="nav-drawer-section">
       <span class="nav-drawer-section-label">Account &amp; Membership</span>
-      <a href="login.html" class="nav-drawer-link">Log In to Dashboard</a>
-      <a href="login.html?tab=signup" class="nav-drawer-link">Sign Up / New Collaborator</a>
+      <div id="drawerAuthArea">
+        <a href="login.html" class="nav-drawer-link">Log In to Dashboard</a>
+        <a href="login.html?tab=signup" class="nav-drawer-link">Sign Up / New Collaborator</a>
+      </div>
       <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
       <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
     </div>
