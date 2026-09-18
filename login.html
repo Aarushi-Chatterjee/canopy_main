@@ -482,11 +482,9 @@
         const res = await auth.handleOAuthCallback(payload);
         if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
         showToast('🌱 Authentication successful: Welcome to Canopy.');
-        window.history.replaceState({}, document.title, window.location.pathname);
+        window.dispatchEvent(new Event('canopy:auth-changed'));
         const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
-        const redirectParam = searchParams.get('redirect');
-        const defaultDest = isStaff ? 'admin.html' : 'match.html';
-        const targetDest = redirectParam && redirectParam.startsWith('/') ? redirectParam : defaultDest;
+        const targetDest = resolveRedirectDest(isStaff);
         setTimeout(() => { window.location.href = targetDest; }, 800);
       } catch (err) {
         if (loginAlert) {
@@ -497,6 +495,21 @@
         showToast('⚠️ Google authentication failed: ' + err.message);
       }
     }
+  }
+
+  function resolveRedirectDest(isStaff) {
+    const params = new URLSearchParams(window.location.search);
+    const redirectParam = params.get('redirect');
+    const restoreDraft = params.get('restoreDraft');
+    const defaultDest = isStaff ? 'admin.html' : 'match.html';
+    let dest = defaultDest;
+    if (redirectParam && !redirectParam.includes('://') && !redirectParam.startsWith('//')) {
+      dest = redirectParam;
+    }
+    if (restoreDraft && !dest.includes('restoreDraft=')) {
+      dest += (dest.includes('?') ? '&' : '?') + 'restoreDraft=1';
+    }
+    return dest;
   }
 
   checkOAuthCallback();
@@ -681,11 +694,9 @@
     try {
       const res = await auth.signIn(email, pwd);
       if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
-      showToast('🌱 Signed in: welcome to the terminal.');
+      window.dispatchEvent(new Event('canopy:auth-changed'));
       const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
-      const redirectParam = new URLSearchParams(window.location.search).get('redirect');
-      const defaultDest = isStaff ? 'admin.html' : 'match.html';
-      const targetDest = redirectParam && redirectParam.startsWith('/') ? redirectParam : defaultDest;
+      const targetDest = resolveRedirectDest(isStaff);
       setTimeout(() => { window.location.href = targetDest; }, 900);
     } catch (err) {
       if (loginAlert) {
@@ -771,11 +782,9 @@
     try {
       const res = await auth.verifyOtp(pendingEmail, token);
       if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
-      showToast('🌱 Pass verified: collaborator access active.');
+      window.dispatchEvent(new Event('canopy:auth-changed'));
       const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
-      const redirectParam = new URLSearchParams(window.location.search).get('redirect');
-      const defaultDest = isStaff ? 'admin.html' : 'match.html';
-      const targetDest = redirectParam && redirectParam.startsWith('/') ? redirectParam : defaultDest;
+      const targetDest = resolveRedirectDest(isStaff);
       setTimeout(() => { window.location.href = targetDest; }, 900);
     } catch (err) {
       showToast('⚠️ ' + (err.message || 'Verification failed.'));

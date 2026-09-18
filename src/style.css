@@ -48,6 +48,15 @@
      themes, so the text on it needs to stay near-black in both too — the
      theme-swapped --forest-deep token fails contrast on it in dark mode. */
   --pill-active-ink:#12240f;
+  /* Semantic Status Tokens */
+  --status-pending-bg: #fef3c7;
+  --status-pending-text: #92400e;
+  --status-pending-border: #fcd34d;
+  --status-success-bg: #d1fae5;
+  --status-success-text: #065f46;
+  --status-success-border: #6ee7b7;
+  --status-resolved-bg: #f3f4f6;
+  --status-resolved-text: #4b5563;
   /* strong custom curves for UI feedback — built-in ease/ease-out are too
      weak to feel intentional on presses and card lifts. */
   --ease-out: cubic-bezier(.23,1,.32,1);
@@ -87,6 +96,14 @@
     --footer-link: rgba(226,222,208,.74);
     --footer-link-hover: #8fe39b;
     --footer-border: rgba(238,233,214,.12);
+    --status-pending-bg: rgba(233, 195, 100, 0.16);
+    --status-pending-text: #e9c364;
+    --status-pending-border: rgba(233, 195, 100, 0.4);
+    --status-success-bg: rgba(143, 227, 155, 0.16);
+    --status-success-text: #8fe39b;
+    --status-success-border: rgba(143, 227, 155, 0.4);
+    --status-resolved-bg: rgba(255, 255, 255, 0.08);
+    --status-resolved-text: #b7c0ac;
     color-scheme: dark;
   }
 }
@@ -118,6 +135,14 @@
   --footer-link: rgba(226,222,208,.74);
   --footer-link-hover: #8fe39b;
   --footer-border: rgba(238,233,214,.12);
+  --status-pending-bg: rgba(233, 195, 100, 0.16);
+  --status-pending-text: #e9c364;
+  --status-pending-border: rgba(233, 195, 100, 0.4);
+  --status-success-bg: rgba(143, 227, 155, 0.16);
+  --status-success-text: #8fe39b;
+  --status-success-border: rgba(143, 227, 155, 0.4);
+  --status-resolved-bg: rgba(255, 255, 255, 0.08);
+  --status-resolved-text: #b7c0ac;
   color-scheme: dark;
 }
 
@@ -150,6 +175,14 @@
   --footer-link: rgba(244,239,220,.78);
   --footer-link-hover: #e3b23f;
   --footer-border: rgba(255,255,255,.14);
+  --status-pending-bg: #fef3c7;
+  --status-pending-text: #92400e;
+  --status-pending-border: #fcd34d;
+  --status-success-bg: #d1fae5;
+  --status-success-text: #065f46;
+  --status-success-border: #6ee7b7;
+  --status-resolved-bg: #f3f4f6;
+  --status-resolved-text: #4b5563;
   color-scheme: light;
 }
 

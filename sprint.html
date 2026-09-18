@@ -54,8 +54,10 @@
       <a href="notebook.html">Lab Notebook</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
-      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
-      <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
+        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+      </div>
       <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Call</a>
       <a class="btn btn-stamp btn-sm" href="apply.html">Apply</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
@@ -112,8 +114,10 @@
 
   <div class="nav-drawer-section">
     <span class="nav-drawer-section-label">Account &amp; Membership</span>
-    <a href="login.html" class="nav-drawer-link">Log In to Dashboard</a>
-    <a href="login.html?tab=signup" class="nav-drawer-link">Sign Up / New Collaborator</a>
+    <div id="drawerAuthArea">
+      <a href="login.html" class="nav-drawer-link">Log In to Dashboard</a>
+      <a href="login.html?tab=signup" class="nav-drawer-link">Sign Up / New Collaborator</a>
+    </div>
     <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
     <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
   </div>
@@ -496,6 +500,51 @@
     }
   }
 
+  function restorePendingDraftIfAny() {
+    const raw = sessionStorage.getItem('canopy_pending_note') || sessionStorage.getItem('canopy_shovel_draft');
+    if (!raw) return;
+    try {
+      const draft = JSON.parse(raw);
+      if (!draft || !draft.note) return;
+
+      const user = auth.getUser();
+      if (!user || user.isGuest) return;
+
+      const card = draft.callId ? document.querySelector(`[data-id="${draft.callId}"]`) : null;
+      if (card && card.querySelector('.shovel-btn:not([href])')) {
+        card.querySelector('.shovel-btn:not([href])').click();
+      } else {
+        const firstShovel = document.querySelector('.shovel-btn:not([href])');
+        if (firstShovel) firstShovel.click();
+      }
+
+      setTimeout(() => {
+        const noteEl = document.getElementById('dNote');
+        const linkEl = document.getElementById('dLink');
+        if (noteEl) noteEl.value = draft.note;
+        if (linkEl && draft.link) linkEl.value = draft.link;
+        if (draft.skills && Array.isArray(draft.skills)) {
+          draft.skills.forEach(skill => {
+            [...document.querySelectorAll('[data-group="drawer-skills"] .pill')]
+              .find(p => p.textContent.trim() === skill)
+              ?.setAttribute('aria-pressed', 'true');
+          });
+        }
+        if (draft.availability) {
+          const availPill = [...document.querySelectorAll('[data-group="drawer-avail"] .pill')]
+            .find(p => p.textContent.trim() === draft.availability);
+          if (availPill) availPill.setAttribute('aria-pressed', 'true');
+        }
+        if (typeof showToast === 'function') {
+          showToast('🌱 Welcome back — your note is right where you left it.');
+        }
+      }, 200);
+    } catch (e) {
+      console.error('Draft restore error', e);
+    }
+  }
+
+  restorePendingDraftIfAny();
   loadLiveSprints();
 </script>
 </body>

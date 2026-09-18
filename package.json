@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "vite",
+    "dev": "vercel dev",
+    "dev:vite-only": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server/index.js",

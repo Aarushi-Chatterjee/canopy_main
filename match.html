@@ -54,8 +54,10 @@
       <a href="notebook.html">Lab Notebook</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
-      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
-      <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
+        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+      </div>
       <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Call</a>
       <a class="btn btn-stamp btn-sm" href="apply.html">Apply</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
@@ -112,8 +114,10 @@
 
   <div class="nav-drawer-section">
     <span class="nav-drawer-section-label">Account &amp; Membership</span>
-    <a href="login.html" class="nav-drawer-link">Log In to Dashboard</a>
-    <a href="login.html?tab=signup" class="nav-drawer-link">Sign Up / New Collaborator</a>
+    <div id="drawerAuthArea">
+      <a href="login.html" class="nav-drawer-link">Log In to Dashboard</a>
+      <a href="login.html?tab=signup" class="nav-drawer-link">Sign Up / New Collaborator</a>
+    </div>
     <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
     <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
   </div>
@@ -191,7 +195,7 @@
           <span style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--forest);">Verified Peer Connections</span>
           <span style="font-size:0.75rem;color:var(--ink-faint);">3 direct collaborator channels active this cycle</span>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:12px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;">
           <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
             <img src="/avatars/avatar-builders.png" alt="" style="width:32px;height:32px;border-radius:6px;object-fit:contain;background:rgba(31,92,64,0.06);">
             <div style="flex:1;min-width:0;">
@@ -232,7 +236,7 @@
           </div>
           <button type="button" id="btnRefreshHandshakes" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:3px 8px;">↻ Refresh</button>
         </div>
-        <div id="myHandshakesList" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;">
+        <div id="myHandshakesList" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;">
           <div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--ink-faint);font-size:0.88rem;">
             Loading your handshakes...
           </div>
@@ -683,11 +687,11 @@
 
       myHandshakesList.innerHTML = all.map(m => {
         const isOutbound = m.direction === 'outbound';
-        let statusBadge = `<span class="growth-badge" data-stage="seed" style="padding:2px 8px;font-size:0.72rem;background:#fef3c7;color:#92400e;border:1px solid #fcd34d;">⏳ Awaiting Review</span>`;
+        let statusBadge = `<span class="growth-badge" data-stage="seed" style="padding:2px 8px;font-size:0.72rem;background:var(--status-pending-bg);color:var(--status-pending-text);border:1px solid var(--status-pending-border);">⏳ Awaiting Review</span>`;
         if (m.status === 'connected' || m.status === 'accepted') {
-          statusBadge = `<span class="growth-badge" data-stage="shipped" style="padding:2px 8px;font-size:0.72rem;background:#d1fae5;color:#065f46;border:1px solid #6ee7b7;">✅ Connected</span>`;
+          statusBadge = `<span class="growth-badge" data-stage="shipped" style="padding:2px 8px;font-size:0.72rem;background:var(--status-success-bg);color:var(--status-success-text);border:1px solid var(--status-success-border);">✅ Connected</span>`;
         } else if (m.status === 'declined') {
-          statusBadge = `<span class="growth-badge" style="padding:2px 8px;font-size:0.72rem;background:#f3f4f6;color:#4b5563;">Resolved</span>`;
+          statusBadge = `<span class="growth-badge" style="padding:2px 8px;font-size:0.72rem;background:var(--status-resolved-bg);color:var(--status-resolved-text);">Resolved</span>`;
         }
 
         const partnerName = escapeHtml(m.partner?.displayName || 'Collaborator');
@@ -751,6 +755,51 @@
     }).catch(() => {});
   }
 
+  function restorePendingDraftIfAny() {
+    const raw = sessionStorage.getItem('canopy_pending_note') || sessionStorage.getItem('canopy_shovel_draft');
+    if (!raw) return;
+    try {
+      const draft = JSON.parse(raw);
+      if (!draft || !draft.note) return;
+
+      const user = auth.getUser();
+      if (!user || user.isGuest) return;
+
+      const card = draft.callId ? document.querySelector(`[data-id="${draft.callId}"]`) : null;
+      if (card && card.querySelector('.shovel-btn:not([href])')) {
+        card.querySelector('.shovel-btn:not([href])').click();
+      } else {
+        const firstShovel = document.querySelector('.shovel-btn:not([href])');
+        if (firstShovel) firstShovel.click();
+      }
+
+      setTimeout(() => {
+        const noteEl = document.getElementById('dNote');
+        const linkEl = document.getElementById('dLink');
+        if (noteEl) noteEl.value = draft.note;
+        if (linkEl && draft.link) linkEl.value = draft.link;
+        if (draft.skills && Array.isArray(draft.skills)) {
+          draft.skills.forEach(skill => {
+            [...document.querySelectorAll('[data-group="drawer-skills"] .pill')]
+              .find(p => p.textContent.trim() === skill)
+              ?.setAttribute('aria-pressed', 'true');
+          });
+        }
+        if (draft.availability) {
+          const availPill = [...document.querySelectorAll('[data-group="drawer-avail"] .pill')]
+            .find(p => p.textContent.trim() === draft.availability);
+          if (availPill) availPill.setAttribute('aria-pressed', 'true');
+        }
+        if (typeof showToast === 'function') {
+          showToast('🌱 Welcome back — your note is right where you left it.');
+        }
+      }, 200);
+    } catch (e) {
+      console.error('Draft restore error', e);
+    }
+  }
+
+  restorePendingDraftIfAny();
   loadLiveCalls();
 </script>
 </body>

@@ -417,69 +417,87 @@ import { sprints, matches, notebook, auth } from './db.js';
 
   var appDrawerForm = document.getElementById('appDrawerForm');
 
-  function showShovelAuthPrompt(draft) {
-    var promptEl = document.getElementById('drawerAuthPrompt');
-    if (!promptEl) {
-      promptEl = document.createElement('div');
-      promptEl.id = 'drawerAuthPrompt';
-      promptEl.className = 'paper-card';
-      promptEl.style.cssText = 'margin-top:16px;padding:16px 18px;background:color-mix(in srgb, var(--coral) 8%, var(--card));border:1px solid color-mix(in srgb, var(--coral) 30%, transparent);border-radius:10px;text-align:left;';
-      var formFoot = appDrawerForm.querySelector('.form-foot');
-      if (formFoot) formFoot.before(promptEl);
-      else appDrawerForm.appendChild(promptEl);
+  const DRAFT_KEY = 'canopy_pending_note';
+  const LEGACY_DRAFT_KEY = 'canopy_shovel_draft';
+
+  function saveDraft(callId, callTitle) {
+    const note = document.getElementById('dNote')?.value || '';
+    const link = document.getElementById('dLink')?.value || '';
+    const skills = [...document.querySelectorAll('[data-group="drawer-skills"] .pill[aria-pressed="true"]')].map(p => p.textContent.trim());
+    const availability = document.querySelector('[data-group="drawer-avail"] .pill[aria-pressed="true"]')?.textContent.trim();
+    const draft = {
+      callId: callId || currentDrawerContext.id || null,
+      callTitle: callTitle || (drawerTitle ? drawerTitle.textContent : ''),
+      title: callTitle || (drawerTitle ? drawerTitle.textContent : ''),
+      sub: drawerSub ? drawerSub.textContent : '',
+      note: note,
+      link: link,
+      skills: skills,
+      skill: skills[0] || '',
+      availability: availability,
+      context: currentDrawerContext,
+      savedAt: new Date().toISOString()
+    };
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    sessionStorage.setItem(LEGACY_DRAFT_KEY, JSON.stringify(draft));
+    return draft;
+  }
+
+  function clearDraft() {
+    sessionStorage.removeItem(DRAFT_KEY);
+    sessionStorage.removeItem(LEGACY_DRAFT_KEY);
+  }
+
+  function openDraftForRestore(d) {
+    const card = d.callId ? document.querySelector(`[data-id="${d.callId}"]`) : null;
+    if (card && card.querySelector('.shovel-btn:not([href])')) {
+      card.querySelector('.shovel-btn:not([href])').click();
+    } else {
+      openAppDrawer(d.callTitle || d.title, d.sub || '', d.context || { id: d.callId, type: 'match' });
     }
 
-    var returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-    promptEl.innerHTML = `
-      <div style="font-size:0.92rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;">
-        <span>🔒</span> Field Station Pass Required to Dispatch Note
-      </div>
-      <p style="margin:6px 0 12px;font-size:0.84rem;color:var(--ink-soft);line-height:1.4;">
-        Your proposal note is <strong>safely saved</strong>. Sign in or activate your pass so the team can verify and respond to your note.
-      </p>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-        <a href="/login.html?redirect=${returnUrl}&resume=shovel" class="btn btn-stamp btn-sm" style="text-decoration:none;">Sign In / Activate Pass →</a>
-        <button type="button" class="btn btn-ghost btn-sm" id="dismissDrawerAuth">Keep Editing</button>
-      </div>
-    `;
-    promptEl.style.display = 'block';
+    setTimeout(() => {
+      const noteEl = document.getElementById('dNote');
+      const linkEl = document.getElementById('dLink');
+      if (noteEl) noteEl.value = d.note || '';
+      if (linkEl && d.link) linkEl.value = d.link;
 
-    document.getElementById('dismissDrawerAuth')?.addEventListener('click', function() {
-      promptEl.style.display = 'none';
-    });
+      if (d.skills && Array.isArray(d.skills)) {
+        d.skills.forEach(skill => {
+          [...document.querySelectorAll('[data-group="drawer-skills"] .pill')]
+            .find(p => p.textContent.trim() === skill)
+            ?.setAttribute('aria-pressed', 'true');
+        });
+      } else if (d.skill) {
+        [...document.querySelectorAll('[data-group="drawer-skills"] .pill')]
+          .find(p => p.textContent.trim() === d.skill)
+          ?.setAttribute('aria-pressed', 'true');
+      }
+
+      if (d.availability) {
+        const availPill = [...document.querySelectorAll('[data-group="drawer-avail"] .pill')]
+          .find(p => p.textContent.trim() === d.availability);
+        if (availPill) availPill.setAttribute('aria-pressed', 'true');
+      }
+
+      showToast('🌱 Welcome back — your note is right where you left it.');
+    }, 180);
   }
 
   async function checkShovelDraftResume() {
     try {
-      var raw = sessionStorage.getItem('canopy_shovel_draft');
+      const raw = sessionStorage.getItem(DRAFT_KEY) || sessionStorage.getItem(LEGACY_DRAFT_KEY);
       if (!raw) return;
-      var draft = JSON.parse(raw);
+      const draft = JSON.parse(raw);
       if (!draft || !draft.note) return;
 
-      var user = await auth.getCurrentUser().catch(function(){ return null; });
+      const user = auth.getUser?.();
       if (user && !user.isGuest) {
-        if (document.getElementById('dNote')) document.getElementById('dNote').value = draft.note;
-        if (draft.link && document.getElementById('dLink')) document.getElementById('dLink').value = draft.link;
-        if (draft.title && drawerTitle) drawerTitle.textContent = draft.title;
-        if (draft.sub && drawerSub) drawerSub.textContent = draft.sub;
-        if (draft.context) currentDrawerContext = draft.context;
-
-        if (draft.skill) {
-          appDrawerForm?.querySelectorAll('[data-group="drawer-skills"] .pill').forEach(function(p){
-            p.setAttribute('aria-pressed', p.textContent === draft.skill ? 'true' : 'false');
-          });
-        }
-        if (draft.availability) {
-          appDrawerForm?.querySelectorAll('[data-group="drawer-avail"] .pill').forEach(function(p){
-            p.setAttribute('aria-pressed', p.textContent === draft.availability ? 'true' : 'false');
-          });
-        }
-
-        sessionStorage.removeItem('canopy_shovel_draft');
-        if (appDrawer && appDrawerBackdrop) {
-          appDrawer.classList.add('is-open');
-          appDrawerBackdrop.classList.add('is-open');
-          showToast('🌱 Draft restored! Click "Plant this note" to dispatch.');
+        openDraftForRestore(draft);
+      } else {
+        const verified = await auth.getCurrentUser().catch(() => null);
+        if (verified && !verified.isGuest) {
+          openDraftForRestore(draft);
         }
       }
     } catch (e) {}
@@ -496,33 +514,26 @@ import { sprints, matches, notebook, auth } from './db.js';
       submitBtn.innerHTML = 'Submitting...';
     }
 
+    const callId = currentDrawerContext.id || (appDrawer ? appDrawer.dataset?.activeCallId : null);
+    const callTitle = drawerTitle ? drawerTitle.textContent : '';
+
     try {
       var isNotebook = window.location.pathname.indexOf('notebook') !== -1 || (drawerTitle && drawerTitle.textContent.indexOf('Notebook') !== -1) || currentDrawerContext.type === 'notebook';
 
-      // Zero-Data-Loss Pre-flight Auth Gate (P2-1)
-      var currentUser = await auth.getCurrentUser().catch(function(){ return null; });
+      // Zero-Data-Loss Pre-flight Auth Gate
+      var currentUser = auth.getUser?.();
+      try {
+        const verified = await auth.getCurrentUser().catch(function(){ return null; });
+        if (verified) currentUser = verified;
+      } catch (e) {}
+
       if (!currentUser || currentUser.isGuest) {
-        var activeSkillPill = this.querySelector('[data-group="drawer-skills"] .pill[aria-pressed="true"]');
-        var activeAvailPill = this.querySelector('[data-group="drawer-avail"] .pill[aria-pressed="true"]');
-        var dLink = document.getElementById('dLink')?.value || '';
-
-        var draftData = {
-          context: currentDrawerContext,
-          title: drawerTitle ? drawerTitle.textContent : '',
-          sub: drawerSub ? drawerSub.textContent : '',
-          note: note,
-          skill: activeSkillPill ? activeSkillPill.textContent : '',
-          availability: activeAvailPill ? activeAvailPill.textContent : '',
-          link: dLink,
-          savedAt: new Date().toISOString()
-        };
-        sessionStorage.setItem('canopy_shovel_draft', JSON.stringify(draftData));
-
-        showShovelAuthPrompt(draftData);
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = origText;
-        }
+        saveDraft(callId, callTitle);
+        showToast('🌱 Saved your note — sign in to send it.');
+        const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+        setTimeout(function() {
+          window.location.href = `login.html?redirect=${returnUrl}&restoreDraft=1`;
+        }, 700);
         return;
       }
 
@@ -533,6 +544,7 @@ import { sprints, matches, notebook, auth } from './db.js';
           grownFromLabel: 'Community Field Note',
           entryType: 'field-report'
         });
+        clearDraft();
         showToast('🌱 Entry planted in your Lab Notebook: added to library.');
       } else if (currentDrawerContext.type === 'sprint' || window.location.pathname.includes('sprint')) {
         var sprintId = currentDrawerContext.id;
@@ -542,19 +554,30 @@ import { sprints, matches, notebook, auth } from './db.js';
         var activeSkillPill = this.querySelector('[data-group="drawer-skills"] .pill[aria-pressed="true"]');
         var role = activeSkillPill ? activeSkillPill.textContent : 'Technical Contributor';
         await sprints.joinSprint(sprintId, role);
+        clearDraft();
         showToast('🌱 Seat secured! Joined sprint squad as ' + role + '.');
       } else {
         var recipientId = currentDrawerContext.creatorId || currentDrawerContext.id;
-        var callId = currentDrawerContext.creatorId ? currentDrawerContext.id : (currentDrawerContext.callId || null);
+        var reqCallId = currentDrawerContext.creatorId ? currentDrawerContext.id : (currentDrawerContext.callId || null);
         if (!recipientId) {
           throw new Error('Please select a collaborator or Build Call to initiate a handshake.');
         }
-        await matches.sendHandshake(recipientId, note, callId);
-        showToast('🌱 Handshake dispatched: sent to collaborator.');
+        await matches.sendHandshake(recipientId, note, reqCallId);
+        clearDraft();
+        showToast('🌱 Note planted: we will be in touch soon.');
       }
       closeAppDrawer();
       this.reset();
     } catch (err) {
+      if (err.status === 401 || /auth/i.test(err.message || '')) {
+        saveDraft(callId, callTitle);
+        showToast('🌱 Saved your note — sign in to send it.');
+        const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+        setTimeout(function() {
+          window.location.href = `login.html?redirect=${returnUrl}&restoreDraft=1`;
+        }, 700);
+        return;
+      }
       showToast('⚠️ ' + (err.message || 'Action could not be completed.'));
     } finally {
       if (submitBtn) {
@@ -748,4 +771,94 @@ import { sprints, matches, notebook, auth } from './db.js';
     }
   }
   checkFounderAccess();
+
+  /* ---------- Auth State Rendering (Header & Nav Drawer) ---------- */
+  async function renderAuthState() {
+    const navAuthArea = document.getElementById('navAuthArea');
+    const drawerAuthArea = document.getElementById('drawerAuthArea');
+
+    let user = auth.getUser?.();
+    try {
+      const fresh = await auth.getCurrentUser();
+      if (fresh && !fresh.isGuest) {
+        user = fresh;
+      } else if (fresh && fresh.isGuest) {
+        user = null;
+      }
+    } catch (e) {
+      // offline or network error: retain cached user if present
+    }
+
+    if (!user || user.isGuest) return;
+
+    const isStaff = user.access?.roles?.some(function(r) {
+      return ['owner', 'admin', 'moderator', 'match_curator', 'content_editor'].includes(r);
+    });
+    const name = user.displayName || (user.email ? user.email.split('@')[0] : 'Collaborator');
+    const homeLink = isStaff ? 'admin.html' : 'notebook.html';
+
+    // 1. Desktop Nav Header
+    if (navAuthArea) {
+      navAuthArea.innerHTML = `
+        <a class="nav-auth-link" href="${homeLink}" style="font-size:0.88rem;font-weight:700;color:var(--forest);text-decoration:none;padding:6px 10px;border-radius:6px;background:color-mix(in srgb, var(--forest) 10%, transparent);display:flex;align-items:center;gap:6px;">
+          <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--forest);"></span>
+          ${name}
+        </a>
+        <button type="button" class="nav-auth-link" id="navLogoutBtn" style="font-size:0.85rem;font-weight:600;color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:6px;transition:color .16s ease;">Log Out</button>
+      `;
+      document.getElementById('navLogoutBtn')?.addEventListener('click', handleLogout);
+    } else {
+      const headerLinks = document.querySelectorAll('header .nav-auth-link');
+      if (headerLinks.length >= 2) {
+        const parent = headerLinks[0].parentNode;
+        const wrapper = document.createElement('div');
+        wrapper.id = 'navAuthArea';
+        wrapper.style.cssText = 'display:flex;align-items:center;gap:10px;';
+        wrapper.innerHTML = `
+          <a class="nav-auth-link" href="${homeLink}" style="font-size:0.88rem;font-weight:700;color:var(--forest);text-decoration:none;padding:6px 10px;border-radius:6px;background:color-mix(in srgb, var(--forest) 10%, transparent);display:flex;align-items:center;gap:6px;">
+            <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--forest);"></span>
+            ${name}
+          </a>
+          <button type="button" class="nav-auth-link" id="navLogoutBtn" style="font-size:0.85rem;font-weight:600;color:var(--ink-soft);background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:6px;transition:color .16s ease;">Log Out</button>
+        `;
+        parent.insertBefore(wrapper, headerLinks[0]);
+        headerLinks.forEach(function(l){ l.remove(); });
+        document.getElementById('navLogoutBtn')?.addEventListener('click', handleLogout);
+      }
+    }
+
+    // 2. Navigation Corner Drawer
+    if (drawerAuthArea) {
+      drawerAuthArea.innerHTML = `
+        <a href="${homeLink}" class="nav-drawer-link" style="color:var(--forest);font-weight:700;">Signed in as ${name}</a>
+        <button type="button" id="drawerLogoutBtn" class="nav-drawer-link" style="background:none;border:none;text-align:left;cursor:pointer;width:100%;font:inherit;padding:10px 0;color:var(--ink-soft);">Log Out</button>
+      `;
+      document.getElementById('drawerLogoutBtn')?.addEventListener('click', handleLogout);
+    } else {
+      const drawerLoginLink = document.querySelector('.nav-drawer a[href="login.html"]');
+      if (drawerLoginLink) {
+        drawerLoginLink.href = homeLink;
+        drawerLoginLink.style.color = 'var(--forest)';
+        drawerLoginLink.style.fontWeight = '700';
+        drawerLoginLink.textContent = `Signed in as ${name}`;
+        const drawerSignupLink = document.querySelector('.nav-drawer a[href*="signup"]');
+        if (drawerSignupLink) {
+          drawerSignupLink.outerHTML = `<button type="button" id="drawerLogoutBtn" class="nav-drawer-link" style="background:none;border:none;text-align:left;cursor:pointer;width:100%;font:inherit;padding:10px 0;color:var(--ink-soft);">Log Out</button>`;
+          document.getElementById('drawerLogoutBtn')?.addEventListener('click', handleLogout);
+        }
+      }
+    }
+  }
+
+  async function handleLogout() {
+    try {
+      await auth.signOut();
+    } catch (e) {}
+    showToast('Logged out successfully.');
+    window.location.href = 'index.html';
+  }
+
+  document.addEventListener('DOMContentLoaded', renderAuthState);
+  window.addEventListener('canopy:auth-changed', renderAuthState);
+  renderAuthState();
 })();

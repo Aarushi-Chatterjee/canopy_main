@@ -113,6 +113,14 @@ function founderGate(req, res, next) {
 
   // 1. If a valid secondary founder console key is explicitly provided via header or cookie, allow access
   if (requiredFounderKey && timingSafeKeyMatch(providedKey, requiredFounderKey)) {
+    if (providedKey && !req.cookies?.canopy_founder_key) {
+      res.cookie('canopy_founder_key', providedKey, {
+        httpOnly: true,
+        sameSite: 'Lax',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 8 * 3600 * 1000
+      });
+    }
     return next();
   }
 
