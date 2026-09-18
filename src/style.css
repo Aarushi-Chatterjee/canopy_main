@@ -38,12 +38,12 @@
   --line: rgba(38,36,26,.16);
   --shadow: rgba(38,32,16,.22);
   --accent: var(--forest);
-  --footer-bg: #123a28;
-  --footer-text: #f4efdc;
-  --footer-heading: #e3b23f;
-  --footer-link: rgba(244,239,220,.78);
-  --footer-link-hover: #e3b23f;
-  --footer-border: rgba(255,255,255,.14);
+  --footer-bg: #ece4cb;
+  --footer-text: #26241a;
+  --footer-heading: #1f5c40;
+  --footer-link: #5c5744;
+  --footer-link-hover: #1f5c40;
+  --footer-border: rgba(38,36,26,.16);
   /* deliberately theme-invariant: --leaf stays a bright-ish green in both
      themes, so the text on it needs to stay near-black in both too — the
      theme-swapped --forest-deep token fails contrast on it in dark mode. */
@@ -169,12 +169,12 @@
   --line: rgba(38,36,26,.16);
   --shadow: rgba(38,32,16,.22);
   --accent: var(--forest);
-  --footer-bg: #123a28;
-  --footer-text: #f4efdc;
-  --footer-heading: #e3b23f;
-  --footer-link: rgba(244,239,220,.78);
-  --footer-link-hover: #e3b23f;
-  --footer-border: rgba(255,255,255,.14);
+  --footer-bg: #ece4cb;
+  --footer-text: #26241a;
+  --footer-heading: #1f5c40;
+  --footer-link: #5c5744;
+  --footer-link-hover: #1f5c40;
+  --footer-border: rgba(38,36,26,.16);
   --status-pending-bg: #fef3c7;
   --status-pending-text: #92400e;
   --status-pending-border: #fcd34d;
@@ -1453,7 +1453,7 @@ footer{
   padding:64px 0 28px;
   position:relative;
   z-index:1;
-  transition:background-color 220ms ease, color 220ms ease, border-color 220ms ease;
+  transition:background .22s ease, color .22s ease, border-color .22s ease;
 }
 footer .wrap{
   display:grid;
@@ -1635,17 +1635,20 @@ form.apply-form{ padding:24px 26px 26px; display:flex; flex-direction:column; ga
   font-weight: 700;
   font-size: 1.2rem;
   letter-spacing: .06em;
-  color: var(--paper);
+  color: var(--footer-text);
   line-height: 1;
 }
 .footer-logo-sub {
   font-family: 'Caveat Var', cursive;
   font-variation-settings: 'wght' 500;
   font-size: .85rem;
-  color: var(--sun);
-  opacity: .8;
+  color: var(--footer-heading);
+  opacity: .9;
   letter-spacing: .03em;
   line-height: 1;
+}
+footer img[alt="Rooted in Purpose"] {
+  background: color-mix(in srgb, var(--forest) 12%, transparent) !important;
 }
 
 /* ── HERO CLIP STAGE ─────────────────────────────── */
