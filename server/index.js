@@ -1,7 +1,39 @@
+/**
+ * ============================================================================
+ * CANOPY // BACKEND API GATEWAY & ENTERPRISE RUNTIME
+ * ============================================================================
+ * Primary API Gateway server providing:
+ * - Cookie-authenticated enterprise sessions with zero external cookie-parser overhead
+ * - Timing-safe Founder Station & Admin Console protection
+ * - CSRF defense on state-mutating requests
+ * - Strict database readiness gating (fail-honest 503 on unconfigured/unreachable DB in production)
+ * - Domain-driven modular routing (Auth, Matches, Sprints, Calls, Notebook, Admin)
+ * 
+ * TABLE OF CONTENTS:
+ * ----------------------------------------------------------------------------
+ * 1. DEPENDENCY IMPORTS & CORE MODULES ............. Line ~28
+ * 2. APP INITIALIZATION & CORS POLICIES ............ Line ~48
+ * 3. SECURITY HEADERS & COOKIE MIDDLEWARE .......... Line ~85
+ * 4. CSRF & PRODUCTION DATABASE READINESS GATES ... Line ~130
+ * 5. FOUNDER CONSOLE AUTHENTICATION GATE (SEC-02) .. Line ~145
+ * 6. HEALTH CHECK & OPERATIONAL TELEMETRY ......... Line ~250
+ * 7. DOMAIN ROUTER MOUNTING & 404/500 HANDLERS ..... Line ~280
+ * 8. SERVER BOOTSTRAP ............................. Line ~310
+ * ============================================================================
+ */
+
+/* ============================================================================
+   SECTION 1: DEPENDENCY IMPORTS & CORE MODULES
+   ============================================================================ */
+// Express does not load .env automatically; load it before any config (incl. Mythos) is read.
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const crypto = require('crypto');
+const { createMythos } = require('@mythos-work/sdk');
+const { mythosExpress } = require('@mythos-work/sdk/express');
 
 const authRouter = require('./routes/auth');
 const matchesRouter = require('./routes/matches');
@@ -17,6 +49,9 @@ const { validateCsrf, optionalAuth } = require('./middleware/auth');
 const { isConfigured, supabase } = require('./config/supabase');
 const { requireDatabaseReady } = require('./middleware/readiness');
 
+/* ============================================================================
+   SECTION 2: APP INITIALIZATION & CORS POLICIES
+   ============================================================================ */
 const app = express();
 // Enable trust proxy for accurate client IP extraction behind reverse proxies (Vercel, Cloudflare)
 app.set('trust proxy', 1);
@@ -94,11 +129,49 @@ app.use((req, res, next) => {
   next();
 });
 
+// Mythos SDK routes (/api/mythos/:action, /.well-known/mythos-*).
+// Mounted before CSRF + DB readiness gates: the SDK owns its own transport and auth.
+const { reportUsage, MythosError } = require('@mythos-work/sdk');
+const configuredListingIds = (process.env.MYTHOS_LISTING_IDS || process.env.MYTHOS_LISTING_ID || '')
+  .split(',')
+  .map(id => id.trim())
+  .filter(Boolean);
+const listingIdStore = new Set(configuredListingIds);
+
+const mythos = createMythos({
+  resolveListingIds: async () => Array.from(listingIdStore),
+  onListingRegistered: async (listingId) => {
+    if (listingId) {
+      listingIdStore.add(listingId);
+      console.log(`[Mythos] Dynamically registered listing ID: ${listingId}`);
+    }
+  }
+});
+// Explicit usage reporting route for consumer billing actions (skills/mythos_plan.md Phase 2)
+// Mounted BEFORE mythosExpress to prevent /api/mythos/:action wildcard from swallowing it
+app.post('/api/mythos/report-usage', async (req, res) => {
+  const { sessionJti, credits = 1, reason = 'sprint-action' } = req.body || {};
+  if (!sessionJti) {
+    return res.status(400).json({ error: 'Missing sessionJti' });
+  }
+  try {
+    await reportUsage(sessionJti, { credits: Math.round(Number(credits) || 1), reason });
+    res.json({ ok: true, success: true });
+  } catch (err) {
+    if (err instanceof MythosError) {
+      return res.status(err.httpStatus || 402).json({ error: err.message, code: err.code });
+    }
+    res.status(503).json({ error: 'Failed to report usage', details: err.message });
+  }
+});
+
+app.use(mythosExpress(mythos));
+
 // CSRF validation for cookie-authenticated mutating requests
-app.use('/api', validateCsrf);
+app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin'], validateCsrf);
 
 // Production database readiness gate (P0-1)
-app.use('/api', requireDatabaseReady);
+app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin'], requireDatabaseReady);
 
 const { timingSafeMatch: timingSafeKeyMatch } = require('./utils/crypto');
 
@@ -209,13 +282,16 @@ app.post('/admin/lock', (req, res) => {
 
 // Server-Side Protected Founder Console Route
 app.get(['/admin', '/admin.html'], optionalAuth, founderGate, (req, res) => {
-  const adminHtmlPath = path.join(__dirname, '../admin.html');
+  const fs = require('fs');
+  const clientPath = path.join(__dirname, '../client/admin.html');
+  const rootPath = path.join(__dirname, '../admin.html');
+  const adminHtmlPath = fs.existsSync(clientPath) ? clientPath : rootPath;
   res.sendFile(adminHtmlPath);
 });
 
 
 // Health check with honest DB status verification
-app.get('/api/health', async (req, res) => {
+app.get(['/api/health', '/health'], async (req, res) => {
   const isProd = process.env.NODE_ENV === 'production';
   let dbStatus = 'local_resilient';
 
@@ -243,19 +319,19 @@ app.get('/api/health', async (req, res) => {
   });
 });
 
-// Mount modular API domain routers
+// Mount modular API domain routers (supporting both /api/prefix and direct serverless paths)
 app.use(['/api/auth', '/auth'], authRouter);
-app.use('/api/matches', matchesRouter);
-app.use('/api/sprints', sprintsRouter);
-app.use('/api/calls', callsRouter);
-app.use('/api/notebook', notebookRouter);
-app.use('/api/applications', applicationsRouter);
-app.use('/api/moderation', moderationRouter);
-app.use('/api/content', contentRouter);
-app.use('/api/admin', optionalAuth, founderGate, adminRouter);
+app.use(['/api/matches', '/matches'], matchesRouter);
+app.use(['/api/sprints', '/sprints'], sprintsRouter);
+app.use(['/api/calls', '/calls'], callsRouter);
+app.use(['/api/notebook', '/notebook'], notebookRouter);
+app.use(['/api/applications', '/applications'], applicationsRouter);
+app.use(['/api/moderation', '/moderation'], moderationRouter);
+app.use(['/api/content', '/content'], contentRouter);
+app.use(['/api/admin', '/admin'], optionalAuth, founderGate, adminRouter);
 
 // 404 handler for API routes
-app.use('/api', (req, res) => {
+app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin'], (req, res) => {
   res.status(404).json({ error: 'Endpoint not found on Canopy API' });
 });
 
@@ -282,4 +358,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, server };
+module.exports = { app, server, mythos };

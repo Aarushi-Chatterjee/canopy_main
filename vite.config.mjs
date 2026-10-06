@@ -1,11 +1,14 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
-// Multi-page app: every HTML entry must be listed explicitly.
-// Production build bundles all 13 pages correctly.
-const root = import.meta.dirname;
+// Symmetric Frontend Architecture:
+// All client HTML entrypoints and client scripts reside in client/
+const projectRoot = import.meta.dirname;
+const clientRoot = resolve(projectRoot, 'client');
 
 export default defineConfig({
+  root: clientRoot,
+  publicDir: resolve(projectRoot, 'public'),
   server: {
     proxy: {
       '/api': {
@@ -15,21 +18,23 @@ export default defineConfig({
     }
   },
   build: {
+    outDir: resolve(projectRoot, 'dist'),
+    emptyOutDir: true,
     rollupOptions: {
       input: {
-        main:           resolve(root, 'index.html'),
-        match:          resolve(root, 'match.html'),
-        sprint:         resolve(root, 'sprint.html'),
-        notebook:       resolve(root, 'notebook.html'),
-        builders:       resolve(root, 'builders.html'),
-        problemHolders: resolve(root, 'problem-holders.html'),
-        enablers:       resolve(root, 'enablers.html'),
-        postCall:       resolve(root, 'post-call.html'),
-        apply:          resolve(root, 'apply.html'),
-        login:          resolve(root, 'login.html'),
-        privacy:        resolve(root, 'privacy.html'),
-        terms:          resolve(root, 'terms.html'),
-        notFound:       resolve(root, '404.html')
+        main:           resolve(clientRoot, 'index.html'),
+        match:          resolve(clientRoot, 'match.html'),
+        sprint:         resolve(clientRoot, 'sprint.html'),
+        notebook:       resolve(clientRoot, 'notebook.html'),
+        builders:       resolve(clientRoot, 'builders.html'),
+        problemHolders: resolve(clientRoot, 'problem-holders.html'),
+        enablers:       resolve(clientRoot, 'enablers.html'),
+        postCall:       resolve(clientRoot, 'post-call.html'),
+        apply:          resolve(clientRoot, 'apply.html'),
+        login:          resolve(clientRoot, 'login.html'),
+        privacy:        resolve(clientRoot, 'privacy.html'),
+        terms:          resolve(clientRoot, 'terms.html'),
+        notFound:       resolve(clientRoot, '404.html')
       }
     }
   }

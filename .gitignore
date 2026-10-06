@@ -12,3 +12,8 @@ skills/
 *.mp4
 public/uploads/
 canopy-db.json
+
+# Tooling and Generated Artifacts
+graphify-out/
+brag-output/
+scratch/

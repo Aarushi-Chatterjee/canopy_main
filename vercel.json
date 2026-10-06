@@ -5,7 +5,7 @@
   "cleanUrls": true,
   "functions": {
     "api/index.js": {
-      "includeFiles": "admin.html"
+      "includeFiles": "client/admin.html"
     }
   },
   "rewrites": [

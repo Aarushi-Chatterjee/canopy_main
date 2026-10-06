@@ -1,13 +1,32 @@
 /**
- * Canopy Unified Database & API Client Layer
+ * ============================================================================
+ * CANOPY // UNIFIED DATABASE & CLIENT API LAYER
+ * ============================================================================
  * Production Truth Standard:
- * - Communicates with Canopy Backend API Gateway (http://localhost:3001/api)
- * - Fails honestly: Never saves synthetic product records (applications, calls, sprints, matches, notes) to localStorage when offline.
+ * - Communicates with Canopy Backend API Gateway (Default: /api)
+ * - Fails honestly: Never saves synthetic product records (applications, calls,
+ *   sprints, matches, notes) to localStorage when offline.
  * - Retains only user session credentials in secure client storage.
+ * 
+ * TABLE OF CONTENTS:
+ * ----------------------------------------------------------------------------
+ * 1. CONFIGURATION & LOCAL STORAGE ADAPTERS ........ Line ~35
+ * 2. HTTP CLIENT ENGINE & TIMEOUT CONTROLLER ...... Line ~60
+ * 3. AUTHENTICATION & FIELD STATION PASS .......... Line ~115
+ * 4. MATCH SANDBOX & VERIFIED CONNECTIONS ......... Line ~275
+ * 5. SPRINTS ENGINE & AMBIENT CLOCK ............... Line ~325
+ * 6. BUILD CALLS PIPELINE ......................... Line ~365
+ * 7. LAB NOTEBOOK & GROW ENTRY BRANCHING .......... Line ~385
+ * 8. SANDBOX APPLICATIONS INTAKE .................. Line ~425
+ * 9. BACKWARDS-COMPATIBLE DB EXPORT ............... Line ~440
+ * ============================================================================
  */
 
-const API_BASE = import.meta.env?.VITE_API_URL || (typeof window !== 'undefined' && window.location.port === '5173' ? '/api' : (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? '/api' : 'http://localhost:3001/api'));
+const API_BASE = import.meta.env?.VITE_API_URL || '/api';
 
+/* ============================================================================
+   SECTION 1: STORAGE KEYS & LOCAL ADAPTERS
+   ============================================================================ */
 const STORAGE_KEYS = {
   USER: 'canopy_auth_user',
   TOKEN: 'canopy_auth_token',
@@ -35,6 +54,12 @@ function getAuthHeader() {
   const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
+
+/* ============================================================================
+   SECTION 2: HTTP CLIENT ENGINE & TIMEOUT CONTROLLER
+   - Contracts: Success: { ok: true, data: Object }
+   -            Failure: { ok: false, status: Number, code: String, message: String }
+   ============================================================================ */
 
 // Low-overhead fetch wrapper with standard outcome contracts:
 // Success: { ok: true, data: Object }
@@ -68,7 +93,7 @@ export async function apiRequest(endpoint, options = {}) {
       : 'SERVER_ERROR';
 
     const defaultMsg = res.status === 404
-      ? 'Canopy API gateway endpoint not found (HTTP 404). Please ensure the backend server is running via `npm run server`.'
+      ? 'Canopy API gateway endpoint not found (HTTP 404).'
       : `Server responded with status ${res.status}.`;
 
     return {
@@ -83,7 +108,7 @@ export async function apiRequest(endpoint, options = {}) {
       ok: false,
       status: 0,
       code: 'NETWORK_UNAVAILABLE',
-      message: 'Canopy could not reach the backend service. Ensure `npm run server` is running on port 3001.'
+      message: 'Canopy could not reach the backend service. Please ensure your development server is running via `npm run dev`.'
     };
   }
 }
