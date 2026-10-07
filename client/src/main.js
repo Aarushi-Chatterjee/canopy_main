@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * CANOPY PLATFORM — FRONTEND CLIENT ORCHESTRATION ENGINE (`src/main.js`)
+ * CANOPY PLATFORM : FRONTEND CLIENT ORCHESTRATION ENGINE (`src/main.js`)
  * ============================================================================
  * Architecture & Module Index:
  *  1. Shaders & Visual Engine (Ambient Plate, Ivy Botanical Growth)
@@ -208,7 +208,7 @@ import { sprints, matches, notebook, auth } from './db.js';
   }
   initHeroClips();
 
-  /* ---------- hero copy — staggered line entrance on load ---------- */
+  /* ---------- hero copy : staggered line entrance on load ---------- */
   function initHeroCopy(){
     if(reduced) return;
     var heroLeft = document.querySelector('.hero-grid > div:first-child');
@@ -302,11 +302,7 @@ import { sprints, matches, notebook, auth } from './db.js';
   var deckCard = document.getElementById('deckCard');
   if(deckCard){
     var problems = [
-      {tag:'Domain · Climate', title:'Build a low-cost sensor to flag groundwater contamination in real time.', reward:'Reward: $8,500 deployment grant + open dataset access'},
-      {tag:'Domain · Energy', title:'Fault detection for village solar microgrids to prevent battery bank depletion.', reward:'Reward: $7,200 hardware stipend'},
-      {tag:'Domain · AI / ML', title:'Automated Sentinel-2 change detection pipeline flagging canopy incisions within 48 hours.', reward:'Reward: $10,000 compute credits'},
-      {tag:'Domain · Civic Tech', title:'Interactive line-item difference engine for municipal budget documents.', reward:'Reward: $5,000 micro-grant'},
-      {tag:'Domain · Health', title:'Offline-first CRDT synchronization client for frontier clinic triage.', reward:'Reward: $9,000 deployment pilot'}
+      {tag:'Domain · Climate', title:'Build a low-cost sensor to flag groundwater contamination in real time.', reward:'Reward: $8,500 deployment grant + open dataset access'}
     ];
 
     // Connect to live backend /api/calls database
@@ -505,7 +501,7 @@ import { sprints, matches, notebook, auth } from './db.js';
         if (availPill) availPill.setAttribute('aria-pressed', 'true');
       }
 
-      showToast('🌱 Welcome back — your note is right where you left it.');
+      showToast('🌱 Welcome back : your note is right where you left it.');
     }, 180);
   }
 
@@ -554,7 +550,7 @@ import { sprints, matches, notebook, auth } from './db.js';
 
       if (!currentUser || currentUser.isGuest) {
         saveDraft(callId, callTitle);
-        showToast('🌱 Saved your note — sign in to send it.');
+        showToast('🌱 Saved your note : sign in to send it.');
         const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
         setTimeout(function() {
           window.location.href = `login.html?redirect=${returnUrl}&restoreDraft=1`;
@@ -596,7 +592,7 @@ import { sprints, matches, notebook, auth } from './db.js';
     } catch (err) {
       if (err.status === 401 || /auth/i.test(err.message || '')) {
         saveDraft(callId, callTitle);
-        showToast('🌱 Saved your note — sign in to send it.');
+        showToast('🌱 Saved your note : sign in to send it.');
         const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
         setTimeout(function() {
           window.location.href = `login.html?redirect=${returnUrl}&restoreDraft=1`;
@@ -703,8 +699,14 @@ import { sprints, matches, notebook, auth } from './db.js';
         if(show) visible++;
       });
       if(empty){ empty.classList.toggle('show', visible === 0); }
-      var countEl = document.getElementById('callCount');
-      if (countEl) { countEl.textContent = visible + ' open'; }
+      var countEl = document.getElementById('callCount') || document.getElementById('builderCount');
+      if (countEl) {
+        if (countEl.id === 'builderCount') {
+          countEl.textContent = visible + (visible === 1 ? ' builder available' : ' builders available');
+        } else {
+          countEl.textContent = visible + ' open';
+        }
+      }
     }
     chips.forEach(function(chip){
       chip.addEventListener('click', function(){

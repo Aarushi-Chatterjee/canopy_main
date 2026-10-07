@@ -136,8 +136,8 @@
 <div class="stage">
   <div class="stage-head-flex reveal">
     <div class="stage-head" style="margin-bottom:0;">
-      <h1>The Lab Notebook is where process lives.</h1>
-      <p class="lede">Not polished marketing, not a finished product page: the raw record of how you build: the half-baked idea, the dataset that surprised you, the model that failed, the small fix that finally worked. It does not have to be perfect. It just has to be real, and it is a quiet, powerful proof point to the people deciding whether to build with you.</p>
+      <h1>The Lab Notebook: Where Process and Outcomes Live.</h1>
+      <p class="lede">Divided into two transparent records: real-time Dev Logs and Field Reports from teams in the thick of problem statements, and the Shipped Success Stories Gallery documenting validated outcomes, measurable impact, and open-source releases.</p>
     </div>
     <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:12px;background:var(--card);border:1px solid var(--card-edge);box-shadow:0 6px 18px -8px var(--shadow);">
       <img src="/avatars/avatar-growing-ideas.png" alt="Growing Ideas" style="width:36px;height:36px;object-fit:contain;">
@@ -148,255 +148,414 @@
     </div>
   </div>
 
-  <div class="feed-toolbar" style="margin-top:32px;">
-    <button type="button" class="compose-trigger">
-      <span class="plus-badge">+</span>
-      Write what you did, what you learned, what is next…
-    </button>
-  </div>
-
-  <div class="filter-row" data-filters-for="#entryGrid" aria-label="Filter entries by domain">
-    <button type="button" class="filter-chip" data-domain="climate" aria-pressed="false">Climate</button>
-    <button type="button" class="filter-chip" data-domain="health" aria-pressed="false">Health</button>
-    <button type="button" class="filter-chip" data-domain="education" aria-pressed="false">Education</button>
-    <button type="button" class="filter-chip" data-domain="civic" aria-pressed="false">Civic Tech</button>
-    <button type="button" class="filter-chip" data-domain="hardware" aria-pressed="false">Hardware</button>
-    <button type="button" class="filter-chip" data-domain="ai" aria-pressed="false">AI / ML</button>
-  </div>
-
-  <div class="feed-grid" id="entryGrid">
-    <article class="elevated-card interactive entry-card reveal" data-domain="climate" tabindex="0">
-      <div class="entry-top">
-        <div class="avatar sm" data-seed="Priya Nandan" aria-hidden="true"></div>
-        <span class="name">Priya Nandan</span>
-        <span class="when">Illustrative Record</span>
-        <span class="illustrative-badge" style="margin-left: auto;">Illustrative Example</span>
+  <!-- ==========================================
+       SECTION 1: ACTIVE DEV LOGS & FIELD REPORTS
+       ========================================== -->
+  <section id="fieldNotesSection" style="margin-top:40px;">
+    <div class="sprint-section-head" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span class="section-kicker" style="color:var(--forest);font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;">Loop Section 1</span>
+        <span class="growth-badge" data-stage="forming" style="font-size:0.75rem;">In-Progress Process</span>
       </div>
-      <span class="entry-breadcrumb">grown from Sprint: Groundwater Sensor</span>
-      <h4>Why my groundwater model kept overfitting on rainy days</h4>
-      <p class="snippet">Turns out three sensors were miscalibrated after the last storm and I was training on noise. Here is how I caught it.</p>
-      <div class="teaser"><span>rmse_by_weather.py:14 → std(residual | rain) &gt;&gt; std(residual | dry)</span></div>
-      <div class="illustrative-notice">
-        <strong>Illustrative Example:</strong> Demonstrates a field reflection and calibration teardown grown from a sprint cycle.
-      </div>
-      <div class="entry-bottom">
-        <span class="tag-chip" data-domain="climate">Climate</span>
-        <span class="tag-chip skill">post-mortem</span>
-        <button type="button" class="grow-btn compose-trigger">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Grow entry
-          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+        <div>
+          <h2 style="font-family:'Fraunces Var',serif;font-size:clamp(1.5rem,2.6vw,1.95rem);font-weight:600;color:var(--ink);margin:0 0 6px 0;">Dev Logs &amp; Field Reports</h2>
+          <p style="color:var(--ink-soft);font-size:0.95rem;line-height:1.5;margin:0;max-width:65ch;">The unvarnished record of engineering in the field: failed prototypes, surprise datasets, sensor recalibrations, and architectural post-mortems.</p>
+        </div>
+        <button type="button" class="btn btn-stamp btn-sm" id="btnOpenComposeReport" style="white-space:nowrap;">
+          + Log Field Report →
         </button>
       </div>
-    </article>
-
-    <article class="elevated-card interactive entry-card reveal" data-domain="hardware" tabindex="0">
-      <div class="entry-top">
-        <div class="avatar sm" data-seed="Ines Falk" aria-hidden="true"></div>
-        <span class="name">Ines Falk</span>
-        <span class="when">4 days ago</span>
-      </div>
-      <span class="entry-breadcrumb">grown from Sprint: Fault Detection</span>
-      <h4>First failed prototype of the fault-detection board</h4>
-      <p class="snippet">The enclosure trapped heat and cooked the sensor by hour six. Redesigned the vent pattern: full teardown notes inside.</p>
-      <div class="teaser"><span>thermal_log.csv → 84°C at t+6h, spec max 65°C</span></div>
-      <div class="entry-bottom">
-        <span class="tag-chip" data-domain="hardware">Hardware</span>
-        <span class="tag-chip skill">teardown</span>
-        <button type="button" class="grow-btn compose-trigger">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Grow entry
-          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
-        </button>
-      </div>
-    </article>
-
-    <article class="elevated-card interactive entry-card reveal" data-domain="civic" tabindex="0">
-      <div class="entry-top">
-        <div class="avatar sm" data-seed="Deshi Osei" aria-hidden="true"></div>
-        <span class="name">Deshi Osei</span>
-        <span class="when">5 days ago</span>
-      </div>
-      <span class="entry-breadcrumb">grown from Sprint: City Budget Explorer</span>
-      <h4>A dataset that surprised me: the line-items don't sum to the total</h4>
-      <p class="snippet">The city's published budget PDF and its open data export disagree by 4%. Wrote a reconciliation script before touching any UI.</p>
-      <div class="teaser"><span>reconcile.js → drift: +$2.3M unattributed</span></div>
-      <div class="entry-bottom">
-        <span class="tag-chip" data-domain="civic">Civic Tech</span>
-        <span class="tag-chip skill">data cleaning</span>
-        <button type="button" class="grow-btn compose-trigger">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Grow entry
-          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
-        </button>
-      </div>
-    </article>
-
-    <article class="elevated-card interactive entry-card reveal" data-domain="education" tabindex="0">
-      <div class="entry-top">
-        <div class="avatar sm" data-seed="Marcus Webb" aria-hidden="true"></div>
-        <span class="name">Marcus Webb</span>
-        <span class="when">1 week ago</span>
-      </div>
-      <span class="entry-breadcrumb">grown from Sprint: Adaptive Reading Tutor</span>
-      <h4>The small fix that made the tutor usable on a cracked screen</h4>
-      <p class="snippet">Touch targets were fine in the simulator and unusable on the actual donated classroom tablets. One line, huge difference.</p>
-      <div class="teaser"><span>tutor.css:212 → min-height: 44px !important;</span></div>
-      <div class="entry-bottom">
-        <span class="tag-chip" data-domain="education">Education</span>
-        <span class="tag-chip skill">field-testing</span>
-        <button type="button" class="grow-btn compose-trigger">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Grow entry
-          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
-        </button>
-      </div>
-    </article>
-
-    <article class="elevated-card interactive entry-card reveal" data-domain="health" tabindex="0">
-      <div class="entry-top">
-        <div class="avatar sm" data-seed="Rohan Malhotra" aria-hidden="true"></div>
-        <span class="name">Rohan Malhotra</span>
-        <span class="when">1 week ago</span>
-      </div>
-      <span class="entry-breadcrumb">grown from Sprint: Clinic Triage</span>
-      <h4>Post-mortem: our offline sync merge conflicts</h4>
-      <p class="snippet">Two clinics editing the same patient record offline, no server to arbitrate. Landed on last-write-wins plus a visible conflict flag.</p>
-      <div class="teaser"><span>sync.md → conflicts/day: 40 → 3 after v2</span></div>
-      <div class="entry-bottom">
-        <span class="tag-chip" data-domain="health">Health</span>
-        <span class="tag-chip skill">architecture</span>
-        <button type="button" class="grow-btn compose-trigger">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Grow entry
-          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
-        </button>
-      </div>
-    </article>
-
-    <article class="elevated-card interactive entry-card reveal" data-domain="ai" tabindex="0">
-      <div class="entry-top">
-        <div class="avatar sm" data-seed="Priya Nandan" aria-hidden="true"></div>
-        <span class="name">Priya Nandan</span>
-        <span class="when">2 weeks ago</span>
-      </div>
-      <span class="entry-breadcrumb">grown from Sprint: Model Alignment</span>
-      <h4>Sketch: what a fair matching algorithm could look like</h4>
-      <p class="snippet">Thinking out loud about weighting note quality over raw skill overlap.</p>
-      <div class="teaser"><span>match_weights.md → draft, unscored</span></div>
-      <div class="entry-bottom">
-        <span class="tag-chip" data-domain="ai">AI / ML</span>
-        <span class="tag-chip skill">idea</span>
-        <button type="button" class="grow-btn compose-trigger">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Grow entry
-          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
-        </button>
-      </div>
-    </article>
-  </div>
-
-  <div class="empty-state" role="status">
-    <div style="font-size:2rem;margin-bottom:8px;">🌱</div>
-    <h4>No field notes match that combination of domains yet</h4>
-    <p style="margin-bottom:14px;">No field reflections or engineering post-mortems have been logged for this filter yet. Clear your domain filters to browse all entries, or log what you've learned to begin this track.</p>
-    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-      <button type="button" class="btn btn-ghost btn-sm">Clear filters</button>
-      <button type="button" class="btn btn-stamp btn-sm compose-trigger">Write an entry →</button>
     </div>
-  </div>
 
-  <div class="stage-cta elevated-card reveal">
+    <!-- Search & Filter Controls -->
+    <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:24px 0 16px;">
+      <div style="flex:1;min-width:260px;position:relative;">
+        <input type="text" id="notebookSearch" placeholder="Search logs, post-mortems, datasets, authors, or code snippets..." style="width:100%;padding:10px 14px;border:1px solid var(--card-edge);border-radius:8px;background:var(--card);color:var(--ink);font-size:0.92rem;">
+      </div>
+      <button type="button" class="btn btn-ghost btn-sm" id="btnResetNotebookFilters" style="padding:8px 14px;">Reset Filters</button>
+    </div>
+
+    <div class="filter-row" data-filters-for="#entryGrid" aria-label="Filter entries by domain" style="margin-bottom:24px;">
+      <button type="button" class="filter-chip active" data-domain="all" aria-pressed="true">All Domains</button>
+      <button type="button" class="filter-chip" data-domain="climate" aria-pressed="false">Climate</button>
+      <button type="button" class="filter-chip" data-domain="hardware" aria-pressed="false">Hardware</button>
+      <button type="button" class="filter-chip" data-domain="civic" aria-pressed="false">Civic Tech</button>
+      <button type="button" class="filter-chip" data-domain="education" aria-pressed="false">Education</button>
+      <button type="button" class="filter-chip" data-domain="health" aria-pressed="false">Health</button>
+      <button type="button" class="filter-chip" data-domain="forestry" aria-pressed="false">Forestry</button>
+    </div>
+
+    <div class="feed-grid" id="entryGrid">
+      <!-- In-progress dev log 1 -->
+      <article class="elevated-card interactive entry-card reveal" data-domain="climate" data-id="entry_groundwater" tabindex="0">
+        <div class="entry-top">
+          <div class="avatar sm" data-seed="Priya Nandan" aria-hidden="true"></div>
+          <span class="name">Priya Nandan</span>
+          <span class="when">Active Sprint</span>
+        </div>
+        <span class="entry-breadcrumb">grown from Sprint: Groundwater Sensor</span>
+        <h4>Why my groundwater model kept overfitting on rainy days</h4>
+        <p class="snippet">Turns out three optical sensors were miscalibrated after heavy storms and I was training on noise. Here is how I caught and isolated the drift.</p>
+        <div class="teaser"><span>rmse_by_weather.py:14 → std(residual | rain) &gt;&gt; std(residual | dry)</span></div>
+        <div class="entry-bottom">
+          <span class="tag-chip" data-domain="climate">Climate</span>
+          <span class="tag-chip skill">post-mortem</span>
+          <button type="button" class="grow-btn compose-trigger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Grow entry
+            <span class="tooltip">Add a follow-up or reflection</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- In-progress dev log 2 -->
+      <article class="elevated-card interactive entry-card reveal" data-domain="hardware" data-id="entry_thermal_vent" tabindex="0">
+        <div class="entry-top">
+          <div class="avatar sm" data-seed="Ines Falk" aria-hidden="true"></div>
+          <span class="name">Ines Falk</span>
+          <span class="when">Active Sprint</span>
+        </div>
+        <span class="entry-breadcrumb">grown from Sprint: Decentralized Fault Detection</span>
+        <h4>First failed prototype of the fault-detection board</h4>
+        <p class="snippet">The 3D-printed enclosure trapped ambient heat and cooked the ADC sensor by hour six. Redesigned the vent pattern and swapped to an aluminum heat spreader.</p>
+        <div class="teaser"><span>thermal_log.csv → 84°C at t+6h, spec max 65°C</span></div>
+        <div class="entry-bottom">
+          <span class="tag-chip" data-domain="hardware">Hardware</span>
+          <span class="tag-chip skill">teardown</span>
+          <button type="button" class="grow-btn compose-trigger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Grow entry
+            <span class="tooltip">Add a follow-up or reflection</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- In-progress dev log 3 -->
+      <article class="elevated-card interactive entry-card reveal" data-domain="civic" data-id="entry_budget_drift" tabindex="0">
+        <div class="entry-top">
+          <div class="avatar sm" data-seed="Tariq Vance" aria-hidden="true"></div>
+          <span class="name">Tariq Vance</span>
+          <span class="when">Active Sprint</span>
+        </div>
+        <span class="entry-breadcrumb">grown from Sprint: City Budget Explorer</span>
+        <h4>A dataset that surprised me: the line-items don't sum to the total</h4>
+        <p class="snippet">The city's published budget PDF and its open data export disagree by 4%. Wrote an automated reconciliation script before touching any user interface.</p>
+        <div class="teaser"><span>reconcile.js → drift: +$2.3M unattributed capital allocations</span></div>
+        <div class="entry-bottom">
+          <span class="tag-chip" data-domain="civic">Civic Tech</span>
+          <span class="tag-chip skill">data-cleaning</span>
+          <button type="button" class="grow-btn compose-trigger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Grow entry
+            <span class="tooltip">Add a follow-up or reflection</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- In-progress dev log 4 -->
+      <article class="elevated-card interactive entry-card reveal" data-domain="education" data-id="entry_screen_touch" tabindex="0">
+        <div class="entry-top">
+          <div class="avatar sm" data-seed="Marcus Webb" aria-hidden="true"></div>
+          <span class="name">Marcus Webb</span>
+          <span class="when">Active Sprint</span>
+        </div>
+        <span class="entry-breadcrumb">grown from Sprint: Adaptive Reading Tutor</span>
+        <h4>The small fix that made the tutor usable on a cracked screen</h4>
+        <p class="snippet">Touch targets were fine in the desktop simulator but unusable on donated classroom tablets with damaged digitizers. Expanding target hitboxes solved it.</p>
+        <div class="teaser"><span>tutor.css:212 → min-height: 48px !important; margin: 8px;</span></div>
+        <div class="entry-bottom">
+          <span class="tag-chip" data-domain="education">Education</span>
+          <span class="tag-chip skill">field-testing</span>
+          <button type="button" class="grow-btn compose-trigger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Grow entry
+            <span class="tooltip">Add a follow-up or reflection</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- In-progress dev log 5 -->
+      <article class="elevated-card interactive entry-card reveal" data-domain="health" data-id="entry_offline_conflict" tabindex="0">
+        <div class="entry-top">
+          <div class="avatar sm" data-seed="Dr. Rohan Malhotra" aria-hidden="true"></div>
+          <span class="name">Dr. Rohan Malhotra</span>
+          <span class="when">Active Sprint</span>
+        </div>
+        <span class="entry-breadcrumb">grown from Sprint: Pediatric Spirometer</span>
+        <h4>Post-mortem: our offline sync merge conflicts in rural clinics</h4>
+        <p class="snippet">Two clinic nurses editing the same patient trial record offline with no network coordinator. Migrated to deterministic conflict-free replicated data types.</p>
+        <div class="teaser"><span>sync.md → conflicts/day dropped from 40 to 0 after CRDT migration</span></div>
+        <div class="entry-bottom">
+          <span class="tag-chip" data-domain="health">Health</span>
+          <span class="tag-chip skill">architecture</span>
+          <button type="button" class="grow-btn compose-trigger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Grow entry
+            <span class="tooltip">Add a follow-up or reflection</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- In-progress dev log 6 -->
+      <article class="elevated-card interactive entry-card reveal" data-domain="forestry" data-id="entry_radar_speckle" tabindex="0">
+        <div class="entry-top">
+          <div class="avatar sm" data-seed="Deshi Osei" aria-hidden="true"></div>
+          <span class="name">Deshi Osei</span>
+          <span class="when">Active Sprint</span>
+        </div>
+        <span class="entry-breadcrumb">grown from Sprint: SAR Canopy Change Detection</span>
+        <h4>Filtering speckle noise in Sentinel-1 dual-pol backscatter over flooded mangroves</h4>
+        <p class="snippet">Water specular reflections caused false-positive canopy drop alerts in tidal zones. Implemented an enhanced Lee filter with adaptive spatial windowing.</p>
+        <div class="teaser"><span>sar_filter.py → false alarm rate reduced by 72% in intertidal zones</span></div>
+        <div class="entry-bottom">
+          <span class="tag-chip" data-domain="forestry">Forestry</span>
+          <span class="tag-chip skill">algorithm</span>
+          <button type="button" class="grow-btn compose-trigger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Grow entry
+            <span class="tooltip">Add a follow-up or reflection</span>
+          </button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SECTION 2: SHIPPED SUCCESS STORIES GALLERY
+       ========================================== -->
+  <section class="shipped-section-wrap reveal" id="shippedSection">
+    <div class="shipped-section-head">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span class="section-kicker" style="color:var(--forest);font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;">Loop Section 2</span>
+        <span class="shipped-badge">✓ Verified Shipped Outcomes</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+        <div>
+          <h2>Shipped Success Stories Gallery</h2>
+          <p>Tangible, completed outcomes shipped by Canopy squads. Every entry represents working hardware, deployed pipelines, or open-source software running in the field.</p>
+        </div>
+        <div class="meta-tag" style="font-size:0.84rem;color:var(--ink-faint);">
+          <strong style="color:var(--forest);" id="shippedCount">4</strong> verified shipped outcomes
+        </div>
+      </div>
+    </div>
+
+    <div class="shipped-grid" id="shippedGrid">
+      <!-- Shipped Story 1 -->
+      <article class="shipped-card reveal" data-domain="climate" data-id="sp_shipped_rural_water">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="tag-chip" data-domain="climate">Climate</span>
+          <span class="shipped-badge">✓ Deployed in Field</span>
+        </div>
+        <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;">Distributed Spectral Nitrate Probe for Rural Well Networks</h4>
+        <div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">
+          Squad: <strong>Elena Rostova</strong> (Hardware Lead) &amp; <strong>Kareem Patel</strong> (Field Hydrologist)
+        </div>
+        <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;">Constructed low-cost optical absorption probe detecting agricultural runoff with 94.2% accuracy against laboratory spectrophotometry.</p>
+        
+        <div class="impact-highlight-box">
+          <strong>Measured Impact:</strong> 18 community wells monitored · 94.2% lab correlation · $42/unit BOM
+        </div>
+
+        <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.4;">
+          <strong>Target Deliverable:</strong> Optical immersion probe, KiCad Gerber files, and LoRaWAN telemetry firmware.
+        </div>
+
+        <div class="chip-row" style="margin-bottom:8px;">
+          <span class="tag-chip skill">Hardware</span>
+          <span class="tag-chip skill">Optics</span>
+          <span class="tag-chip skill">LoRaWAN</span>
+          <span class="tag-chip skill">Hydrology</span>
+        </div>
+
+        <div class="shipped-links-row">
+          <a href="https://github.com/example/open-nitrate-probe" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:5px 10px;">
+            Open-Source Repo ↗
+          </a>
+          <a href="https://reports.example.org/nitrate-spectral-calibration" target="_blank" rel="noopener noreferrer" class="btn btn-stamp btn-sm" style="font-size:0.8rem;padding:5px 10px;">
+            Field Validation Report ↗
+          </a>
+        </div>
+      </article>
+
+      <!-- Shipped Story 2 -->
+      <article class="shipped-card reveal" data-domain="civic" data-id="sp_shipped_budget_engine">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="tag-chip" data-domain="civic">Civic Tech</span>
+          <span class="shipped-badge">✓ Open Source &amp; Live</span>
+        </div>
+        <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;">Municipal Capital Expenditure Reconciler &amp; Neighborhood Geo-Mapper</h4>
+        <div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">
+          Squad: <strong>Tariq Vance</strong> (Pipeline Lead) &amp; <strong>Marcus Webb</strong> (Cartography &amp; UI)
+        </div>
+        <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;">Automated ingestion pipeline parsing non-standard municipal budget PDFs and reconciling capital allocations across 45 neighborhood districts.</p>
+        
+        <div class="impact-highlight-box">
+          <strong>Measured Impact:</strong> $4.2M reconciled · 45 neighborhood maps · Open City Data Award
+        </div>
+
+        <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.4;">
+          <strong>Target Deliverable:</strong> Node.js ingestion parser, spatial PostgreSQL schema, and lightweight leaflet frontend.
+        </div>
+
+        <div class="chip-row" style="margin-bottom:8px;">
+          <span class="tag-chip skill">Civic</span>
+          <span class="tag-chip skill">PostgreSQL</span>
+          <span class="tag-chip skill">Data Pipelines</span>
+          <span class="tag-chip skill">Leaflet</span>
+        </div>
+
+        <div class="shipped-links-row">
+          <a href="https://github.com/example/civic-budget-reconciler" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:5px 10px;">
+            Open-Source Repo ↗
+          </a>
+          <a href="https://budget.example.org/analysis" target="_blank" rel="noopener noreferrer" class="btn btn-stamp btn-sm" style="font-size:0.8rem;padding:5px 10px;">
+            Live Budget Tool ↗
+          </a>
+        </div>
+      </article>
+
+      <!-- Shipped Story 3 -->
+      <article class="shipped-card reveal" data-domain="health" data-id="sp_shipped_lowcost_spirometer">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="tag-chip" data-domain="health">Health</span>
+          <span class="shipped-badge">✓ Clinically Tested</span>
+        </div>
+        <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;">Differential Pressure Edge Spirometer for Pediatric Asthma</h4>
+        <div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">
+          Squad: <strong>Dr. Rohan Malhotra</strong> (Clinical Validation) &amp; <strong>Ines Falk</strong> (Instrumentation)
+        </div>
+        <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;">Constructed 3D-printable Venturi tube flowmeter with ESP32 offline BLE calibration, validating peak expiratory flow rates in rural primary health centers.</p>
+        
+        <div class="impact-highlight-box">
+          <strong>Measured Impact:</strong> 120 clinic trials · ±3.4% clinical error margin · Sub-$15 build cost
+        </div>
+
+        <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.4;">
+          <strong>Target Deliverable:</strong> 3D STL models, differential pressure I2C firmware, and offline calibration PWA.
+        </div>
+
+        <div class="chip-row" style="margin-bottom:8px;">
+          <span class="tag-chip skill">Health</span>
+          <span class="tag-chip skill">ESP32</span>
+          <span class="tag-chip skill">Firmware</span>
+          <span class="tag-chip skill">Clinical Testing</span>
+        </div>
+
+        <div class="shipped-links-row">
+          <a href="https://github.com/example/open-spirometer" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:5px 10px;">
+            Open Hardware Files ↗
+          </a>
+          <a href="https://health-research.example.org/pediatric-spirometry-pilot" target="_blank" rel="noopener noreferrer" class="btn btn-stamp btn-sm" style="font-size:0.8rem;padding:5px 10px;">
+            Clinical Validation Paper ↗
+          </a>
+        </div>
+      </article>
+
+      <!-- Shipped Story 4 -->
+      <article class="shipped-card reveal" data-domain="forestry" data-id="sp_shipped_sar_deforest">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="tag-chip" data-domain="forestry">Forestry</span>
+          <span class="shipped-badge">✓ Active Monitoring</span>
+        </div>
+        <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;">Cloud-Penetrating Sentinel-1 SAR Coastal Mangrove Canopy Monitor</h4>
+        <div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">
+          Squad: <strong>Priya Nandan</strong> (Spatial ML Lead) &amp; <strong>Deshi Osei</strong> (Systems Architect)
+        </div>
+        <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;">Automated dual-polarization backscatter diff pipeline identifying selective logging beneath persistent tropical cloud cover within 48 hours of satellite overpass.</p>
+        
+        <div class="impact-highlight-box">
+          <strong>Measured Impact:</strong> 1,200 km² monitored · 48h alert turnaround · 89% ground-truth validation
+        </div>
+
+        <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.4;">
+          <strong>Target Deliverable:</strong> Automated raster diff pipeline running on Sentinel-1 GRD imagery with GeoTIFF export.
+        </div>
+
+        <div class="chip-row" style="margin-bottom:8px;">
+          <span class="tag-chip skill">Forestry</span>
+          <span class="tag-chip skill">Remote Sensing</span>
+          <span class="tag-chip skill">Python</span>
+          <span class="tag-chip skill">GIS</span>
+        </div>
+
+        <div class="shipped-links-row">
+          <a href="https://github.com/example/sar-mangrove-alerts" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:5px 10px;">
+            Pipeline Repo ↗
+          </a>
+          <a href="https://wetlands.example.org/sentinel1-backscatter-case" target="_blank" rel="noopener noreferrer" class="btn btn-stamp btn-sm" style="font-size:0.8rem;padding:5px 10px;">
+            Field Deployment Case ↗
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="stage-cta elevated-card reveal" style="margin-top:56px;">
     <h2>Open your notebook. Share your process.</h2>
-    <p class="lede">Let others learn from your digging: growing this entry grows the library, your presence, and the community's knowledge with it.</p>
+    <p class="lede">Let others learn from your digging: contributing your field notes grows the library, while shipped outcomes inspire the next cohort of builders.</p>
     <div class="connect-row">
-      <button class="btn btn-stamp compose-trigger">Write an entry now</button>
-      <a class="btn btn-ghost" href="match.html">Find teammates to build with</a>
+      <button class="btn btn-stamp" id="btnCtaCompose">Write a Field Report now</button>
+      <a class="btn btn-ghost" href="sprint.html">Browse Active Sprints</a>
     </div>
   </div>
 </div>
 </main>
 
-<!-- ============ FOOTER ============ -->
-<footer>
-  <div class="wrap">
-    <div>
-      <div class="footer-logo">
-        <img src="/canopy-logo.png" alt="Canopy Logo" height="40" style="height:40px;width:auto;display:block;">
-        <div class="footer-logo-text">
-          <span class="footer-logo-name">CANOPY</span>
-          <span class="footer-logo-sub">Build · Connect · Ship</span>
-        </div>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
-        <img src="/avatars/avatar-rooted-purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
-        <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
-      </div>
-    </div>
-    <div>
-      <h5>Explore</h5>
-      <a href="builders.html">For Builders</a>
-      <a href="problem-holders.html">For Problem Holders</a>
-      <a href="enablers.html">For Enablers</a>
-      <a href="post-call.html">Post a Build Call</a>
-      <a href="apply.html">Apply to Canopy</a>
-    </div>
-    <div>
-      <h5>The Loop</h5>
-      <a href="match.html">Match</a>
-      <a href="sprint.html">Sprint</a>
-      <a href="notebook.html">Lab Notebook</a>
-      <a href="/#problem">The Gap</a>
-      <a href="login.html">Sign In / Account</a>
-    </div>
-    <div>
-      <h5>Legal &amp; Connect</h5>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms and Conditions</a>
-      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
-      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </div>
-  <div class="foot-bottom">
-    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
-    <span>© 2026 Canopy. All rights reserved.</span>
-  </div>
-</footer>
-
-<!-- ============ COMPOSE / GROW DRAWER ============ -->
-<div class="app-drawer-backdrop" id="drawerBackdrop"></div>
-<div class="app-drawer" id="appDrawer">
+<!-- ============ MODAL DRAWER: COMPOSE FIELD REPORT ============ -->
+<div class="app-drawer-backdrop" id="composeBackdrop" style="display:none;"></div>
+<div class="app-drawer" id="composeDrawer" style="display:none;z-index:96;">
   <div class="drawer-drag-handle"></div>
   <div class="drawer-head">
     <div>
-      <h3 id="drawerTitle">Compose Lab Notebook Entry</h3>
-      <p class="sub" id="drawerSub">Field notes, post-mortems, datasets &amp; learnings</p>
+      <h3>Compose Field Report &amp; Dev Log</h3>
+      <p class="sub">Document technical experiments, post-mortems, datasets, or teardowns</p>
     </div>
-    <button class="modal-close" id="closeDrawer" aria-label="Close drawer">✕</button>
+    <button class="modal-close" id="closeComposeDrawer" aria-label="Close drawer">✕</button>
   </div>
-  <form class="drawer-form" id="appDrawerForm">
+  <form class="drawer-form" id="composeForm">
     <div class="field">
-      <label for="dNote">What did you build, learn, or discover?</label>
-      <textarea id="dNote" placeholder="Document the digging, not just the win. Include code snippets, teardowns, or what surprised you..." required></textarea>
+      <label for="cTitle">Entry Title</label>
+      <input type="text" id="cTitle" required placeholder="e.g. Why our optical sensor drifted under high humidity..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
     </div>
     <div class="field">
-      <label>Relevant Domain</label>
-      <div class="pill-group" data-group="drawer-domain" data-single="true">
-        <button type="button" class="pill" aria-pressed="true">Climate</button>
-        <button type="button" class="pill" aria-pressed="false">Health</button>
-        <button type="button" class="pill" aria-pressed="false">Education</button>
-        <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
-        <button type="button" class="pill" aria-pressed="false">Hardware</button>
-        <button type="button" class="pill" aria-pressed="false">AI / ML</button>
-      </div>
+      <label for="cDomain">Primary Domain</label>
+      <select id="cDomain" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <option value="climate">Climate &amp; Carbon</option>
+        <option value="hardware">Hardware &amp; Instrumentation</option>
+        <option value="civic">Civic Tech</option>
+        <option value="education">Education &amp; Literacy</option>
+        <option value="health">Health &amp; Diagnostics</option>
+        <option value="forestry">Forestry &amp; Biodiversity</option>
+      </select>
     </div>
     <div class="field">
-      <label for="dLink">Link to code, repo, or raw dataset (optional)</label>
-      <input type="text" id="dLink" placeholder="URL or snippet reference">
+      <label for="cType">Report Type</label>
+      <select id="cType" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <option value="post-mortem">Post-Mortem / Bug Analysis</option>
+        <option value="teardown">Hardware Teardown</option>
+        <option value="data-cleaning">Dataset Cleaning &amp; Ingestion</option>
+        <option value="field-testing">Field Testing Note</option>
+        <option value="architecture">Architecture Decision</option>
+        <option value="algorithm">Algorithm / Mathematical Tuning</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="cGrownFrom">Sprint or Project Link (Optional)</label>
+      <input type="text" id="cGrownFrom" placeholder="e.g. Sprint: Groundwater Sensor" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+    </div>
+    <div class="field">
+      <label for="cNote">What did you build, discover, or debug?</label>
+      <textarea id="cNote" required placeholder="Detail the specific technical problem, what you tried, what failed, and how you solved or isolated it..." style="min-height:90px;"></textarea>
+    </div>
+    <div class="field">
+      <label for="cTeaser">Key Code Snippet / Terminal Metric (Optional)</label>
+      <input type="text" id="cTeaser" placeholder="e.g. sensor_adc.c:84 → median_filter(raw_buf, 5)" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:monospace;">
     </div>
     <div class="form-foot">
-      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">grows the library and your presence</span>
-      <button type="submit" class="btn btn-stamp btn-sm">Publish this entry →</button>
+      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">contributes directly to open engineering knowledge</span>
+      <button type="submit" class="btn btn-stamp btn-sm" id="btnSubmitReport">Publish Field Report →</button>
     </div>
   </form>
 </div>
@@ -405,7 +564,7 @@
 
 <script type="module" src="/src/main.js"></script>
 <script type="module">
-  import { notebook } from '/src/db.js';
+  import { notebook, sprints } from '/src/db.js';
 
   function escapeHtml(str) {
     if (!str) return '';
@@ -414,62 +573,262 @@
     })[m]);
   }
 
-  function renderCard(item) {
-    const domain = escapeHtml(item.domain || 'climate');
+  function renderNoteCard(item) {
+    const domain = escapeHtml(item.domain || 'climate').toLowerCase();
     const author = escapeHtml(item.authorName || item.displayName || 'Field Contributor');
     const title = escapeHtml(item.title || 'Field Observation');
     const snippet = escapeHtml(item.summarySnippet || item.content || '');
-    const teaser = item.teaserCodeSnippet ? `<div class="teaser"><span>${escapeHtml(item.teaserCodeSnippet)}</span></div>` : '';
-    const breadcrumb = item.grownFromLabel ? `<span class="entry-breadcrumb">grown from Sprint: ${escapeHtml(item.grownFromLabel)}</span>` : '';
+    const teaser = item.teaser ? `<div class="teaser"><span>${escapeHtml(item.teaser)}</span></div>` : '';
+    const breadcrumb = item.grownFromLabel ? `<span class="entry-breadcrumb">${escapeHtml(item.grownFromLabel)}</span>` : '';
     const typeLabel = escapeHtml(item.entryType || 'field-report');
+    const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
 
     const card = document.createElement('article');
     card.className = 'elevated-card interactive entry-card reveal';
-    card.setAttribute('data-domain', domain.toLowerCase());
+    card.setAttribute('data-domain', domain);
     card.setAttribute('data-id', item.id || '');
     card.tabIndex = 0;
     card.innerHTML = `
       <div class="entry-top">
         <div class="avatar sm" data-seed="${author}" aria-hidden="true"></div>
         <span class="name">${author}</span>
-        <span class="when">Live Entry</span>
+        <span class="when">Active Sprint</span>
       </div>
       ${breadcrumb}
       <h4>${title}</h4>
       <p class="snippet">${snippet}</p>
       ${teaser}
       <div class="entry-bottom">
-        <span class="tag-chip" data-domain="${domain.toLowerCase()}">${domain}</span>
+        <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
         <span class="tag-chip skill">${typeLabel}</span>
         <button type="button" class="grow-btn compose-trigger">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           Grow entry
-          <span class="tooltip">Add a follow-up, dataset, or reflection</span>
+          <span class="tooltip">Add a follow-up or reflection</span>
         </button>
       </div>
     `;
     return card;
   }
 
-  async function loadLiveEntries() {
-    const grid = document.getElementById('entryGrid');
-    if (!grid) return;
+  function renderShippedCard(sprint) {
+    const domain = escapeHtml(sprint.domain || 'climate').toLowerCase();
+    const title = escapeHtml(sprint.title || 'Shipped Sprint');
+    const desc = escapeHtml(sprint.description || sprint.objective || '');
+    const impact = escapeHtml(sprint.impactMetric || 'Validated in field');
+    const deliverable = escapeHtml(sprint.targetDeliverable || '');
+    const repoUrl = sprint.repoUrl ? escapeHtml(sprint.repoUrl) : null;
+    const reportUrl = sprint.reportUrl ? escapeHtml(sprint.reportUrl) : null;
+    const members = Array.isArray(sprint.members) ? sprint.members : [];
+    const memberStr = members.map(m => `<strong>${escapeHtml(m.displayName || '')}</strong> (${escapeHtml(m.squadRole || 'Squad Member')})`).join(' & ');
+    const skills = Array.isArray(sprint.skillTags) ? sprint.skillTags : [];
+    const skillChips = skills.map(s => `<span class="tag-chip skill">${escapeHtml(s)}</span>`).join('');
+    const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
+
+    const card = document.createElement('article');
+    card.className = 'shipped-card reveal';
+    card.setAttribute('data-domain', domain);
+    card.setAttribute('data-id', sprint.id || '');
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
+        <span class="shipped-badge">✓ Deployed in Field</span>
+      </div>
+      <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;">${title}</h4>
+      ${memberStr ? `<div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">Squad: ${memberStr}</div>` : ''}
+      <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;">${desc}</p>
+      <div class="impact-highlight-box">
+        <strong>Measured Impact:</strong> ${impact}
+      </div>
+      ${deliverable ? `<div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.4;"><strong>Target Deliverable:</strong> ${deliverable}</div>` : ''}
+      <div class="chip-row" style="margin-bottom:8px;">
+        ${skillChips}
+      </div>
+      <div class="shipped-links-row">
+        ${repoUrl ? `<a href="${repoUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:5px 10px;">Open-Source Repo ↗</a>` : ''}
+        ${reportUrl ? `<a href="${reportUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-stamp btn-sm" style="font-size:0.8rem;padding:5px 10px;">Field Report ↗</a>` : ''}
+      </div>
+    `;
+    return card;
+  }
+
+  async function loadLiveNotebookAndShipped() {
     try {
-      const entries = await notebook.getEntries();
-      if (Array.isArray(entries) && entries.length > 0) {
-        entries.forEach(entry => {
-          if (!grid.querySelector(`[data-id="${entry.id}"]`)) {
-            const el = renderCard(entry);
-            grid.prepend(el);
+      // 1. Load Field Notes
+      const notesRes = await notebook.getEntries();
+      const entryGrid = document.getElementById('entryGrid');
+      if (entryGrid && Array.isArray(notesRes) && notesRes.length > 0) {
+        notesRes.forEach(entry => {
+          if (!entryGrid.querySelector(`[data-id="${entry.id}"]`)) {
+            const card = renderNoteCard(entry);
+            entryGrid.appendChild(card);
           }
         });
       }
+
+      // 2. Load Shipped Stories from sprints API
+      const board = await sprints.getBoard();
+      const shippedGrid = document.getElementById('shippedGrid');
+      if (shippedGrid && board?.shipped) {
+        board.shipped.forEach(sprint => {
+          if (!shippedGrid.querySelector(`[data-id="${sprint.id}"]`)) {
+            const card = renderShippedCard(sprint);
+            shippedGrid.appendChild(card);
+          }
+        });
+        const shippedCountEl = document.getElementById('shippedCount');
+        if (shippedCountEl) shippedCountEl.textContent = shippedGrid.querySelectorAll('.shipped-card').length;
+      }
     } catch (err) {
-      console.warn('[Canopy] Could not fetch live notebook entries:', err.message);
+      console.warn('[Canopy] Error loading notebook content:', err.message);
     }
   }
 
-  loadLiveEntries();
+  // Compose Drawer Toggle
+  const composeDrawer = document.getElementById('composeDrawer');
+  const composeBackdrop = document.getElementById('composeBackdrop');
+  const closeComposeBtn = document.getElementById('closeComposeDrawer');
+  const openComposeBtns = [document.getElementById('btnOpenComposeReport'), document.getElementById('btnCtaCompose')].filter(Boolean);
+
+  function openCompose() {
+    if (!composeDrawer || !composeBackdrop) return;
+    composeBackdrop.style.display = 'block';
+    composeDrawer.style.display = 'block';
+    setTimeout(() => {
+      composeBackdrop.classList.add('open');
+      composeDrawer.classList.add('open');
+    }, 10);
+  }
+
+  function closeCompose() {
+    if (!composeDrawer || !composeBackdrop) return;
+    composeBackdrop.classList.remove('open');
+    composeDrawer.classList.remove('open');
+    setTimeout(() => {
+      composeBackdrop.style.display = 'none';
+      composeDrawer.style.display = 'none';
+    }, 260);
+  }
+
+  openComposeBtns.forEach(btn => btn.addEventListener('click', openCompose));
+  if (closeComposeBtn) closeComposeBtn.addEventListener('click', closeCompose);
+  if (composeBackdrop) composeBackdrop.addEventListener('click', closeCompose);
+
+  // Form Submission
+  const composeForm = document.getElementById('composeForm');
+  if (composeForm) {
+    composeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('btnSubmitReport');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Publishing...';
+      }
+
+      const payload = {
+        title: document.getElementById('cTitle')?.value || '',
+        domain: document.getElementById('cDomain')?.value || 'climate',
+        entryType: document.getElementById('cType')?.value || 'post-mortem',
+        grownFromLabel: document.getElementById('cGrownFrom')?.value || 'Independent Field Note',
+        summarySnippet: document.getElementById('cNote')?.value || '',
+        teaser: document.getElementById('cTeaser')?.value || ''
+      };
+
+      try {
+        const result = await notebook.publishEntry(payload);
+        const entryGrid = document.getElementById('entryGrid');
+        if (entryGrid) {
+          const newEntry = result?.entry || { ...payload, id: 'entry_' + Date.now(), authorName: 'Field Contributor' };
+          const card = renderNoteCard(newEntry);
+          entryGrid.prepend(card);
+        }
+
+        composeForm.reset();
+        closeCompose();
+        const toast = document.getElementById('toast');
+        if (toast) {
+          toast.textContent = '🌱 Field report published to Lab Notebook.';
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+      } catch (err) {
+        alert(err.message || 'Could not publish entry. Please try again.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Publish Field Report →';
+        }
+      }
+    });
+  }
+
+  // Search & Filter Logic
+  let currentDomain = 'all';
+  let currentQuery = '';
+
+  function applyFilters() {
+    const allNoteCards = document.querySelectorAll('#entryGrid .entry-card');
+    const allShippedCards = document.querySelectorAll('#shippedGrid .shipped-card');
+
+    allNoteCards.forEach(card => {
+      const cardDomain = (card.getAttribute('data-domain') || '').toLowerCase();
+      const text = (card.textContent || '').toLowerCase();
+      const matchDom = (currentDomain === 'all') || (cardDomain === currentDomain);
+      const matchQ = !currentQuery || text.includes(currentQuery);
+      card.style.display = (matchDom && matchQ) ? '' : 'none';
+    });
+
+    allShippedCards.forEach(card => {
+      const cardDomain = (card.getAttribute('data-domain') || '').toLowerCase();
+      const text = (card.textContent || '').toLowerCase();
+      const matchDom = (currentDomain === 'all') || (cardDomain === currentDomain);
+      const matchQ = !currentQuery || text.includes(currentQuery);
+      card.style.display = (matchDom && matchQ) ? '' : 'none';
+    });
+  }
+
+  const searchInput = document.getElementById('notebookSearch');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      currentQuery = e.target.value.trim().toLowerCase();
+      applyFilters();
+    });
+  }
+
+  const filterChips = document.querySelectorAll('.filter-chip[data-domain]');
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      filterChips.forEach(c => {
+        c.classList.remove('active');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      chip.classList.add('active');
+      chip.setAttribute('aria-pressed', 'true');
+      currentDomain = chip.getAttribute('data-domain') || 'all';
+      applyFilters();
+    });
+  });
+
+  const btnReset = document.getElementById('btnResetNotebookFilters');
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      currentQuery = '';
+      filterChips.forEach(c => {
+        c.classList.remove('active');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      const allChip = document.querySelector('.filter-chip[data-domain="all"]');
+      if (allChip) {
+        allChip.classList.add('active');
+        allChip.setAttribute('aria-pressed', 'true');
+      }
+      currentDomain = 'all';
+      applyFilters();
+    });
+  }
+
+  loadLiveNotebookAndShipped();
 </script>
 </body>
 </html>

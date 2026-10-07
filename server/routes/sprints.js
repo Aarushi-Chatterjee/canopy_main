@@ -103,7 +103,8 @@ router.post('/', requireAuth, async (req, res) => {
         displayName: req.user.displayName || req.user.email,
         joinedAt: new Date().toISOString()
       }],
-      skillTags: [domain],
+      neededRoles: Array.isArray(req.body.neededRoles) ? req.body.neededRoles : (req.body.neededRoles ? [req.body.neededRoles] : ['Technical Contributor']),
+      skillTags: Array.isArray(req.body.skillTags) ? req.body.skillTags : (Array.isArray(req.body.neededRoles) ? req.body.neededRoles : [domain]),
       startDate: start.toISOString().split('T')[0],
       endDate: end.toISOString().split('T')[0],
       startedAt: start.toISOString(),

@@ -140,8 +140,9 @@
 <div class="stage">
   <div class="stage-head-flex reveal">
     <div class="stage-head" style="margin-bottom:0;">
-      <h1>A sprint is where an idea becomes something you can point to.</h1>
-      <p class="lede">Two to four weeks, start to shipped. A team forms around one specific Build Call, works against a visible clock instead of an open-ended timeline, and walks away with a prototype, a dataset, a dashboard, or a write-up added to the public Library: no month-long email chains, just a team, a problem, and a date on the calendar.</p>
+      <span class="kicker" style="font-size:1.1rem;color:var(--forest);">Sprint Loop: From Problem to Shipped Prototype</span>
+      <h1 style="margin-top:6px;">Where active problem statements become working prototypes.</h1>
+      <p class="lede">Two to four weeks, a visible clock, and a real squad. Active builders post what they are working on to recruit collaborators, while problem holders sponsor concrete challenges with research context and financial grants: no month-long email chains, just a team, a problem, and a date on the calendar.</p>
     </div>
     <div class="ambient-clock-wrap">
       <svg class="clock-ring" viewBox="0 0 36 36" data-pct="72" aria-hidden="true">
@@ -155,184 +156,455 @@
     </div>
   </div>
 
-  <div class="board">
-    <div class="board-col" data-stage="forming">
-      <div class="board-col-head">
-        <span class="dot"></span>
-        <h3>Forming</h3>
-        <span class="n">2</span>
-      </div>
-      <div class="board-col-body">
-        <article class="elevated-card sprint-card reveal" data-domain="civic" data-id="sp_city_budget">
-          <h4>A plain-language city budget explorer</h4>
-          <p class="line" style="color:var(--ink-soft);font-size:.9rem;">Municipal budget data is public but unreadable: the team is still coming together before the clock starts.</p>
-          <div class="team-row">
-            <div class="avatar sm" data-seed="civic-budget-1" aria-hidden="true"></div>
-            <span class="plus">+2</span>
-          </div>
-          <div class="chip-row"><span class="tag-chip skill">Data Viz</span><span class="tag-chip skill">Design</span></div>
-          <div class="card-foot">
-            <span class="hint-small">1 of 3 spots filled</span>
-            <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
-          </div>
-        </article>
-        <article class="elevated-card sprint-card reveal" data-domain="education" data-id="sp_reading_tutor">
-          <h4>Adaptive reading tutor for grade 3–5</h4>
-          <p class="line" style="color:var(--ink-soft);font-size:.9rem;">"The idea is vivid. What is missing is a technical co-builder to bring it to life."</p>
-          <div class="team-row">
-            <div class="avatar sm" data-seed="reading-tutor-1" aria-hidden="true"></div>
-          </div>
-          <div class="chip-row"><span class="tag-chip skill">Full-stack</span></div>
-          <div class="card-foot">
-            <span class="hint-small">solo so far</span>
-            <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
-          </div>
-        </article>
-      </div>
+  <!-- Filter & Quick Action Toolbar -->
+  <div class="match-filter-bar reveal" style="margin-top:20px;margin-bottom:32px;">
+    <div style="flex:1;min-width:260px;max-width:420px;">
+      <input type="text" id="sprintSearch" placeholder="Search problem statements, skills, or roles..." style="width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font-size:0.86rem;">
     </div>
-
-    <div class="board-col" data-stage="building">
-      <div class="board-col-head">
-        <span class="dot"></span>
-        <h3>Building</h3>
-        <span class="n">3</span>
-      </div>
-      <div class="board-col-body">
-        <article class="elevated-card sprint-card reveal" data-domain="climate" data-id="sp_groundwater_sample">
-          <span class="illustrative-badge" style="margin-bottom: 8px;">Illustrative Example</span>
-          <h4>Groundwater contamination sensor</h4>
-          <div class="clock-row">
-            <svg class="clock-ring" viewBox="0 0 36 36" data-pct="64" aria-hidden="true">
-              <circle class="track" cx="18" cy="18" r="15"/>
-              <circle class="fill" cx="18" cy="18" r="15"/>
-            </svg>
-            <span class="clock-label"><b>9 of 14</b> days left</span>
-          </div>
-          <div class="team-row">
-            <div class="avatar sm" data-seed="gw-1" aria-hidden="true"></div>
-            <div class="avatar sm" data-seed="gw-2" aria-hidden="true"></div>
-            <div class="avatar sm" data-seed="gw-3" aria-hidden="true"></div>
-          </div>
-          <div class="chip-row"><span class="tag-chip" data-domain="climate">Climate</span><span class="tag-chip skill">Hardware</span></div>
-          <div class="illustrative-notice">
-            <strong>Illustrative Example:</strong> Demonstrates a sprint squad in progress assembling probe hardware and telemetry.
-          </div>
-          <div class="card-foot">
-            <span class="hint-small">Sample sprint squad</span>
-            <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify me next cycle</button>
-          </div>
-        </article>
-        <article class="elevated-card sprint-card reveal" data-domain="ai" data-id="sp_deforestation">
-          <h4>Deforestation tracker from satellite feeds</h4>
-          <div class="clock-row">
-            <svg class="clock-ring" viewBox="0 0 36 36" data-pct="24" aria-hidden="true">
-              <circle class="track" cx="18" cy="18" r="15"/>
-              <circle class="fill" cx="18" cy="18" r="15"/>
-            </svg>
-            <span class="clock-label"><b>5 of 21</b> days left</span>
-          </div>
-          <div class="team-row">
-            <div class="avatar sm" data-seed="dfr-1" aria-hidden="true"></div>
-            <div class="avatar sm" data-seed="dfr-2" aria-hidden="true"></div>
-          </div>
-          <div class="chip-row"><span class="tag-chip" data-domain="ai">AI / ML</span><span class="tag-chip skill">Computer Vision</span></div>
-          <div class="card-foot" style="flex-wrap:wrap;gap:6px;">
-            <span class="hint-small">team capped (3/3)</span>
-            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
-              <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify next cycle</button>
-              <a href="post-call.html?mode=parallel&ref=sp_deforestation" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:4px 8px;text-decoration:none;">⚡ Form parallel track →</a>
-            </div>
-          </div>
-        </article>
-        <article class="elevated-card sprint-card reveal" data-domain="hardware" data-id="sp_solar_microgrid">
-          <h4>Fault detection for village solar microgrids</h4>
-          <div class="clock-row">
-            <svg class="clock-ring" viewBox="0 0 36 36" data-pct="83" aria-hidden="true">
-              <circle class="track" cx="18" cy="18" r="15"/>
-              <circle class="fill" cx="18" cy="18" r="15"/>
-            </svg>
-            <span class="clock-label"><b>15 of 18</b> days left</span>
-          </div>
-          <div class="team-row">
-            <div class="avatar sm" data-seed="solar-1" aria-hidden="true"></div>
-            <div class="avatar sm" data-seed="solar-2" aria-hidden="true"></div>
-            <div class="avatar sm" data-seed="solar-3" aria-hidden="true"></div>
-            <div class="avatar sm" data-seed="solar-4" aria-hidden="true"></div>
-          </div>
-          <div class="chip-row"><span class="tag-chip" data-domain="hardware">Hardware</span><span class="tag-chip skill">ML</span></div>
-          <div class="card-foot" style="flex-wrap:wrap;gap:6px;">
-            <span class="hint-small">team capped (3/3)</span>
-            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
-              <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify next cycle</button>
-              <a href="post-call.html?mode=parallel&ref=sp_solar_microgrid" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:4px 8px;text-decoration:none;">⚡ Form parallel track →</a>
-            </div>
-          </div>
-        </article>
-      </div>
+    <div class="filter-pill-row" data-filters-for=".sprint-filterable-grid" role="group" aria-label="Filter by domain">
+      <button type="button" class="filter-pill active" data-filter="all" aria-pressed="true">All Domains</button>
+      <button type="button" class="filter-pill" data-filter="climate" aria-pressed="false">Climate</button>
+      <button type="button" class="filter-pill" data-filter="grid" aria-pressed="false">Grid</button>
+      <button type="button" class="filter-pill" data-filter="forestry" aria-pressed="false">Forestry</button>
+      <button type="button" class="filter-pill" data-filter="civic" aria-pressed="false">Civic</button>
+      <button type="button" class="filter-pill" data-filter="ai" aria-pressed="false">AI &amp; Sensing</button>
+      <button type="button" class="filter-pill" data-filter="education" aria-pressed="false">Education</button>
     </div>
-
-    <div class="board-col" data-stage="shipped">
-      <div class="board-col-head" style="display:flex;align-items:center;gap:8px;">
-        <span class="dot"></span>
-        <h3>Shipped</h3>
-        <span class="n">2</span>
-        <img src="/avatars/avatar-shipping-impact.png" alt="Shipping Impact" style="width:24px;height:24px;object-fit:contain;margin-left:auto;">
-      </div>
-      <div class="board-col-body">
-        <article class="elevated-card sprint-card shipped reveal" data-domain="climate" data-id="sp_water_quality">
-          <span class="shipped-badge">✓ Added to the Library</span>
-          <h4>Water-quality dashboard for 40 rural wells</h4>
-          <div class="team-row">
-            <div class="avatar sm" data-seed="wq-1" aria-hidden="true"></div>
-            <div class="avatar sm" data-seed="wq-2" aria-hidden="true"></div>
-          </div>
-          <div class="chip-row"><span class="tag-chip" data-domain="climate">Climate</span><span class="tag-chip skill">Dashboards</span></div>
-          <div class="card-foot">
-            <span class="hint-small">shipped in 3 weeks</span>
-            <a class="shovel-btn" href="notebook.html" style="text-decoration:none;">Read Notebook Log →</a>
-          </div>
-        </article>
-        <article class="elevated-card sprint-card shipped reveal" data-domain="education" data-id="sp_peer_tutoring">
-          <span class="shipped-badge">✓ Added to the Library</span>
-          <h4>Peer-tutoring matcher for after-school programs</h4>
-          <div class="team-row">
-            <div class="avatar sm" data-seed="pt-1" aria-hidden="true"></div>
-            <div class="avatar sm" data-seed="pt-2" aria-hidden="true"></div>
-            <div class="avatar sm" data-seed="pt-3" aria-hidden="true"></div>
-          </div>
-          <div class="chip-row"><span class="tag-chip" data-domain="education">Education</span><span class="tag-chip skill">Full-stack</span></div>
-          <div class="card-foot">
-            <span class="hint-small">shipped in 2 weeks</span>
-            <a class="shovel-btn" href="notebook.html" style="text-decoration:none;">Read Notebook Log →</a>
-          </div>
-        </article>
-      </div>
-    </div>
+    <button type="button" class="btn btn-ghost btn-sm" id="btnResetSprintFilters" style="padding:6px 12px;font-size:0.78rem;">Reset</button>
   </div>
 
-  <!-- Parallel Squad Formation Banner -->
-  <div class="parallel-squad-callout elevated-card reveal" style="margin:28px 0;padding:22px 28px;border-left:4px solid var(--forest);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;background:color-mix(in srgb, var(--paper) 60%, var(--card));border-radius:12px;">
+  <!-- ============ SECTION 1: ACTIVE WORKING SQUADS ============ -->
+  <section class="sprint-section-wrap reveal" id="squadsSection">
+    <div class="sprint-section-head">
+      <div class="sprint-section-head-title">
+        <span class="sprint-section-tag">
+          <svg class="icon" aria-hidden="true" style="width:14px;height:14px;"><use href="#icon-sprout"/></svg>
+          Community Squads · Active Cycles
+        </span>
+        <h2>Active Working Squads</h2>
+        <p>Builders and teams currently tackling problem statements in the field. Join an open seat or post what you are building to recruit collaborators.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <span class="hint-small" id="squadCount" style="font-weight:600;">5 active squads</span>
+        <button type="button" class="btn btn-stamp btn-sm" id="btnOpenPostSquad">
+          <svg class="icon" aria-hidden="true" style="width:14px;height:14px;"><use href="#icon-sprout"/></svg>
+          Post What You're Working On →
+        </button>
+      </div>
+    </div>
+
+    <div class="squads-grid sprint-filterable-grid" id="activeSquadsGrid">
+      <!-- Squad 1: Groundwater Sensor -->
+      <article class="elevated-card sprint-card reveal" data-domain="climate" data-id="sp_groundwater">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="growth-badge" data-stage="in_sprint">Building · Cycle Active</span>
+          <span class="hint-small" style="font-size:0.75rem;color:var(--forest);font-weight:600;">Team Locked (3/3)</span>
+        </div>
+        <h4>Groundwater contamination sensor</h4>
+        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">Assembling optical probe, writing ADC driver, and calibrating spectrophotometric absorption curves for agricultural aquifers.</p>
+        <div class="clock-row">
+          <svg class="clock-ring" viewBox="0 0 36 36" data-pct="64" aria-hidden="true">
+            <circle class="track" cx="18" cy="18" r="15"/>
+            <circle class="fill" cx="18" cy="18" r="15"/>
+          </svg>
+          <span class="clock-label"><b>9 of 14</b> days left · 64% progress</span>
+        </div>
+        <div class="team-row">
+          <div class="avatar sm" data-seed="gw-1" aria-hidden="true" title="Elena R. (Hardware Lead)"></div>
+          <div class="avatar sm" data-seed="gw-2" aria-hidden="true" title="Kareem P. (Field Hydrologist)"></div>
+          <div class="avatar sm" data-seed="gw-3" aria-hidden="true" title="Devon S. (Firmware Engineer)"></div>
+        </div>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="climate">Climate</span>
+          <span class="tag-chip skill">Hardware</span>
+          <span class="tag-chip skill">LoRa</span>
+        </div>
+        <div class="card-foot" style="flex-wrap:wrap;gap:8px;">
+          <span class="hint-small">Capacity capped</span>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
+            <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify next cycle</button>
+            <a href="post-call.html?mode=parallel&amp;ref=sp_groundwater" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:4px 8px;text-decoration:none;">⚡ Form parallel track →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Squad 2: City Budget Explorer -->
+      <article class="elevated-card sprint-card reveal" data-domain="civic" data-id="sp_city_budget">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="growth-badge" data-stage="sprouting">Forming · Recruting</span>
+          <span class="hint-small" style="font-size:0.75rem;color:var(--coral);font-weight:700;">1 of 3 spots filled</span>
+        </div>
+        <h4>Plain-language city budget explorer</h4>
+        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">Transforming municipal capital expenditure disclosures into interactive, searchable neighborhood allocations.</p>
+        <div class="clock-row">
+          <svg class="clock-ring" viewBox="0 0 36 36" data-pct="15" aria-hidden="true">
+            <circle class="track" cx="18" cy="18" r="15"/>
+            <circle class="fill" cx="18" cy="18" r="15"/>
+          </svg>
+          <span class="clock-label"><b>18 of 21</b> days left · Forming squad</span>
+        </div>
+        <div class="team-row">
+          <div class="avatar sm" data-seed="civic-budget-1" aria-hidden="true" title="Tariq A. (Data Engineer)"></div>
+          <span class="plus" title="2 Open Seats">+2</span>
+        </div>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="civic">Civic</span>
+          <span class="tag-chip skill">Data Viz Lead</span>
+          <span class="tag-chip skill">Accessible UI</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small" style="color:var(--forest);font-weight:600;">Seeking 2 teammates</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Join This Squad</button>
+        </div>
+      </article>
+
+      <!-- Squad 3: Offline Reading Tutor -->
+      <article class="elevated-card sprint-card reveal" data-domain="education" data-id="sp_reading_tutor">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="growth-badge" data-stage="sprouting">Forming · Recruting</span>
+          <span class="hint-small" style="font-size:0.75rem;color:var(--coral);font-weight:700;">1 of 3 spots filled</span>
+        </div>
+        <h4>Adaptive offline literacy reader for primary grades</h4>
+        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">Building low-bandwidth phonics progression engine designed for community literacy centers lacking stable internet.</p>
+        <div class="clock-row">
+          <svg class="clock-ring" viewBox="0 0 36 36" data-pct="10" aria-hidden="true">
+            <circle class="track" cx="18" cy="18" r="15"/>
+            <circle class="fill" cx="18" cy="18" r="15"/>
+          </svg>
+          <span class="clock-label"><b>19 of 21</b> days left · Forming squad</span>
+        </div>
+        <div class="team-row">
+          <div class="avatar sm" data-seed="reading-tutor-1" aria-hidden="true" title="Inês R. (Full-Stack Dev)"></div>
+          <span class="plus" title="2 Open Seats">+2</span>
+        </div>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="education">Education</span>
+          <span class="tag-chip skill">Python Backend</span>
+          <span class="tag-chip skill">Curriculum Dev</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small" style="color:var(--forest);font-weight:600;">Seeking 2 teammates</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Join This Squad</button>
+        </div>
+      </article>
+
+      <!-- Squad 4: SAR Radar Canopy -->
+      <article class="elevated-card sprint-card reveal" data-domain="forestry" data-id="sp_deforestation">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="growth-badge" data-stage="in_sprint">Building · Cycle Active</span>
+          <span class="hint-small" style="font-size:0.75rem;color:var(--forest);font-weight:700;">2 of 3 spots filled</span>
+        </div>
+        <h4>SAR radar canopy change detection</h4>
+        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">Detecting illegal logging canopy loss beneath cloud cover using automated Sentinel-1 radar backscatter diffs.</p>
+        <div class="clock-row">
+          <svg class="clock-ring" viewBox="0 0 36 36" data-pct="76" aria-hidden="true">
+            <circle class="track" cx="18" cy="18" r="15"/>
+            <circle class="fill" cx="18" cy="18" r="15"/>
+          </svg>
+          <span class="clock-label"><b>5 of 21</b> days left · 76% progress</span>
+        </div>
+        <div class="team-row">
+          <div class="avatar sm" data-seed="dfr-1" aria-hidden="true" title="Priya N. (Geospatial Lead)"></div>
+          <div class="avatar sm" data-seed="dfr-2" aria-hidden="true" title="Marcus W. (Interface Designer)"></div>
+          <span class="plus" title="1 Open Seat">+1</span>
+        </div>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="forestry">Forestry</span>
+          <span class="tag-chip skill">Spatial ML</span>
+          <span class="tag-chip skill">PyTorch</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small" style="color:var(--forest);font-weight:600;">Need 1 Spatial ML lead</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Join This Squad</button>
+        </div>
+      </article>
+
+      <!-- Squad 5: Microgrid Fault Detection -->
+      <article class="elevated-card sprint-card reveal" data-domain="grid" data-id="sp_solar_microgrid">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="growth-badge" data-stage="in_sprint">Building · Cycle Active</span>
+          <span class="hint-small" style="font-size:0.75rem;color:var(--forest);font-weight:700;">2 of 3 spots filled</span>
+        </div>
+        <h4>Decentralized fault detection for village microgrids</h4>
+        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">Deploying edge frequency anomaly detection on microcontroller nodes to prevent cascading battery bank trip-outs.</p>
+        <div class="clock-row">
+          <svg class="clock-ring" viewBox="0 0 36 36" data-pct="25" aria-hidden="true">
+            <circle class="track" cx="18" cy="18" r="15"/>
+            <circle class="fill" cx="18" cy="18" r="15"/>
+          </svg>
+          <span class="clock-label"><b>15 of 18</b> days left · 25% progress</span>
+        </div>
+        <div class="team-row">
+          <div class="avatar sm" data-seed="solar-1" aria-hidden="true" title="Elena R. (Hardware Architect)"></div>
+          <div class="avatar sm" data-seed="solar-2" aria-hidden="true" title="Aarushi C. (System Evaluator)"></div>
+          <span class="plus" title="1 Open Seat">+1</span>
+        </div>
+        <div class="chip-row">
+          <span class="tag-chip" data-domain="grid">Grid</span>
+          <span class="tag-chip skill">Embedded C</span>
+          <span class="tag-chip skill">Power Systems</span>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small" style="color:var(--forest);font-weight:600;">Need 1 Firmware dev</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Join This Squad</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2: SPONSORED PROBLEM STATEMENTS ============ -->
+  <section class="sprint-section-wrap reveal" id="sponsoredSection">
+    <div class="sprint-section-head">
+      <div class="sprint-section-head-title">
+        <span class="sprint-section-tag">
+          <svg class="icon" aria-hidden="true" style="width:14px;height:14px;"><use href="#icon-sprout"/></svg>
+          Organization Challenges · Research &amp; Grants
+        </span>
+        <h2>Sponsored Problem Statements &amp; Challenges</h2>
+        <p>Validated problem briefs posted by research institutes, civic foundations, and environmental organizations with dedicated deployment grants and experimental support.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <span class="hint-small" id="sponsoredCount" style="font-weight:600;">4 sponsored briefs</span>
+        <a href="post-call.html" class="btn btn-ghost btn-sm">
+          Post a Sponsored Challenge →
+        </a>
+      </div>
+    </div>
+
+    <div class="sponsored-grid sprint-filterable-grid" id="sponsoredGrid">
+      <!-- Challenge 1: Singapore Urban Heat -->
+      <article class="elevated-card sprint-card reveal" data-domain="climate" data-id="call_singapore_cooling">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="tag-chip" data-domain="climate">Climate</span>
+          <span class="grant-badge">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 4.5v1h-1.5v-1h1.5Zm0 2.5v5h-1.5V7h1.5Z"/></svg>
+            $15,000 Deployment Grant + Lab Calibration
+          </span>
+        </div>
+        <h4>Urban Heat Island Mitigation &amp; Thermal Sensor Mesh</h4>
+        <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-top:-6px;">
+          Sponsored by <strong>Cooling Singapore Lab</strong> · Urban Climate Initiative
+        </div>
+        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">High-density urban canyons experience intense heat trapping. We need low-cost surface radiation sensors and microclimate models to validate facade greening interventions.</p>
+        
+        <div class="deliverables-box">
+          <strong>Target Deliverable:</strong> Open hardware multi-point radiant temperature logger + live microclimate map pipeline.
+        </div>
+
+        <div style="margin-top:2px;">
+          <a href="https://www.cooling.sg/research/urban-heat-island" target="_blank" rel="noopener noreferrer" class="research-ref-link">
+            <span>Research: Cooling Singapore Urban Climate Study ↗</span>
+          </a>
+        </div>
+
+        <div class="chip-row">
+          <span class="tag-chip skill">Hardware</span>
+          <span class="tag-chip skill">Thermal Modeling</span>
+          <span class="tag-chip skill">IoT</span>
+          <span class="tag-chip skill">Data Viz</span>
+        </div>
+
+        <div class="card-foot">
+          <span class="hint-small">Open for proposals</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Take on Challenge</button>
+        </div>
+      </article>
+
+      <!-- Challenge 2: Groundwater Sensor -->
+      <article class="elevated-card sprint-card reveal" data-domain="climate" data-id="call_groundwater">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="tag-chip" data-domain="climate">Climate</span>
+          <span class="grant-badge">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 4.5v1h-1.5v-1h1.5Zm0 2.5v5h-1.5V7h1.5Z"/></svg>
+            $8,500 Pilot Stipend + Sensor Kit
+          </span>
+        </div>
+        <h4>Groundwater Nitrate &amp; Chemical Contamination Sensor</h4>
+        <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-top:-6px;">
+          Sponsored by <strong>Rural Water Alliance</strong> · Watershed Stewardship
+        </div>
+        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">Build a low-cost optical sensor probe that flags chemical and agricultural nitrate contamination in real time across rural village wells.</p>
+        
+        <div class="deliverables-box">
+          <strong>Target Deliverable:</strong> Working optical sensing probe schematic and real-time telemetry firmware.
+        </div>
+
+        <div style="margin-top:2px;">
+          <a href="https://data.example.org/sets/gw-sensor-2026" target="_blank" rel="noopener noreferrer" class="research-ref-link">
+            <span>Dataset: Rural Watershed Ground-Truth Survey ↗</span>
+          </a>
+        </div>
+
+        <div class="chip-row">
+          <span class="tag-chip skill">Hardware</span>
+          <span class="tag-chip skill">Embedded C</span>
+          <span class="tag-chip skill">Chemistry</span>
+          <span class="tag-chip skill">LoRa</span>
+        </div>
+
+        <div class="card-foot">
+          <span class="hint-small">Open for proposals</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Take on Challenge</button>
+        </div>
+      </article>
+
+      <!-- Challenge 3: Grid Stability -->
+      <article class="elevated-card sprint-card reveal" data-domain="grid" data-id="call_grid_stability">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="tag-chip" data-domain="grid">Grid</span>
+          <span class="grant-badge">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 4.5v1h-1.5v-1h1.5Zm0 2.5v5h-1.5V7h1.5Z"/></svg>
+            $12,000 Grant + 5 Test Sites
+          </span>
+        </div>
+        <h4>Offline Edge Frequency Deviation Logger for Distributed Microgrids</h4>
+        <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-top:-6px;">
+          Sponsored by <strong>Clean Energy Grid Foundation</strong>
+        </div>
+        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">Rural renewable microgrids face brownouts due to unmonitored harmonic frequency drift. Need an edge device that samples AC waveform and detects phase deviations before inverter trip.</p>
+        
+        <div class="deliverables-box">
+          <strong>Target Deliverable:</strong> Edge DSP sampling firmware running on RP2040 or STM32 with local SD logging.
+        </div>
+
+        <div style="margin-top:2px;">
+          <a href="https://microgrid-research.example.org/frequency-harmonics" target="_blank" rel="noopener noreferrer" class="research-ref-link">
+            <span>Research: Microgrid Inverter Phase Instability ↗</span>
+          </a>
+        </div>
+
+        <div class="chip-row">
+          <span class="tag-chip skill">Power Systems</span>
+          <span class="tag-chip skill">Embedded C</span>
+          <span class="tag-chip skill">DSP</span>
+        </div>
+
+        <div class="card-foot">
+          <span class="hint-small">Open for proposals</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Take on Challenge</button>
+        </div>
+      </article>
+
+      <!-- Challenge 4: Mangrove Radar -->
+      <article class="elevated-card sprint-card reveal" data-domain="forestry" data-id="call_mangrove_radar">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="tag-chip" data-domain="forestry">Forestry</span>
+          <span class="grant-badge">
+            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 4.5v1h-1.5v-1h1.5Zm0 2.5v5h-1.5V7h1.5Z"/></svg>
+            $10,000 Research Fellowship
+          </span>
+        </div>
+        <h4>Synthetic Aperture Radar (SAR) Coastal Mangrove Biomass Estimator</h4>
+        <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-top:-6px;">
+          Sponsored by <strong>Coastal Wetland Restoration Consortium</strong>
+        </div>
+        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">Cloud cover obscures optical satellite monitoring of tidal mangroves. We need automated processing of Sentinel-1 dual-polarization SAR data to map canopy height and tidal flooding boundaries.</p>
+        
+        <div class="deliverables-box">
+          <strong>Target Deliverable:</strong> Python raster processing pipeline and interactive baseline change dashboard.
+        </div>
+
+        <div style="margin-top:2px;">
+          <a href="https://mangrove-restoration.example.org/radar-biomass" target="_blank" rel="noopener noreferrer" class="research-ref-link">
+            <span>Methodology: Sentinel-1 SAR Dual-Pol Backscatter Model ↗</span>
+          </a>
+        </div>
+
+        <div class="chip-row">
+          <span class="tag-chip skill">Python</span>
+          <span class="tag-chip skill">Geospatial</span>
+          <span class="tag-chip skill">Remote Sensing</span>
+        </div>
+
+        <div class="card-foot">
+          <span class="hint-small">Open for proposals</span>
+          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Take on Challenge</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Parallel Squad Formation & Shipped Library Banner -->
+  <div class="parallel-squad-callout elevated-card reveal" style="margin:36px 0;padding:24px 28px;border-left:4px solid var(--forest);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;background:color-mix(in srgb, var(--paper) 60%, var(--card));border-radius:12px;">
     <div style="max-width:620px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <span style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--forest);">Parallel Exploration Standard</span>
         <span class="growth-badge" data-stage="sprouting" style="font-size:0.7rem;padding:1px 6px;">Zero Waitlists</span>
       </div>
-      <h3 style="margin:0 0 6px;font-size:1.1rem;color:var(--ink);">Is your target sprint already capped at 3 builders?</h3>
-      <p style="margin:0;font-size:0.86rem;color:var(--ink-soft);line-height:1.45;">Canopy doesn't make builders wait in line. When an active sprint reaches capacity (3/3), you can fork the challenge to form a parallel squad tackling an alternative technical angle, architecture, or dataset.</p>
+      <h3 style="margin:0 0 6px;font-size:1.1rem;color:var(--ink);">Is your target sprint squad already capped at 3 builders?</h3>
+      <p style="margin:0;font-size:0.86rem;color:var(--ink-soft);line-height:1.45;">Canopy does not make builders wait in line. When an active sprint reaches capacity (3/3), you can fork the challenge to form a parallel squad tackling an alternative technical angle, architecture, or dataset.</p>
     </div>
-    <a href="post-call.html?mode=parallel" class="btn btn-stamp btn-sm" style="white-space:nowrap;">Form a Parallel Squad →</a>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <a href="post-call.html?mode=parallel" class="btn btn-stamp btn-sm" style="white-space:nowrap;">Form a Parallel Squad →</a>
+      <a href="notebook.html" class="btn btn-ghost btn-sm" style="white-space:nowrap;">View Shipped Library →</a>
+    </div>
   </div>
 
   <div class="stage-cta elevated-card reveal">
     <h2>Start a sprint, or join one that's already growing.</h2>
-    <p class="lede">The next deadline is closer than you think.</p>
+    <p class="lede">The next deadline is closer than you think: collaborate directly or sponsor a challenge.</p>
     <div class="connect-row">
-      <a class="btn btn-stamp" href="post-call.html">Post a Build Call to Sprint</a>
-      <a class="btn btn-ghost" href="match.html">Find teammates first</a>
+      <button type="button" class="btn btn-stamp" id="btnCtaPostWorking">Post What You're Working On</button>
+      <a class="btn btn-ghost" href="match.html">Find teammates in Directory</a>
     </div>
   </div>
 </div>
 </main>
+
+<!-- ============ MODAL DRAWER: POST WHAT YOU'RE WORKING ON ============ -->
+<div class="app-drawer-backdrop" id="postSquadBackdrop" style="display:none;"></div>
+<div class="app-drawer" id="postSquadDrawer" style="display:none;z-index:96;">
+  <div class="drawer-drag-handle"></div>
+  <div class="drawer-head">
+    <div>
+      <h3>Post What You're Working On</h3>
+      <p class="sub">Upload your active problem statement and recruit teammates to build together</p>
+    </div>
+    <button class="modal-close" id="closePostSquadDrawer" aria-label="Close drawer">✕</button>
+  </div>
+  <form class="drawer-form" id="postSquadForm">
+    <div class="field">
+      <label for="squadTitle">Problem / Project Title</label>
+      <input type="text" id="squadTitle" required placeholder="e.g. Offline edge frequency logger for microgrids" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+    </div>
+    <div class="field">
+      <label for="squadDomain">Primary Domain</label>
+      <select id="squadDomain" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <option value="climate">Climate &amp; Carbon</option>
+        <option value="grid">Energy &amp; Grid</option>
+        <option value="forestry">Forestry &amp; Biodiversity</option>
+        <option value="civic">Civic &amp; Public Infrastructure</option>
+        <option value="ai">AI &amp; Sensing</option>
+        <option value="education">Education &amp; Literacy</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="squadDescription">What are you building? (Problem context and current angle)</label>
+      <textarea id="squadDescription" required placeholder="Describe the specific bottleneck, what you've prototyped so far, and the outcome targeted in this cycle..." style="min-height:90px;"></textarea>
+    </div>
+    <div class="field">
+      <label>Sprint Cycle Duration</label>
+      <div class="pill-group" data-group="squad-duration" data-single="true">
+        <button type="button" class="pill" data-val="14" aria-pressed="true">2 weeks (14 days)</button>
+        <button type="button" class="pill" data-val="21" aria-pressed="false">3 weeks (21 days)</button>
+        <button type="button" class="pill" data-val="28" aria-pressed="false">4 weeks (28 days)</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="squadNeededRoles">Teammates &amp; Roles Needed (Comma-separated)</label>
+      <input type="text" id="squadNeededRoles" required placeholder="e.g. Firmware Engineer, Accessible UI Designer" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      <span class="hint-small" style="margin-top:4px;display:block;">Tell potential collaborators which specific crafts your squad needs.</span>
+    </div>
+    <div class="field">
+      <label for="squadRepoLink">Reference URL / Repo / Notes (Optional)</label>
+      <input type="text" id="squadRepoLink" placeholder="GitHub repo, spec doc, or dataset URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+    </div>
+    <div class="form-foot">
+      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">takes two minutes to launch your squad</span>
+      <button type="submit" class="btn btn-stamp btn-sm" id="btnSubmitWorkingSquad">Launch Working Squad →</button>
+    </div>
+  </form>
+</div>
 
 <!-- ============ FOOTER ============ -->
 <footer>
@@ -429,7 +701,7 @@
 
 <script type="module" src="/src/main.js"></script>
 <script type="module">
-  import { sprints } from '/src/db.js';
+  import { sprints, calls } from '/src/db.js';
 
   function escapeHtml(str) {
     if (!str) return '';
@@ -438,66 +710,272 @@
     })[m]);
   }
 
-  function createSprintCard(sprint, stage) {
+  function createSquadCard(sprint) {
     const card = document.createElement('article');
     const domain = escapeHtml(sprint.domain || 'general').toLowerCase();
     card.className = 'elevated-card sprint-card reveal';
     card.setAttribute('data-domain', domain);
     card.setAttribute('data-id', sprint.id || '');
 
-    const title = escapeHtml(sprint.title || 'Untitled Sprint');
+    const title = escapeHtml(sprint.title || 'Untitled Working Squad');
     const desc = escapeHtml(sprint.objective || sprint.problemStatement || '');
     const neededRoles = Array.isArray(sprint.neededRoles) ? sprint.neededRoles : ['Technical Contributor'];
-    const chips = neededRoles.map(r => `<span class="tag-chip skill">${escapeHtml(r)}</span>`).join('');
+    const roleChips = neededRoles.map(r => `<span class="tag-chip skill" style="border-style:dashed;">Needs: ${escapeHtml(r)}</span>`).join('');
+    const cycle = sprint.cycleDuration ? `${sprint.cycleDuration}d cycle` : '21-day cycle';
+    const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
 
     card.innerHTML = `
-      <h4>${title}</h4>
-      ${desc ? `<p class="line" style="color:var(--ink-soft);font-size:.9rem;">${desc}</p>` : ''}
-      <div class="team-row">
-        <div class="avatar sm" data-seed="${sprint.id}" aria-hidden="true"></div>
-        <span class="plus">Live</span>
+      <div class="squad-status-row">
+        <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
+        <span class="growth-badge" data-stage="forming">Recruiting Teammates</span>
       </div>
-      <div class="chip-row">${chips}</div>
-      <div class="card-foot" style="flex-wrap:wrap;gap:6px;">
-        <span class="hint-small">${stage === 'building' ? 'team capped (3/3)' : (stage === 'shipped' ? 'Shipped in cycle' : 'Active Cycle')}</span>
-        ${stage === 'building' 
-          ? `<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
-              <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify next cycle</button>
-              <a href="post-call.html?mode=parallel&ref=${encodeURIComponent(sprint.id || '')}" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:4px 8px;text-decoration:none;">⚡ Form parallel track →</a>
-             </div>`
-          : (stage === 'shipped' 
-            ? `<a class="shovel-btn" href="notebook.html" style="text-decoration:none;">Read Notebook Log →</a>`
-            : `<button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>`)}
+      <h4>${title}</h4>
+      ${desc ? `<p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">${desc}</p>` : ''}
+      <div style="margin-top:2px;font-size:0.8rem;color:var(--ink-faint);">
+        Active working squad · Cycle: ${escapeHtml(cycle)}
+      </div>
+      <div class="chip-row">
+        ${roleChips}
+      </div>
+      <div class="card-foot">
+        <span class="hint-small">1-2 seats open</span>
+        <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Join Squad</button>
       </div>
     `;
     return card;
   }
 
-  async function loadLiveSprints() {
-    try {
-      const board = await sprints.getBoard();
-      if (!board) return;
+  function createSponsoredCard(call) {
+    const card = document.createElement('article');
+    const domain = escapeHtml(call.domain || 'climate').toLowerCase();
+    card.className = 'elevated-card sprint-card reveal';
+    card.setAttribute('data-domain', domain);
+    card.setAttribute('data-id', call.id || '');
 
-      const stages = ['forming', 'building', 'shipped'];
-      stages.forEach(stage => {
-        const col = document.querySelector(`.board-col[data-stage="${stage}"] .board-col-body`);
-        if (!col) return;
-        const items = board[stage] || [];
-        items.forEach(sprint => {
-          if (!document.querySelector(`[data-id="${sprint.id}"]`)) {
-            const card = createSprintCard(sprint, stage);
-            col.prepend(card);
+    const title = escapeHtml(call.title || 'Untitled Challenge');
+    const sponsor = escapeHtml(call.sponsorOrg || 'Partner Organization');
+    const desc = escapeHtml(call.summary || call.problemStatement || '');
+    const tier = escapeHtml(call.supportTier || 'Sponsored Challenge');
+    const target = escapeHtml(call.targetDeliverable || '');
+    const ref = call.researchReference;
+    const skills = Array.isArray(call.skillChips) ? call.skillChips : [];
+    const skillChips = skills.map(s => `<span class="tag-chip skill">${escapeHtml(s)}</span>`).join('');
+    const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
+
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
+        <span class="grant-badge">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 4.5v1h-1.5v-1h1.5Zm0 2.5v5h-1.5V7h1.5Z"/></svg>
+          ${tier}
+        </span>
+      </div>
+      <h4>${title}</h4>
+      <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-top:-6px;">
+        Sponsored by <strong>${sponsor}</strong>
+      </div>
+      ${desc ? `<p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">${desc}</p>` : ''}
+      ${target ? `<div class="deliverables-box"><strong>Target Deliverable:</strong> ${target}</div>` : ''}
+      ${ref && ref.url ? `
+        <div style="margin-top:2px;">
+          <a href="${escapeHtml(ref.url)}" target="_blank" rel="noopener noreferrer" class="research-ref-link">
+            <span>Research: ${escapeHtml(ref.title || 'Source Reference')} ↗</span>
+          </a>
+        </div>` : ''}
+      <div class="chip-row">
+        ${skillChips}
+      </div>
+      <div class="card-foot">
+        <span class="hint-small">Open for proposals</span>
+        <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Take on Challenge</button>
+      </div>
+    `;
+    return card;
+  }
+
+  async function loadLiveSprintsAndCalls() {
+    try {
+      // 1. Load Active Squads
+      const board = await sprints.getBoard();
+      const squadsGrid = document.getElementById('activeSquadsGrid');
+      if (squadsGrid && board) {
+        const allSprints = [...(board.forming || []), ...(board.building || [])];
+        allSprints.forEach(sprint => {
+          if (!squadsGrid.querySelector(`[data-id="${sprint.id}"]`)) {
+            const card = createSquadCard(sprint);
+            squadsGrid.appendChild(card);
           }
         });
+        const squadCountEl = document.getElementById('squadCount');
+        if (squadCountEl) squadCountEl.textContent = squadsGrid.querySelectorAll('.sprint-card').length;
+      }
 
-        const countEl = document.querySelector(`.board-col[data-stage="${stage}"] .board-col-head .n`);
-        if (countEl) {
-          countEl.textContent = col.querySelectorAll('.sprint-card').length;
-        }
-      });
+      // 2. Load Sponsored Challenges
+      const callData = await calls.getCalls();
+      const sponsoredGrid = document.getElementById('sponsoredGrid');
+      if (sponsoredGrid && Array.isArray(callData)) {
+        callData.forEach(call => {
+          if (!sponsoredGrid.querySelector(`[data-id="${call.id}"]`)) {
+            const card = createSponsoredCard(call);
+            sponsoredGrid.appendChild(card);
+          }
+        });
+        const sponsoredCountEl = document.getElementById('sponsoredCount');
+        if (sponsoredCountEl) sponsoredCountEl.textContent = sponsoredGrid.querySelectorAll('.sprint-card').length;
+      }
     } catch (err) {
-      console.warn('[Canopy] Could not load live sprints:', err.message);
+      console.warn('[Canopy] Live load warning:', err.message);
     }
+  }
+
+  // Drawer handling for posting working squads
+  const postSquadDrawer = document.getElementById('postSquadDrawer');
+  const postSquadBackdrop = document.getElementById('postSquadBackdrop');
+  const closePostSquadBtn = document.getElementById('closePostSquadDrawer');
+  const openPostSquadBtns = [document.getElementById('btnOpenPostSquad'), document.getElementById('btnCtaPostWorking')].filter(Boolean);
+
+  function openPostSquad() {
+    if (!postSquadDrawer || !postSquadBackdrop) return;
+    postSquadBackdrop.style.display = 'block';
+    postSquadDrawer.style.display = 'block';
+    setTimeout(() => {
+      postSquadBackdrop.classList.add('open');
+      postSquadDrawer.classList.add('open');
+    }, 10);
+  }
+
+  function closePostSquad() {
+    if (!postSquadDrawer || !postSquadBackdrop) return;
+    postSquadBackdrop.classList.remove('open');
+    postSquadDrawer.classList.remove('open');
+    setTimeout(() => {
+      postSquadBackdrop.style.display = 'none';
+      postSquadDrawer.style.display = 'none';
+    }, 260);
+  }
+
+  openPostSquadBtns.forEach(btn => btn.addEventListener('click', openPostSquad));
+  if (closePostSquadBtn) closePostSquadBtn.addEventListener('click', closePostSquad);
+  if (postSquadBackdrop) postSquadBackdrop.addEventListener('click', closePostSquad);
+
+  // Duration pill toggles in the squad drawer
+  document.querySelectorAll('[data-group="squad-duration"] .pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('[data-group="squad-duration"] .pill').forEach(p => p.setAttribute('aria-pressed', 'false'));
+      pill.setAttribute('aria-pressed', 'true');
+    });
+  });
+
+  // Handle Form Submission for launching a squad
+  const postSquadForm = document.getElementById('postSquadForm');
+  if (postSquadForm) {
+    postSquadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('btnSubmitWorkingSquad');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Launching Squad...';
+      }
+
+      const activeDurationPill = document.querySelector('[data-group="squad-duration"] .pill[aria-pressed="true"]');
+      const durationVal = activeDurationPill ? parseInt(activeDurationPill.getAttribute('data-val'), 10) : 21;
+      const rolesInput = document.getElementById('squadNeededRoles')?.value || '';
+      const neededRoles = rolesInput.split(',').map(r => r.trim()).filter(Boolean);
+
+      const payload = {
+        title: document.getElementById('squadTitle')?.value || '',
+        domain: document.getElementById('squadDomain')?.value || 'climate',
+        problemStatement: document.getElementById('squadDescription')?.value || '',
+        objective: document.getElementById('squadDescription')?.value || '',
+        cycleDuration: durationVal,
+        neededRoles: neededRoles.length ? neededRoles : ['Technical Contributor'],
+        referenceUrl: document.getElementById('squadRepoLink')?.value || ''
+      };
+
+      try {
+        const result = await sprints.createSprint(payload);
+        const squadsGrid = document.getElementById('activeSquadsGrid');
+        if (squadsGrid) {
+          const newSprint = result?.sprint || { ...payload, id: 'sp_' + Date.now() };
+          const card = createSquadCard(newSprint);
+          squadsGrid.prepend(card);
+
+          const squadCountEl = document.getElementById('squadCount');
+          if (squadCountEl) squadCountEl.textContent = squadsGrid.querySelectorAll('.sprint-card').length;
+        }
+
+        postSquadForm.reset();
+        closePostSquad();
+        const toast = document.getElementById('toast');
+        if (toast) {
+          toast.textContent = '🌱 Working squad launched: active in the cycle.';
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+      } catch (err) {
+        alert(err.message || 'Could not launch squad. Please try again.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Launch Working Squad →';
+        }
+      }
+    });
+  }
+
+  // Filter & Search Logic
+  let currentDomainFilter = 'all';
+  let currentSearchQuery = '';
+
+  function applySprintFilters() {
+    const allCards = document.querySelectorAll('#activeSquadsGrid .sprint-card, #sponsoredGrid .sprint-card');
+    allCards.forEach(card => {
+      const cardDomain = (card.getAttribute('data-domain') || '').toLowerCase();
+      const textContent = (card.textContent || '').toLowerCase();
+
+      const matchesDomain = (currentDomainFilter === 'all') || (cardDomain === currentDomainFilter);
+      const matchesSearch = !currentSearchQuery || textContent.includes(currentSearchQuery);
+
+      if (matchesDomain && matchesSearch) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // Search input listener
+  const sprintSearch = document.getElementById('sprintSearch');
+  if (sprintSearch) {
+    sprintSearch.addEventListener('input', (e) => {
+      currentSearchQuery = e.target.value.trim().toLowerCase();
+      applySprintFilters();
+    });
+  }
+
+  // Domain filter pills listener
+  const filterPills = document.querySelectorAll('.filter-pill[data-filter]');
+  filterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      filterPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentDomainFilter = pill.getAttribute('data-filter') || 'all';
+      applySprintFilters();
+    });
+  });
+
+  // Reset filter button
+  const btnReset = document.getElementById('btnResetSprintFilters');
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      if (sprintSearch) sprintSearch.value = '';
+      currentSearchQuery = '';
+      filterPills.forEach(p => p.classList.remove('active'));
+      const allPill = document.querySelector('.filter-pill[data-filter="all"]');
+      if (allPill) allPill.classList.add('active');
+      currentDomainFilter = 'all';
+      applySprintFilters();
+    });
   }
 
   function restorePendingDraftIfAny() {
@@ -507,15 +985,9 @@
       const draft = JSON.parse(raw);
       if (!draft || !draft.note) return;
 
-      const user = auth.getUser();
-      if (!user || user.isGuest) return;
-
       const card = draft.callId ? document.querySelector(`[data-id="${draft.callId}"]`) : null;
       if (card && card.querySelector('.shovel-btn:not([href])')) {
         card.querySelector('.shovel-btn:not([href])').click();
-      } else {
-        const firstShovel = document.querySelector('.shovel-btn:not([href])');
-        if (firstShovel) firstShovel.click();
       }
 
       setTimeout(() => {
@@ -523,21 +995,6 @@
         const linkEl = document.getElementById('dLink');
         if (noteEl) noteEl.value = draft.note;
         if (linkEl && draft.link) linkEl.value = draft.link;
-        if (draft.skills && Array.isArray(draft.skills)) {
-          draft.skills.forEach(skill => {
-            [...document.querySelectorAll('[data-group="drawer-skills"] .pill')]
-              .find(p => p.textContent.trim() === skill)
-              ?.setAttribute('aria-pressed', 'true');
-          });
-        }
-        if (draft.availability) {
-          const availPill = [...document.querySelectorAll('[data-group="drawer-avail"] .pill')]
-            .find(p => p.textContent.trim() === draft.availability);
-          if (availPill) availPill.setAttribute('aria-pressed', 'true');
-        }
-        if (typeof showToast === 'function') {
-          showToast('🌱 Welcome back — your note is right where you left it.');
-        }
       }, 200);
     } catch (e) {
       console.error('Draft restore error', e);
@@ -545,7 +1002,7 @@
   }
 
   restorePendingDraftIfAny();
-  loadLiveSprints();
+  loadLiveSprintsAndCalls();
 </script>
 </body>
 </html>

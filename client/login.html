@@ -13,7 +13,7 @@
 <style>
   /* Bespoke Field Pass Card styling */
   .field-pass-card {
-    max-width: 480px;
+    max-width: 600px;
     margin: 28px auto 0;
     padding: 36px 32px 32px;
     border-radius: 16px;
@@ -82,6 +82,33 @@
     color: var(--forest);
     box-shadow: 0 2px 8px -2px var(--shadow);
   }
+  .pass-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 580px) {
+    .pass-grid-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+  .pass-section-header {
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--forest);
+    margin: 8px 0 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pass-section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: color-mix(in srgb, var(--card-edge) 85%, transparent);
+  }
   .pass-input-group {
     display: flex;
     flex-direction: column;
@@ -94,19 +121,21 @@
     letter-spacing: 0.1em;
     color: var(--ink-faint);
   }
-  .pass-input-group input {
+  .pass-input-group input,
+  .pass-input-group select {
     width: 100%;
-    padding: 11px 14px;
+    padding: 10px 13px;
     border: 1px solid var(--card-edge);
     border-radius: 6px;
     background: var(--paper);
     color: var(--ink);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-family: inherit;
     transition: border-color 160ms ease, box-shadow 160ms ease;
     box-sizing: border-box;
   }
-  .pass-input-group input:focus {
+  .pass-input-group input:focus,
+  .pass-input-group select:focus {
     outline: none;
     border-color: var(--forest);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--forest) 15%, transparent);
@@ -309,8 +338,8 @@
       <button type="submit" id="signInSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;">Access Collaborator Terminal →</button>
     </form>
 
-    <!-- Sign Up Form (hidden by default) -->
-    <form id="signUpForm" style="display:none;flex-direction:column;gap:16px;">
+    <!-- Unified Sign Up & Builder Intake Form (hidden by default) -->
+    <form id="signUpForm" style="display:none;flex-direction:column;gap:14px;">
       <!-- Google Sign Up Button -->
       <button type="button" class="btn-google googleAuthBtn" style="width:100%;margin-bottom:2px;">
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
@@ -319,25 +348,105 @@
           <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
           <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
         </svg>
-        <span>Create Account with Google</span>
+        <span>Create Pass with Google</span>
       </button>
 
       <div class="auth-divider">
-        <span>or create pass with email</span>
+        <span>or create pass and profile</span>
+      </div>
+
+      <div style="font-size:0.83rem;color:var(--ink-soft);line-height:1.5;margin-bottom:2px;background:color-mix(in srgb, var(--paper) 80%, var(--card));padding:8px 12px;border-radius:6px;border:1px dashed var(--card-edge);">
+        Pass creation and builder intake are completed together in this single step. Your verified profile appears immediately in the Match Sandbox.
+      </div>
+
+      <!-- Part 1: Credentials -->
+      <div class="pass-section-header">1. Collaborator Credentials</div>
+      <div class="pass-grid-2">
+        <div class="pass-input-group">
+          <label for="regDisplayName">Full Name / Handle</label>
+          <input type="text" id="regDisplayName" required placeholder="e.g. Elena Rostova" autocomplete="name">
+        </div>
+        <div class="pass-input-group">
+          <label for="regEmail">Email Address</label>
+          <input type="email" id="regEmail" required placeholder="your.name@domain.org" autocomplete="email">
+        </div>
+      </div>
+
+      <div class="pass-grid-2">
+        <div class="pass-input-group">
+          <label for="regPassword">Passcode</label>
+          <input type="password" id="regPassword" required minlength="8" placeholder="Minimum 8 characters" autocomplete="new-password">
+        </div>
+        <div class="pass-input-group">
+          <label for="regRole">Platform Role</label>
+          <select id="regRole">
+            <option value="builder" selected>Builder (Engineering, Hardware, AI, Design)</option>
+            <option value="problem_holder">Problem Holder (Field Org, NGO, Researcher)</option>
+            <option value="enabler">Enabler (Funder, Mentor, Technical Advisor)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Part 2: Craft & Domain -->
+      <div class="pass-section-header">2. Craft &amp; Focus Area</div>
+      <div class="pass-grid-2">
+        <div class="pass-input-group">
+          <label for="regCraft">Primary Craft / Headline</label>
+          <input type="text" id="regCraft" required placeholder="e.g. Firmware &amp; LoRa Telemetry Engineer">
+        </div>
+        <div class="pass-input-group">
+          <label for="regDomain">Primary Focus Domain</label>
+          <select id="regDomain">
+            <option value="climate" selected>Climate &amp; Ecological Monitoring</option>
+            <option value="hardware">Open Hardware &amp; Embedded Systems</option>
+            <option value="ai">AI, Computer Vision &amp; Earth Observation</option>
+            <option value="civic">Civic Tech &amp; Community Infrastructure</option>
+            <option value="design">Product Design &amp; Field Systems UX</option>
+            <option value="health">Rural Water &amp; Public Health Tools</option>
+          </select>
+        </div>
       </div>
 
       <div class="pass-input-group">
-        <label for="regEmail">Email Address</label>
-        <input type="email" id="regEmail" required placeholder="your.name@domain.org" autocomplete="email">
+        <label for="regTagline">What Are You Building or Exploring?</label>
+        <input type="text" id="regTagline" placeholder="e.g. Prototyping low-power LoRa telemetry nodes for drought-stressed aquifers">
+      </div>
+
+      <div class="pass-grid-2">
+        <div class="pass-input-group">
+          <label for="regSkills">Key Skills / Stack (comma-separated)</label>
+          <input type="text" id="regSkills" placeholder="e.g. Embedded C, LoRaWAN, KiCad, Python">
+        </div>
+        <div class="pass-input-group">
+          <label for="regHours">Weekly Availability</label>
+          <select id="regHours">
+            <option value="10" selected>10 hours / week (Sprint Collaborator)</option>
+            <option value="5">5 hours / week (Weekend Contributor)</option>
+            <option value="15">15 hours / week (Active Builder)</option>
+            <option value="20">20+ hours / week (Lead Contributor)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Part 3: Proof & Direct Links -->
+      <div class="pass-section-header">3. Direct Connect Links (Optional)</div>
+      <div class="pass-grid-2">
+        <div class="pass-input-group">
+          <label for="regGithub">GitHub Profile</label>
+          <input type="url" id="regGithub" placeholder="https://github.com/username">
+        </div>
+        <div class="pass-input-group">
+          <label for="regLinkedin">LinkedIn Profile</label>
+          <input type="url" id="regLinkedin" placeholder="https://linkedin.com/in/username">
+        </div>
       </div>
 
       <div class="pass-input-group">
-        <label for="regPassword">Create Passcode</label>
-        <input type="password" id="regPassword" required minlength="8" placeholder="Minimum 8 characters" autocomplete="new-password">
-        <span style="font-size:0.75rem;color:var(--ink-faint);margin-top:2px;">Must be at least 8 characters.</span>
+        <label for="regPortfolio">Personal Site / Portfolio / Lab</label>
+        <input type="url" id="regPortfolio" placeholder="https://yourdomain.org">
       </div>
 
-      <button type="submit" id="signUpSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;">Send Verification Token →</button>
+      <button type="submit" id="signUpSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;padding:12px;font-size:0.96rem;">Generate Pass &amp; Verify Email →</button>
     </form>
 
     <!-- OTP Section (hidden by default) -->
@@ -724,6 +833,16 @@
     if (loginAlert) loginAlert.style.display = 'none';
     pendingEmail = document.getElementById('regEmail').value.trim();
     const pwd = document.getElementById('regPassword').value;
+    const displayName = document.getElementById('regDisplayName').value.trim();
+    const role = document.getElementById('regRole').value;
+    const craft = document.getElementById('regCraft').value.trim();
+    const primaryDomain = document.getElementById('regDomain').value;
+    const tagline = document.getElementById('regTagline').value.trim();
+    const skillsRaw = document.getElementById('regSkills').value.trim();
+    const hoursPerWeek = document.getElementById('regHours').value;
+    const github = document.getElementById('regGithub').value.trim();
+    const linkedin = document.getElementById('regLinkedin').value.trim();
+    const portfolio = document.getElementById('regPortfolio').value.trim();
 
     if (!pendingEmail || !pendingEmail.includes('@')) {
       showToast('⚠️ Please enter a valid email address.');
@@ -735,12 +854,37 @@
       return;
     }
 
+    if (!displayName) {
+      showToast('⚠️ Please provide your full name or handle.');
+      document.getElementById('regDisplayName').focus();
+      return;
+    }
+
+    if (!craft) {
+      showToast('⚠️ Please state your primary craft or technical focus.');
+      document.getElementById('regCraft').focus();
+      return;
+    }
+
+    const skillTags = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
     const origText = signUpSubmitBtn.innerHTML;
     signUpSubmitBtn.disabled = true;
-    signUpSubmitBtn.innerHTML = 'Dispatching Token...';
+    signUpSubmitBtn.innerHTML = 'Creating Pass & Dispatching Token...';
 
     try {
-      const res = await auth.signUp(pendingEmail, pwd);
+      const res = await auth.signUp(pendingEmail, pwd, {
+        displayName,
+        role,
+        craft,
+        primaryDomain,
+        tagline: tagline || craft,
+        skillTags,
+        hoursPerWeek: Number(hoursPerWeek) || 10,
+        github,
+        linkedin,
+        portfolio
+      });
       otpSection.style.display = 'block';
       if (passStatusStamp) passStatusStamp.textContent = 'Code Dispatched · Verification Required';
       if (res.verificationNotice) {
@@ -749,6 +893,7 @@
       showToast('🌱 Verification token dispatched to your inbox.');
       signUpSubmitBtn.disabled = false;
       signUpSubmitBtn.innerHTML = origText;
+      otpSection.scrollIntoView({ behavior: 'smooth' });
     } catch (err) {
       if (loginAlert) {
         loginAlert.className = 'status-alert status-alert-error';

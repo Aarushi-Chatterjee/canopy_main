@@ -157,7 +157,16 @@ function isIsolated() {
 function readDb() {
   if (isIsolated()) {
     if (!inMemoryDb) {
-      inMemoryDb = JSON.parse(JSON.stringify(INITIAL_DATA));
+      try {
+        if (fs.existsSync(DB_FILE)) {
+          const raw = fs.readFileSync(DB_FILE, 'utf-8');
+          inMemoryDb = JSON.parse(raw);
+        } else {
+          inMemoryDb = JSON.parse(JSON.stringify(INITIAL_DATA));
+        }
+      } catch (e) {
+        inMemoryDb = JSON.parse(JSON.stringify(INITIAL_DATA));
+      }
     }
     return inMemoryDb;
   }
@@ -176,13 +185,14 @@ function readDb() {
 }
 
 function writeDb(data) {
+  inMemoryDb = data;
+
   if (process.env.NODE_ENV === 'production') {
-    // Zero disk persistence in production serverless environments
+    // Retain warm in-memory container state in serverless production environments
     return true;
   }
 
   if (isIsolated()) {
-    inMemoryDb = data;
     return true;
   }
 

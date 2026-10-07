@@ -1130,6 +1130,65 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 .match-card p.line{ color:var(--ink-soft); font-size:.92rem; line-height:1.5; }
 .match-card .chip-row{ display:flex; gap:6px; flex-wrap:wrap; }
 .match-card .card-foot{ margin-top:auto; padding-top:12px; border-top:1px solid var(--card-edge); display:flex; align-items:center; justify-content:space-between; gap:10px; }
+
+/* ---- builder card specific additions ---- */
+.builder-tagline{
+  font-size:.86rem;
+  line-height:1.45;
+  color:var(--forest);
+  background:color-mix(in srgb, var(--forest) 7%, var(--card));
+  border-left:2.5px solid var(--forest);
+  padding:7px 10px;
+  border-radius:0 4px 4px 0;
+  font-weight:500;
+}
+.builder-tagline strong{
+  font-weight:700;
+  letter-spacing:.02em;
+}
+.builder-bio{
+  font-size:.85rem;
+  line-height:1.5;
+  color:var(--ink-soft);
+  margin:0;
+}
+.builder-socials-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding-top:6px;
+  border-top:1px dashed var(--line);
+}
+.builder-socials{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.builder-social-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:26px;
+  height:26px;
+  border-radius:4px;
+  border:1px solid var(--card-edge);
+  background:var(--paper);
+  color:var(--ink-soft);
+  text-decoration:none;
+  transition:all .14s var(--ease-out);
+}
+.builder-social-btn:hover{
+  background:var(--card);
+  color:var(--forest);
+  border-color:var(--forest);
+  transform:translateY(-1px);
+}
+.builder-social-btn svg{
+  width:12px;
+  height:12px;
+  fill:currentColor;
+}
 /* ---- growth stage badges ---- */
 .growth-badge{
   font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
@@ -1260,6 +1319,118 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 .ambient-clock-text{ display:flex; flex-direction:column; line-height:1.2; }
 .ambient-clock-text .days{ font-family:'Caveat Var',cursive; font-size:1.1rem; font-weight:700; color:var(--forest); }
 .ambient-clock-text .voice{ font-family:'Caveat Var',cursive; font-size:.85rem; color:var(--twine); }
+
+/* ---- Sprint Page Two-Section Layout & Cards ---- */
+.sprint-section-wrap{
+  margin-top:36px;
+  margin-bottom:52px;
+}
+.sprint-section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-bottom:22px;
+  padding-bottom:14px;
+  border-bottom:1.5px solid var(--line);
+}
+.sprint-section-head-title{
+  max-width:680px;
+}
+.sprint-section-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:0.75rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color:var(--forest);
+  margin-bottom:6px;
+}
+.sprint-section-head h2{
+  font-family:'Fraunces Var',serif;
+  font-size:clamp(1.35rem, 2.3vw, 1.8rem);
+  font-weight:600;
+  color:var(--ink);
+  margin:0 0 6px;
+}
+.sprint-section-head p{
+  margin:0;
+  font-size:0.92rem;
+  color:var(--ink-soft);
+  line-height:1.45;
+}
+.squads-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));
+  gap:22px;
+}
+.sponsored-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(360px, 1fr));
+  gap:22px;
+}
+.grant-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:3px 10px;
+  border-radius:4px;
+  font-size:0.76rem;
+  font-weight:700;
+  letter-spacing:0.02em;
+  color:var(--forest);
+  background:color-mix(in srgb, var(--forest) 12%, var(--card));
+  border:1px solid color-mix(in srgb, var(--forest) 30%, transparent);
+}
+.grant-badge svg{
+  width:12px;
+  height:12px;
+}
+.deliverables-box{
+  background:color-mix(in srgb, var(--forest) 4%, var(--card));
+  border-left:3px solid var(--forest);
+  padding:9px 12px;
+  border-radius:0 6px 6px 0;
+  font-size:0.83rem;
+  line-height:1.45;
+  color:var(--ink);
+}
+.deliverables-box strong{
+  color:var(--forest);
+  font-weight:700;
+}
+.research-ref-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:0.8rem;
+  font-weight:600;
+  color:var(--forest);
+  text-decoration:none;
+  padding:4px 8px;
+  border-radius:4px;
+  background:var(--paper);
+  border:1px solid var(--card-edge);
+  transition:all .14s var(--ease-out);
+}
+.research-ref-link:hover{
+  background:var(--card);
+  border-color:var(--forest);
+  transform:translateY(-1px);
+}
+.squad-status-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  font-size:0.8rem;
+  color:var(--ink-soft);
+  padding:6px 0;
+  border-top:1px dashed var(--line);
+}
 
 /* ---- Google OAuth Button & Auth Divider ---- */
 .btn-google{
@@ -1416,6 +1587,99 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
   transform:translateY(4px); transition:opacity .18s var(--ease-out), transform .18s var(--ease-out);
 }
 .grow-btn:hover .tooltip{ opacity:1; transform:translateY(0); }
+
+/* ---- Shipped Success Stories Gallery ---- */
+.shipped-section-wrap {
+  margin-top: 56px;
+  padding-top: 36px;
+  border-top: 2px dashed var(--line);
+}
+
+.shipped-section-head {
+  margin-bottom: 24px;
+}
+
+.shipped-section-head h2 {
+  font-family: 'Fraunces Var', serif;
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 8px 0;
+}
+
+.shipped-section-head p {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 68ch;
+}
+
+.shipped-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+  margin-top: 20px;
+}
+
+.shipped-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 22px 20px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--card-edge);
+  border-left: 4px solid var(--forest);
+  box-shadow: 0 4px 16px -6px var(--shadow);
+  transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+
+.shipped-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px -8px var(--shadow);
+  border-color: var(--forest);
+}
+
+.shipped-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--forest) 12%, var(--card));
+  color: var(--forest);
+  border: 1px solid color-mix(in srgb, var(--forest) 30%, transparent);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.impact-highlight-box {
+  background: color-mix(in srgb, var(--forest) 6%, var(--paper));
+  border: 1px solid color-mix(in srgb, var(--forest) 25%, transparent);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--forest-deep);
+  margin: 12px 0 14px 0;
+}
+:root[data-theme="dark"] .impact-highlight-box {
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.shipped-links-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  flex-wrap: wrap;
+}
 
 /* ---- shared closing CTA (evolves .connect-card for the workspace pages) ---- */
 .stage-cta{

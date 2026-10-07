@@ -248,258 +248,255 @@
     </div>
   </div>
 
-  <!-- ---- build calls ---- -->
+  <!-- ---- Builders Directory ---- -->
   <div class="stage-section">
     <div class="stage-section-head">
-      <h2>Build Calls that fit your profile</h2>
-      <span class="count" id="callCount">6 open</span>
-    </div>
-    <p class="lede" style="margin-top:-10px;margin-bottom:20px;">Each card is the problem in one line, the skills it needs, and a sprout if it's open to new collaborators. Reacting isn't a swipe: it is a short note about what you'd bring.</p>
-
-    <div class="filter-row" data-filters-for="#callGrid" aria-label="Filter Build Calls by domain">
-      <button type="button" class="filter-chip" data-domain="climate" aria-pressed="false">Climate</button>
-      <button type="button" class="filter-chip" data-domain="health" aria-pressed="false">Health</button>
-      <button type="button" class="filter-chip" data-domain="education" aria-pressed="false">Education</button>
-      <button type="button" class="filter-chip" data-domain="civic" aria-pressed="false">Civic Tech</button>
-      <button type="button" class="filter-chip" data-domain="hardware" aria-pressed="false">Hardware</button>
-      <button type="button" class="filter-chip" data-domain="ai" aria-pressed="false">AI / ML</button>
-      <button type="button" class="filter-chip" data-domain="design" aria-pressed="false">Design</button>
+      <div>
+        <h2>Builders Directory</h2>
+        <p class="lede" style="margin-top:6px;margin-bottom:0;">Craftspeople, engineers, and researchers seeking squads to build with. Filter by craft or domain, review what they want to build, and connect directly or send a high-context note.</p>
+      </div>
+      <span class="count" id="builderCount">6 builders available</span>
     </div>
 
-    <div class="match-grid" id="callGrid">
-      <article class="elevated-card interactive match-card reveal" data-domain="climate" data-id="call_groundwater" data-creator-id="usr_water_ngo" data-illustrative="true" tabindex="0">
+    <!-- Filter & Search Controls -->
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
+      <div class="filter-row" data-filters-for="#buildersGrid" aria-label="Filter Builders by domain" style="margin-bottom:0;">
+        <button type="button" class="filter-chip" data-domain="all" aria-pressed="true">All Domains</button>
+        <button type="button" class="filter-chip" data-domain="climate" aria-pressed="false">Climate</button>
+        <button type="button" class="filter-chip" data-domain="hardware" aria-pressed="false">Hardware</button>
+        <button type="button" class="filter-chip" data-domain="ai" aria-pressed="false">AI / ML</button>
+        <button type="button" class="filter-chip" data-domain="design" aria-pressed="false">Design</button>
+        <button type="button" class="filter-chip" data-domain="civic" aria-pressed="false">Civic Tech</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex:1;max-width:320px;min-width:220px;">
+        <input type="text" id="builderSearch" placeholder="Search craft, skill, or name..." style="width:100%;padding:7px 12px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font-size:0.85rem;">
+      </div>
+    </div>
+
+    <div class="match-grid" id="buildersGrid">
+      <article class="elevated-card interactive match-card reveal" data-domain="hardware" data-id="prof_elena" data-user-id="usr_elena" data-creator-id="usr_elena" tabindex="0">
         <div class="head-row">
-          <div class="avatar" data-seed="groundwater-sensor" aria-hidden="true"></div>
+          <img src="/avatars/avatar-builders.png" class="avatar" alt="Elena R." style="width:44px;height:44px;border-radius:8px;object-fit:contain;background:rgba(31,92,64,0.06);padding:3px;flex:0 0 auto;">
           <div class="head-title">
-            <div class="name">Groundwater contamination sensor</div>
-            <div class="sub">posted by a regional water NGO</div>
+            <div class="name">Elena R.</div>
+            <div class="sub">Hardware &amp; Embedded Systems Engineer</div>
           </div>
-          <span class="illustrative-badge">Illustrative Example</span>
-          <span class="growth-badge" data-stage="sprouting"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Sprouting</span>
+          <span class="tag-chip" data-domain="hardware">Hardware</span>
         </div>
-        <p class="line">Build a low-cost sensor that flags contamination in real time. Pilot budget and an open dataset are already secured.</p>
-        <div class="illustrative-notice">
-          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
+        <div class="builder-tagline">
+          <strong>Looking to build:</strong> Building low-power LoRa telemetry nodes for agrarian aquifer monitoring.
         </div>
+        <p class="builder-bio">Designing open hardware sensing boards and low-frequency telemetry for drought-stressed river basins.</p>
         <div class="chip-row">
-          <span class="tag-chip" data-domain="climate">Climate</span>
           <span class="tag-chip skill">Hardware</span>
-          <span class="tag-chip skill">Embedded</span>
-        </div>
-        <div class="card-foot">
-          <span class="hint-small">Sample squad configuration</span>
-          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
-        </div>
-      </article>
-
-      <article class="elevated-card interactive match-card reveal" data-domain="ai" data-id="call_deforestation" data-creator-id="usr_maya" data-illustrative="true" tabindex="0">
-        <div class="head-row">
-          <div class="avatar" data-seed="deforestation-tracker" aria-hidden="true"></div>
-          <div class="head-title">
-            <div class="name">Deforestation tracker from satellite feeds</div>
-            <div class="sub">posted by an independent researcher</div>
-          </div>
-          <span class="illustrative-badge">Illustrative Example</span>
-          <span class="growth-badge" data-stage="seed"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Seed</span>
-        </div>
-        <p class="line">"I need a computer vision engineer to help me turn public satellite imagery into a weekly change-detection map."</p>
-        <div class="illustrative-notice">
-          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
-        </div>
-        <div class="chip-row">
-          <span class="tag-chip" data-domain="ai">AI / ML</span>
-          <span class="tag-chip skill">Computer Vision</span>
-          <span class="tag-chip skill">Python</span>
-        </div>
-        <div class="card-foot">
-          <span class="hint-small">solo so far</span>
-          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
-        </div>
-      </article>
-
-      <article class="elevated-card interactive match-card reveal" data-domain="health" data-id="call_triage" data-creator-id="usr_aarushi" data-illustrative="true" tabindex="0">
-        <div class="head-row">
-          <div class="avatar" data-seed="clinic-triage" aria-hidden="true"></div>
-          <div class="head-title">
-            <div class="name">Offline-first triage tool for rural clinics</div>
-            <div class="sub">posted by a public health fellow</div>
-          </div>
-          <span class="illustrative-badge">Illustrative Example</span>
-          <span class="growth-badge" data-stage="in_sprint"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> In Sprint</span>
-        </div>
-        <p class="line">A scoped problem with real clinic partners lined up: needs someone who's shipped for low-connectivity Android before.</p>
-        <div class="illustrative-notice">
-          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
-        </div>
-        <div class="chip-row">
-          <span class="tag-chip" data-domain="health">Health</span>
-          <span class="tag-chip skill">Android</span>
-          <span class="tag-chip skill">Offline sync</span>
-        </div>
-        <div class="card-foot">
-          <span class="hint-small">team active in sprint</span>
-          <button type="button" class="shovel-btn notify">Notify next cycle</button>
-        </div>
-      </article>
-
-      <article class="elevated-card interactive match-card reveal" data-domain="civic" data-id="call_budget" data-creator-id="usr_aarushi" data-illustrative="true" tabindex="0">
-        <div class="head-row">
-          <div class="avatar" data-seed="civic-budget" aria-hidden="true"></div>
-          <div class="head-title">
-            <div class="name">A plain-language city budget explorer</div>
-            <div class="sub">posted by a civic tech collective</div>
-          </div>
-          <span class="illustrative-badge">Illustrative Example</span>
-          <span class="growth-badge" data-stage="sprouting"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Sprouting</span>
-        </div>
-        <p class="line">Municipal budget data is public but unreadable. Wants a designer and a data person to make it legible.</p>
-        <div class="illustrative-notice">
-          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
-        </div>
-        <div class="chip-row">
-          <span class="tag-chip" data-domain="civic">Civic Tech</span>
-          <span class="tag-chip skill">Data Viz</span>
-          <span class="tag-chip skill">Design</span>
-        </div>
-        <div class="card-foot">
-          <span class="hint-small">1 builder in, 2 spots open</span>
-          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
-        </div>
-      </article>
-
-      <article class="elevated-card interactive match-card reveal" data-domain="education" data-id="call_tutor" data-creator-id="usr_aarushi" data-illustrative="true" tabindex="0">
-        <div class="head-row">
-          <div class="avatar" data-seed="reading-tutor" aria-hidden="true"></div>
-          <div class="head-title">
-            <div class="name">Adaptive reading tutor for grade 3–5</div>
-            <div class="sub">posted by a former teacher, now founder</div>
-          </div>
-          <span class="illustrative-badge">Illustrative Example</span>
-          <span class="growth-badge" data-stage="seed"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Seed</span>
-        </div>
-        <p class="line">"The idea is vivid. What's missing is a technical co-builder to bring it to life." Looking for a full-stack partner.</p>
-        <div class="illustrative-notice">
-          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
-        </div>
-        <div class="chip-row">
-          <span class="tag-chip" data-domain="education">Education</span>
-          <span class="tag-chip skill">Full-stack</span>
-          <span class="tag-chip skill">Co-founder fit</span>
-        </div>
-        <div class="card-foot">
-          <span class="hint-small">solo so far</span>
-          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
-        </div>
-      </article>
-
-      <article class="elevated-card interactive match-card reveal" data-domain="hardware" data-id="call_solar" data-creator-id="usr_elena" data-illustrative="true" tabindex="0">
-        <div class="head-row">
-          <div class="avatar" data-seed="solar-microgrid" aria-hidden="true"></div>
-          <div class="head-title">
-            <div class="name">Fault detection for village solar microgrids</div>
-            <div class="sub">posted by a hardware collective</div>
-          </div>
-          <span class="illustrative-badge">Illustrative Example</span>
-          <span class="growth-badge" data-stage="sprouting"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Sprouting</span>
-        </div>
-        <p class="line">Field-tested hardware, no software layer yet. Wants an ML engineer ready to work from real sensor logs.</p>
-        <div class="illustrative-notice">
-          <strong>Illustrative Example:</strong> Demonstrates how Canopy matches work. This is a model record and is not currently accepting live applications.
-        </div>
-        <div class="chip-row">
-          <span class="tag-chip" data-domain="hardware">Hardware</span>
-          <span class="tag-chip skill">ML</span>
-          <span class="tag-chip skill">Time Series</span>
-        </div>
-        <div class="card-foot">
-          <span class="hint-small">3 builders in, 1 spot open</span>
-          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
-        </div>
-      </article>
-    </div>
-
-    <div class="empty-state" role="status">
-      <p>No Build Calls match that combination of domains right now.</p>
-      <button type="button" class="btn btn-ghost btn-sm">Clear filters</button>
-    </div>
-  </div>
-
-  <!-- ---- people ---- -->
-  <div class="stage-section">
-    <div class="stage-section-head">
-      <h2>People building nearby</h2>
-      <span class="count">recommended from overlapping domains</span>
-    </div>
-    <p class="lede" style="margin-top:-10px;margin-bottom:20px;">Tap a card to read their recent Lab Notebook entries before you decide to reach out.</p>
-    <div class="match-grid" id="peopleGrid">
-      <article class="elevated-card interactive match-card reveal" data-domain="ai" data-id="usr_priya" tabindex="0">
-        <div class="head-row">
-          <div class="avatar" data-seed="Priya Nandan" aria-hidden="true"></div>
-          <div class="head-title">
-            <div class="name">Priya Nandan</div>
-            <div class="sub">ML Engineer</div>
-            <span class="seeds-count">3 seeds planted</span>
-          </div>
-        </div>
-        <p class="line">"I've got strong skills. I just don't have a clear problem to point them at." Looking for a Build Call with real data behind it.</p>
-        <div class="chip-row">
-          <span class="tag-chip" data-domain="ai">AI / ML</span>
-          <span class="tag-chip skill">PyTorch</span>
-        </div>
-        <div class="card-foot">
-          <span class="hint-small">3 Lab Notebook entries</span>
-          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note</button>
-        </div>
-      </article>
-
-      <article class="elevated-card interactive match-card reveal" data-domain="design" data-id="usr_marcus" tabindex="0">
-        <div class="head-row">
-          <div class="avatar" data-seed="Marcus Webb" aria-hidden="true"></div>
-          <div class="head-title">
-            <div class="name">Marcus Webb</div>
-            <div class="sub">Product Designer</div>
-            <span class="seeds-count">5 seeds planted</span>
-          </div>
-        </div>
-        <p class="line">"I'm craving a real project: not another case study for my portfolio." Wants a technical co-builder to pair with.</p>
-        <div class="chip-row">
-          <span class="tag-chip" data-domain="design">Design</span>
-          <span class="tag-chip skill">Prototyping</span>
-        </div>
-        <div class="card-foot">
-          <span class="hint-small">5 Lab Notebook entries</span>
-          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note</button>
-        </div>
-      </article>
-
-      <article class="elevated-card interactive match-card reveal" data-domain="hardware" data-id="usr_ines" tabindex="0">
-        <div class="head-row">
-          <div class="avatar" data-seed="Ines Falk" aria-hidden="true"></div>
-          <div class="head-title">
-            <div class="name">Ines Falk</div>
-            <div class="sub">Hardware Engineer</div>
-            <span class="seeds-count">2 seeds planted</span>
-          </div>
-        </div>
-        <p class="line">"I want a cause, and a team that actually values the craft of building physical things." Ready to prototype now.</p>
-        <div class="chip-row">
-          <span class="tag-chip" data-domain="hardware">Hardware</span>
+          <span class="tag-chip skill">Embedded C</span>
+          <span class="tag-chip skill">LoRaWAN</span>
           <span class="tag-chip skill">PCB Design</span>
         </div>
+        <div class="builder-socials-row">
+          <span style="font-size:0.75rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.06em;">Connect:</span>
+          <div class="builder-socials">
+            <a href="https://github.com/example/elena-hw" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="GitHub" aria-label="GitHub"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+            <a href="https://linkedin.com/in/example-elena" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.474 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
+            <a href="https://elena-hardware.dev" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="Portfolio" aria-label="Portfolio"><svg viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.878.138-1.71.31-2.5H1.542a7.03 7.03 0 0 0 0 5h2.276a16.48 16.48 0 0 1-.31-2.5zm.31 3.5H2.255a7.025 7.025 0 0 0 3.072 2.472 6.7 6.7 0 0 1-.597-.933A9.267 9.267 0 0 1 4.09 11zm1.523 0H7.5v2.923c-.67-.204-1.335-.82-1.887-1.855A7.97 7.97 0 0 1 5.145 11zm3.355 2.923V11h1.887c-.126.39-.283.738-.468 1.068-.552 1.035-1.218 1.651-1.887 1.855zm0-3.923V8.5h2.875a16.484 16.484 0 0 1-.31 2.5H8.5zm0-3.5V5h2.565c.172.79.28 1.622.31 2.5H8.5zm0-4.423c.67.204 1.335.82 1.887 1.855.185.33.342.678.468 1.068H8.5V1.077zm3.41 1.384c.248.283.45.597.597.933.24.5.456 1.02.64 1.539h1.835a7.025 7.025 0 0 0-3.072-2.472zm1.835 3.539h-2.276c.03.878.138 1.71.31 2.5h2.276a7.03 7.03 0 0 0 0-5zm-2.276 3.5h2.276a7.025 7.025 0 0 1-3.072 2.472 6.7 6.7 0 0 0 .597-.933c.184-.52.4-1.04.64-1.539z"/></svg></a>
+          </div>
+        </div>
         <div class="card-foot">
-          <span class="hint-small">2 Lab Notebook entries</span>
-          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note</button>
+          <span class="hint-small">15 hrs/wk · Open to pair</span>
+          <button type="button" class="shovel-btn" data-recipient-id="usr_elena">
+            <svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note
+          </button>
         </div>
       </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="ai" data-id="prof_priya" data-user-id="usr_priya" data-creator-id="usr_priya" tabindex="0">
+        <div class="head-row">
+          <img src="/avatars/avatar-builders.png" class="avatar" alt="Priya Nandan" style="width:44px;height:44px;border-radius:8px;object-fit:contain;background:rgba(31,92,64,0.06);padding:3px;flex:0 0 auto;">
+          <div class="head-title">
+            <div class="name">Priya Nandan</div>
+            <div class="sub">ML &amp; Geospatial Data Engineer</div>
+          </div>
+          <span class="tag-chip" data-domain="ai">AI / ML</span>
+        </div>
+        <div class="builder-tagline">
+          <strong>Looking to build:</strong> Turning raw satellite raster feeds into weekly ecological change detection maps.
+        </div>
+        <p class="builder-bio">Focusing on earth observation, computer vision models, and translating multi-spectral datasets into actionable alerts.</p>
+        <div class="chip-row">
+          <span class="tag-chip skill">Python</span>
+          <span class="tag-chip skill">PyTorch</span>
+          <span class="tag-chip skill">Geospatial</span>
+          <span class="tag-chip skill">Computer Vision</span>
+        </div>
+        <div class="builder-socials-row">
+          <span style="font-size:0.75rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.06em;">Connect:</span>
+          <div class="builder-socials">
+            <a href="https://github.com/example/priya-ml" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="GitHub" aria-label="GitHub"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+            <a href="https://linkedin.com/in/example-priya" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.474 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
+            <a href="https://x.com/priya_earth" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="X" aria-label="X"><svg viewBox="0 0 16 16"><path d="M12.6 1h2.4L9.8 7l6.2 8h-4.9L7.3 9.9 3 15H.6l5.5-6.3L0 1h5l3.5 4.7L12.6 1zm-.8 12.6h1.3L4.3 2.3H2.9l8.9 11.3z"/></svg></a>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">12 hrs/wk · Open to pair</span>
+          <button type="button" class="shovel-btn" data-recipient-id="usr_priya">
+            <svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note
+          </button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="design" data-id="prof_marcus" data-user-id="usr_marcus" data-creator-id="usr_marcus" tabindex="0">
+        <div class="head-row">
+          <img src="/avatars/avatar-builders.png" class="avatar" alt="Marcus Webb" style="width:44px;height:44px;border-radius:8px;object-fit:contain;background:rgba(31,92,64,0.06);padding:3px;flex:0 0 auto;">
+          <div class="head-title">
+            <div class="name">Marcus Webb</div>
+            <div class="sub">Product Designer &amp; Prototyper</div>
+          </div>
+          <span class="tag-chip" data-domain="design">Design</span>
+        </div>
+        <div class="builder-tagline">
+          <strong>Looking to build:</strong> Designing legible, distraction-free interfaces for field researchers and civic tools.
+        </div>
+        <p class="builder-bio">Specialized in data-dense user interfaces, accessible typography, and rapid interactive prototypes for mission-critical software.</p>
+        <div class="chip-row">
+          <span class="tag-chip skill">Product Design</span>
+          <span class="tag-chip skill">Prototyping</span>
+          <span class="tag-chip skill">Design Systems</span>
+          <span class="tag-chip skill">Accessibility</span>
+        </div>
+        <div class="builder-socials-row">
+          <span style="font-size:0.75rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.06em;">Connect:</span>
+          <div class="builder-socials">
+            <a href="https://marcuswebb.design" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="Portfolio" aria-label="Portfolio"><svg viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.878.138-1.71.31-2.5H1.542a7.03 7.03 0 0 0 0 5h2.276a16.48 16.48 0 0 1-.31-2.5zm.31 3.5H2.255a7.025 7.025 0 0 0 3.072 2.472 6.7 6.7 0 0 1-.597-.933A9.267 9.267 0 0 1 4.09 11zm1.523 0H7.5v2.923c-.67-.204-1.335-.82-1.887-1.855A7.97 7.97 0 0 1 5.145 11zm3.355 2.923V11h1.887c-.126.39-.283.738-.468 1.068-.552 1.035-1.218 1.651-1.887 1.855zm0-3.923V8.5h2.875a16.484 16.484 0 0 1-.31 2.5H8.5zm0-3.5V5h2.565c.172.79.28 1.622.31 2.5H8.5zm0-4.423c.67.204 1.335.82 1.887 1.855.185.33.342.678.468 1.068H8.5V1.077zm3.41 1.384c.248.283.45.597.597.933.24.5.456 1.02.64 1.539h1.835a7.025 7.025 0 0 0-3.072-2.472zm1.835 3.539h-2.276c.03.878.138 1.71.31 2.5h2.276a7.03 7.03 0 0 0 0-5zm-2.276 3.5h2.276a7.025 7.025 0 0 1-3.072 2.472 6.7 6.7 0 0 0 .597-.933c.184-.52.4-1.04.64-1.539z"/></svg></a>
+            <a href="https://linkedin.com/in/example-marcus" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.474 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
+            <a href="https://x.com/marcus_ux" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="X" aria-label="X"><svg viewBox="0 0 16 16"><path d="M12.6 1h2.4L9.8 7l6.2 8h-4.9L7.3 9.9 3 15H.6l5.5-6.3L0 1h5l3.5 4.7L12.6 1zm-.8 12.6h1.3L4.3 2.3H2.9l8.9 11.3z"/></svg></a>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">10 hrs/wk · Open to pair</span>
+          <button type="button" class="shovel-btn" data-recipient-id="usr_marcus">
+            <svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note
+          </button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="hardware" data-id="prof_ines" data-user-id="usr_ines" data-creator-id="usr_ines" tabindex="0">
+        <div class="head-row">
+          <img src="/avatars/avatar-builders.png" class="avatar" alt="Ines Falk" style="width:44px;height:44px;border-radius:8px;object-fit:contain;background:rgba(31,92,64,0.06);padding:3px;flex:0 0 auto;">
+          <div class="head-title">
+            <div class="name">Ines Falk</div>
+            <div class="sub">Firmware &amp; Circuit Design Engineer</div>
+          </div>
+          <span class="tag-chip" data-domain="hardware">Hardware</span>
+        </div>
+        <div class="builder-tagline">
+          <strong>Looking to build:</strong> Prototyping ruggedized solar microgrid telemetry and ADC sensor instrumentation.
+        </div>
+        <p class="builder-bio">Dedicated to physical craft: four-layer PCB layouts, low-noise power regulation, and resilient field telemetry.</p>
+        <div class="chip-row">
+          <span class="tag-chip skill">Hardware</span>
+          <span class="tag-chip skill">Firmware</span>
+          <span class="tag-chip skill">KiCad</span>
+          <span class="tag-chip skill">STM32</span>
+        </div>
+        <div class="builder-socials-row">
+          <span style="font-size:0.75rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.06em;">Connect:</span>
+          <div class="builder-socials">
+            <a href="https://github.com/example/ines-circuits" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="GitHub" aria-label="GitHub"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+            <a href="https://linkedin.com/in/example-ines" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.474 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">14 hrs/wk · Open to pair</span>
+          <button type="button" class="shovel-btn" data-recipient-id="usr_ines">
+            <svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note
+          </button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="civic" data-id="prof_tariq" data-user-id="usr_tariq" data-creator-id="usr_tariq" tabindex="0">
+        <div class="head-row">
+          <img src="/avatars/avatar-builders.png" class="avatar" alt="Tariq Vance" style="width:44px;height:44px;border-radius:8px;object-fit:contain;background:rgba(31,92,64,0.06);padding:3px;flex:0 0 auto;">
+          <div class="head-title">
+            <div class="name">Tariq Vance</div>
+            <div class="sub">Civic Data Systems &amp; Backend Engineer</div>
+          </div>
+          <span class="tag-chip" data-domain="civic">Civic Tech</span>
+        </div>
+        <div class="builder-tagline">
+          <strong>Looking to build:</strong> Parsing municipal financial archives into open APIs and transparent queries.
+        </div>
+        <p class="builder-bio">Passionate about public accountability, reproducible data ingestion pipelines, and offline-first mobile sync.</p>
+        <div class="chip-row">
+          <span class="tag-chip skill">Backend</span>
+          <span class="tag-chip skill">PostgreSQL</span>
+          <span class="tag-chip skill">Data Pipelines</span>
+          <span class="tag-chip skill">Offline Sync</span>
+        </div>
+        <div class="builder-socials-row">
+          <span style="font-size:0.75rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.06em;">Connect:</span>
+          <div class="builder-socials">
+            <a href="https://github.com/example/tariq-civic" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="GitHub" aria-label="GitHub"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+            <a href="https://linkedin.com/in/example-tariq" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.474 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
+            <a href="https://tariqvance.net" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="Portfolio" aria-label="Portfolio"><svg viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.878.138-1.71.31-2.5H1.542a7.03 7.03 0 0 0 0 5h2.276a16.48 16.48 0 0 1-.31-2.5zm.31 3.5H2.255a7.025 7.025 0 0 0 3.072 2.472 6.7 6.7 0 0 1-.597-.933A9.267 9.267 0 0 1 4.09 11zm1.523 0H7.5v2.923c-.67-.204-1.335-.82-1.887-1.855A7.97 7.97 0 0 1 5.145 11zm3.355 2.923V11h1.887c-.126.39-.283.738-.468 1.068-.552 1.035-1.218 1.651-1.887 1.855zm0-3.923V8.5h2.875a16.484 16.484 0 0 1-.31 2.5H8.5zm0-3.5V5h2.565c.172.79.28 1.622.31 2.5H8.5zm0-4.423c.67.204 1.335.82 1.887 1.855.185.33.342.678.468 1.068H8.5V1.077zm3.41 1.384c.248.283.45.597.597.933.24.5.456 1.02.64 1.539h1.835a7.025 7.025 0 0 0-3.072-2.472zm1.835 3.539h-2.276c.03.878.138 1.71.31 2.5h2.276a7.03 7.03 0 0 0 0-5zm-2.276 3.5h2.276a7.025 7.025 0 0 1-3.072 2.472 6.7 6.7 0 0 0 .597-.933c.184-.52.4-1.04.64-1.539z"/></svg></a>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">15 hrs/wk · Open to pair</span>
+          <button type="button" class="shovel-btn" data-recipient-id="usr_tariq">
+            <svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note
+          </button>
+        </div>
+      </article>
+
+      <article class="elevated-card interactive match-card reveal" data-domain="climate" data-id="prof_aarushi" data-user-id="usr_aarushi" data-creator-id="usr_aarushi" tabindex="0">
+        <div class="head-row">
+          <img src="/avatars/avatar-rooted-purpose.png" class="avatar" alt="Aarushi Chatterjee" style="width:44px;height:44px;border-radius:8px;object-fit:contain;background:rgba(31,92,64,0.06);padding:3px;flex:0 0 auto;">
+          <div class="head-title">
+            <div class="name">Aarushi Chatterjee</div>
+            <div class="sub">Systems Architect &amp; Technical Steward</div>
+          </div>
+          <span class="tag-chip" data-domain="climate">Climate</span>
+        </div>
+        <div class="builder-tagline">
+          <strong>Looking to build:</strong> Architecting resilient coordination systems and telemetry tools for climate squads.
+        </div>
+        <p class="builder-bio">Building Canopy to bridge the gap between grassroots problem holders and high-context execution squads.</p>
+        <div class="chip-row">
+          <span class="tag-chip skill">Systems Architecture</span>
+          <span class="tag-chip skill">Full-Stack</span>
+          <span class="tag-chip skill">TypeScript</span>
+          <span class="tag-chip skill">Product Strategy</span>
+        </div>
+        <div class="builder-socials-row">
+          <span style="font-size:0.75rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.06em;">Connect:</span>
+          <div class="builder-socials">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="GitHub" aria-label="GitHub"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.474 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="X" aria-label="X"><svg viewBox="0 0 16 16"><path d="M12.6 1h2.4L9.8 7l6.2 8h-4.9L7.3 9.9 3 15H.6l5.5-6.3L0 1h5l3.5 4.7L12.6 1zm-.8 12.6h1.3L4.3 2.3H2.9l8.9 11.3z"/></svg></a>
+            <a href="https://aarushi.me" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="Portfolio" aria-label="Portfolio"><svg viewBox="0 0 16 16"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.878.138-1.71.31-2.5H1.542a7.03 7.03 0 0 0 0 5h2.276a16.48 16.48 0 0 1-.31-2.5zm.31 3.5H2.255a7.025 7.025 0 0 0 3.072 2.472 6.7 6.7 0 0 1-.597-.933A9.267 9.267 0 0 1 4.09 11zm1.523 0H7.5v2.923c-.67-.204-1.335-.82-1.887-1.855A7.97 7.97 0 0 1 5.145 11zm3.355 2.923V11h1.887c-.126.39-.283.738-.468 1.068-.552 1.035-1.218 1.651-1.887 1.855zm0-3.923V8.5h2.875a16.484 16.484 0 0 1-.31 2.5H8.5zm0-3.5V5h2.565c.172.79.28 1.622.31 2.5H8.5zm0-4.423c.67.204 1.335.82 1.887 1.855.185.33.342.678.468 1.068H8.5V1.077zm3.41 1.384c.248.283.45.597.597.933.24.5.456 1.02.64 1.539h1.835a7.025 7.025 0 0 0-3.072-2.472zm1.835 3.539h-2.276c.03.878.138 1.71.31 2.5h2.276a7.03 7.03 0 0 0 0-5zm-2.276 3.5h2.276a7.025 7.025 0 0 1-3.072 2.472 6.7 6.7 0 0 0 .597-.933c.184-.52.4-1.04.64-1.539z"/></svg></a>
+          </div>
+        </div>
+        <div class="card-foot">
+          <span class="hint-small">20 hrs/wk · Open to pair</span>
+          <button type="button" class="shovel-btn" data-recipient-id="usr_aarushi">
+            <svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <div class="empty-state" id="buildersEmpty" role="status" style="display:none;">
+      <p>No builders currently match that search or domain combination.</p>
+      <button type="button" class="btn btn-ghost btn-sm" id="btnResetFilters">Clear filters</button>
     </div>
   </div>
 
   <div class="stage-cta elevated-card reveal">
-    <h2>Update your match profile. Browse Build Calls. Write a note.</h2>
-    <p class="lede">Grab a shovel: the next good match is closer than a swipe.</p>
+    <h2>Want to be listed in the Builders Directory?</h2>
+    <p class="lede">Submit your verified builder profile to showcase what you want to build and be invited into active problem sprints.</p>
     <div class="connect-row">
-      <a class="btn btn-stamp" href="apply.html">Open my match profile</a>
-      <a class="btn btn-ghost" href="sprint.html">Explore active sprints</a>
+      <a class="btn btn-stamp" href="apply.html">Submit builder profile →</a>
+      <a class="btn btn-ghost" href="sprint.html">Browse active problem sprints</a>
     </div>
   </div>
 </div>
@@ -612,67 +609,135 @@
       .replace(/'/g, '&#039;');
   }
 
-  function createCallCard(call) {
+  function createBuilderCard(profile) {
     const card = document.createElement('article');
     card.className = 'elevated-card interactive match-card reveal';
-    card.setAttribute('data-domain', escapeHtml(call.domain || 'climate'));
-    card.setAttribute('data-id', escapeHtml(call.id));
-    if (call.creatorId) card.setAttribute('data-creator-id', escapeHtml(call.creatorId));
+    const domain = escapeHtml(profile.primaryDomain || 'climate');
+    card.setAttribute('data-domain', domain);
+    const userId = escapeHtml(profile.userId || profile.id);
+    card.setAttribute('data-id', userId);
+    card.setAttribute('data-creator-id', userId);
     card.tabIndex = 0;
 
-    const domainLabel = (call.domain || 'General').toUpperCase();
-    const skills = Array.isArray(call.neededSkills) ? call.neededSkills : [];
+    const domainLabel = domain.toUpperCase();
+    const skills = Array.isArray(profile.skillTags) ? profile.skillTags : [];
     const chips = skills.map(s => `<span class="tag-chip skill">${escapeHtml(s)}</span>`).join('');
+
+    const socials = profile.socials || {};
+    let socialsHtml = '';
+    if (socials.github) {
+      socialsHtml += `<a href="${escapeHtml(socials.github)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="GitHub" aria-label="GitHub">
+        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        GitHub
+      </a>`;
+    }
+    if (socials.linkedin) {
+      socialsHtml += `<a href="${escapeHtml(socials.linkedin)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="LinkedIn" aria-label="LinkedIn">
+        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.59 1.59 0 1 0 0-3.18 1.59 1.59 0 0 0 0 3.18m1.39 9.74v-8.37H5.07v8.37h2.78z"/></svg>
+        LinkedIn
+      </a>`;
+    }
+    if (socials.twitter) {
+      socialsHtml += `<a href="${escapeHtml(socials.twitter)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="X / Twitter" aria-label="X">
+        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X / Post
+      </a>`;
+    }
+    if (socials.portfolio) {
+      socialsHtml += `<a href="${escapeHtml(socials.portfolio)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="Portfolio / Field Log" aria-label="Portfolio">
+        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Field Log
+      </a>`;
+    }
 
     card.innerHTML = `
       <div class="head-row">
-        <div class="avatar" data-seed="${escapeHtml(call.id)}" aria-hidden="true"></div>
+        <div class="avatar" data-seed="${userId}" aria-hidden="true"></div>
         <div class="head-title">
-          <div class="name">${escapeHtml(call.title)}</div>
-          <div class="sub">posted by ${escapeHtml(call.orgName || 'Community Member')}</div>
+          <div class="name">${escapeHtml(profile.displayName || 'Independent Builder')}</div>
+          <div class="sub">${escapeHtml(profile.headline || 'Technical Contributor')}</div>
         </div>
-        <span class="growth-badge" data-stage="sprouting"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Open</span>
+        <span class="growth-badge" data-stage="sprouting"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Available</span>
       </div>
-      <p class="line">${escapeHtml(call.problemStatement || call.desc || '')}</p>
+      ${profile.tagline ? `<div class="builder-tagline">&ldquo;${escapeHtml(profile.tagline)}&rdquo;</div>` : ''}
+      <p class="builder-bio">${escapeHtml(profile.bio || '')}</p>
       <div class="chip-row">
-        <span class="tag-chip" data-domain="${escapeHtml(call.domain || 'climate')}">${escapeHtml(domainLabel)}</span>
+        <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
         ${chips}
       </div>
+      ${socialsHtml ? `<div class="builder-socials-row"><span class="builder-socials-label">Connect:</span><div class="builder-socials">${socialsHtml}</div></div>` : ''}
       <div class="card-foot">
-        <span class="hint-small">${escapeHtml(call.pilotBudget || 'Open Collaboration')}</span>
-        <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Grab a shovel</button>
+        <span class="hint-small">Direct Collaboration</span>
+        <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note</button>
       </div>
     `;
     return card;
   }
 
-  async function loadLiveCalls() {
+  async function loadLiveBuilders() {
     try {
-      const liveCalls = await calls.getCalls();
-      if (!liveCalls || !liveCalls.length) return;
+      const sandboxData = await matches.getSandbox();
+      const liveProfiles = sandboxData?.profiles || [];
+      if (!liveProfiles.length) return;
 
-      const grid = document.getElementById('callGrid');
+      const grid = document.getElementById('buildersGrid');
       if (!grid) return;
 
-      // Real community calls are available — remove static illustrative fallback cards
-      // so visitors are never confused by placeholder copy alongside authentic posts.
-      const illustrativeCards = grid.querySelectorAll('[data-illustrative="true"]');
-      illustrativeCards.forEach(card => card.remove());
-
-      liveCalls.forEach(call => {
-        if (!document.querySelector(`[data-id="${call.id}"]`)) {
-          const card = createCallCard(call);
-          grid.prepend(card);
+      liveProfiles.forEach(prof => {
+        const uId = prof.userId || prof.id;
+        const existing = document.querySelector(`[data-id="${uId}"]`);
+        if (!existing) {
+          const card = createBuilderCard(prof);
+          grid.appendChild(card);
         }
       });
 
-      const countEl = document.getElementById('callCount');
+      const countEl = document.getElementById('builderCount');
       if (countEl) {
-        countEl.textContent = grid.querySelectorAll('.match-card').length + ' open';
+        countEl.textContent = grid.querySelectorAll('.match-card').length + ' builders';
       }
     } catch (err) {
-      console.warn('[Canopy] Could not load live calls:', err.message);
+      console.warn('[Builders] Could not load live sandbox profiles:', err.message);
     }
+  }
+
+  /* Live Search & Filter in Builders Directory */
+  const builderSearchInput = document.getElementById('builderSearch');
+  if (builderSearchInput) {
+    builderSearchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const cards = document.querySelectorAll('#buildersGrid .match-card');
+      let visible = 0;
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const matchesQuery = !q || text.includes(q);
+        card.style.display = matchesQuery ? '' : 'none';
+        if (matchesQuery) visible++;
+      });
+      const countEl = document.getElementById('builderCount');
+      if (countEl) {
+        countEl.textContent = `${visible} builders`;
+      }
+    });
+  }
+
+  const btnReset = document.getElementById('btnResetFilters');
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      if (builderSearchInput) builderSearchInput.value = '';
+      const domainPills = document.querySelectorAll('[data-filters-for="#buildersGrid"] [data-filter]');
+      domainPills.forEach(p => {
+        const isAll = p.getAttribute('data-filter') === 'all';
+        p.classList.toggle('active', isAll);
+        p.setAttribute('aria-pressed', isAll ? 'true' : 'false');
+      });
+      const cards = document.querySelectorAll('#buildersGrid .match-card');
+      cards.forEach(card => card.style.display = '');
+      const countEl = document.getElementById('builderCount');
+      if (countEl) {
+        countEl.textContent = `${cards.length} builders`;
+      }
+    });
   }
 
   /* ============ My Handshakes Outbox & Inbox Tracking ============ */
@@ -820,7 +885,7 @@
           if (availPill) availPill.setAttribute('aria-pressed', 'true');
         }
         if (typeof showToast === 'function') {
-          showToast('🌱 Welcome back — your note is right where you left it.');
+          showToast('🌱 Welcome back: your note is right where you left it.');
         }
       }, 200);
     } catch (e) {
@@ -829,7 +894,7 @@
   }
 
   restorePendingDraftIfAny();
-  loadLiveCalls();
+  loadLiveBuilders();
 </script>
 </body>
 </html>

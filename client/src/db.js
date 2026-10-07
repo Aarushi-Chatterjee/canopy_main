@@ -120,7 +120,13 @@ export const auth = {
   async signUp(email, password, metadata = {}) {
     const remote = await apiRequest('/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ email, password, role: metadata.role || 'builder', displayName: metadata.displayName })
+      body: JSON.stringify({
+        email,
+        password,
+        role: metadata.role || 'builder',
+        displayName: metadata.displayName,
+        ...metadata
+      })
     });
 
     if (remote.ok && remote.data?.user) {
@@ -356,6 +362,16 @@ export const sprints = {
 
     if (remote.ok && remote.data) return remote.data;
     throw new Error(remote.message || 'Unable to subscribe to sprint cycle.');
+  },
+
+  async createSprint(sprintData) {
+    const remote = await apiRequest('/sprints', {
+      method: 'POST',
+      body: JSON.stringify(sprintData)
+    });
+
+    if (remote.ok && remote.data) return remote.data;
+    throw new Error(remote.message || 'Unable to create working sprint.');
   }
 };
 

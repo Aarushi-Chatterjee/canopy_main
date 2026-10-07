@@ -25,7 +25,21 @@ const {
 // POST /api/auth/register
 router.post('/register', authLimiter, async (req, res) => {
   try {
-    const { email, password, role = 'builder', displayName } = req.body;
+    const {
+      email,
+      password,
+      role = 'builder',
+      displayName,
+      craft,
+      tagline,
+      bio,
+      primaryDomain = 'climate',
+      skillTags,
+      github,
+      linkedin,
+      portfolio,
+      hoursPerWeek
+    } = req.body;
 
     if (!email || !email.includes('@')) {
       return res.status(400).json({ error: 'Please provide a valid email address.' });
@@ -43,7 +57,7 @@ router.post('/register', authLimiter, async (req, res) => {
     // 6-digit cryptographically secure verification code
     const token = crypto.randomInt(100000, 999999).toString();
     const userId = 'usr_' + Date.now();
-    const name = displayName || email.split('@')[0];
+    const name = displayName ? String(displayName).trim() : email.split('@')[0];
 
     const newUser = {
       id: userId,
@@ -59,20 +73,33 @@ router.post('/register', authLimiter, async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
+    const socials = {};
+    if (github && String(github).trim()) socials.github = String(github).trim();
+    if (linkedin && String(linkedin).trim()) socials.linkedin = String(linkedin).trim();
+    if (portfolio && String(portfolio).trim()) socials.portfolio = String(portfolio).trim();
+
+    const cleanSkillTags = Array.isArray(skillTags)
+      ? skillTags.map(s => String(s).trim()).filter(Boolean)
+      : (typeof skillTags === 'string' && skillTags.trim()
+          ? skillTags.split(',').map(s => s.trim()).filter(Boolean)
+          : []);
+
     const newProfile = {
       id: 'prof_' + Date.now(),
       userId,
       displayName: name,
-      headline: `${newUser.role.replace('_', ' ').toUpperCase()} at Canopy`,
-      bio: '',
-      primaryDomain: 'climate',
-      skillTags: [],
+      headline: craft ? String(craft).trim() : (tagline ? String(tagline).trim() : `${newUser.role.replace('_', ' ').toUpperCase()} at Canopy`),
+      tagline: tagline ? String(tagline).trim() : (craft ? String(craft).trim() : ''),
+      bio: bio ? String(bio).trim() : (tagline ? String(tagline).trim() : ''),
+      primaryDomain: primaryDomain || 'climate',
+      skillTags: cleanSkillTags,
       avatarUrl: newUser.role === 'problem_holder' 
         ? '/avatars/avatar-problem-holders.png' 
         : newUser.role === 'enabler' 
           ? '/avatars/avatar-enablers.png' 
           : '/avatars/avatar-builders.png',
-      hoursPerWeek: 10,
+      socials,
+      hoursPerWeek: Number(hoursPerWeek) || 10,
       proofOfWork: []
     };
 

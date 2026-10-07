@@ -5,10 +5,14 @@
   "cleanUrls": true,
   "functions": {
     "api/index.js": {
-      "includeFiles": "client/admin.html"
+      "includeFiles": "{client/admin.html,server/data/canopy-db.json}"
     }
   },
   "rewrites": [
+    {
+      "source": "/health",
+      "destination": "/api/index.js"
+    },
     {
       "source": "/api/(.*)",
       "destination": "/api/index.js"

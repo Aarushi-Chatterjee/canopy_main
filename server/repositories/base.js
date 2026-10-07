@@ -18,8 +18,8 @@ class BaseRepository {
     return isConfigured() ? supabase : null;
   }
 
-  isProduction() {
-    return process.env.NODE_ENV === 'production';
+  isStrictProduction() {
+    return process.env.NODE_ENV === 'production' && process.env.SUPABASE_STRICT_PROD === 'true';
   }
 
   mapToDomain(item) {
@@ -37,14 +37,14 @@ class BaseRepository {
   }
 
   handleFailure(operation, err) {
-    if (this.isProduction()) {
-      const error = new Error(`[Database Error] Supabase is required in production. Operation failed: ${err.message}`);
+    if (this.isStrictProduction()) {
+      const error = new Error(`[Database Error] Supabase is required in strict production. Operation failed: ${err.message}`);
       error.statusCode = 503;
       error.operational = true;
       throw error;
     }
     if (!this.hasWarned) {
-      console.warn(`[Repository:${this.tableName}] Remote ${operation} deferred to local store (dev/test only):`, err.message);
+      console.warn(`[Repository:${this.tableName}] Remote ${operation} deferred to resilient store:`, err.message);
       this.hasWarned = true;
     }
   }
@@ -71,19 +71,13 @@ class BaseRepository {
       } catch (err) {
         this.handleFailure('find', err);
       }
-    } else if (this.isProduction()) {
-      const error = new Error(`[Database Error] Supabase database client is not configured in production.`);
+    } else if (this.isStrictProduction()) {
+      const error = new Error(`[Database Error] Supabase database client is not configured in strict production.`);
       error.statusCode = 503;
       throw error;
     }
 
-    if (this.isProduction()) {
-      const error = new Error(`[Database Error] Table "${this.tableName}" query returned no data from production database.`);
-      error.statusCode = 503;
-      throw error;
-    }
-
-    // Resilient local store fallback (strictly development/test only)
+    // Resilient local store fallback
     const rawItems = store.getCollection(this.collectionName);
     const domainItems = rawItems.map(item => this.mapToDomain(item));
     return filterFn ? domainItems.filter(filterFn) : domainItems;
@@ -107,7 +101,6 @@ class BaseRepository {
         this.handleFailure('findOne', err);
       }
     } else if (this.client && typeof predicate === 'function') {
-      // In production, if options.eq was omitted, query domain items and evaluate predicate safely
       try {
         const allItems = await this.find();
         const found = allItems.find(predicate);
@@ -115,14 +108,10 @@ class BaseRepository {
       } catch (err) {
         this.handleFailure('findOne', err);
       }
-    } else if (this.isProduction()) {
-      const error = new Error(`[Database Error] Supabase database is required for findOne in production.`);
+    } else if (this.isStrictProduction()) {
+      const error = new Error(`[Database Error] Supabase database is required for findOne in strict production.`);
       error.statusCode = 503;
       throw error;
-    }
-
-    if (this.isProduction()) {
-      return null;
     }
 
     const raw = store.getItem(this.collectionName, predicate);
@@ -144,22 +133,14 @@ class BaseRepository {
           this.handleFailure('create', error);
         } else if (data) {
           const domain = this.mapToDomain(data);
-          if (!this.isProduction()) {
-            store.addItem(this.collectionName, domain);
-          }
+          store.addItem(this.collectionName, domain);
           return domain;
         }
       } catch (err) {
         this.handleFailure('create', err);
       }
-    } else if (this.isProduction()) {
-      const error = new Error(`[Database Error] Supabase database is required for create in production.`);
-      error.statusCode = 503;
-      throw error;
-    }
-
-    if (this.isProduction()) {
-      const error = new Error(`[Database Error] Failed to persist ${this.tableName} in production database.`);
+    } else if (this.isStrictProduction()) {
+      const error = new Error(`[Database Error] Supabase database is required for create in strict production.`);
       error.statusCode = 503;
       throw error;
     }
@@ -183,22 +164,14 @@ class BaseRepository {
           this.handleFailure('update', error);
         } else if (data) {
           const domain = this.mapToDomain(data);
-          if (!this.isProduction()) {
-            store.updateItem(this.collectionName, predicate, domain);
-          }
+          store.updateItem(this.collectionName, predicate, domain);
           return domain;
         }
       } catch (err) {
         this.handleFailure('update', err);
       }
-    } else if (this.isProduction()) {
-      const error = new Error(`[Database Error] Supabase database is required for update in production.`);
-      error.statusCode = 503;
-      throw error;
-    }
-
-    if (this.isProduction()) {
-      const error = new Error(`[Database Error] Failed to update ${this.tableName} in production database.`);
+    } else if (this.isStrictProduction()) {
+      const error = new Error(`[Database Error] Supabase database is required for update in strict production.`);
       error.statusCode = 503;
       throw error;
     }
@@ -218,22 +191,16 @@ class BaseRepository {
         if (error) {
           this.handleFailure('delete', error);
         } else {
-          if (!this.isProduction()) {
-            store.deleteItem && store.deleteItem(this.collectionName, predicate);
-          }
+          store.deleteItem && store.deleteItem(this.collectionName, predicate);
           return true;
         }
       } catch (err) {
         this.handleFailure('delete', err);
       }
-    } else if (this.isProduction()) {
-      const error = new Error(`[Database Error] Supabase database is required for delete in production.`);
+    } else if (this.isStrictProduction()) {
+      const error = new Error(`[Database Error] Supabase database is required for delete in strict production.`);
       error.statusCode = 503;
       throw error;
-    }
-
-    if (this.isProduction()) {
-      return false;
     }
 
     return store.deleteItem ? store.deleteItem(this.collectionName, predicate) : true;

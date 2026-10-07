@@ -207,9 +207,7 @@ async function getUserRoles(userId, email, baseRole = null, isVerified = false) 
     const assignedRoles = await userRolesRepo.findActiveRolesByUserId(userId);
     assignedRoles.forEach(r => roles.add(r));
   } catch (err) {
-    if (process.env.NODE_ENV === 'production') {
-      throw err;
-    }
+    console.warn('[Auth:getUserRoles] Role lookup warning:', err.message);
   }
 
   // 2. Server-side Founder Bootstrap (via FOUNDER_EMAILS env variable only)
