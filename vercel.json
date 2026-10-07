@@ -4,7 +4,7 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "functions": {
-    "api/index.js": {
+    "api/**/*.js": {
       "includeFiles": "{client/admin.html,server/data/canopy-db.json}"
     }
   },

@@ -1,15 +1,9 @@
 /**
- * Canopy Vercel Serverless Entry Point
+ * Canopy Vercel Serverless Catch-All Entry Point
  * Routes all /api/* requests through the Canopy Express API Gateway.
  */
 const { app } = require('../server/index');
 
-/**
- * Vercel Serverless Function Handler
- * When Vercel executes rewrites (e.g. /api/(.*) -> /api/index.js), it sets req.url to /api/index.js
- * while storing the client's actual path in `x-matched-path`.
- * We restore req.url to the original path so Express routes correctly without 404s.
- */
 module.exports = (req, res) => {
   let targetUrl = req.headers['x-matched-path'] || req.headers['x-forwarded-uri'] || req.url;
   if (targetUrl && targetUrl !== '/api/index.js') {
