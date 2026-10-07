@@ -25,6 +25,12 @@ export default defineConfig({
       }
     }
   },
+  test: {
+    globals: true,
+    environment: 'node',
+    include: ['src/__tests__/**/*.test.js'],
+    setupFiles: [resolve(clientRoot, 'src/__tests__/setup.js')]
+  },
   build: {
     outDir: resolve(projectRoot, 'dist'),
     emptyOutDir: true,

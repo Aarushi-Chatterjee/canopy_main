@@ -12,9 +12,12 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server/index.js",
-    "test": "node server/tests/run-all.js",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "vitest run",
+    "test:backend": "node server/tests/run-all.js",
     "test:auth": "node server/tests/auth-login.test.js",
-    "test:api": "node server/tests/api-endpoints.test.js"
+    "test:api": "node server/tests/api-endpoints.test.js",
+    "ci": "npm run build && npm run test"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +35,7 @@
   },
   "devDependencies": {
     "sharp": "^0.35.3",
-    "vite": "^8.2.1"
+    "vite": "^8.2.1",
+    "vitest": "^5.0.3"
   }
 }
