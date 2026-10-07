@@ -16,7 +16,16 @@ async function runSuite(suite) {
   return new Promise((resolve) => {
     console.log(`\n▶ Starting: ${suite.name}...`);
     const proc = spawn(process.execPath, [suite.file], {
-      env: { ...process.env, NODE_ENV: 'test' }
+      env: {
+        ...process.env,
+        NODE_ENV: 'test',
+        MYTHOS_SESSION_SECRET: process.env.MYTHOS_SESSION_SECRET || 'alWos/oHDcV2AkRyEt9gzvsVMg9vOeNZ1Z5Zkm+j1ls=',
+        EMAIL_PROVIDER: process.env.EMAIL_PROVIDER || 'test',
+        CANOPY_ISOLATE_STORE: 'true',
+        JWT_SECRET: process.env.JWT_SECRET || 'canopy_test_jwt_secret_minimum_32_characters_for_security_spec',
+        FOUNDER_CONSOLE_KEY: process.env.FOUNDER_CONSOLE_KEY || 'canopy_test_founder_key_secure_secret',
+        FOUNDER_EMAILS: process.env.FOUNDER_EMAILS || 'canopy.connect.collaborate@gmail.com,aarushichatterjee27@gmail.com'
+      }
     });
 
     proc.stdout.on('data', (chunk) => process.stdout.write(chunk));

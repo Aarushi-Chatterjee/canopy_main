@@ -4,6 +4,7 @@ process.env.EMAIL_PROVIDER = 'test';
 process.env.JWT_SECRET = 'canopy_test_jwt_secret_minimum_32_characters_for_security_spec';
 process.env.FOUNDER_EMAILS = 'canopy.connect.collaborate@gmail.com,aarushichatterjee27@gmail.com';
 process.env.FOUNDER_CONSOLE_KEY = 'canopy_test_founder_key_secure_secret';
+process.env.MYTHOS_SESSION_SECRET = process.env.MYTHOS_SESSION_SECRET || 'alWos/oHDcV2AkRyEt9gzvsVMg9vOeNZ1Z5Zkm+j1ls=';
 
 const http = require('http');
 const { app } = require('../index.js');

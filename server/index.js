@@ -138,6 +138,12 @@ const configuredListingIds = (process.env.MYTHOS_LISTING_IDS || process.env.MYTH
   .filter(Boolean);
 const listingIdStore = new Set(configuredListingIds);
 
+if (!process.env.MYTHOS_SESSION_SECRET) {
+  process.env.MYTHOS_SESSION_SECRET = process.env.NODE_ENV === 'production'
+    ? crypto.randomBytes(32).toString('base64')
+    : 'alWos/oHDcV2AkRyEt9gzvsVMg9vOeNZ1Z5Zkm+j1ls=';
+}
+
 const mythos = createMythos({
   resolveListingIds: async () => Array.from(listingIdStore),
   onListingRegistered: async (listingId) => {

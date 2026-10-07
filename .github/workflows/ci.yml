@@ -20,6 +20,18 @@ jobs:
       matrix:
         node-version: [20.x, 22.x]
 
+    env:
+      NODE_ENV: test
+      CI: 'true'
+      CANOPY_ISOLATE_STORE: 'true'
+      EMAIL_PROVIDER: test
+      MYTHOS_SESSION_SECRET: ${{ secrets.MYTHOS_SESSION_SECRET || 'alWos/oHDcV2AkRyEt9gzvsVMg9vOeNZ1Z5Zkm+j1ls=' }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET || 'canopy_test_jwt_secret_minimum_32_characters_for_security_spec' }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://khaifxlcttjpguqzvwai.supabase.co' }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'sb_publishable_K34duPsnsHG80Mug2TVwiA_OI1al6Ng' }}
+      FOUNDER_CONSOLE_KEY: ${{ secrets.FOUNDER_CONSOLE_KEY || 'canopy_test_founder_key_secure_secret' }}
+      FOUNDER_EMAILS: ${{ secrets.FOUNDER_EMAILS || 'canopy.connect.collaborate@gmail.com,aarushichatterjee27@gmail.com' }}
+
     steps:
       - name: 1. Checkout repository
         uses: actions/checkout@v4
@@ -37,11 +49,6 @@ jobs:
         run: npm run test:frontend
 
       - name: 5. Execute Backend API & Security Test Suite
-        env:
-          NODE_ENV: test
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://khaifxlcttjpguqzvwai.supabase.co' }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'dummy_test_anon_key' }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci_test_jwt_secret_key_must_be_32_characters_long' }}
         run: npm run test:backend
 
       - name: 6. Build Client for Production (Vite)
