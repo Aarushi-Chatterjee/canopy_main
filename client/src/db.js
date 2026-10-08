@@ -448,7 +448,24 @@ export const applications = {
 };
 
 /* ============================================================
-   7. BACKWARDS-COMPATIBLE DB EXPORT
+   7. PLATFORM SETTINGS & LIMITS
+   ============================================================ */
+export const settings = {
+  async getAllSettings() {
+    const remote = await apiRequest('/settings');
+    if (remote.ok && remote.data) return remote.data;
+    return { settings: [], dictionary: {} };
+  },
+
+  async getSetting(key, fallback = null) {
+    const remote = await apiRequest(`/settings/${encodeURIComponent(key)}`);
+    if (remote.ok && remote.data?.value !== undefined) return remote.data.value;
+    return fallback;
+  }
+};
+
+/* ============================================================
+   8. BACKWARDS-COMPATIBLE DB EXPORT
    ============================================================ */
 export const db = {
   submitApplication: (app) => applications.submitApplication(app),
@@ -467,5 +484,6 @@ export default {
   calls,
   notebook,
   applications,
+  settings,
   db
 };

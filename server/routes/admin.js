@@ -11,7 +11,8 @@ const {
   moderationQueue: modRepo,
   auditEvents: auditRepo,
   contentItems: contentRepo,
-  userRoles: userRolesRepo
+  userRoles: userRolesRepo,
+  platformSettings: settingsRepo
 } = require('../repositories');
 const { requireRole, requireAnyRole } = require('../middleware/auth');
 const emailService = require('../services/email');
@@ -516,6 +517,31 @@ router.post('/content/:id/publish', requireAnyRole(['moderator', 'admin', 'owner
   }
 });
 
+// Delete Content item (admin & owner only, with immutable audit logging)
+router.delete('/content/:id', requireAnyRole(['admin', 'owner']), async (req, res) => {
+  try {
+    const existing = await contentRepo.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Content item not found.' });
+    }
+
+    await contentRepo.delete(c => c.id === req.params.id, { eq: { id: req.params.id } });
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'content.deleted_by_staff',
+      targetType: 'content_item',
+      targetId: req.params.id,
+      payload: { contentKey: existing.contentKey, title: existing.title }
+    });
+
+    res.json({ success: true, message: `Content item "${existing.contentKey}" removed successfully.` });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to delete content item.' });
+  }
+});
+
 // Upload media asset for content cards (gated to PNG, JPEG, WebP, SVG, max 5MB, deep magic-byte verified)
 router.post('/content/upload', requireAnyRole(['content_editor', 'moderator', 'admin', 'owner']), async (req, res) => {
   try {
@@ -574,6 +600,184 @@ router.get('/audit', requireAnyRole(['admin', 'owner']), async (req, res) => {
     res.json({ auditEvents: logs.slice(0, 100), events: logs.slice(0, 100), total: logs.length });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to retrieve audit events.' });
+  }
+});
+
+// -------------------------------------------------------------
+// 7. Build Calls Management & Direct Editor
+// -------------------------------------------------------------
+router.get('/calls', requireAnyRole(['moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const calls = await callsRepo.find();
+    res.json({ calls, total: calls.length });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to list build calls.' });
+  }
+});
+
+router.post('/calls', requireAnyRole(['moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const {
+      title,
+      organization = 'Canopy Foundation',
+      orgName,
+      problemStatement,
+      desc,
+      domain = 'climate',
+      targetDeliverable = 'Functional prototype code and field evaluation report',
+      targetOutcomes,
+      timeline = '6 weeks',
+      rewardPool = 'Open Grant Pool',
+      pilotBudget,
+      contactChannel = '',
+      datasetAccessUrl = '',
+      neededSkills = [],
+      status = 'open',
+      isIllustrative = false
+    } = req.body;
+
+    const finalTitle = (title || '').trim();
+    const finalProblem = (problemStatement || desc || '').trim();
+
+    if (!finalTitle || !finalProblem) {
+      return res.status(400).json({ error: 'Title and problem statement are required.' });
+    }
+
+    const callId = 'call_' + Date.now();
+    const newCall = {
+      id: callId,
+      createdBy: req.user.id,
+      creatorId: req.user.id,
+      title: finalTitle,
+      organization: (orgName || organization).trim(),
+      problemStatement: finalProblem,
+      domain: domain.toLowerCase(),
+      targetDeliverable: (targetDeliverable || '').trim(),
+      targetOutcomes: Array.isArray(targetOutcomes) ? targetOutcomes : [(targetDeliverable || '').trim()],
+      timeline: timeline.trim(),
+      pilotBudget: (pilotBudget || rewardPool).trim(),
+      rewardPool: (pilotBudget || rewardPool).trim(),
+      contactChannel: (contactChannel || datasetAccessUrl).trim(),
+      datasetAccessUrl: (datasetAccessUrl || contactChannel).trim(),
+      neededSkills: Array.isArray(neededSkills) ? neededSkills : (typeof neededSkills === 'string' ? neededSkills.split(',').map(s => s.trim()).filter(Boolean) : []),
+      status: status || 'open',
+      moderationStatus: 'approved',
+      isIllustrative: Boolean(isIllustrative),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    const saved = await callsRepo.create(newCall);
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'build_call.created_by_staff',
+      targetType: 'build_call',
+      targetId: saved.id,
+      payload: { title: saved.title, domain: saved.domain, status: saved.status }
+    });
+
+    res.status(201).json({ call: saved, message: 'Build Call created and published directly.' });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to create build call.' });
+  }
+});
+
+router.patch('/calls/:id', requireAnyRole(['moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const existing = await callsRepo.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Build Call not found.' });
+    }
+
+    const updates = { ...req.body };
+    delete updates.id;
+    if (updates.domain) updates.domain = updates.domain.toLowerCase();
+    if (updates.neededSkills && typeof updates.neededSkills === 'string') {
+      updates.neededSkills = updates.neededSkills.split(',').map(s => s.trim()).filter(Boolean);
+    }
+    updates.updatedAt = new Date().toISOString();
+
+    const updated = await callsRepo.update(c => c.id === req.params.id, updates, { eq: { id: req.params.id } });
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'build_call.updated_by_staff',
+      targetType: 'build_call',
+      targetId: req.params.id,
+      payload: { updates: Object.keys(updates) }
+    });
+
+    res.json({ call: updated, message: 'Build Call updated successfully.' });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to update build call.' });
+  }
+});
+
+router.delete('/calls/:id', requireAnyRole(['admin', 'owner']), async (req, res) => {
+  try {
+    const existing = await callsRepo.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Build Call not found.' });
+    }
+
+    await callsRepo.delete(c => c.id === req.params.id, { eq: { id: req.params.id } });
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'build_call.deleted_by_staff',
+      targetType: 'build_call',
+      targetId: req.params.id,
+      payload: { title: existing.title, domain: existing.domain }
+    });
+
+    res.json({ success: true, message: `Build Call "${existing.title}" deleted.` });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to delete build call.' });
+  }
+});
+
+// -------------------------------------------------------------
+// 8. Platform Settings & Listing Quotas
+// -------------------------------------------------------------
+router.get('/settings', requireAnyRole(['content_editor', 'match_curator', 'moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const data = await settingsRepo.getAllSettings();
+    res.json(data);
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to retrieve settings.' });
+  }
+});
+
+router.put('/settings', requireAnyRole(['admin', 'owner']), async (req, res) => {
+  try {
+    const { key, value, description } = req.body;
+    if (!key || value === undefined) {
+      return res.status(400).json({ error: 'Setting key and value are required.' });
+    }
+
+    const updated = await settingsRepo.setSetting(
+      key,
+      value,
+      description,
+      req.user.email || req.user.id
+    );
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'settings.updated',
+      targetType: 'platform_setting',
+      targetId: key,
+      payload: { key, value }
+    });
+
+    res.json({ success: true, setting: updated, message: `Setting "${key}" updated successfully.` });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to update setting.' });
   }
 });
 

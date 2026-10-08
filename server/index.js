@@ -43,6 +43,7 @@ const notebookRouter = require('./routes/notebook');
 const applicationsRouter = require('./routes/applications');
 const moderationRouter = require('./routes/moderation');
 const contentRouter = require('./routes/content');
+const settingsRouter = require('./routes/settings');
 const adminRouter = require('./routes/admin');
 
 const { validateCsrf, optionalAuth } = require('./middleware/auth');
@@ -174,10 +175,10 @@ app.post('/api/mythos/report-usage', async (req, res) => {
 app.use(mythosExpress(mythos));
 
 // CSRF validation for cookie-authenticated mutating requests
-app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin'], validateCsrf);
+app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin', '/settings'], validateCsrf);
 
 // Production database readiness gate (P0-1)
-app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin'], requireDatabaseReady);
+app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin', '/settings'], requireDatabaseReady);
 
 const { timingSafeMatch: timingSafeKeyMatch } = require('./utils/crypto');
 
@@ -334,10 +335,11 @@ app.use(['/api/notebook', '/notebook'], notebookRouter);
 app.use(['/api/applications', '/applications'], applicationsRouter);
 app.use(['/api/moderation', '/moderation'], moderationRouter);
 app.use(['/api/content', '/content'], contentRouter);
+app.use(['/api/settings', '/settings'], settingsRouter);
 app.use(['/api/admin', '/admin'], optionalAuth, founderGate, adminRouter);
 
 // 404 handler for API routes
-app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin'], (req, res) => {
+app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin', '/settings'], (req, res) => {
   res.status(404).json({ error: 'Endpoint not found on Canopy API' });
 });
 

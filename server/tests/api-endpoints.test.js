@@ -359,7 +359,61 @@ const server = app.listen(PORT, async () => {
     assert(hasPublishedCall,
       'Public Content API: GET /api/content/:page serves published item with honest illustrative flag');
 
-    // 9.5 Manual Match Facilitation & Introduction Dispatch
+    // 9.4b Safe Content Studio Item Deletion
+    const deleteContentRes = await request('DELETE', `/api/admin/content/${draftItem.data.item.id}`, null, founderHeaders);
+    assert(deleteContentRes.status === 200 && deleteContentRes.data.success === true,
+      'Content Studio: Founder deletes content item safely with audit logging');
+
+    // 9.5 Build Calls Direct Editor Lifecycle
+    const createCallRes = await request('POST', '/api/admin/calls', {
+      title: 'Decentralized Grid Frequency Sensor',
+      problemStatement: 'Low cost grid monitors needed to detect local brownouts across rural feeder lines.',
+      domain: 'energy',
+      timeline: '4 weeks',
+      pilotBudget: '$4,000 grant pool',
+      isIllustrative: true,
+      status: 'open'
+    }, founderHeaders);
+    assert(createCallRes.status === 201 && createCallRes.data.call?.title === 'Decentralized Grid Frequency Sensor',
+      'Build Calls Editor: Founder directly posts and approves a build call');
+
+    const adminCallId = createCallRes.data.call.id;
+    const listCallsRes = await request('GET', '/api/admin/calls', null, founderHeaders);
+    assert(listCallsRes.status === 200 && listCallsRes.data.calls?.some(c => c.id === adminCallId),
+      'Build Calls Editor: GET /api/admin/calls returns active and staff-curated build calls');
+
+    const patchCallRes = await request('PATCH', `/api/admin/calls/${adminCallId}`, {
+      status: 'in_progress',
+      timeline: '8 weeks'
+    }, founderHeaders);
+    assert(patchCallRes.status === 200 && patchCallRes.data.call?.status === 'in_progress',
+      'Build Calls Editor: PATCH /api/admin/calls/:id updates call status and metadata');
+
+    const deleteCallRes = await request('DELETE', `/api/admin/calls/${adminCallId}`, null, founderHeaders);
+    assert(deleteCallRes.status === 200 && deleteCallRes.data.success === true,
+      'Build Calls Editor: DELETE /api/admin/calls/:id removes call with audit trail');
+
+    // 9.6 Platform Settings & Quotas
+    const getAdminSettings = await request('GET', '/api/admin/settings', null, founderHeaders);
+    assert(getAdminSettings.status === 200 && getAdminSettings.data.listing_limits !== undefined,
+      'Platform Settings: GET /api/admin/settings retrieves configuration and listing quotas');
+
+    const putSettingRes = await request('PUT', '/api/admin/settings', {
+      key: 'listing_limits',
+      value: { calls: 25, sprints: 15, notebook: 30 }
+    }, founderHeaders);
+    assert(putSettingRes.status === 200 && putSettingRes.data.setting?.value?.calls === 25,
+      'Platform Settings: PUT /api/admin/settings persists updated listing limits and quotas');
+
+    const publicSettings = await request('GET', '/api/settings');
+    assert(publicSettings.status === 200 && publicSettings.data.listing_limits?.calls === 25,
+      'Public Settings API: GET /api/settings serves sanitized platform settings');
+
+    const publicSettingKey = await request('GET', '/api/settings/listing_limits');
+    assert(publicSettingKey.status === 200 && publicSettingKey.data.value?.calls === 25,
+      'Public Settings API: GET /api/settings/:key serves specific setting value');
+
+    // 9.7 Manual Match Facilitation & Introduction Dispatch
     const manualMatchRes = await request('POST', '/api/admin/matches/manual', {
       initiatorId: 'usr_founder_aarushi',
       recipientId: 'usr_water_ngo',
@@ -373,7 +427,7 @@ const server = app.listen(PORT, async () => {
     assert(introEmailDispatched,
       'Transactional Mail: Curator introduction email dispatched to match participants');
 
-    // 9.6 Immutable Audit Trail
+    // 9.8 Immutable Audit Trail
     const auditResFinal = await request('GET', '/api/admin/audit', null, founderHeaders);
     assert(auditResFinal.status === 200 && auditResFinal.data.events?.length > 0,
       'Audit Logging: Complete immutable event ledger accessible in Founder Console');

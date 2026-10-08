@@ -27,6 +27,12 @@ function toDomain(raw) {
     moderationStatus: raw.moderation_status ?? raw.moderationStatus ?? 'approved',
     isPublic: Boolean(raw.is_public ?? raw.isPublic ?? (raw.moderation_status === 'approved')),
     isIllustrative: Boolean(raw.is_illustrative ?? raw.isIllustrative ?? false),
+    coverImageUrl: raw.cover_image_url ?? raw.coverImageUrl ?? null,
+    readingTimeMinutes: Number(raw.reading_time_minutes ?? raw.readingTimeMinutes ?? 3),
+    viewCount: Number(raw.view_count ?? raw.viewCount ?? 0),
+    isFeatured: Boolean(raw.is_featured ?? raw.isFeatured ?? false),
+    isFounderPost: Boolean(raw.is_founder_post ?? raw.isFounderPost ?? false),
+    status: raw.status || 'published',
     createdAt: raw.created_at ?? raw.createdAt ?? new Date().toISOString(),
     updatedAt: raw.updated_at ?? raw.updatedAt ?? null
   };
@@ -61,6 +67,12 @@ function toDatabase(domain) {
   if (domain.branches !== undefined) dbRecord.branches = domain.branches;
   if (domain.moderationStatus !== undefined) dbRecord.moderation_status = domain.moderationStatus;
   if (domain.isIllustrative !== undefined) dbRecord.is_illustrative = domain.isIllustrative;
+  if (domain.coverImageUrl !== undefined) dbRecord.cover_image_url = domain.coverImageUrl;
+  if (domain.readingTimeMinutes !== undefined) dbRecord.reading_time_minutes = domain.readingTimeMinutes;
+  if (domain.viewCount !== undefined) dbRecord.view_count = domain.viewCount;
+  if (domain.isFeatured !== undefined) dbRecord.is_featured = domain.isFeatured;
+  if (domain.isFounderPost !== undefined) dbRecord.is_founder_post = domain.isFounderPost;
+  if (domain.status !== undefined) dbRecord.status = domain.status;
   if (domain.createdAt !== undefined) dbRecord.created_at = domain.createdAt;
   if (domain.updatedAt !== undefined) dbRecord.updated_at = domain.updatedAt;
   return dbRecord;

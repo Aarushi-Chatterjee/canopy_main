@@ -8,6 +8,7 @@ const applications = require('./applications');
 const moderationQueue = require('./moderation-queue');
 const auditEvents = require('./audit-events');
 const contentItems = require('./content-items');
+const platformSettings = require('./platform-settings');
 
 module.exports = {
   users,
@@ -20,5 +21,6 @@ module.exports = {
   moderationQueue,
   auditEvents,
   contentItems,
+  platformSettings,
   userRoles: require('./user-roles')
 };

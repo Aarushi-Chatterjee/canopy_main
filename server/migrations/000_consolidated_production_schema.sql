@@ -192,9 +192,19 @@ CREATE TABLE IF NOT EXISTS notebook_entries (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+ALTER TABLE notebook_entries ADD COLUMN IF NOT EXISTS cover_image_url VARCHAR(512);
+ALTER TABLE notebook_entries ADD COLUMN IF NOT EXISTS reading_time_minutes INT DEFAULT 3;
+ALTER TABLE notebook_entries ADD COLUMN IF NOT EXISTS view_count INT DEFAULT 0;
+ALTER TABLE notebook_entries ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT FALSE;
+ALTER TABLE notebook_entries ADD COLUMN IF NOT EXISTS is_founder_post BOOLEAN DEFAULT FALSE;
+ALTER TABLE notebook_entries ADD COLUMN IF NOT EXISTS status VARCHAR(32) DEFAULT 'published';
+
 CREATE INDEX IF NOT EXISTS idx_notebook_author ON notebook_entries(author_id);
 CREATE INDEX IF NOT EXISTS idx_notebook_domain ON notebook_entries(domain);
 CREATE INDEX IF NOT EXISTS idx_notebook_parent ON notebook_entries(parent_entry_id);
+CREATE INDEX IF NOT EXISTS idx_notebook_status ON notebook_entries(status);
+CREATE INDEX IF NOT EXISTS idx_notebook_featured ON notebook_entries(is_featured);
+CREATE INDEX IF NOT EXISTS idx_notebook_created ON notebook_entries(created_at DESC);
 
 -- 7. APPLICATIONS TABLE
 CREATE TABLE IF NOT EXISTS applications (
@@ -305,6 +315,34 @@ CREATE TABLE IF NOT EXISTS content_items (
 CREATE INDEX IF NOT EXISTS idx_content_key ON content_items(content_key);
 CREATE INDEX IF NOT EXISTS idx_content_page ON content_items(page);
 
+-- 13. PLATFORM SETTINGS TABLE
+CREATE TABLE IF NOT EXISTS platform_settings (
+    key VARCHAR(64) PRIMARY KEY,
+    value JSONB NOT NULL DEFAULT '{}',
+    description TEXT,
+    updated_by VARCHAR(64),
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+INSERT INTO platform_settings (key, value, description, updated_by)
+VALUES 
+    (
+        'listing_limits',
+        '{"calls": 20, "sprints": 20, "notebook": 30}'::jsonb,
+        'Default card pagination and listing limits for public directories',
+        'system_bootstrap'
+    ),
+    (
+        'feature_flags',
+        '{"allowPublicNotebookPublishing": true, "showIllustrativeItems": true, "requireModerationForCalls": true}'::jsonb,
+        'Platform operational feature flags and moderation controls',
+        'system_bootstrap'
+    )
+ON CONFLICT (key) DO NOTHING;
+
+CREATE INDEX IF NOT EXISTS idx_platform_settings_key ON platform_settings(key);
+
 -- ============================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- ============================================================================
@@ -320,6 +358,7 @@ ALTER TABLE audit_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_roles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE content_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE platform_settings ENABLE ROW LEVEL SECURITY;
 
 -- Note: The Canopy Backend API connects using the SUPABASE_SERVICE_ROLE_KEY which
 -- safely bypasses RLS for server-side business logic and permission enforcement.
@@ -342,6 +381,9 @@ CREATE POLICY "Published content is viewable by everyone" ON content_items FOR S
 
 DROP POLICY IF EXISTS "Anyone can submit an intake application" ON applications;
 CREATE POLICY "Anyone can submit an intake application" ON applications FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Public can view platform settings" ON platform_settings;
+CREATE POLICY "Public can view platform settings" ON platform_settings FOR SELECT USING (true);
 
 -- ============================================================================
 -- 13. OBJECT STORAGE: CANOPY-MEDIA BUCKET & ACCESS POLICIES

@@ -274,6 +274,58 @@
       text-align: center;
       box-sizing: border-box;
     }
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .modal-card {
+      background: var(--admin-panel);
+      border: 1px solid var(--admin-border-bright);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 640px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--admin-border);
+      padding-bottom: 12px;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 0;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+      line-height: 1;
+    }
+    .modal-close:hover {
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
@@ -305,6 +357,7 @@
         <div class="admin-nav-item" data-tab="matching"><span class="admin-nav-icon">🤝</span> Manual Matching</div>
         <div class="admin-nav-item" data-tab="calls"><span class="admin-nav-icon">🌱</span> Build Calls</div>
         <div class="admin-nav-item" data-tab="content"><span class="admin-nav-icon">🎨</span> Content Studio</div>
+        <div class="admin-nav-item" data-tab="settings"><span class="admin-nav-icon">⚙️</span> Settings &amp; Quotas</div>
         <div class="admin-nav-item" data-tab="audit"><span class="admin-nav-icon">📜</span> Audit Log</div>
       </nav>
 
@@ -441,25 +494,102 @@
       <section id="tab-calls" class="admin-tab-pane" style="display: none;">
         <div class="admin-header">
           <div>
-            <h1 class="admin-title">Build Calls Moderation</h1>
-            <p class="admin-subtitle">Review and publish challenges submitted to the matching directory.</p>
+            <h1 class="admin-title">Build Calls Management</h1>
+            <p class="admin-subtitle">Directly author, edit, approve, or retire live challenges in the open directory.</p>
           </div>
+          <button id="openCreateCallBtn" class="btn btn-primary" onclick="openCreateCallModal()">+ Create Build Call</button>
         </div>
         <div class="admin-card">
           <table class="data-table">
             <thead>
               <tr>
-                <th>Title</th>
+                <th>Title &amp; Problem</th>
                 <th>Organization</th>
                 <th>Domain</th>
+                <th>Budget / Pool</th>
                 <th>Status</th>
-                <th>Decision</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="callsTableBody">
-              <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading build calls...</td></tr>
+              <tr><td colspan="6" style="text-align: center; color: #64748b;">Loading build calls...</td></tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Call Create / Edit Modal -->
+        <div id="callModal" class="modal-overlay" style="display: none;">
+          <div class="modal-card">
+            <div class="modal-header">
+              <h3 class="modal-title" id="callModalTitle">Create Build Call</h3>
+              <button class="modal-close" onclick="closeCallModal()">&times;</button>
+            </div>
+            <input type="hidden" id="callEditId">
+            <div class="form-group">
+              <label class="form-label">Call Title</label>
+              <input type="text" id="callTitleInput" class="form-input" placeholder="e.g. Decentralized Water Quality Sentinel">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Organization / Lab</label>
+                <input type="text" id="callOrgInput" class="form-input" placeholder="e.g. CleanWater Labs">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Domain</label>
+                <select id="callDomainSelect" class="form-select">
+                  <option value="climate">Climate &amp; Energy</option>
+                  <option value="civic">Civic Tech</option>
+                  <option value="health">Open Health</option>
+                  <option value="hardware">Field Hardware</option>
+                  <option value="data">Data Infrastructure</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Problem Statement</label>
+              <textarea id="callProblemInput" class="form-textarea" rows="3" placeholder="Describe the technical bottleneck and scope..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target Deliverable</label>
+              <input type="text" id="callDeliverableInput" class="form-input" placeholder="e.g. Functional prototype code &amp; validation report">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Pilot Budget / Reward Pool</label>
+                <input type="text" id="callBudgetInput" class="form-input" placeholder="e.g. $15,000 Milestone Grant">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Timeline</label>
+                <input type="text" id="callTimelineInput" class="form-input" placeholder="e.g. 6 weeks">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Needed Skills (comma separated)</label>
+              <input type="text" id="callSkillsInput" class="form-input" placeholder="e.g. Embedded C++, LoRaWAN, Python, GIS">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Status</label>
+                <select id="callStatusSelect" class="form-select">
+                  <option value="open">Open (Publicly Live)</option>
+                  <option value="pending_review">Pending Review</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                  <option value="closed">Closed / Archived</option>
+                </select>
+              </div>
+              <div class="form-group" style="display: flex; align-items: center; gap: 8px; margin-top: 24px;">
+                <input type="checkbox" id="callIllustrativeCheck">
+                <label for="callIllustrativeCheck" style="font-size: 13px; color: #cbd5e1; cursor: pointer;">
+                  Mark Illustrative Demo
+                </label>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+              <button class="btn btn-secondary" onclick="closeCallModal()">Cancel</button>
+              <button class="btn btn-primary" onclick="saveCallModal()">Save Build Call</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -522,6 +652,56 @@
               <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading content items...</td></tr>
             </tbody>
           </table>
+        </div>
+      </section>
+
+      <!-- 7. SETTINGS & QUOTAS TAB -->
+      <section id="tab-settings" class="admin-tab-pane" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">Platform Settings &amp; Quotas</h1>
+            <p class="admin-subtitle">Configure directory card pagination limits and operational feature flags.</p>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-title">Listing &amp; Pagination Quotas</div>
+          <p style="font-size: 13px; color: #94a3b8; margin: 0 0 16px 0;">Controls maximum cards served in public directories before truncation.</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Calls Listing Limit</label>
+              <input type="number" id="settingCallsLimit" class="form-input" min="1" max="100" value="20">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Sprints Listing Limit</label>
+              <input type="number" id="settingSprintsLimit" class="form-input" min="1" max="100" value="20">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Notebook Entries Limit</label>
+              <input type="number" id="settingNotebookLimit" class="form-input" min="1" max="100" value="30">
+            </div>
+          </div>
+          <button id="saveListingLimitsBtn" class="btn btn-primary" onclick="saveListingLimits()">Save Listing Limits</button>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-title">Operational Feature Flags</div>
+          <p style="font-size: 13px; color: #94a3b8; margin: 0 0 16px 0;">Dynamic platform controls executed without redeploying containers.</p>
+          <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px;">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
+              <input type="checkbox" id="flagPublicNotebook" checked>
+              <span><strong>Allow Public Lab Notebook Submissions</strong> — Verified builders can publish field notes and articles.</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
+              <input type="checkbox" id="flagIllustrativeItems" checked>
+              <span><strong>Render Illustrative Demo Badges</strong> — Show non-deceptive disclaimers on example sandbox entries.</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
+              <input type="checkbox" id="flagRequireModeration" checked>
+              <span><strong>Require Moderation For Build Calls</strong> — Submissions require operational approval before public broadcast.</span>
+            </label>
+          </div>
+          <button id="saveFeatureFlagsBtn" class="btn btn-primary" onclick="saveFeatureFlags()">Save Feature Flags</button>
         </div>
       </section>
 
@@ -626,6 +806,7 @@
         loadMatches();
         loadCalls();
         loadContent();
+        loadSettings();
         loadAudit();
       } catch (err) {
         gateTitle.textContent = 'Verification Error';
@@ -775,24 +956,140 @@
       }
     };
 
-    // 5. Calls Loader
+    // 5. Build Calls Management
+    window.__currentCalls = [];
+
     async function loadCalls() {
-      const res = await apiRequest('/calls?status=all');
+      const res = await apiRequest('/admin/calls');
+      const calls = (res.ok && res.data?.calls) ? res.data.calls : ((await apiRequest('/calls?status=all')).data?.calls || []);
+      window.__currentCalls = calls;
       const tbody = document.getElementById('callsTableBody');
-      if (res.ok && res.data?.calls) {
-        tbody.innerHTML = res.data.calls.map(c => `
-          <tr>
-            <td><strong>${escapeHtml(c.title)}</strong></td>
-            <td>${escapeHtml(c.organization || c.orgName || 'Open Lab')}</td>
-            <td><span class="badge badge-blue">${escapeHtml(c.domain)}</span></td>
-            <td><span class="badge ${c.status === 'open' ? 'badge-green' : 'badge-amber'}">${escapeHtml(c.status)}</span></td>
-            <td>
-              ${c.status !== 'open' ? `<button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="approveCall('${c.id}')">Approve &amp; Publish</button>` : '<span style="color:#4ade80;font-size:12px;">Live</span>'}
-            </td>
-          </tr>
-        `).join('');
+      if (!tbody) return;
+      if (calls.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b;">No build calls found.</td></tr>';
+        return;
       }
+      tbody.innerHTML = calls.map(c => `
+        <tr>
+          <td>
+            <strong>${escapeHtml(c.title)}</strong><br>
+            <small style="color:#94a3b8;">${escapeHtml((c.problemStatement || '').slice(0, 65))}...</small>
+            ${c.isIllustrative ? '<br><span class="badge badge-amber" style="font-size:10px;margin-top:2px;">Illustrative</span>' : ''}
+          </td>
+          <td>${escapeHtml(c.organization || c.orgName || 'Open Lab')}</td>
+          <td><span class="badge badge-blue">${escapeHtml(c.domain)}</span></td>
+          <td style="font-family:monospace;font-size:12px;color:#4ade80;">${escapeHtml(c.pilotBudget || c.rewardPool || 'Grant Pool')}</td>
+          <td>
+            <span class="badge ${c.status === 'open' ? 'badge-green' : c.status === 'pending_review' ? 'badge-amber' : 'badge-blue'}">${escapeHtml(c.status)}</span>
+            ${c.moderationStatus === 'pending' ? '<br><small style="color:#ecc94b;">Needs review</small>' : ''}
+          </td>
+          <td>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <button class="btn btn-secondary" style="padding:4px 8px;font-size:11px;" onclick="openEditCallModal('${c.id}')">Edit</button>
+              ${c.status !== 'open' ? `<button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="approveCall('${c.id}')">Approve</button>` : ''}
+              <button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteCall('${c.id}', '${escapeHtml(c.title)}')">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
     }
+
+    window.openCreateCallModal = function() {
+      document.getElementById('callModalTitle').textContent = 'Create Build Call';
+      document.getElementById('callEditId').value = '';
+      document.getElementById('callTitleInput').value = '';
+      document.getElementById('callOrgInput').value = 'Canopy Foundation';
+      document.getElementById('callDomainSelect').value = 'climate';
+      document.getElementById('callProblemInput').value = '';
+      document.getElementById('callDeliverableInput').value = 'Functional prototype code and validation report';
+      document.getElementById('callBudgetInput').value = '$10,000 Milestone Grant';
+      document.getElementById('callTimelineInput').value = '6 weeks';
+      document.getElementById('callSkillsInput').value = '';
+      document.getElementById('callStatusSelect').value = 'open';
+      document.getElementById('callIllustrativeCheck').checked = false;
+      document.getElementById('callModal').style.display = 'flex';
+    };
+
+    window.openEditCallModal = function(id) {
+      const call = (window.__currentCalls || []).find(c => c.id === id);
+      if (!call) return;
+      document.getElementById('callModalTitle').textContent = 'Edit Build Call';
+      document.getElementById('callEditId').value = call.id;
+      document.getElementById('callTitleInput').value = call.title || '';
+      document.getElementById('callOrgInput').value = call.organization || call.orgName || '';
+      document.getElementById('callDomainSelect').value = call.domain || 'climate';
+      document.getElementById('callProblemInput').value = call.problemStatement || '';
+      document.getElementById('callDeliverableInput').value = call.targetDeliverable || (call.targetOutcomes?.[0] || '');
+      document.getElementById('callBudgetInput').value = call.pilotBudget || call.rewardPool || '';
+      document.getElementById('callTimelineInput').value = call.timeline || '6 weeks';
+      document.getElementById('callSkillsInput').value = Array.isArray(call.neededSkills) ? call.neededSkills.join(', ') : (call.neededSkills || '');
+      document.getElementById('callStatusSelect').value = call.status || 'open';
+      document.getElementById('callIllustrativeCheck').checked = Boolean(call.isIllustrative);
+      document.getElementById('callModal').style.display = 'flex';
+    };
+
+    window.closeCallModal = function() {
+      document.getElementById('callModal').style.display = 'none';
+    };
+
+    window.saveCallModal = async function() {
+      const editId = document.getElementById('callEditId').value;
+      const title = document.getElementById('callTitleInput').value.trim();
+      const organization = document.getElementById('callOrgInput').value.trim();
+      const domain = document.getElementById('callDomainSelect').value;
+      const problemStatement = document.getElementById('callProblemInput').value.trim();
+      const targetDeliverable = document.getElementById('callDeliverableInput').value.trim();
+      const pilotBudget = document.getElementById('callBudgetInput').value.trim();
+      const timeline = document.getElementById('callTimelineInput').value.trim();
+      const skillsRaw = document.getElementById('callSkillsInput').value.trim();
+      const status = document.getElementById('callStatusSelect').value;
+      const isIllustrative = document.getElementById('callIllustrativeCheck').checked;
+
+      if (!title || !problemStatement) {
+        alert('Title and Problem Statement are required.');
+        return;
+      }
+
+      const payload = {
+        title,
+        organization,
+        domain,
+        problemStatement,
+        targetDeliverable,
+        pilotBudget,
+        rewardPool: pilotBudget,
+        timeline,
+        neededSkills: skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [],
+        status,
+        isIllustrative
+      };
+
+      const res = editId
+        ? await apiRequest(`/admin/calls/${editId}`, { method: 'PATCH', body: JSON.stringify(payload) })
+        : await apiRequest('/admin/calls', { method: 'POST', body: JSON.stringify(payload) });
+
+      if (res.ok) {
+        closeCallModal();
+        loadCalls();
+        loadOverview();
+      } else {
+        alert(res.message || 'Saving Build Call failed.');
+      }
+    };
+
+    window.deleteCall = async function(id, title) {
+      if (!confirm(`Are you sure you want to permanently delete the Build Call "${title}"? This action is logged in audit history and cannot be undone.`)) {
+        return;
+      }
+      const res = await apiRequest(`/admin/calls/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        loadCalls();
+        loadOverview();
+        loadAudit();
+      } else {
+        alert(res.message || 'Deletion failed.');
+      }
+    };
 
     window.approveCall = async function(id) {
       const res = await apiRequest('/moderation/review', {
@@ -807,7 +1104,7 @@
       }
     };
 
-    // 6. Content Studio Loader & Saver
+    // 6. Content Studio Loader & Actions
     async function loadContent() {
       const res = await apiRequest('/admin/content');
       const tbody = document.getElementById('contentTableBody');
@@ -819,7 +1116,10 @@
             <td><strong>${escapeHtml(c.title)}</strong><br><small style="color:#64748b;">${escapeHtml(c.body?.slice(0, 50))}...</small></td>
             <td><span class="badge ${c.status === 'published' ? 'badge-green' : 'badge-amber'}">${escapeHtml(c.status)}</span></td>
             <td>
-              ${c.status !== 'published' ? `<button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="publishContent('${c.id}')">Publish</button>` : '<span style="color:#4ade80;font-size:12px;">Published</span>'}
+              <div style="display:flex;gap:4px;align-items:center;">
+                ${c.status !== 'published' ? `<button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="publishContent('${c.id}')">Publish</button>` : '<span style="color:#4ade80;font-size:12px;margin-right:6px;">Live</span>'}
+                <button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteContentItem('${c.id}', '${escapeHtml(c.contentKey)}')">Delete</button>
+              </div>
             </td>
           </tr>
         `).join('');
@@ -863,7 +1163,95 @@
       }
     };
 
-    // 7. Audit Log Loader
+    window.deleteContentItem = async function(id, key) {
+      if (!confirm(`Permanently remove content item "${key}"? This action is logged in audit history and cannot be undone.`)) {
+        return;
+      }
+      const res = await apiRequest(`/admin/content/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        loadContent();
+        loadOverview();
+        loadAudit();
+      } else {
+        alert(res.message || 'Content deletion failed.');
+      }
+    };
+
+    // 7. Settings & Quotas Loader & Savers
+    async function loadSettings() {
+      const res = await apiRequest('/admin/settings');
+      if (res.ok && res.data?.dictionary) {
+        const dict = res.data.dictionary;
+        if (dict.listing_limits) {
+          if (dict.listing_limits.calls !== undefined) document.getElementById('settingCallsLimit').value = dict.listing_limits.calls;
+          if (dict.listing_limits.sprints !== undefined) document.getElementById('settingSprintsLimit').value = dict.listing_limits.sprints;
+          if (dict.listing_limits.notebook !== undefined) document.getElementById('settingNotebookLimit').value = dict.listing_limits.notebook;
+        }
+        if (dict.feature_flags) {
+          if (dict.feature_flags.allowPublicNotebookPublishing !== undefined) {
+            document.getElementById('flagPublicNotebook').checked = Boolean(dict.feature_flags.allowPublicNotebookPublishing);
+          }
+          if (dict.feature_flags.showIllustrativeItems !== undefined) {
+            document.getElementById('flagIllustrativeItems').checked = Boolean(dict.feature_flags.showIllustrativeItems);
+          }
+          if (dict.feature_flags.requireModerationForCalls !== undefined) {
+            document.getElementById('flagRequireModeration').checked = Boolean(dict.feature_flags.requireModerationForCalls);
+          }
+        }
+      }
+    }
+
+    window.saveListingLimits = async function() {
+      const calls = Number(document.getElementById('settingCallsLimit').value) || 20;
+      const sprints = Number(document.getElementById('settingSprintsLimit').value) || 20;
+      const notebook = Number(document.getElementById('settingNotebookLimit').value) || 30;
+
+      const res = await apiRequest('/admin/settings', {
+        method: 'PUT',
+        body: JSON.stringify({
+          key: 'listing_limits',
+          value: { calls, sprints, notebook },
+          description: 'Default card pagination and listing limits for public directories'
+        })
+      });
+
+      if (res.ok) {
+        alert('Listing quotas saved successfully!');
+        loadSettings();
+        loadAudit();
+      } else {
+        alert(res.message || 'Failed to save listing limits.');
+      }
+    };
+
+    window.saveFeatureFlags = async function() {
+      const allowPublicNotebookPublishing = document.getElementById('flagPublicNotebook').checked;
+      const showIllustrativeItems = document.getElementById('flagIllustrativeItems').checked;
+      const requireModerationForCalls = document.getElementById('flagRequireModeration').checked;
+
+      const res = await apiRequest('/admin/settings', {
+        method: 'PUT',
+        body: JSON.stringify({
+          key: 'feature_flags',
+          value: {
+            allowPublicNotebookPublishing,
+            showIllustrativeItems,
+            requireModerationForCalls
+          },
+          description: 'Platform operational feature flags and moderation controls'
+        })
+      });
+
+      if (res.ok) {
+        alert('Feature flags updated successfully!');
+        loadSettings();
+        loadAudit();
+      } else {
+        alert(res.message || 'Failed to update feature flags.');
+      }
+    };
+
+    // 8. Audit Log Loader
     async function loadAudit() {
       const res = await apiRequest('/admin/audit');
       const tbody = document.getElementById('auditTableBody');

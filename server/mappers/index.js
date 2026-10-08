@@ -7,6 +7,7 @@ const profileMapper = require('./profile');
 const userMapper = require('./user');
 const moderationMapper = require('./moderation');
 const contentItemMapper = require('./content-item');
+const platformSettingsMapper = require('./platform-settings');
 
 module.exports = {
   buildCall: buildCallMapper,
@@ -17,5 +18,6 @@ module.exports = {
   profile: profileMapper,
   user: userMapper,
   moderation: moderationMapper,
-  contentItem: contentItemMapper
+  contentItem: contentItemMapper,
+  platformSettings: platformSettingsMapper
 };

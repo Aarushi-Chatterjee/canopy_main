@@ -87,6 +87,28 @@ const TEST_FIXTURES = {
       createdAt: '2026-09-02T10:00:00Z',
       branches: []
     }
+  ],
+  platform_settings: [
+    {
+      key: 'listing_limits',
+      value: { calls: 20, sprints: 20, notebook: 30 },
+      description: 'Default card pagination and listing limits for public directories',
+      updatedBy: 'system_bootstrap',
+      createdAt: '2026-08-01T00:00:00Z',
+      updatedAt: '2026-08-01T00:00:00Z'
+    },
+    {
+      key: 'feature_flags',
+      value: {
+        allowPublicNotebookPublishing: true,
+        showIllustrativeItems: true,
+        requireModerationForCalls: true
+      },
+      description: 'Platform operational feature flags and moderation controls',
+      updatedBy: 'system_bootstrap',
+      createdAt: '2026-08-01T00:00:00Z',
+      updatedAt: '2026-08-01T00:00:00Z'
+    }
   ]
 };
 
