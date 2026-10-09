@@ -403,8 +403,11 @@
             In the Match Sandbox and directory, builder profiles and problem briefs are listed with verified attributes and public summaries.
           </p>
           <p>
-            To prevent unsolicited solicitation, personal email addresses and direct messaging handles are never broadcast publicly. Contact channels are only revealed once both parties (for instance, Elena R. and the Rural Water Alliance) accept a mutual match handshake.
+            To prevent unsolicited solicitation, personal email addresses and direct messaging handles are never broadcast publicly. Contact channels are only revealed once both parties (for instance, an independent engineer and a problem holder) accept a mutual match handshake.
           </p>
+          <div class="charter-callout">
+            <strong>Honest Curation Disclosure:</strong> When you send a collaboration note or submit an intent proposal via "Grab a shovel", your message is transmitted securely over TLS 1.3 and stored in our database. Incoming introduction notes and fellowship applications are reviewed by verified Canopy human curators to confirm mission alignment, protect participants from spam, and broker high-conviction matches. Because human curators actively review these submissions, messages are not client-side end-to-end encrypted (E2EE) between peers.
+          </div>
         </section>
 
         <section id="data-rights" class="charter-section">
@@ -429,7 +432,7 @@
             <li><strong>Kernel-Level Row Level Security (RLS):</strong> Our PostgreSQL architecture strictly enforces database-level Row Level Security policies. Even if public API keys or endpoints are interrogated, the database engine prohibits unauthorized access. Builders can only read and modify their own accounts, and contact emails remain masked until both parties accept a match.</li>
             <li><strong>Encryption in Transit (TLS 1.3):</strong> All network traffic between your browser, our API gateway, and our database cluster is encrypted using modern TLS 1.3 with HTTP Strict Transport Security (HSTS). Session tokens and payloads cannot be inspected or intercepted over public networks.</li>
             <li><strong>Encryption at Rest (AES-256):</strong> Underlying database volumes, backups, and physical storage clusters are encrypted using hardware-accelerated AES-256 encryption.</li>
-            <li><strong>Authorized Human Curation &amp; Access Controls:</strong> Collaboration handshake notes and fellowship applications are secured by server-side authorization controls and reviewed strictly by verified platform curators for quality and mutual fit. We never expose communications to automated data brokers, commercial advertisers, or third-party scrapers.</li>
+            <li><strong>Honest Architectural Transparency (No False E2EE Claims):</strong> We do not make false claims of mathematical end-to-end encryption (E2EE) or zero-knowledge client encryption for collaboration notes, fellowship applications, or project logs. Because verified platform curators review incoming submissions to facilitate high-conviction introductions, assess sprint feasibility, and maintain ecosystem trust, these records are stored securely in our database and accessed strictly by authorized human reviewers and the involved parties. We never expose communications to automated data brokers, commercial advertisers, or third-party scrapers.</li>
             <li><strong>Founder Station Isolation:</strong> Direct administrative access to the Founder Console is strictly locked to verified steward accounts with defense-in-depth secondary founder authentication passphrases and constant-time cryptographic validation.</li>
           </ul>
           <p>
