@@ -241,10 +241,10 @@ export async function initIvyGrowth() {
   }
 
   function loop() {
-    // Smooth damping: glides gradually and settles smoothly
+    // Smooth damping: responsive, fluid scroll pacing with organic settlement
     const diff = targetProgress - currentProgress;
     if (Math.abs(diff) > 0.0002) {
-      currentProgress += diff * 0.12;
+      currentProgress += diff * 0.20;
       leftUnit.update(currentProgress);
       rightUnit.update(currentProgress);
     }
