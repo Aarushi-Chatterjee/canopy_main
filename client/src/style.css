@@ -186,11 +186,6 @@
   color-scheme: light;
 }
 
-:root[data-theme="dark"] #ambientPlateCanvas {
-  opacity: 0.38;
-  mix-blend-mode: screen;
-}
-
 *{box-sizing:border-box;}
 html{
   scroll-behavior:smooth;
@@ -209,8 +204,7 @@ html{
 body{
   margin:0;
   background-color: var(--paper);
-  background-image:
-    radial-gradient(1200px 700px at 8% -10%, rgba(255,255,255,.35), transparent 60%);
+  background-image: none;
   color:var(--ink);
   font-family:'Jost Var', 'Century Gothic', 'Avenir Next', system-ui, sans-serif;
   font-weight:400;
@@ -219,52 +213,30 @@ body{
   position:relative;
 }
 
-/* Landing page rich textured paper backdrop (Light & Dark adaptive) */
+/* Landing page solid theme backdrop (Zero gradients, zero horizontal grid lines) */
 body.landing-page{
   background-color: var(--paper);
-  background-image:
-    radial-gradient(1200px 750px at 15% 5%, color-mix(in srgb, var(--leaf) 7%, transparent), transparent 65%),
-    radial-gradient(1000px 600px at 85% 30%, color-mix(in srgb, var(--sun) 8%, transparent), transparent 60%),
-    radial-gradient(1200px 800px at 10% 65%, color-mix(in srgb, var(--forest) 6%, transparent), transparent 70%),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 35px,
-      color-mix(in srgb, var(--ink) 3.2%, transparent) 35px,
-      color-mix(in srgb, var(--ink) 3.2%, transparent) 36px
-    );
+  background-image: none;
 }
 
-/* Landing page section depth & alternating paper contrast */
-.landing-page #problem{
-  background: radial-gradient(ellipse 950px 520px at 50% 25%, color-mix(in srgb, var(--teal-soft) 26%, transparent), transparent 75%);
+/* Seamless continuous flow across sections (no gradients, no dividing borders) */
+.landing-page section,
+.landing-page .section,
+.landing-page #problem,
+.landing-page #solution,
+.landing-page .keychain-section,
+.landing-page #connect {
+  background: transparent;
+  background-color: transparent;
+  background-image: none;
+  border-top: none;
+  border-bottom: none;
 }
 
-.landing-page #solution{
-  background: color-mix(in srgb, var(--paper-deep) 42%, transparent);
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.landing-page .keychain-section{
-  background: radial-gradient(ellipse 900px 500px at 50% 45%, color-mix(in srgb, var(--sun-soft) 24%, transparent), transparent 72%);
-}
-
-.landing-page #connect{
-  background: radial-gradient(circle at 50% 75%, color-mix(in srgb, var(--leaf-bright) 10%, transparent), transparent 75%);
-}
-
-/* Interior workspace pages stripe pattern. */
+/* Interior workspace pages (Solid theme backdrop without grid lines or gradients) */
 body.interior-page{
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 31px,
-      color-mix(in srgb, var(--ink) 5%, transparent) 31px,
-      color-mix(in srgb, var(--ink) 5%, transparent) 32px
-    ),
-    radial-gradient(1200px 700px at 8% -10%, rgba(255,255,255,.25), transparent 60%);
+  background-color: var(--paper);
+  background-image: none;
 }
 
 /* ──────────────────────────────────────────────────────────────────────
@@ -282,14 +254,7 @@ body.interior-page{
    AMBIENT BACKGROUND FLUID PLATE & BOTANICAL IVY SYSTEM
    ────────────────────────────────────────────────────────────────────────── */
 #ambientPlateCanvas {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.65;
-  mix-blend-mode: multiply;
+  display: none !important;
 }
 
 /* ── Content track wrapping #problem to #connect ── */

@@ -4,6 +4,7 @@
 export function initAmbientPlate() {
   const canvas = document.getElementById('ambientPlateCanvas');
   if (!canvas) return;
+  if (window.getComputedStyle(canvas).display === 'none') return;
 
   const gl = canvas.getContext('webgl', { alpha: true, antialias: true, powerPreference: 'low-power' });
   if (!gl) return;
