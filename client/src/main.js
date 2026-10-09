@@ -423,6 +423,18 @@ import { sprints, matches, notebook, auth } from './db.js';
     currentDrawerContext = context || {};
     if(callTitle && drawerTitle) drawerTitle.textContent = callTitle;
     if(callDomain && drawerSub) drawerSub.textContent = callDomain;
+
+    // Check auth immediately on drawer open to communicate authentication requirements without friction
+    const authNotice = document.getElementById('drawerAuthNotice');
+    if (authNotice) {
+      const user = auth.getUser?.();
+      if (!user || user.isGuest) {
+        authNotice.style.display = 'flex';
+      } else {
+        authNotice.style.display = 'none';
+      }
+    }
+
     appDrawerBackdrop.classList.add('is-open');
     appDrawer.classList.remove('closing');
     requestAnimationFrame(function(){ appDrawer.classList.add('is-open'); });
@@ -435,6 +447,21 @@ import { sprints, matches, notebook, auth } from './db.js';
     setTimeout(function(){ appDrawer.classList.remove('closing'); }, 240);
   }
   appDrawerClose && appDrawerClose.addEventListener('click', closeAppDrawer);
+
+  // Auto-save draft and smoothly redirect when clicking sign in inside drawer notice
+  document.addEventListener('click', function(e) {
+    const loginLink = e.target.closest('.drawer-auth-login-link');
+    if (!loginLink) return;
+    e.preventDefault();
+    const callId = currentDrawerContext.id || (appDrawer ? appDrawer.dataset?.activeCallId : null);
+    const callTitle = drawerTitle ? drawerTitle.textContent : '';
+    saveDraft(callId, callTitle);
+    showToast('🌱 Saved your note : redirecting to sign in...');
+    const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+    setTimeout(function() {
+      window.location.href = `login.html?redirect=${returnUrl}&restoreDraft=1`;
+    }, 350);
+  });
 
   var appDrawerForm = document.getElementById('appDrawerForm');
 

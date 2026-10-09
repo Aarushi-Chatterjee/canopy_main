@@ -152,6 +152,28 @@
       </div>
     </form>
   </div>
+
+  <!-- ============ MY SUBMITTED BUILD CALLS PANEL ============ -->
+  <div style="margin-top:52px;" id="myBuildCallsSection">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <span class="kicker" style="font-size:0.95rem;">Organization Pipeline</span>
+        <h2 style="font-size:clamp(1.5rem,2.5vw,2rem);margin-top:2px;margin-bottom:4px;">My Submitted Build Calls</h2>
+        <p style="font-size:0.86rem;color:var(--ink-soft);margin:0;">Track approval status and verified builder interest in your challenges.</p>
+      </div>
+      <button type="button" class="btn btn-sm btn-outline" id="btnRefreshMyCalls" style="display:inline-flex;align-items:center;gap:6px;">
+        <svg class="icon" aria-hidden="true" style="width:14px;height:14px;" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        Refresh Status
+      </button>
+    </div>
+
+    <div id="myCallsContainer" class="my-calls-grid">
+      <!-- Dynamically populated via calls.getMyCalls() -->
+      <div class="empty-state show" style="padding:28px 20px;">
+        <p>Loading your Build Calls pipeline...</p>
+      </div>
+    </div>
+  </div>
 </div>
 </main>
 
@@ -205,11 +227,149 @@
 
 <script type="module" src="/src/main.js"></script>
 <script type="module">
-  import { db, auth } from '/src/db.js';
+  import { db, auth, calls } from '/src/db.js';
   const form = document.getElementById('postCallForm');
   const toast = document.getElementById('toast');
   const submitBtn = document.getElementById('postCallSubmitBtn');
   const postCallAlert = document.getElementById('postCallAlert');
+  const myCallsContainer = document.getElementById('myCallsContainer');
+  const btnRefreshMyCalls = document.getElementById('btnRefreshMyCalls');
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function getStatusBadge(status) {
+    if (status === 'open') {
+      return '<span class="badge-status open">✅ Live &amp; Broadcasted</span>';
+    } else if (status === 'filled') {
+      return '<span class="badge-status filled">🌱 Squad Formed</span>';
+    } else if (status === 'rejected') {
+      return '<span class="badge-status" style="background:#fee2e2;color:#991b1b;border:1px solid #f87171;">Revision Needed</span>';
+    } else {
+      return '<span class="badge-status pending">⏳ Pending Review</span>';
+    }
+  }
+
+  async function renderMyBuildCalls() {
+    if (!myCallsContainer) return;
+    try {
+      const user = await auth.getCurrentUser().catch(() => null);
+      if (!user || user.isGuest) {
+        myCallsContainer.innerHTML = `
+          <div class="empty-state show" style="padding:32px 24px;border-radius:12px;background:var(--card);border:1px dashed var(--card-edge);">
+            <h4 style="margin-bottom:8px;">🔑 Field Station Pass Required</h4>
+            <p style="margin-bottom:14px;color:var(--ink-soft);">Sign in to track your submitted build calls, curator review stages, and real-time builder interest.</p>
+            <a href="/login.html?redirect=/post-call.html" class="btn btn-stamp btn-sm">Sign In / Access Pass →</a>
+          </div>
+        `;
+        return;
+      }
+
+      myCallsContainer.innerHTML = '<div class="empty-state show" style="padding:24px;"><p>Loading your Build Calls pipeline...</p></div>';
+
+      const userCalls = await calls.getMyCalls().catch(() => []);
+
+      if (!userCalls || userCalls.length === 0) {
+        myCallsContainer.innerHTML = `
+          <div class="empty-state show" style="padding:36px 24px;border-radius:12px;background:var(--card);border:1px dashed var(--card-edge);">
+            <div style="font-size:1.8rem;margin-bottom:8px;">🌱</div>
+            <h4 style="margin-bottom:6px;">No Build Calls Submitted Yet</h4>
+            <p style="color:var(--ink-soft);max-width:440px;margin:0 auto;">Your organization has not submitted any active challenges under this account. Use the intake form above to publish your first call.</p>
+          </div>
+        `;
+        return;
+      }
+
+      myCallsContainer.innerHTML = userCalls.map(c => {
+        const title = escapeHtml(c.title || 'Untitled Challenge');
+        const domain = escapeHtml((c.domain || 'climate').toUpperCase());
+        const org = escapeHtml(c.organization || c.orgName || 'Your Organization');
+        const desc = escapeHtml(c.problemStatement || c.desc || '');
+        const excerpt = desc.length > 200 ? desc.slice(0, 200) + '...' : desc;
+        const reward = c.rewardPool || c.reward ? escapeHtml(c.rewardPool || c.reward) : 'Community Pilot';
+        const dateStr = c.createdAt ? new Date(c.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently';
+        const statusBadge = getStatusBadge(c.status);
+        const interestCount = c.interestMetrics?.totalBuildersInterested || 0;
+        const handshakesCount = c.interestMetrics?.handshakesCount || 0;
+        const appsCount = c.interestMetrics?.applicationsCount || 0;
+
+        const interestLabel = interestCount === 1 
+          ? '⚡ 1 Builder Showed Interest' 
+          : interestCount > 1 
+            ? `⚡ ${interestCount} Builders Showed Interest` 
+            : '🌱 0 Builders Yet';
+
+        const viewLink = c.status === 'open' 
+          ? `<a href="match.html" class="btn btn-sm btn-outline" style="font-size:0.78rem;padding:5px 12px;">View in Match Sandbox →</a>`
+          : `<span style="font-size:0.75rem;color:var(--ink-faint);">Evaluation in progress by curators</span>`;
+
+        return `
+          <article class="my-call-card">
+            <div class="my-call-head">
+              <div class="my-call-title-wrap">
+                <div class="my-call-meta" style="margin-bottom:4px;">
+                  <span class="tag-chip" style="font-size:0.68rem;padding:2px 8px;">${domain}</span>
+                  <span>·</span>
+                  <span>Submitted ${dateStr}</span>
+                  <span>·</span>
+                  <span>${org}</span>
+                </div>
+                <h3 class="my-call-title">${title}</h3>
+              </div>
+              <div class="my-call-badges">
+                ${statusBadge}
+              </div>
+            </div>
+            <p class="my-call-desc">${excerpt}</p>
+            <div class="my-call-foot">
+              <div class="my-call-interest" title="${handshakesCount} direct shovel notes, ${appsCount} application handshakes">
+                <svg class="icon" aria-hidden="true" style="width:14px;height:14px;" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                <span>${interestLabel}</span>
+                ${interestCount > 0 ? `<small style="font-weight:400;color:var(--ink-soft);font-size:0.75rem;">(${handshakesCount} notes, ${appsCount} applications)</small>` : ''}
+              </div>
+              <div>
+                ${viewLink}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Error rendering my calls', err);
+      if (myCallsContainer) {
+        myCallsContainer.innerHTML = `
+          <div class="empty-state show">
+            <p style="color:var(--rust,#c53030);">Unable to retrieve your build calls at this time.</p>
+            <button type="button" class="btn btn-sm btn-outline" onclick="window.renderMyBuildCalls?.()">↻ Retry</button>
+          </div>
+        `;
+      }
+    }
+  }
+
+  window.renderMyBuildCalls = renderMyBuildCalls;
+  renderMyBuildCalls();
+
+  if (btnRefreshMyCalls) {
+    btnRefreshMyCalls.addEventListener('click', () => {
+      btnRefreshMyCalls.disabled = true;
+      btnRefreshMyCalls.textContent = 'Refreshing...';
+      renderMyBuildCalls().finally(() => {
+        btnRefreshMyCalls.disabled = false;
+        btnRefreshMyCalls.innerHTML = `
+          <svg class="icon" aria-hidden="true" style="width:14px;height:14px;" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          Refresh Status
+        `;
+      });
+    });
+  }
 
   // Verify authentication state on load
   auth.getCurrentUser().then(user => {
@@ -296,6 +456,8 @@
           callTitleCount.textContent = '0 / 80';
           callTitleCount.style.color = 'var(--ink-faint)';
         }
+        // Immediately refresh the My Build Calls panel so newly posted call appears right away
+        renderMyBuildCalls();
         setTimeout(() => toast && toast.classList.remove('show'), 3500);
       } catch (err) {
         if (postCallAlert) {

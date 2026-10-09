@@ -386,6 +386,12 @@ export const calls = {
     return [];
   },
 
+  async getMyCalls() {
+    const remote = await apiRequest('/calls/mine');
+    if (remote.ok && remote.data?.calls) return remote.data.calls;
+    return [];
+  },
+
   async postBuildCall(callData) {
     const remote = await apiRequest('/calls', {
       method: 'POST',
@@ -481,6 +487,7 @@ export const settings = {
 export const db = {
   submitApplication: (app) => applications.submitApplication(app),
   postBuildCall: (call) => calls.postBuildCall(call),
+  getMyCalls: () => calls.getMyCalls(),
   saveProfile: (prof) => {
     setLocal(STORAGE_KEYS.PROFILE, prof);
     return prof;

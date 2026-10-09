@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { buildCalls: callsRepo, users: usersRepo, profiles: profilesRepo, moderationQueue: modRepo, auditEvents: auditRepo } = require('../repositories');
+const { buildCalls: callsRepo, users: usersRepo, profiles: profilesRepo, moderationQueue: modRepo, auditEvents: auditRepo, matches: matchesRepo, applications: appsRepo } = require('../repositories');
 const { requireAuth } = require('../middleware/auth');
 
 // GET /api/calls — List active Build Calls
@@ -21,6 +21,40 @@ router.get('/', async (req, res) => {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to list build calls.' });
   }
 });
+
+// GET /api/calls/mine — Retrieve the authenticated user's submitted Build Calls with status & interest counts
+const getMyCallsHandler = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userCalls = await callsRepo.find(c => c.createdBy === userId, { eq: { created_by: userId } });
+
+    userCalls.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+    const enrichedCalls = await Promise.all(userCalls.map(async (call) => {
+      const callMatches = await matchesRepo.find(m => m.callId === call.id || m.buildCallId === call.id).catch(() => []);
+      const callApps = await appsRepo.find(a => a.callId === call.id).catch(() => []);
+
+      return {
+        ...call,
+        interestMetrics: {
+          handshakesCount: callMatches.length,
+          applicationsCount: callApps.length,
+          totalBuildersInterested: callMatches.length + callApps.length
+        }
+      };
+    }));
+
+    res.json({
+      calls: enrichedCalls,
+      total: enrichedCalls.length
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to retrieve your build calls.' });
+  }
+};
+
+router.get('/mine', requireAuth, getMyCallsHandler);
+router.get('/my', requireAuth, getMyCallsHandler);
 
 // GET /api/calls/:id — Single Build Call details
 router.get('/:id', async (req, res) => {

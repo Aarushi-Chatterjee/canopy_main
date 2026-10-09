@@ -251,6 +251,15 @@ const server = app.listen(PORT, async () => {
     assert(auditRes.status === 200 && auditRes.data.auditEvents.some(e => e.targetEntityId === createdCallId), 
       'Audit Logging: records immutable event for moderation approval');
 
+    // 4.5 Organization Dashboard: GET /api/calls/mine
+    const unauthMyCalls = await request('GET', '/api/calls/mine');
+    assert(unauthMyCalls.status === 401, 'Organization Pipeline: Unauthenticated GET /api/calls/mine rejected with 401');
+
+    const myCallsRes = await request('GET', '/api/calls/mine', null, cookieHeaders);
+    assert(myCallsRes.status === 200 && Array.isArray(myCallsRes.data.calls), 'Organization Pipeline: Authenticated GET /api/calls/mine returns user challenges');
+    const myCallItem = myCallsRes.data.calls.find(c => c.id === createdCallId);
+    assert(myCallItem && myCallItem.interestMetrics !== undefined, 'Organization Pipeline: Call contains real-time builder interest metrics');
+
     console.log('\n--- 5. Matches & Reciprocal Privacy ---');
     const handshakeRes = await request('POST', '/api/matches/handshake', {
       recipientId: 'usr_water_ngo',
