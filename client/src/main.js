@@ -784,18 +784,17 @@ import { sprints, matches, notebook, auth } from './db.js';
     });
   });
 
-  /* ---------- Discreet Founder / Staff Console Access Injection ---------- */
-  async function checkFounderAccess() {
-    try {
-      const user = await auth.getCurrentUser();
-      if (!user || !user.access?.roles) return;
-      const isStaff = user.access.roles.some(function(r) {
-        return ['owner', 'admin', 'moderator', 'match_curator', 'content_editor'].includes(r);
-      });
-      if (!isStaff) return;
+  /* ---------- Discreet Founder / Staff Console Access Injection (Unified with SWR) ---------- */
+  function applyFounderBadge(user) {
+    if (!user || user.isGuest) return;
+    const isOwner = user.access?.roles?.includes('owner');
+    const isStaff = user.access?.roles?.some(function(r) {
+      return ['owner', 'admin', 'moderator', 'match_curator', 'content_editor'].includes(r);
+    });
 
-      // Discreetly inject Founder/Staff console button into header nav
-      const headerBtns = document.querySelector('header div[style*="align-items:center"]');
+    if (isOwner || isStaff) {
+      const headerBtns = document.querySelector('header div[style*="display:flex"]:last-child') ||
+                         document.querySelector('header .header-inner > div:last-child');
       if (headerBtns && !document.getElementById('navFounderBtn')) {
         const adminLink = document.createElement('a');
         adminLink.id = 'navFounderBtn';
@@ -820,30 +819,30 @@ import { sprints, matches, notebook, auth } from './db.js';
         drawerLink.innerHTML = '⚙️ Founder Console →';
         drawer.appendChild(drawerLink);
       }
-    } catch (e) {
-      // Graceful silence: zero UI disruption for regular visitors
     }
   }
-  checkFounderAccess();
 
-  /* ---------- Auth State Rendering (Header & Nav Drawer) ---------- */
-  async function renderAuthState() {
+  /* ---------- Auth State Rendering (Header & Nav Drawer) with SWR ---------- */
+  function applyAuthDOM(user) {
     const navAuthArea = document.getElementById('navAuthArea');
     const drawerAuthArea = document.getElementById('drawerAuthArea');
 
-    let user = auth.getUser?.();
-    try {
-      const fresh = await auth.getCurrentUser();
-      if (fresh && !fresh.isGuest) {
-        user = fresh;
-      } else if (fresh && fresh.isGuest) {
-        user = null;
+    if (!user || user.isGuest) {
+      // Guest state: ensure Sign Up & Log In are displayed
+      if (navAuthArea) {
+        navAuthArea.innerHTML = `
+          <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+          <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
+        `;
       }
-    } catch (e) {
-      // offline or network error: retain cached user if present
+      if (drawerAuthArea) {
+        drawerAuthArea.innerHTML = `
+          <a href="login.html" class="nav-drawer-link">Log In to Dashboard</a>
+          <a href="login.html?tab=signup" class="nav-drawer-link">Sign Up / New Collaborator</a>
+        `;
+      }
+      return;
     }
-
-    if (!user || user.isGuest) return;
 
     const isStaff = user.access?.roles?.some(function(r) {
       return ['owner', 'admin', 'moderator', 'match_curator', 'content_editor'].includes(r);
@@ -901,6 +900,44 @@ import { sprints, matches, notebook, auth } from './db.js';
           document.getElementById('drawerLogoutBtn')?.addEventListener('click', handleLogout);
         }
       }
+    }
+  }
+
+  function initPostCallGating() {
+    const postCallLinks = document.querySelectorAll('a[href="post-call.html"], #navPostCall');
+    postCallLinks.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        const currentUser = auth.getUser?.();
+        if (!currentUser || currentUser.isGuest) {
+          e.preventDefault();
+          window.location.href = 'login.html?tab=signup&redirect=post-call.html';
+        }
+      });
+    });
+  }
+
+  async function renderAuthState() {
+    // Stale-While-Revalidate: Step 1 - Hydrate immediately from cache (0ms delay)
+    let user = auth.getUser?.();
+    if (user && !user.isGuest) {
+      applyAuthDOM(user);
+      applyFounderBadge(user);
+    }
+
+    // Always initialize post-a-call gating
+    initPostCallGating();
+
+    // Step 2 - Revalidate asynchronously in background
+    try {
+      const fresh = await auth.getCurrentUser();
+      if (fresh && !fresh.isGuest) {
+        applyAuthDOM(fresh);
+        applyFounderBadge(fresh);
+      } else if (!fresh || fresh.isGuest) {
+        applyAuthDOM(null);
+      }
+    } catch (e) {
+      // Network offline or error: retain cached UI gracefully
     }
   }
 

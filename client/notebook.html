@@ -159,10 +159,11 @@
       <a href="notebook.html" aria-current="page">Lab Notebook</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
-      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
-      <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
-      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Call</a>
-      <a class="btn btn-stamp btn-sm" href="apply.html">Apply</a>
+      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html">Post a Call</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -635,6 +636,49 @@
   </div>
 </div>
 </main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="footer-logo">
+        <img src="/favicon.png" alt="Canopy" height="36" style="height:36px;width:36px;display:block;border-radius:8px;">
+        <div class="footer-logo-text">
+          <span class="footer-logo-name">CANOPY</span>
+          <span class="footer-logo-sub">Build · Connect · Ship</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <p class="founder-quote">"Closing the gap between grassroots problem holders and high-context execution squads: one Build Call, one sprint, one shipped prototype at a time."<cite>Aarushi Chatterjee, Technical Steward</cite></p>
+      </div>
+    </div>
+    <div>
+      <h5>Ecosystem</h5>
+      <a href="match.html">Build Calls Directory</a>
+      <a href="sprint.html">Active Sprints Board</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="/#problem">The Coordination Gap</a>
+    </div>
+    <div>
+      <h5>Workspaces</h5>
+      <a href="post-call.html">Post a Build Call</a>
+      <a href="builders.html">Builders Guild</a>
+      <a href="problem-holders.html">Problem Holders</a>
+      <a href="enablers.html">Sponsors &amp; Enablers</a>
+    </div>
+    <div>
+      <h5>Charter &amp; Legal</h5>
+      <a href="terms.html">Community Charter</a>
+      <a href="privacy.html">Data Privacy</a>
+      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
+    <span>© 2026 Canopy. All rights reserved.</span>
+  </div>
+</footer>
 
 <!-- ============ MODAL DRAWER: COMPOSE FIELD REPORT ============ -->
 <div class="app-drawer-backdrop" id="composeBackdrop" style="display:none;"></div>

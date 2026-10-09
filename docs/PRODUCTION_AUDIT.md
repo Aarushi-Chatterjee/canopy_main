@@ -100,8 +100,8 @@ When audited from the perspective of real public adversaries, genuine first-time
   }
   ```
 - **The Attack Path:**
-  1. The environment variable `FOUNDER_EMAILS` lists `founder@canopy.earth`.
-  2. Before the founder creates their account on a fresh database, an external attacker calls `POST /api/auth/register` with `email: "founder@canopy.earth"` and their own chosen password.
+  1. The environment variable `FOUNDER_EMAILS` lists `founder@canopy.local`.
+  2. Before the founder creates their account on a fresh database, an external attacker calls `POST /api/auth/register` with `email: "founder@canopy.local"` and their own chosen password.
   3. The account is created in `users` with `is_verified: false`.
   4. If the attacker can compromise the email delivery stream, guess the 6-digit OTP, or if the server falls back to console logging (where the OTP is printed to Vercel logs accessible by team members or contractors), the attacker calls `/api/auth/verify`.
   5. Because `isVerified` becomes `true` and the email matches `FOUNDER_EMAILS`, the system **automatically promotes the attacker to `owner` and `admin`**, granting full control over the database, user roles, and applications.

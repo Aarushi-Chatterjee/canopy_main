@@ -49,13 +49,12 @@
       </nav>
       <div style="display:flex;align-items:center;gap:10px;">
         <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
-          <a class="nav-auth-link" href="login.html"
-            style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
           <a class="nav-auth-link" href="login.html?tab=signup"
             style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+          <a class="nav-auth-link" href="login.html"
+            style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
         </div>
-        <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Call</a>
-        <a class="btn btn-stamp btn-sm" href="apply.html">Apply</a>
+        <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html">Post a Call</a>
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -366,60 +365,33 @@
           </div>
 
           <div class="keychain reveal" id="keychain">
-            <div class="ring" aria-hidden="true"></div>
-            <div class="chain-link" aria-hidden="true"></div>
-            <div class="charm paper-card" tabindex="0" role="button" style="--rot:-4deg;" data-charm>
+            <div class="charm paper-card" tabindex="0" role="button" data-charm>
               <div class="charm-hole"></div>
               <div class="role">Builder</div>
-              <h4>ML Engineer</h4>
+              <h4>Technical Builder</h4>
               <span class="hint">tap to open ↓</span>
-              <div class="looks-for"><span>Has the skills. Looking for: a founder or NGO with a real dataset and a
-                  problem worth pointing a model at.</span></div>
+              <div class="looks-for"><span>Engineers &amp; developers looking for real field datasets and ambitious problems worth solving.</span></div>
             </div>
-            <div class="chain-link" aria-hidden="true"></div>
-            <div class="charm paper-card" tabindex="0" role="button" style="--rot:3deg;" data-charm>
-              <div class="charm-hole"></div>
-              <div class="role">Builder</div>
-              <h4>Product Designer</h4>
-              <span class="hint">tap to open ↓</span>
-              <div class="looks-for"><span>Craving a real project. Looking for: a technical co-builder who needs an
-                  interface people will actually trust.</span></div>
-            </div>
-            <div class="chain-link" aria-hidden="true"></div>
-            <div class="charm paper-card" tabindex="0" role="button" style="--rot:-2deg;" data-charm>
-              <div class="charm-hole"></div>
-              <div class="role">Builder</div>
-              <h4>Domain Expert</h4>
-              <span class="hint">tap to open ↓</span>
-              <div class="looks-for"><span>Holds the field knowledge and the data. Looking for: an engineer who can turn
-                  context into a working system.</span></div>
-            </div>
-            <div class="chain-link" aria-hidden="true"></div>
-            <div class="charm paper-card" tabindex="0" role="button" style="--rot:4deg;" data-charm>
-              <div class="charm-hole"></div>
-              <div class="role">Builder</div>
-              <h4>Hardware Engineer</h4>
-              <span class="hint">tap to open ↓</span>
-              <div class="looks-for"><span>Ready to build a prototype. Looking for: a cause and a team that values the
-                  craft, not just the demo.</span></div>
-            </div>
-            <div class="chain-link" aria-hidden="true"></div>
-            <div class="charm paper-card" tabindex="0" role="button" style="--rot:-3deg;" data-charm>
+            <div class="charm paper-card" tabindex="0" role="button" data-charm>
               <div class="charm-hole"></div>
               <div class="role">Problem Holder</div>
-              <h4>NGO / Company</h4>
+              <h4>Community / NGO</h4>
               <span class="hint">tap to open ↓</span>
-              <div class="looks-for"><span>Has the challenge and no time to spare. Looking for: a curated team that can
-                  turn a scoped problem into a shipped prototype inside a few weeks.</span></div>
+              <div class="looks-for"><span>Holds the context and pressing challenges. Looking for high-context squads to build and test tools.</span></div>
             </div>
-            <div class="chain-link" aria-hidden="true"></div>
-            <div class="charm paper-card" tabindex="0" role="button" style="--rot:2deg;" data-charm>
+            <div class="charm paper-card" tabindex="0" role="button" data-charm>
+              <div class="charm-hole"></div>
+              <div class="role">Domain Expert</div>
+              <h4>Field Specialist</h4>
+              <span class="hint">tap to open ↓</span>
+              <div class="looks-for"><span>Brings scientific depth, data ground-truth, and real-world validation to ongoing engineering sprints.</span></div>
+            </div>
+            <div class="charm paper-card" tabindex="0" role="button" data-charm>
               <div class="charm-hole"></div>
               <div class="role">Enabler</div>
-              <h4>Impact Investor</h4>
+              <h4>Sponsor &amp; Funder</h4>
               <span class="hint">tap to open ↓</span>
-              <div class="looks-for"><span>Wants deal flow grounded in proof. Looking for: a deck with a shipped
-                  prototype standing behind it.</span></div>
+              <div class="looks-for"><span>Providing micro-grants, deployment hardware, and institutional backing to accelerate shipped solutions.</span></div>
             </div>
           </div>
 
@@ -427,15 +399,15 @@
           <div class="role-hub-row reveal">
             <a href="builders.html" class="role-hub-link">
               <img src="/avatars/avatar-builders.png" alt="Builders Avatar">
-              <span>For Builders: Ship with a Team →</span>
+              <span>For Builders: Ship with a Team</span>
             </a>
             <a href="problem-holders.html" class="role-hub-link">
               <img src="/avatars/avatar-problem-holders.png" alt="Problem Holders Avatar">
-              <span>For Problem Holders: Post a Challenge →</span>
+              <span>For Problem Holders: Post a Challenge</span>
             </a>
             <a href="enablers.html" class="role-hub-link">
               <img src="/avatars/avatar-enablers.png" alt="Enablers Avatar">
-              <span>For Enablers: Scout &amp; Support →</span>
+              <span>For Enablers: Scout &amp; Support</span>
             </a>
           </div>
         </div>
@@ -469,40 +441,34 @@
     <div class="wrap">
       <div>
         <div class="footer-logo">
-          <img src="/canopy-logo.png" alt="Canopy Logo" height="40" style="height:40px;width:auto;display:block;">
+          <img src="/favicon.png" alt="Canopy" height="36" style="height:36px;width:36px;display:block;border-radius:8px;">
           <div class="footer-logo-text">
             <span class="footer-logo-name">CANOPY</span>
             <span class="footer-logo-sub">Build · Connect · Ship</span>
           </div>
         </div>
-        <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
-          <img src="/avatars/avatar-rooted-purpose.png" alt="Rooted in Purpose"
-            style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
-          <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to
-            close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee,
-              Founder</cite></p>
+        <div style="margin-top:12px;">
+          <p class="founder-quote">"Closing the gap between grassroots problem holders and high-context execution squads: one Build Call, one sprint, one shipped prototype at a time."<cite>Aarushi Chatterjee, Technical Steward</cite></p>
         </div>
       </div>
       <div>
-        <h5>Explore</h5>
-        <a href="builders.html">For Builders</a>
-        <a href="problem-holders.html">For Problem Holders</a>
-        <a href="enablers.html">For Enablers</a>
-        <a href="post-call.html">Post a Build Call</a>
-        <a href="apply.html">Apply to Canopy</a>
-      </div>
-      <div>
-        <h5>The Loop</h5>
-        <a href="match.html">Match</a>
-        <a href="sprint.html">Sprint</a>
+        <h5>Ecosystem</h5>
+        <a href="match.html">Build Calls Directory</a>
+        <a href="sprint.html">Active Sprints Board</a>
         <a href="notebook.html">Lab Notebook</a>
-        <a href="#problem">The Gap</a>
-        <a href="login.html">Sign In / Account</a>
+        <a href="#problem">The Coordination Gap</a>
       </div>
       <div>
-        <h5>Legal &amp; Connect</h5>
-        <a href="privacy.html">Privacy Policy</a>
-        <a href="terms.html">Terms and Conditions</a>
+        <h5>Workspaces</h5>
+        <a href="post-call.html">Post a Build Call</a>
+        <a href="builders.html">Builders Guild</a>
+        <a href="problem-holders.html">Problem Holders</a>
+        <a href="enablers.html">Sponsors &amp; Enablers</a>
+      </div>
+      <div>
+        <h5>Charter &amp; Legal</h5>
+        <a href="terms.html">Community Charter</a>
+        <a href="privacy.html">Data Privacy</a>
         <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
         <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
       </div>

@@ -548,18 +548,18 @@ a.btn, a.btn:hover, a.btn:focus, a.btn:active {
 
 /* ---- Nav Drawer (three-line corner menu) ---- */
 .nav-drawer-backdrop{
-  position:fixed; inset:0; background:rgba(15,20,14,.45); backdrop-filter:blur(2px);
+  position:fixed; inset:0; background:rgba(15,20,14,.55); backdrop-filter:blur(8px);
   opacity:0; pointer-events:none; transition:opacity .24s var(--ease-out); z-index:45;
 }
 .nav-drawer-backdrop.is-open{ opacity:1; pointer-events:auto; }
 .nav-drawer{
-  position:fixed; top:0; right:0; bottom:0; width:min(320px, 88vw);
+  position:fixed; top:0; right:0; bottom:0; width:min(380px, 92vw);
   background:var(--card); border-left:1px solid var(--card-edge);
-  box-shadow:-20px 0 50px -10px rgba(0,0,0,.25);
+  box-shadow:-24px 0 60px -12px rgba(0,0,0,.35);
   transform:translateX(100%);
   transition:transform .3s var(--ease-drawer);
   z-index:50; overflow-y:auto;
-  padding:24px 0 40px;
+  padding:28px 0 44px;
   display:flex; flex-direction:column; gap:0;
 }
 .nav-drawer.is-open{ transform:translateX(0); }
@@ -798,38 +798,27 @@ main#top{
 /* ---------- keychain ---------- */
 .keychain-section{ padding-top:80px; }
 .keychain{
-  position:relative; margin-top:60px; padding:40px clamp(10px,4vw,40px) 60px;
-  /* nowrap keeps all charms on a single row at desktop widths;
-     flex-wrap kicks in only below ~700px so mobile still wraps gracefully */
-  display:flex; align-items:flex-start; justify-content:center; gap:0; flex-wrap:nowrap;
-  overflow-x:auto; min-height:220px;
+  position:relative; margin-top:40px; padding:24px 0 36px;
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:18px; align-items:stretch;
 }
-@media (max-width:700px){
-  .keychain{ flex-wrap:wrap; }
-}
-.ring{
-  width:70px; height:70px; border-radius:50%; border:6px solid var(--twine);
-  background:transparent; flex:0 0 auto; margin-top:6px;
-  box-shadow: 0 3px 0 var(--shadow);
-}
-.chain-link{
-  width:26px; height:14px; border:4px solid var(--twine); border-radius:10px;
-  margin-top:26px; flex:0 0 auto;
-}
+.ring{ display:none; }
+.chain-link{ display:none; }
 .charm{
-  --rot:0deg;
-  width:150px; padding:14px 14px 18px; border-radius:4px; margin:0 -6px;
-  transform:rotate(var(--rot));
-  transition:transform .25s var(--ease-out), box-shadow .25s var(--ease-out);
+  width:100%; padding:22px 20px 24px; border-radius:10px; margin:0;
+  transform:none;
+  transition:transform .22s var(--ease-out), box-shadow .22s var(--ease-out), border-color .22s var(--ease-out);
   cursor:pointer; position:relative;
+  display:flex; flex-direction:column;
+  border:1px solid var(--card-edge);
 }
-.charm:focus-visible{ transform:rotate(0deg) translateY(-6px); z-index:5; }
+.charm:focus-visible{ transform:translateY(-5px); z-index:5; box-shadow:0 12px 30px -8px var(--shadow); }
 @media (hover:hover) and (pointer:fine){
-  .charm:hover{ transform:rotate(0deg) translateY(-6px); z-index:5; }
+  .charm:hover{ transform:translateY(-5px); z-index:5; box-shadow:0 12px 30px -8px var(--shadow); border-color:var(--forest); }
 }
-.charm:active{ transform:rotate(0deg) translateY(-6px) scale(.97); }
-.charm .role{ font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--forest); font-weight:700; }
-.charm h4{ font-family:'Fraunces Var',serif; font-size:1.02rem; margin-top:6px; font-weight:600; }
+.charm:active{ transform:translateY(-2px) scale(.98); }
+.charm .role{ font-size:.72rem; text-transform:uppercase; letter-spacing:.1em; color:var(--forest); font-weight:700; margin-top:6px; }
+.charm h4{ font-family:'Fraunces Var',serif; font-size:1.14rem; margin:8px 0 6px; font-weight:600; color:var(--ink); }
 /* collapses via grid-template-rows (0fr -> 1fr), not the height/margin JS
    tween this used to run — height and margin are layout properties, so the
    old version repainted every frame instead of compositing on the GPU. */
@@ -1089,7 +1078,7 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 .profile-strip .chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
 
 /* ---- match grid ---- */
-.stage-section{ margin-top:52px; }
+.stage-section{ margin-top:28px; }
 .stage-section-head{
   display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:20px; flex-wrap:wrap;
 }
@@ -2039,31 +2028,31 @@ footer img[alt="Rooted in Purpose"] {
 
 /* Profile Builder module (Match page — first-time users) */
 .profile-builder{
-  padding: 32px;
-  margin-bottom: 44px;
+  padding: 22px 26px;
+  margin-bottom: 20px;
   border-radius: 14px;
 }
 .profile-builder-title{
   font-family: 'Fraunces Var', serif;
-  font-size: 1.28rem; font-weight: 700;
-  margin-bottom: 8px;
+  font-size: 1.24rem; font-weight: 700;
+  margin-bottom: 6px;
 }
 .profile-builder-sub{
-  color: var(--ink-soft); font-size: .93rem; margin-bottom: 24px; max-width: 54ch;
+  color: var(--ink-soft); font-size: .92rem; margin-bottom: 16px; max-width: 54ch;
 }
 .role-picker{
-  display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px;
+  display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
 }
 .role-pick-btn{
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  padding: 16px 20px; border-radius: 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 12px 18px; border-radius: 10px;
   border: 2px solid var(--card-edge); background: var(--paper);
-  cursor: pointer; min-width: 110px; text-align: center;
+  cursor: pointer; min-width: 100px; text-align: center;
   transition: border-color .16s ease, box-shadow .16s ease, transform .14s ease;
 }
 .role-pick-btn:hover{ border-color: var(--forest); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(31,92,64,.14); }
 .role-pick-btn[aria-pressed="true"]{ border-color: var(--forest); background: color-mix(in srgb, var(--forest) 6%, var(--card)); box-shadow: 0 4px 14px rgba(31,92,64,.18); }
-.role-pick-btn img { width: 48px; height: 48px; object-fit: contain; }
+.role-pick-btn img { width: 44px; height: 44px; object-fit: contain; }
 .role-pick-btn span { font-size: .82rem; font-weight: 600; color: var(--ink-soft); }
 .role-pick-btn[aria-pressed="true"] span { color: var(--forest); }
 
