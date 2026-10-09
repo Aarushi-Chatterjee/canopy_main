@@ -463,6 +463,44 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Role Assignment / Management Modal -->
+        <div id="roleModal" class="modal-overlay" style="display: none;">
+          <div class="modal-card" style="max-width: 480px;">
+            <div class="modal-header">
+              <h3 class="modal-title" id="roleModalTitle">Manage User Role</h3>
+              <button class="modal-close" onclick="closeRoleModal()">&times;</button>
+            </div>
+            <input type="hidden" id="roleUserId">
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--admin-border); border-radius: 6px; padding: 12px; margin-bottom: 16px;">
+              <div id="roleUserTarget" style="font-size: 14px; color: #ffffff; font-weight: 600;"></div>
+              <div id="roleCurrentRoles" style="font-size: 12px; color: #94a3b8; margin-top: 4px;"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Role to Assign / Revoke</label>
+              <select id="roleSelect" class="form-select">
+                <option value="approved_builder">Builder (approved_builder)</option>
+                <option value="approved_problem_holder">Problem Holder (approved_problem_holder)</option>
+                <option value="approved_enabler">Enabler (approved_enabler)</option>
+                <option value="content_editor">Content Editor (content_editor)</option>
+                <option value="match_curator">Match Curator (match_curator)</option>
+                <option value="moderator">Moderator (moderator)</option>
+                <option value="admin">Administrator (admin)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Action</label>
+              <select id="roleActionSelect" class="form-select">
+                <option value="grant">Grant / Assign Role</option>
+                <option value="revoke">Revoke / Remove Role</option>
+              </select>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+              <button class="btn btn-secondary" onclick="closeRoleModal()">Cancel</button>
+              <button class="btn btn-primary" id="btnSubmitRole" onclick="submitRoleModal()">Apply Role Change</button>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- 4. MATCHING TAB -->
@@ -1014,34 +1052,67 @@
     };
 
     // 3. Users Loader
+    window.__usersList = [];
+
     async function loadUsers() {
       const res = await apiRequest('/admin/users');
       const tbody = document.getElementById('usersTableBody');
       if (res.ok && res.data?.users) {
+        window.__usersList = res.data.users;
         tbody.innerHTML = res.data.users.map(u => `
           <tr>
             <td><strong>${escapeHtml(u.displayName)}</strong><br><small style="color:#64748b;">${escapeHtml(u.email)}</small></td>
             <td><span class="badge ${u.isVerified ? 'badge-green' : 'badge-amber'}">${u.isVerified ? 'VERIFIED' : 'PENDING'}</span></td>
             <td>${(u.roles || []).map(r => `<span class="badge badge-blue" style="margin-right:4px;">${escapeHtml(r)}</span>`).join('')}</td>
             <td>
-              <button class="btn btn-secondary" style="padding:4px 8px;font-size:11px;" onclick="assignUserRole('${u.id}')">+ Assign Role</button>
+              <button class="btn btn-secondary" style="padding:4px 8px;font-size:11px;" onclick="assignUserRole('${u.id}')">Manage Role</button>
             </td>
           </tr>
         `).join('');
       }
     }
 
-    window.assignUserRole = async function(userId) {
-      const role = prompt('Enter role to grant (approved_builder, approved_problem_holder, approved_enabler, content_editor, match_curator, moderator, admin):');
-      if (!role) return;
-      const res = await apiRequest(`/admin/users/${userId}/role`, {
-        method: 'PATCH',
-        body: JSON.stringify({ role, action: 'grant' })
-      });
-      if (res.ok) {
-        loadUsers();
-      } else {
-        alert(res.message || 'Role grant failed.');
+    window.assignUserRole = function(userId) {
+      const u = (window.__usersList || []).find(x => x.id === userId);
+      const modal = document.getElementById('roleModal');
+      document.getElementById('roleUserId').value = userId;
+      document.getElementById('roleUserTarget').textContent = u ? `${u.displayName} (${u.email})` : `User ID: ${userId}`;
+      document.getElementById('roleCurrentRoles').textContent = `Current roles: ${(u?.roles || []).join(', ') || 'None'}`;
+      document.getElementById('roleActionSelect').value = 'grant';
+      if (modal) modal.style.display = 'flex';
+    };
+
+    window.closeRoleModal = function() {
+      const modal = document.getElementById('roleModal');
+      if (modal) modal.style.display = 'none';
+    };
+
+    window.submitRoleModal = async function() {
+      const userId = document.getElementById('roleUserId').value;
+      const role = document.getElementById('roleSelect').value;
+      const action = document.getElementById('roleActionSelect').value;
+      const submitBtn = document.getElementById('btnSubmitRole');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Applying...';
+      }
+      try {
+        const res = await apiRequest(`/admin/users/${userId}/role`, {
+          method: 'PATCH',
+          body: JSON.stringify({ role, action })
+        });
+        if (res.ok) {
+          closeRoleModal();
+          loadUsers();
+          alert(res.data?.message || `Role "${role}" successfully ${action === 'grant' ? 'assigned' : 'revoked'}.`);
+        } else {
+          alert(res.message || 'Role update failed.');
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Apply Role Change';
+        }
       }
     };
 

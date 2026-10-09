@@ -182,7 +182,7 @@ router.get('/users', requireAnyRole(['admin', 'owner']), async (req, res) => {
 
 router.patch('/users/:id/role', requireAnyRole(['admin', 'owner']), async (req, res) => {
   try {
-    const { role, action = 'grant' } = req.body;
+    let { role, action = 'grant' } = req.body;
     const validRoles = [
       'approved_builder',
       'approved_problem_holder',
@@ -193,6 +193,26 @@ router.patch('/users/:id/role', requireAnyRole(['admin', 'owner']), async (req, 
       'admin',
       'owner'
     ];
+
+    if (typeof role === 'string') {
+      role = role.trim().toLowerCase();
+    }
+    const roleAliases = {
+      'builder': 'approved_builder',
+      'builders': 'approved_builder',
+      'problem_holder': 'approved_problem_holder',
+      'problem-holder': 'approved_problem_holder',
+      'problemholder': 'approved_problem_holder',
+      'enabler': 'approved_enabler',
+      'enablers': 'approved_enabler',
+      'editor': 'content_editor',
+      'curator': 'match_curator',
+      'mod': 'moderator',
+      'administrator': 'admin'
+    };
+    if (role && roleAliases[role]) {
+      role = roleAliases[role];
+    }
 
     if (!validRoles.includes(role)) {
       return res.status(400).json({ error: `Invalid role: ${role}. Valid: ${validRoles.join(', ')}` });

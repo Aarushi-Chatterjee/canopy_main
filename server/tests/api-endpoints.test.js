@@ -331,6 +331,14 @@ const server = app.listen(PORT, async () => {
     assert(founderApps.status === 200 && Array.isArray(founderApps.data.applications),
       'Cohort Applications: GET /api/admin/applications returns cohort review queue');
 
+    // 9.3b User Roles & Friendly Alias Resolution
+    const roleAliasRes = await request('PATCH', `/api/admin/users/${regRes.data.user.id}/role`, {
+      role: 'builder',
+      action: 'grant'
+    }, founderHeaders);
+    assert(roleAliasRes.status === 200,
+      'Role Assignment: Resolves friendly alias "builder" to "approved_builder" successfully');
+
     // 9.4 Content Studio - Draft, MIME Validation, Publish
     const invalidUpload = await request('POST', '/api/admin/content/upload', {
       filename: 'exploit.exe',
