@@ -484,7 +484,7 @@
       </article>
     </div>
 
-    <div class="empty-state" id="buildersEmpty" role="status" style="display:none;">
+    <div class="empty-state" id="buildersEmpty" role="status">
       <p>No builders currently match that search or domain combination.</p>
       <button type="button" class="btn btn-ghost btn-sm" id="btnResetFilters">Clear filters</button>
     </div>
@@ -506,34 +506,37 @@
   <div class="wrap">
     <div>
       <div class="footer-logo">
-        <img src="/favicon.png" alt="Canopy" height="36" style="height:36px;width:36px;display:block;border-radius:8px;">
+        <img src="/canopy-logo.png" alt="Canopy Logo" height="40" style="height:40px;width:auto;display:block;">
         <div class="footer-logo-text">
           <span class="footer-logo-name">CANOPY</span>
           <span class="footer-logo-sub">Build · Connect · Ship</span>
         </div>
       </div>
-      <div style="margin-top:12px;">
-        <p class="founder-quote">"Closing the gap between grassroots problem holders and high-context execution squads: one Build Call, one sprint, one shipped prototype at a time."<cite>Aarushi Chatterjee, Technical Steward</cite></p>
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-top:10px;">
+        <img src="/avatars/avatar-rooted-purpose.png" alt="Rooted in Purpose" style="width:40px;height:40px;object-fit:contain;border-radius:50%;background:rgba(255,255,255,0.08);padding:4px;flex:0 0 auto;">
+        <p class="founder-quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."<cite>Aarushi Chatterjee, Founder</cite></p>
       </div>
     </div>
     <div>
-      <h5>Ecosystem</h5>
-      <a href="match.html">Build Calls Directory</a>
-      <a href="sprint.html">Active Sprints Board</a>
-      <a href="notebook.html">Lab Notebook</a>
-      <a href="/#problem">The Coordination Gap</a>
-    </div>
-    <div>
-      <h5>Workspaces</h5>
+      <h5>Explore</h5>
+      <a href="builders.html">For Builders</a>
+      <a href="problem-holders.html">For Problem Holders</a>
+      <a href="enablers.html">For Enablers</a>
       <a href="post-call.html">Post a Build Call</a>
-      <a href="builders.html">Builders Guild</a>
-      <a href="problem-holders.html">Problem Holders</a>
-      <a href="enablers.html">Sponsors &amp; Enablers</a>
+      <a href="apply.html">Apply to Canopy</a>
     </div>
     <div>
-      <h5>Charter &amp; Legal</h5>
-      <a href="terms.html">Community Charter</a>
-      <a href="privacy.html">Data Privacy</a>
+      <h5>The Loop</h5>
+      <a href="match.html">Match</a>
+      <a href="sprint.html">Sprint</a>
+      <a href="notebook.html">Lab Notebook</a>
+      <a href="/#problem">The Gap</a>
+      <a href="login.html">Sign In / Account</a>
+    </div>
+    <div>
+      <h5>Legal &amp; Connect</h5>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms and Conditions</a>
       <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
       <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
     </div>
@@ -545,7 +548,7 @@
 </footer>
 
 <!-- ============ APPLICATION DRAWER ============ -->
-<div class="app-drawer-backdrop" id="drawerBackdrop"></div>
+<div class="app-drawer-backdrop" id="appDrawerBackdrop"></div>
 <div class="app-drawer" id="appDrawer">
   <div class="drawer-drag-handle"></div>
   <div class="drawer-head">
@@ -707,40 +710,76 @@
 
   /* Live Search & Filter in Builders Directory */
   const builderSearchInput = document.getElementById('builderSearch');
-  if (builderSearchInput) {
-    builderSearchInput.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      const cards = document.querySelectorAll('#buildersGrid .match-card');
-      let visible = 0;
-      cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        const matchesQuery = !q || text.includes(q);
-        card.style.display = matchesQuery ? '' : 'none';
-        if (matchesQuery) visible++;
+  const filterChips = document.querySelectorAll('[data-filters-for="#buildersGrid"] .filter-chip');
+  const emptyState = document.getElementById('buildersEmpty');
+  const btnReset = document.getElementById('btnResetFilters');
+
+  function updateBuildersFilter() {
+    const q = builderSearchInput ? builderSearchInput.value.toLowerCase().trim() : '';
+    const activeChips = [...document.querySelectorAll('[data-filters-for="#buildersGrid"] .filter-chip[aria-pressed="true"]')]
+      .map(c => c.getAttribute('data-domain'))
+      .filter(Boolean);
+    const isAll = activeChips.length === 0 || activeChips.includes('all');
+
+    const cards = document.querySelectorAll('#buildersGrid .match-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const cardDomain = card.getAttribute('data-domain') || '';
+      const text = card.textContent.toLowerCase();
+      const domainMatch = isAll || activeChips.includes(cardDomain);
+      const searchMatch = !q || text.includes(q);
+      const show = domainMatch && searchMatch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    const countEl = document.getElementById('builderCount');
+    if (countEl) {
+      countEl.textContent = `${visible} ${visible === 1 ? 'builder available' : 'builders available'}`;
+    }
+
+    if (emptyState) {
+      emptyState.style.display = visible === 0 ? 'block' : 'none';
+      emptyState.classList.toggle('show', visible === 0);
+    }
+  }
+
+  if (filterChips.length) {
+    filterChips.forEach(chip => {
+      chip.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const domain = chip.getAttribute('data-domain');
+        if (domain === 'all') {
+          filterChips.forEach(c => c.setAttribute('aria-pressed', 'false'));
+          chip.setAttribute('aria-pressed', 'true');
+        } else {
+          const allChip = document.querySelector('[data-filters-for="#buildersGrid"] .filter-chip[data-domain="all"]');
+          if (allChip) allChip.setAttribute('aria-pressed', 'false');
+          const isPressed = chip.getAttribute('aria-pressed') === 'true';
+          chip.setAttribute('aria-pressed', isPressed ? 'false' : 'true');
+
+          const anyPressed = [...filterChips].some(c => c.getAttribute('data-domain') !== 'all' && c.getAttribute('aria-pressed') === 'true');
+          if (!anyPressed && allChip) {
+            allChip.setAttribute('aria-pressed', 'true');
+          }
+        }
+        updateBuildersFilter();
       });
-      const countEl = document.getElementById('builderCount');
-      if (countEl) {
-        countEl.textContent = `${visible} builders`;
-      }
     });
   }
 
-  const btnReset = document.getElementById('btnResetFilters');
+  if (builderSearchInput) {
+    builderSearchInput.addEventListener('input', updateBuildersFilter);
+  }
+
   if (btnReset) {
     btnReset.addEventListener('click', () => {
       if (builderSearchInput) builderSearchInput.value = '';
-      const domainPills = document.querySelectorAll('[data-filters-for="#buildersGrid"] [data-filter]');
-      domainPills.forEach(p => {
-        const isAll = p.getAttribute('data-filter') === 'all';
-        p.classList.toggle('active', isAll);
-        p.setAttribute('aria-pressed', isAll ? 'true' : 'false');
+      filterChips.forEach(chip => {
+        const isAll = chip.getAttribute('data-domain') === 'all';
+        chip.setAttribute('aria-pressed', isAll ? 'true' : 'false');
       });
-      const cards = document.querySelectorAll('#buildersGrid .match-card');
-      cards.forEach(card => card.style.display = '');
-      const countEl = document.getElementById('builderCount');
-      if (countEl) {
-        countEl.textContent = `${cards.length} builders`;
-      }
+      updateBuildersFilter();
     });
   }
 
@@ -835,6 +874,12 @@
       btnToggleMyHandshakes.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
       myHandshakesPanel.style.display = isExpanded ? 'none' : 'block';
       if (!isExpanded) {
+        const connPanel = document.getElementById('verifiedConnectionsPanel');
+        const connBtn = document.getElementById('btnToggleConnections');
+        if (connPanel && connBtn) {
+          connBtn.setAttribute('aria-expanded', 'false');
+          connPanel.style.display = 'none';
+        }
         renderMyHandshakes();
       }
     });

@@ -384,6 +384,7 @@ import { sprints, matches, notebook, auth } from './db.js';
   var activeAvatarImg = document.getElementById('activeAvatarImg');
   var profileTagRole = document.getElementById('profileTagRole');
   var profileTitle = document.getElementById('profileTitle');
+  var profileBuilderSub = document.querySelector('.profile-builder-sub');
 
   if(roleButtons.length){
     roleButtons.forEach(function(btn){
@@ -395,6 +396,15 @@ import { sprints, matches, notebook, auth } from './db.js';
         if(activeAvatarImg && avatar) activeAvatarImg.src = avatar;
         if(profileTagRole) profileTagRole.textContent = role.charAt(0).toUpperCase() + role.slice(1).replace('-', ' ');
         if(profileTitle) profileTitle.textContent = 'Active profile configured for ' + (role.charAt(0).toUpperCase() + role.slice(1).replace('-', ' '));
+        if(profileBuilderSub) {
+          if (role === 'builder') {
+            profileBuilderSub.textContent = 'Directly write code, assemble hardware, or execute engineering tasks.';
+          } else if (role === 'problem-holder') {
+            profileBuilderSub.textContent = 'Hold field problems, domain data, and real-world deployment challenges.';
+          } else if (role === 'enabler') {
+            profileBuilderSub.textContent = 'Provide computational resources, grants, mentorship, or deployment spaces.';
+          }
+        }
       });
     });
   }
@@ -407,12 +417,20 @@ import { sprints, matches, notebook, auth } from './db.js';
       var isExpanded = btnToggleConnections.getAttribute('aria-expanded') === 'true';
       btnToggleConnections.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
       verifiedConnectionsPanel.style.display = isExpanded ? 'none' : 'block';
+      if (!isExpanded) {
+        var myHandshakesPanel = document.getElementById('myHandshakesPanel');
+        var btnToggleMyHandshakes = document.getElementById('btnToggleMyHandshakes');
+        if (myHandshakesPanel && btnToggleMyHandshakes) {
+          btnToggleMyHandshakes.setAttribute('aria-expanded', 'false');
+          myHandshakesPanel.style.display = 'none';
+        }
+      }
     });
   }
 
   /* ---------- Application Drawer / Bottom Sheet ---------- */
   var appDrawer = document.getElementById('appDrawer');
-  var appDrawerBackdrop = document.getElementById('drawerBackdrop');
+  var appDrawerBackdrop = document.getElementById('appDrawerBackdrop') || document.querySelector('.app-drawer-backdrop');
   var appDrawerClose = document.getElementById('closeDrawer');
   var drawerTitle = document.getElementById('drawerTitle');
   var drawerSub = document.getElementById('drawerSub');
@@ -447,6 +465,7 @@ import { sprints, matches, notebook, auth } from './db.js';
     setTimeout(function(){ appDrawer.classList.remove('closing'); }, 240);
   }
   appDrawerClose && appDrawerClose.addEventListener('click', closeAppDrawer);
+  appDrawerBackdrop && appDrawerBackdrop.addEventListener('click', closeAppDrawer);
 
   // Auto-save draft and smoothly redirect when clicking sign in inside drawer notice
   document.addEventListener('click', function(e) {
@@ -718,10 +737,11 @@ import { sprints, matches, notebook, auth } from './db.js';
     function applyFilters(){
       var active = Array.prototype.filter.call(chips, function(c){ return c.getAttribute('aria-pressed') === 'true'; })
         .map(function(c){ return c.getAttribute('data-domain'); });
+      var isAll = active.length === 0 || active.indexOf('all') !== -1;
       var cards = grid.querySelectorAll(':scope > [data-domain]');
       var visible = 0;
       cards.forEach(function(card){
-        var show = active.length === 0 || active.indexOf(card.getAttribute('data-domain')) !== -1;
+        var show = isAll || active.indexOf(card.getAttribute('data-domain')) !== -1;
         card.style.display = show ? '' : 'none';
         if(show) visible++;
       });
