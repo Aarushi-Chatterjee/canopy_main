@@ -781,4 +781,156 @@ router.put('/settings', requireAnyRole(['admin', 'owner']), async (req, res) => 
   }
 });
 
+// -------------------------------------------------------------
+// 9. Lab Notebook & Blog Studio
+// -------------------------------------------------------------
+router.get('/notebook', requireAnyRole(['content_editor', 'moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const entries = await notebookRepo.find();
+    entries.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+    res.json({ entries, total: entries.length });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to list notebook entries.' });
+  }
+});
+
+router.post('/notebook', requireAnyRole(['content_editor', 'moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const {
+      title,
+      domain = 'climate',
+      entryType = 'article',
+      summarySnippet,
+      bodyMarkdown,
+      content,
+      teaser,
+      tags = [],
+      coverImageUrl,
+      readingTimeMinutes,
+      isFeatured = false,
+      isFounderPost = false,
+      status = 'published',
+      authorName
+    } = req.body;
+
+    const finalTitle = (title || '').trim();
+    const finalContent = (bodyMarkdown || content || summarySnippet || '').trim();
+    const finalSnippet = (summarySnippet || (finalContent ? finalContent.slice(0, 160) : '')).trim();
+
+    if (!finalTitle || !finalContent) {
+      return res.status(400).json({ error: 'Title and content are required.' });
+    }
+
+    const words = finalContent.split(/\s+/).filter(Boolean).length;
+    const computedReadingTime = readingTimeMinutes ? Number(readingTimeMinutes) : Math.max(1, Math.ceil(words / 180));
+
+    const entryId = 'entry_' + Date.now();
+    const newEntry = {
+      id: entryId,
+      userId: req.user.id,
+      authorId: req.user.id,
+      authorName: (authorName || (isFounderPost ? 'Aarushi Chatterjee' : (req.user.displayName || req.user.email))).trim(),
+      sprintId: null,
+      grownFromLabel: isFounderPost ? 'Founder Perspective' : 'Canopy Editorial & Field Notes',
+      title: finalTitle,
+      content: finalContent,
+      bodyMarkdown: finalContent,
+      summarySnippet: finalSnippet,
+      teaser: (teaser || '').trim(),
+      domain: domain.toLowerCase(),
+      entryType: entryType.toLowerCase(),
+      tags: Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(',').map(t => t.trim()).filter(Boolean) : []),
+      coverImageUrl: coverImageUrl ? coverImageUrl.trim() : null,
+      readingTimeMinutes: computedReadingTime,
+      viewCount: 0,
+      isFeatured: Boolean(isFeatured),
+      isFounderPost: Boolean(isFounderPost),
+      status: status || 'published',
+      isPublic: status !== 'draft',
+      branches: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    const saved = await notebookRepo.create(newEntry);
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'notebook.created_by_staff',
+      targetType: 'notebook_entry',
+      targetId: saved.id,
+      payload: { title: saved.title, domain: saved.domain, entryType: saved.entryType, isFounderPost: saved.isFounderPost }
+    });
+
+    res.status(201).json({ entry: saved, message: 'Notebook entry created and published.' });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to create notebook entry.' });
+  }
+});
+
+router.patch('/notebook/:id', requireAnyRole(['content_editor', 'moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const existing = await notebookRepo.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Notebook entry not found.' });
+    }
+
+    const updates = { ...req.body };
+    delete updates.id;
+    if (updates.domain) updates.domain = updates.domain.toLowerCase();
+    if (updates.entryType) updates.entryType = updates.entryType.toLowerCase();
+    if (updates.tags && typeof updates.tags === 'string') {
+      updates.tags = updates.tags.split(',').map(t => t.trim()).filter(Boolean);
+    }
+    if (updates.bodyMarkdown && !updates.readingTimeMinutes) {
+      const words = updates.bodyMarkdown.split(/\s+/).filter(Boolean).length;
+      updates.readingTimeMinutes = Math.max(1, Math.ceil(words / 180));
+    }
+    if (updates.status) {
+      updates.isPublic = updates.status !== 'draft';
+    }
+    updates.updatedAt = new Date().toISOString();
+
+    const updated = await notebookRepo.update(e => e.id === req.params.id, updates, { eq: { id: req.params.id } });
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'notebook.updated_by_staff',
+      targetType: 'notebook_entry',
+      targetId: req.params.id,
+      payload: { updates: Object.keys(updates) }
+    });
+
+    res.json({ entry: updated, message: 'Notebook entry updated successfully.' });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to update notebook entry.' });
+  }
+});
+
+router.delete('/notebook/:id', requireAnyRole(['admin', 'owner']), async (req, res) => {
+  try {
+    const existing = await notebookRepo.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Notebook entry not found.' });
+    }
+
+    await notebookRepo.delete(e => e.id === req.params.id, { eq: { id: req.params.id } });
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'notebook.deleted_by_staff',
+      targetType: 'notebook_entry',
+      targetId: req.params.id,
+      payload: { title: existing.title, entryType: existing.entryType }
+    });
+
+    res.json({ success: true, message: `Notebook entry "${existing.title}" deleted.` });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to delete notebook entry.' });
+  }
+});
+
 module.exports = router;

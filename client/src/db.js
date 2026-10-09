@@ -405,10 +405,21 @@ export const notebook = {
     const params = new URLSearchParams();
     if (filters.domain) params.append('domain', filters.domain);
     if (filters.type) params.append('type', filters.type);
+    if (filters.featured !== undefined && filters.featured !== null) params.append('featured', filters.featured);
+    if (filters.founder !== undefined && filters.founder !== null) params.append('founder', filters.founder);
+    if (filters.search) params.append('search', filters.search);
+    if (filters.limit) params.append('limit', filters.limit);
 
-    const remote = await apiRequest(`/notebook?${params.toString()}`);
+    const query = params.toString() ? `?${params.toString()}` : '';
+    const remote = await apiRequest(`/notebook${query}`);
     if (remote.ok && remote.data?.entries) return remote.data.entries;
     return [];
+  },
+
+  async getEntry(id) {
+    const remote = await apiRequest(`/notebook/${encodeURIComponent(id)}`);
+    if (remote.ok && remote.data?.entry) return remote.data.entry;
+    return null;
   },
 
   async publishEntry(entryData) {

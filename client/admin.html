@@ -357,6 +357,7 @@
         <div class="admin-nav-item" data-tab="matching"><span class="admin-nav-icon">🤝</span> Manual Matching</div>
         <div class="admin-nav-item" data-tab="calls"><span class="admin-nav-icon">🌱</span> Build Calls</div>
         <div class="admin-nav-item" data-tab="content"><span class="admin-nav-icon">🎨</span> Content Studio</div>
+        <div class="admin-nav-item" data-tab="notebook"><span class="admin-nav-icon">📖</span> Lab Notebook &amp; Blog</div>
         <div class="admin-nav-item" data-tab="settings"><span class="admin-nav-icon">⚙️</span> Settings &amp; Quotas</div>
         <div class="admin-nav-item" data-tab="audit"><span class="admin-nav-icon">📜</span> Audit Log</div>
       </nav>
@@ -655,7 +656,132 @@
         </div>
       </section>
 
-      <!-- 7. SETTINGS & QUOTAS TAB -->
+      <!-- 7. LAB NOTEBOOK & BLOG STUDIO TAB -->
+      <section id="tab-notebook" class="admin-tab-pane" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">Lab Notebook &amp; Blog Studio</h1>
+            <p class="admin-subtitle">Publish, edit, feature, and curate technical dev logs, teardowns, and founder field notes.</p>
+          </div>
+          <button id="openCreatePostBtn" class="btn btn-primary" onclick="openCreatePostModal()">+ Write New Post / Note</button>
+        </div>
+
+        <div class="admin-card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Type &amp; Domain</th>
+                <th>Author</th>
+                <th>Flags</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="notebookTableBody">
+              <tr><td colspan="6" style="text-align: center; color: #64748b;">Loading notebook posts...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Post Create / Edit Modal -->
+        <div id="postModal" class="modal-overlay" style="display: none;">
+          <div class="modal-card" style="max-width: 720px;">
+            <div class="modal-header">
+              <h3 class="modal-title" id="postModalTitle">Write Lab Note / Blog Post</h3>
+              <button class="modal-close" onclick="closePostModal()">&times;</button>
+            </div>
+            <input type="hidden" id="postEditId">
+            <div class="form-group">
+              <label class="form-label">Post Title</label>
+              <input type="text" id="postTitleInput" class="form-input" placeholder="e.g. Why My Groundwater Model Kept Overfitting">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Format / Entry Type</label>
+                <select id="postTypeSelect" class="form-select">
+                  <option value="article">Article &amp; Deep-Dive</option>
+                  <option value="essay">Essay &amp; Reflection</option>
+                  <option value="field-report">Field Note / Report</option>
+                  <option value="post-mortem">Architecture Post-Mortem</option>
+                  <option value="teardown">Hardware Teardown</option>
+                  <option value="sprint-update">Sprint Update</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Domain</label>
+                <select id="postDomainSelect" class="form-select">
+                  <option value="climate">Climate &amp; Energy</option>
+                  <option value="hardware">Hardware &amp; IoT</option>
+                  <option value="civic">Civic Tech</option>
+                  <option value="health">Open Health</option>
+                  <option value="education">Education</option>
+                  <option value="forestry">Forestry &amp; Biodiversity</option>
+                  <option value="data">Data Infrastructure</option>
+                </select>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Author Name</label>
+                <input type="text" id="postAuthorInput" class="form-input" placeholder="e.g. Aarushi Chatterjee">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Cover Image URL (Optional)</label>
+                <input type="text" id="postCoverImageInput" class="form-input" placeholder="e.g. /og-image.png or https://...">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Summary / Snippet</label>
+              <textarea id="postSummaryInput" class="form-textarea" rows="2" placeholder="One or two sentences describing the problem, discovery, or outcome..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Body Markdown / Content</label>
+              <textarea id="postBodyInput" class="form-textarea" rows="7" placeholder="Detailed technical content in Markdown (use ### Headings, ```code blocks, bullet points)..."></textarea>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Code Snippet / Terminal Metric (Optional)</label>
+                <input type="text" id="postTeaserInput" class="form-input" placeholder="e.g. drift.py:14 -> rmse < 0.08m">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tags (comma separated)</label>
+                <input type="text" id="postTagsInput" class="form-input" placeholder="e.g. sensor, calibration, python">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Status</label>
+                <select id="postStatusSelect" class="form-select">
+                  <option value="published">Published (Public)</option>
+                  <option value="draft">Draft (Private)</option>
+                  <option value="archived">Archived</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Reading Time (Minutes, optional)</label>
+                <input type="number" id="postReadingTimeInput" class="form-input" min="1" max="60" placeholder="Auto-calculated if blank">
+              </div>
+            </div>
+            <div style="display: flex; gap: 24px; margin: 12px 0 20px;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
+                <input type="checkbox" id="postFounderCheck">
+                <span><strong>★ Founder Note</strong> (Show verified Founder Badge)</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
+                <input type="checkbox" id="postFeaturedCheck">
+                <span><strong>Featured Story</strong> (Promote in highlights)</span>
+              </label>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 12px;">
+              <button class="btn btn-secondary" onclick="closePostModal()">Cancel</button>
+              <button class="btn btn-primary" onclick="savePostModal()">Save Post / Note</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. SETTINGS & QUOTAS TAB -->
       <section id="tab-settings" class="admin-tab-pane" style="display: none;">
         <div class="admin-header">
           <div>
@@ -806,6 +932,7 @@
         loadMatches();
         loadCalls();
         loadContent();
+        loadNotebookPosts();
         loadSettings();
         loadAudit();
       } catch (err) {
@@ -1174,6 +1301,165 @@
         loadAudit();
       } else {
         alert(res.message || 'Content deletion failed.');
+      }
+    };
+
+    // 6.5. Lab Notebook & Blog Studio Loader & Actions
+    let adminNotebookEntries = [];
+
+    async function loadNotebookPosts() {
+      const res = await apiRequest('/admin/notebook');
+      const tbody = document.getElementById('notebookTableBody');
+      if (!tbody) return;
+      if (res.ok && res.data?.entries) {
+        adminNotebookEntries = res.data.entries;
+        if (adminNotebookEntries.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b;">No lab notebook posts yet. Click "+ Write New Post / Note" to create one.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = adminNotebookEntries.map(p => `
+          <tr>
+            <td>
+              <strong>${escapeHtml(p.title)}</strong>
+              ${p.coverImageUrl ? `<br><small style="color:#64748b;">🖼️ ${escapeHtml(p.coverImageUrl)}</small>` : ''}
+              ${p.summarySnippet ? `<br><small style="color:#94a3b8;">${escapeHtml(p.summarySnippet.slice(0, 60))}...</small>` : ''}
+            </td>
+            <td>
+              <span class="badge badge-blue">${escapeHtml(p.entryType || 'article')}</span>
+              <span class="badge badge-amber" style="margin-left:4px;">${escapeHtml(p.domain || 'climate')}</span>
+            </td>
+            <td>
+              <span style="font-size:12px;color:#cbd5e1;">${escapeHtml(p.authorName || 'Canopy Contributor')}</span>
+            </td>
+            <td>
+              ${p.isFounderPost ? '<span class="badge badge-green" style="font-size:10.5px;">★ Founder</span> ' : ''}
+              ${p.isFeatured ? '<span class="badge badge-blue" style="font-size:10.5px;">Featured</span>' : ''}
+              ${!p.isFounderPost && !p.isFeatured ? '<span style="color:#64748b;font-size:11px;">Standard</span>' : ''}
+            </td>
+            <td>
+              <span class="badge ${p.status === 'published' ? 'badge-green' : p.status === 'draft' ? 'badge-amber' : 'badge-rose'}">
+                ${escapeHtml(p.status || 'published')}
+              </span>
+            </td>
+            <td>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <button class="btn btn-secondary" style="padding:4px 8px;font-size:11px;" onclick="openEditPostModal('${p.id}')">Edit</button>
+                <button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deletePost('${p.id}', '${escapeHtml(p.title)}')">Delete</button>
+                <a href="/notebook.html#entry=${encodeURIComponent(p.id)}" target="_blank" class="btn btn-secondary" style="padding:4px 8px;font-size:11px;text-decoration:none;">View ↗</a>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } else {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;">Failed to load notebook posts.</td></tr>';
+      }
+    }
+
+    window.openCreatePostModal = function() {
+      document.getElementById('postModalTitle').textContent = 'Write Lab Note / Blog Post';
+      document.getElementById('postEditId').value = '';
+      document.getElementById('postTitleInput').value = '';
+      document.getElementById('postTypeSelect').value = 'article';
+      document.getElementById('postDomainSelect').value = 'climate';
+      document.getElementById('postAuthorInput').value = currentUser?.user?.name || 'Aarushi Chatterjee';
+      document.getElementById('postCoverImageInput').value = '';
+      document.getElementById('postSummaryInput').value = '';
+      document.getElementById('postBodyInput').value = '';
+      document.getElementById('postTeaserInput').value = '';
+      document.getElementById('postTagsInput').value = '';
+      document.getElementById('postStatusSelect').value = 'published';
+      document.getElementById('postReadingTimeInput').value = '';
+      document.getElementById('postFounderCheck').checked = true;
+      document.getElementById('postFeaturedCheck').checked = false;
+      document.getElementById('postModal').style.display = 'flex';
+    };
+
+    window.openEditPostModal = function(id) {
+      const p = adminNotebookEntries.find(entry => entry.id === id);
+      if (!p) return;
+      document.getElementById('postModalTitle').textContent = 'Edit Lab Note / Blog Post';
+      document.getElementById('postEditId').value = p.id;
+      document.getElementById('postTitleInput').value = p.title || '';
+      document.getElementById('postTypeSelect').value = p.entryType || 'article';
+      document.getElementById('postDomainSelect').value = p.domain || 'climate';
+      document.getElementById('postAuthorInput').value = p.authorName || '';
+      document.getElementById('postCoverImageInput').value = p.coverImageUrl || '';
+      document.getElementById('postSummaryInput').value = p.summarySnippet || '';
+      document.getElementById('postBodyInput').value = p.bodyMarkdown || '';
+      document.getElementById('postTeaserInput').value = p.codeTeaser || '';
+      document.getElementById('postTagsInput').value = Array.isArray(p.tags) ? p.tags.join(', ') : (p.tags || '');
+      document.getElementById('postStatusSelect').value = p.status || 'published';
+      document.getElementById('postReadingTimeInput').value = p.readingTimeMinutes || '';
+      document.getElementById('postFounderCheck').checked = Boolean(p.isFounderPost);
+      document.getElementById('postFeaturedCheck').checked = Boolean(p.isFeatured);
+      document.getElementById('postModal').style.display = 'flex';
+    };
+
+    window.closePostModal = function() {
+      document.getElementById('postModal').style.display = 'none';
+    };
+
+    window.savePostModal = async function() {
+      const editId = document.getElementById('postEditId').value.trim();
+      const title = document.getElementById('postTitleInput').value.trim();
+      const entryType = document.getElementById('postTypeSelect').value;
+      const domain = document.getElementById('postDomainSelect').value;
+      const authorName = document.getElementById('postAuthorInput').value.trim();
+      const coverImageUrl = document.getElementById('postCoverImageInput').value.trim();
+      const summarySnippet = document.getElementById('postSummaryInput').value.trim();
+      const bodyMarkdown = document.getElementById('postBodyInput').value.trim();
+      const codeTeaser = document.getElementById('postTeaserInput').value.trim();
+      const rawTags = document.getElementById('postTagsInput').value.trim();
+      const tags = rawTags ? rawTags.split(',').map(t => t.trim()).filter(Boolean) : [];
+      const status = document.getElementById('postStatusSelect').value;
+      const readingTimeMinutes = document.getElementById('postReadingTimeInput').value ? Number(document.getElementById('postReadingTimeInput').value) : null;
+      const isFounderPost = document.getElementById('postFounderCheck').checked;
+      const isFeatured = document.getElementById('postFeaturedCheck').checked;
+
+      if (!title || !bodyMarkdown) {
+        alert('Title and Body Markdown are required.');
+        return;
+      }
+
+      const payload = {
+        title,
+        domain,
+        entryType,
+        summarySnippet,
+        bodyMarkdown,
+        codeTeaser,
+        tags,
+        authorName,
+        coverImageUrl,
+        readingTimeMinutes,
+        isFounderPost,
+        isFeatured,
+        status
+      };
+
+      const res = editId
+        ? await apiRequest(`/admin/notebook/${editId}`, { method: 'PATCH', body: JSON.stringify(payload) })
+        : await apiRequest('/admin/notebook', { method: 'POST', body: JSON.stringify(payload) });
+
+      if (res.ok) {
+        closePostModal();
+        loadNotebookPosts();
+        loadAudit();
+      } else {
+        alert(res.message || 'Saving notebook post failed.');
+      }
+    };
+
+    window.deletePost = async function(id, title) {
+      if (!confirm(`Permanently remove notebook entry "${title}"? This action is logged in audit history and cannot be undone.`)) {
+        return;
+      }
+      const res = await apiRequest(`/admin/notebook/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        loadNotebookPosts();
+        loadAudit();
+      } else {
+        alert(res.message || 'Deletion failed.');
       }
     };
 

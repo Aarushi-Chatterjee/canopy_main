@@ -427,7 +427,50 @@ const server = app.listen(PORT, async () => {
     assert(introEmailDispatched,
       'Transactional Mail: Curator introduction email dispatched to match participants');
 
-    // 9.8 Immutable Audit Trail
+    // 9.8 Lab Notebook & Blog Studio Lifecycle
+    const createPostRes = await request('POST', '/api/admin/notebook', {
+      title: 'Decentralized Microgrid Frequency Drift Calibration',
+      domain: 'climate',
+      entryType: 'article',
+      summarySnippet: 'A deep dive into field calibration methods for low-cost mains frequency loggers.',
+      bodyMarkdown: '### Field Calibration Protocol\n\nWhen deploying ESP32 frequency loggers, zero-crossing jitter was reduced via Schmitt triggers.\n\n```python\ndef calibrate_phase(zero_crossings):\n    return np.gradient(zero_crossings)\n```\n\nResults showed ±0.02 Hz precision over 48 hours.',
+      codeTeaser: 'phase_cal.py:34 -> err < 0.02 Hz',
+      coverImageUrl: '/illustrations/solar-sentinel.png',
+      tags: ['climate', 'hardware', 'calibration'],
+      authorName: 'Aarushi Chatterjee',
+      isFounderPost: true,
+      isFeatured: true,
+      status: 'published'
+    }, founderHeaders);
+    assert(createPostRes.status === 201 && createPostRes.data.entry?.id,
+      'Notebook Studio: Staff creates rich published lab note / blog post with founder badge');
+    const adminPostId = createPostRes.data.entry.id;
+
+    const listAdminPosts = await request('GET', '/api/admin/notebook', null, founderHeaders);
+    assert(listAdminPosts.status === 200 && listAdminPosts.data.entries?.some(e => e.id === adminPostId),
+      'Notebook Studio: GET /api/admin/notebook lists all drafts and published posts');
+
+    const patchPostRes = await request('PATCH', `/api/admin/notebook/${adminPostId}`, {
+      readingTimeMinutes: 6,
+      summarySnippet: 'Updated summary snippet for field calibration.'
+    }, founderHeaders);
+    assert(patchPostRes.status === 200 && patchPostRes.data.entry?.readingTimeMinutes === 6,
+      'Notebook Studio: PATCH /api/admin/notebook/:id updates post properties');
+
+    // Test Public Notebook APIs
+    const publicNotebook = await request('GET', '/api/notebook?type=article&founder=true');
+    assert(publicNotebook.status === 200 && publicNotebook.data.entries?.some(e => e.id === adminPostId),
+      'Public Notebook API: GET /api/notebook filters by entryType and founder status');
+
+    const getPublicPost = await request('GET', `/api/notebook/${adminPostId}`);
+    assert(getPublicPost.status === 200 && getPublicPost.data.entry?.title === 'Decentralized Microgrid Frequency Drift Calibration',
+      'Public Notebook API: GET /api/notebook/:id fetches full story markdown with reading time');
+
+    const deletePostRes = await request('DELETE', `/api/admin/notebook/${adminPostId}`, null, founderHeaders);
+    assert(deletePostRes.status === 200 && deletePostRes.data.success === true,
+      'Notebook Studio: DELETE /api/admin/notebook/:id removes entry with audit log');
+
+    // 9.9 Immutable Audit Trail
     const auditResFinal = await request('GET', '/api/admin/audit', null, founderHeaders);
     assert(auditResFinal.status === 200 && auditResFinal.data.events?.length > 0,
       'Audit Logging: Complete immutable event ledger accessible in Founder Console');

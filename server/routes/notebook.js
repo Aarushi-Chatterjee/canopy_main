@@ -18,18 +18,62 @@ function sanitizeText(str) {
     .trim();
 }
 
+function estimateReadingTime(text) {
+  if (!text || typeof text !== 'string') return 3;
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 180));
+}
+
 // GET /api/notebook
 router.get('/', async (req, res) => {
   try {
-    const { domain, type } = req.query;
+    const { domain, type, featured, founder, search, limit } = req.query;
     let entries = await notebookRepo.find();
 
-    if (domain) {
+    // Default to published entries
+    entries = entries.filter(e => e.status !== 'draft');
+
+    if (domain && domain !== 'all') {
       entries = entries.filter(e => e.domain?.toLowerCase() === domain.toLowerCase());
     }
 
-    if (type) {
-      entries = entries.filter(e => (e.entryType || '').toLowerCase() === type.toLowerCase());
+    if (type && type !== 'all') {
+      const targetType = type.toLowerCase();
+      entries = entries.filter(e => {
+        const et = (e.entryType || '').toLowerCase();
+        if (targetType === 'article') {
+          return et === 'article' || et === 'essay' || et === 'founder-essay' || et === 'deep-dive';
+        }
+        return et === targetType;
+      });
+    }
+
+    if (featured === 'true' || featured === '1') {
+      entries = entries.filter(e => Boolean(e.isFeatured));
+    }
+
+    if (founder === 'true' || founder === '1') {
+      entries = entries.filter(e => Boolean(e.isFounderPost));
+    }
+
+    if (search && typeof search === 'string') {
+      const q = search.trim().toLowerCase();
+      entries = entries.filter(e => {
+        return (
+          (e.title || '').toLowerCase().includes(q) ||
+          (e.summarySnippet || '').toLowerCase().includes(q) ||
+          (e.bodyMarkdown || '').toLowerCase().includes(q) ||
+          (e.authorName || '').toLowerCase().includes(q) ||
+          (Array.isArray(e.tags) && e.tags.some(t => String(t).toLowerCase().includes(q)))
+        );
+      });
+    }
+
+    // Sort by createdAt descending
+    entries.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+    if (limit && !isNaN(Number(limit))) {
+      entries = entries.slice(0, Number(limit));
     }
 
     res.json({
@@ -48,6 +92,15 @@ router.get('/:id', async (req, res) => {
     if (!entry) {
       return res.status(404).json({ error: 'Notebook entry not found.' });
     }
+
+    // Increment view count non-blockingly
+    const newCount = (Number(entry.viewCount) || 0) + 1;
+    notebookRepo.update(
+      e => e.id === entry.id,
+      { viewCount: newCount },
+      { eq: { id: entry.id } }
+    ).catch(() => {});
+    entry.viewCount = newCount;
 
     const author = entry.userId ? await usersRepo.findById(entry.userId) : (entry.authorId ? await usersRepo.findById(entry.authorId) : null);
     const profile = author ? await profilesRepo.findByUserId(author.id) : null;
@@ -79,11 +132,18 @@ router.post('/', requireAuth, async (req, res) => {
       teaser,
       bodyMarkdown,
       content,
-      tags = []
+      tags = [],
+      coverImageUrl = null,
+      readingTimeMinutes,
+      isFeatured = false,
+      isFounderPost = false,
+      status = 'published'
     } = req.body;
 
     const cleanTitle = sanitizeText(title);
     const cleanSnippet = sanitizeText(summarySnippet || content);
+    const rawContent = bodyMarkdown || content || cleanSnippet;
+    const cleanContent = sanitizeText(rawContent);
 
     if (!cleanTitle || !cleanSnippet) {
       return res.status(400).json({ error: 'Title and summary snippet are required.' });
@@ -91,6 +151,7 @@ router.post('/', requireAuth, async (req, res) => {
 
     const authorId = req.user.id;
     const authorName = req.user.displayName || req.user.email;
+    const computedReadingTime = readingTimeMinutes ? Number(readingTimeMinutes) : estimateReadingTime(cleanContent);
 
     const entryId = 'entry_' + Date.now();
     const newEntry = {
@@ -101,14 +162,20 @@ router.post('/', requireAuth, async (req, res) => {
       sprintId: sprintId || null,
       grownFromLabel: sanitizeText(grownFromLabel) || 'Independent Field Note',
       title: cleanTitle,
-      content: sanitizeText(bodyMarkdown) || cleanSnippet,
+      content: cleanContent,
       domain: domain.toLowerCase(),
       entryType: entryType.toLowerCase(),
       summarySnippet: cleanSnippet,
       teaser: sanitizeText(teaser),
-      bodyMarkdown: sanitizeText(bodyMarkdown) || cleanSnippet,
+      bodyMarkdown: cleanContent,
       tags: Array.isArray(tags) ? tags.map(sanitizeText) : [sanitizeText(tags)],
-      isPublic: true,
+      coverImageUrl: coverImageUrl ? sanitizeText(coverImageUrl) : null,
+      readingTimeMinutes: computedReadingTime,
+      viewCount: 0,
+      isFeatured: Boolean(isFeatured),
+      isFounderPost: Boolean(isFounderPost),
+      status: status || 'published',
+      isPublic: status !== 'draft',
       branches: [],
       createdAt: new Date().toISOString()
     };
