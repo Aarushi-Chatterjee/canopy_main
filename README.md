@@ -54,7 +54,7 @@ Canopy connects three core groups through high-context, invitation-based collabo
 │  Express Server (server/index.js)                           │
 │  Vercel Serverless Wrappers (api/index.js, api/[...path].js)│
 │  Routes: /api/auth, /api/sprints, /api/calls, /api/notebook │
-│  Security: HttpOnly Session Cookies, Timing-Safe Founder Key│
+│  Security: HttpOnly Session Cookies, Role-Based Access Ctrl │
 └──────────────┬──────────────────────────────┬───────────────┘
                │                              │
        PostgreSQL / REST               SMTP / OAuth
@@ -176,8 +176,6 @@ SUPABASE_ANON_KEY=your_anon_key
 
 # Security & Secrets
 JWT_SECRET=your_jwt_secret_at_least_32_chars_long
-FOUNDER_CONSOLE_KEY=your_founder_access_key
-FOUNDER_EMAILS=founder@canopy.test
 
 # Mythos Session Secret
 MYTHOS_SESSION_SECRET=your_base64_encoded_32_byte_secret
@@ -280,8 +278,8 @@ npm run preview
    All state-mutating requests (`POST`, `PUT`, `PATCH`, `DELETE`) require the `X-Canopy-Client: web` header. Requests failing this check are rejected with `403 Forbidden`.
 3. **Enterprise Security Headers**:
    Responses include Content Security Policy (CSP), `X-Content-Type-Options: nosniff`, and `X-Frame-Options: SAMEORIGIN`.
-4. **Timing-Safe Founder Console**:
-   The Founder Station (`/admin`) is gated with `crypto.timingSafeEqual` comparison to defeat side-channel timing attacks. URL parameters like `?key=` are strictly prohibited to prevent credential leaks in browser logs.
+4. **Timing-Safe Administrative Access Control**:
+   Administrative operations utilize timing-safe comparisons to defeat side-channel timing attacks. URL parameters for authentication are strictly prohibited to prevent credential leaks in browser logs.
 5. **GDPR Compliance**:
    Complete data portability (`GET /api/privacy/export` or `GET /api/auth/export`) and irreversible account deletion (`DELETE /api/auth/me`) are implemented with immediate session revocation.
 6. **No Artificial Em Dashes**:
@@ -299,8 +297,6 @@ npm run preview
 | `SUPABASE_ANON_KEY` | No | Fallback store active | Supabase public API key |
 | `SUPABASE_SERVICE_ROLE_KEY` | No | None | Secret key for PostgreSQL RLS bypass |
 | `JWT_SECRET` | Yes | 32+ char secret | Secret key used to sign and verify user JWTs |
-| `FOUNDER_CONSOLE_KEY` | Yes | Secure secret | Passcode required to unlock `/admin` |
-| `FOUNDER_EMAILS` | Yes | Listed emails | Comma-delimited list of verified founder addresses |
 | `MYTHOS_SESSION_SECRET` | Yes | Auto-generated in prod | Base64 32-byte secret for Mythos session tokens |
 | `EMAIL_PROVIDER` | No | `console` / `test` | Active mail service (`test`, `smtp`, `console`, `resend`) |
 
