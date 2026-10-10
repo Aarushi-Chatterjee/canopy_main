@@ -286,7 +286,7 @@ body.interior-page{
 }
 
 .ivy-unit {
-  width: clamp(520px, 44vw, 760px);
+  width: clamp(390px, 33vw, 570px);
   position: relative;
   flex-shrink: 0;
   pointer-events: none;
@@ -332,13 +332,13 @@ body.interior-page{
   pointer-events: none;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 800px) {
   #ivyRight { display: none; }
 }
 
 @media (max-width: 640px) {
   #ivyRight { display: none; }
-  .ivy-unit { width: 360px; opacity: 0.65; }
+  .ivy-unit { width: 270px; opacity: 0.65; }
 }
 
 /* Liquid Glass Enhancements (inspired by liquid-glass-js) */
