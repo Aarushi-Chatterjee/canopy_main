@@ -74,10 +74,10 @@ export async function initIvyGrowth() {
     }
   }
 
-  // Create Left and Right ivy units
-  function createUnit(id, isFlipped, lagOffset = 0) {
+  // Create Left and Right ivy units + Middle opening branch units
+  function createUnit(id, isFlipped, lagOffset = 0, isMid = false) {
     const unitEl = document.createElement('div');
-    unitEl.className = 'ivy-unit';
+    unitEl.className = isMid ? 'ivy-unit ivy-mid-unit' : 'ivy-unit';
     unitEl.id = id;
 
     // Stem canvas
@@ -125,7 +125,7 @@ export async function initIvyGrowth() {
 
     // Coordinate scale: 1.5x width-wise, 1.25x length-wise
     function syncScale() {
-      const curW = unitEl.clientWidth || 330;
+      const curW = unitEl.clientWidth || (isMid ? 280 : 330);
       const sx = curW / W;
       const sy = sx * (1.25 / 1.5);
       const curH = H * sy;
@@ -213,9 +213,13 @@ export async function initIvyGrowth() {
     return { update };
   }
 
-  // Create Left and Right framing units
-  const leftUnit = createUnit('ivyLeft', false, 0.0);
-  const rightUnit = createUnit('ivyRight', true, 0.05);
+  // Create Left and Right framing units + Middle opening branch units
+  const leftUnit = createUnit('ivyLeft', false, 0.0, false);
+  const rightUnit = createUnit('ivyRight', true, 0.05, false);
+  const midLeftUnit = createUnit('ivyMidLeft', false, 0.15, true);
+  const midRightUnit = createUnit('ivyMidRight', true, 0.20, true);
+
+  const units = [leftUnit, rightUnit, midLeftUnit, midRightUnit];
 
   // Smooth scroll progression calculation
   function getTargetProgress() {
@@ -248,8 +252,9 @@ export async function initIvyGrowth() {
     const diff = targetProgress - currentProgress;
     if (Math.abs(diff) > 0.0002) {
       currentProgress += diff * 0.20;
-      leftUnit.update(currentProgress);
-      rightUnit.update(currentProgress);
+      for (let i = 0; i < units.length; i++) {
+        units[i].update(currentProgress);
+      }
     }
 
     if (isRunning) {
@@ -263,8 +268,9 @@ export async function initIvyGrowth() {
   // Initial sync
   onScroll();
   currentProgress = targetProgress;
-  leftUnit.update(currentProgress);
-  rightUnit.update(currentProgress);
+  for (let i = 0; i < units.length; i++) {
+    units[i].update(currentProgress);
+  }
 
   requestAnimationFrame(loop);
 }
