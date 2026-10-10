@@ -125,7 +125,7 @@ export async function initIvyGrowth() {
 
     // Coordinate scale
     function syncScale() {
-      const curW = unitEl.clientWidth || 220;
+      const curW = unitEl.clientWidth || 440;
       const s = curW / W;
       leavesContainer.style.transform = `scale(${s})`;
       leavesContainer.style.transformOrigin = 'top left';
