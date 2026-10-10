@@ -309,6 +309,7 @@ body.interior-page{
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: calc(564 * 1.5 / (1024 * 1.25));
   pointer-events: none;
 }
 

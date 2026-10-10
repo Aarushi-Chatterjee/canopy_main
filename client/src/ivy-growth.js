@@ -123,11 +123,14 @@ export async function initIvyGrowth() {
     unitEl.appendChild(leavesContainer);
     rail.appendChild(unitEl);
 
-    // Coordinate scale
+    // Coordinate scale: 1.5x width-wise, 1.25x length-wise
     function syncScale() {
       const curW = unitEl.clientWidth || 330;
-      const s = curW / W;
-      leavesContainer.style.transform = `scale(${s})`;
+      const sx = curW / W;
+      const sy = sx * (1.25 / 1.5);
+      const curH = H * sy;
+      canvas.style.height = `${curH}px`;
+      leavesContainer.style.transform = `scale(${sx}, ${sy})`;
       leavesContainer.style.transformOrigin = 'top left';
       leavesContainer.style.width = `${W}px`;
       leavesContainer.style.height = `${H}px`;
