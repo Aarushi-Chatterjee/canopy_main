@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { notebook: notebookRepo, users: usersRepo, profiles: profilesRepo, sprints: sprintsRepo } = require('../repositories');
-const { requireAuth } = require('../middleware/auth');
+const { optionalAuth } = require('../middleware/auth');
 
 // Robust Input Sanitization to prevent XSS, script injection, and event handler exploits
 function sanitizeText(str) {
@@ -93,9 +93,9 @@ router.get('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Notebook entry not found.' });
     }
 
-    // Increment view count non-blockingly
+    // Increment view count reliably in storage
     const newCount = (Number(entry.viewCount) || 0) + 1;
-    notebookRepo.update(
+    await notebookRepo.update(
       e => e.id === entry.id,
       { viewCount: newCount },
       { eq: { id: entry.id } }
@@ -119,8 +119,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/notebook
-router.post('/', requireAuth, async (req, res) => {
+// POST /api/notebook - Supports both authenticated users and guest contributors
+router.post('/', optionalAuth, async (req, res) => {
   try {
     const {
       sprintId,
@@ -128,6 +128,7 @@ router.post('/', requireAuth, async (req, res) => {
       title,
       domain = 'climate',
       entryType = 'post-mortem',
+      authorName: customAuthorName,
       summarySnippet,
       teaser,
       bodyMarkdown,
@@ -149,14 +150,14 @@ router.post('/', requireAuth, async (req, res) => {
       return res.status(400).json({ error: 'Title and summary snippet are required.' });
     }
 
-    const authorId = req.user.id;
-    const authorName = req.user.displayName || req.user.email;
+    const authorId = req.user?.id || ('guest_' + Date.now());
+    const authorName = req.user?.displayName || req.user?.email || sanitizeText(customAuthorName) || 'Field Contributor';
     const computedReadingTime = readingTimeMinutes ? Number(readingTimeMinutes) : estimateReadingTime(cleanContent);
 
     const entryId = 'entry_' + Date.now();
     const newEntry = {
       id: entryId,
-      userId: authorId,
+      userId: req.user ? req.user.id : null,
       authorId,
       authorName,
       sprintId: sprintId || null,
@@ -168,10 +169,10 @@ router.post('/', requireAuth, async (req, res) => {
       summarySnippet: cleanSnippet,
       teaser: sanitizeText(teaser),
       bodyMarkdown: cleanContent,
-      tags: Array.isArray(tags) ? tags.map(sanitizeText) : [sanitizeText(tags)],
+      tags: Array.isArray(tags) ? tags.map(sanitizeText) : [sanitizeText(tags)].filter(Boolean),
       coverImageUrl: coverImageUrl ? sanitizeText(coverImageUrl) : null,
       readingTimeMinutes: computedReadingTime,
-      viewCount: 0,
+      viewCount: 1,
       isFeatured: Boolean(isFeatured),
       isFounderPost: Boolean(isFounderPost),
       status: status || 'published',
@@ -191,14 +192,17 @@ router.post('/', requireAuth, async (req, res) => {
   }
 });
 
-// POST /api/notebook/:id/grow ("Grow Entry")
-router.post('/:id/grow', requireAuth, async (req, res) => {
+// POST /api/notebook/:id/grow ("Grow Entry" / Query Box)
+router.post('/:id/grow', optionalAuth, async (req, res) => {
   try {
     const {
       title,
       summarySnippet,
       teaser,
-      bodyMarkdown
+      bodyMarkdown,
+      content,
+      authorName: customAuthorName,
+      queryType = 'reflection'
     } = req.body;
 
     const parent = await notebookRepo.findById(req.params.id);
@@ -206,15 +210,15 @@ router.post('/:id/grow', requireAuth, async (req, res) => {
       return res.status(404).json({ error: 'Parent notebook entry not found.' });
     }
 
-    const cleanTitle = sanitizeText(title);
-    const cleanSnippet = sanitizeText(summarySnippet);
+    const cleanSnippet = sanitizeText(summarySnippet || bodyMarkdown || content);
+    const cleanTitle = sanitizeText(title) || (queryType === 'query' ? 'Technical Query' : 'Field Reflection');
 
-    if (!cleanTitle || !cleanSnippet) {
-      return res.status(400).json({ error: 'Title and note snippet are required to grow this entry.' });
+    if (!cleanSnippet) {
+      return res.status(400).json({ error: 'A query or note content is required to grow this entry.' });
     }
 
-    const authorId = req.user.id;
-    const authorName = req.user.displayName || req.user.email;
+    const authorId = req.user?.id || ('guest_' + Date.now());
+    const authorName = req.user?.displayName || req.user?.email || sanitizeText(customAuthorName) || 'Field Researcher';
 
     const branchId = 'branch_' + Date.now();
     const newBranch = {
@@ -222,6 +226,7 @@ router.post('/:id/grow', requireAuth, async (req, res) => {
       parentEntryId: parent.id,
       authorId,
       authorName,
+      queryType: sanitizeText(queryType) || 'reflection',
       title: cleanTitle,
       summarySnippet: cleanSnippet,
       teaser: sanitizeText(teaser),
@@ -239,7 +244,7 @@ router.post('/:id/grow', requireAuth, async (req, res) => {
     res.status(201).json({
       branch: newBranch,
       parent: updated,
-      message: `🌱 Entry branched successfully! Added reflection to "${parent.title}".`
+      message: `🌱 Entry branched successfully! Added ${queryType === 'query' ? 'query' : 'reflection'} to "${parent.title}".`
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to grow notebook entry.' });

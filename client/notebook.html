@@ -106,14 +106,39 @@
   .reader-modal-sheet {
     background: var(--paper);
     border: 1px solid var(--card-edge);
-    border-radius: 14px;
-    max-width: 780px;
+    border-radius: 16px;
+    max-width: 820px;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
     margin: auto;
     position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .reader-modal-header-bar {
+    position: relative;
+    padding: 24px 72px 16px 28px;
+    border-bottom: 1px solid var(--card-edge);
+    background: var(--paper);
+  }
+  .reader-modal-body-wrap {
+    padding: 24px 28px 36px;
+  }
+  #readerTitle {
+    font-family: 'Fraunces Var', serif;
+    font-size: clamp(1.4rem, 2.6vw, 2rem);
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 8px 0 0 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+  .reader-markdown-body {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.75;
   }
   .reader-markdown-body pre {
     background: var(--card);
@@ -124,6 +149,50 @@
     font-family: monospace;
     font-size: 0.88rem;
     color: var(--forest);
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 14px 0;
+  }
+  .reader-markdown-body p {
+    margin-bottom: 14px;
+    line-height: 1.72;
+    word-break: break-word;
+  }
+  .grow-branch-card {
+    padding: 14px 18px;
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px -2px var(--shadow);
+    transition: transform 0.16s ease, border-color 0.16s ease;
+  }
+  .grow-branch-card:hover {
+    border-color: var(--forest);
+  }
+  .card-views-badge {
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+    margin-left: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .drawer-form .form-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 640px) {
+    .drawer-form .form-grid-2col {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .reader-modal-header-bar {
+      padding: 18px 56px 14px 20px;
+    }
+    .reader-modal-body-wrap {
+      padding: 18px 20px 28px;
+    }
   }
 </style>
 </head>
@@ -336,7 +405,8 @@
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="climate">Climate</span>
           <span class="tag-chip skill">post-mortem</span>
-          <button type="button" class="grow-btn compose-trigger">
+          <span class="card-views-badge">👁️ <span class="view-num">142</span></span>
+          <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
             <span class="tooltip">Add a follow-up or reflection</span>
@@ -358,7 +428,8 @@
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="hardware">Hardware</span>
           <span class="tag-chip skill">teardown</span>
-          <button type="button" class="grow-btn compose-trigger">
+          <span class="card-views-badge">👁️ <span class="view-num">98</span></span>
+          <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
             <span class="tooltip">Add a follow-up or reflection</span>
@@ -380,7 +451,8 @@
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="civic">Civic Tech</span>
           <span class="tag-chip skill">field-report</span>
-          <button type="button" class="grow-btn compose-trigger">
+          <span class="card-views-badge">👁️ <span class="view-num">165</span></span>
+          <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
             <span class="tooltip">Add a follow-up or reflection</span>
@@ -402,7 +474,8 @@
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="education">Education</span>
           <span class="tag-chip skill">field-report</span>
-          <button type="button" class="grow-btn compose-trigger">
+          <span class="card-views-badge">👁️ <span class="view-num">112</span></span>
+          <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
             <span class="tooltip">Add a follow-up or reflection</span>
@@ -424,7 +497,8 @@
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="health">Health</span>
           <span class="tag-chip skill">post-mortem</span>
-          <button type="button" class="grow-btn compose-trigger">
+          <span class="card-views-badge">👁️ <span class="view-num">6</span></span>
+          <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
             <span class="tooltip">Add a follow-up or reflection</span>
@@ -446,10 +520,12 @@
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="forestry">Forestry</span>
           <span class="tag-chip skill">sprint-update</span>
-          <button type="button" class="grow-btn compose-trigger">
+          <span class="card-views-badge">👁️ <span class="view-num">189</span></span>
+          <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
             <span class="tooltip">Add a follow-up or reflection</span>
+          </button>
         </div>
       </article>
     </div>
@@ -682,60 +758,171 @@
 
 <!-- ============ MODAL DRAWER: COMPOSE FIELD REPORT ============ -->
 <div class="app-drawer-backdrop" id="composeBackdrop" style="display:none;"></div>
-<div class="app-drawer" id="composeDrawer" style="display:none;z-index:96;">
+<div class="app-drawer" id="composeDrawer" style="display:none;z-index:96;max-width:720px;">
   <div class="drawer-drag-handle"></div>
   <div class="drawer-head">
     <div>
-      <h3>Compose Field Report &amp; Dev Log</h3>
-      <p class="sub">Document technical experiments, post-mortems, datasets, or teardowns</p>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span class="tag-chip" style="font-size:0.75rem;padding:2px 8px;">Open Notebook</span>
+        <span style="font-size:0.75rem;color:var(--forest);font-weight:700;">Publish to Canopy</span>
+      </div>
+      <h3>Compose Field Report &amp; Entry</h3>
+      <p class="sub">Document technical experiments, post-mortems, datasets, or editorial field notes</p>
     </div>
     <button class="modal-close" id="closeComposeDrawer" aria-label="Close drawer">✕</button>
   </div>
-  <form class="drawer-form" id="composeForm">
+
+  <!-- Format switcher inside compose drawer -->
+  <div style="padding:0 24px 14px;border-bottom:1px dashed var(--line);display:flex;align-items:center;gap:10px;">
+    <span style="font-size:0.8rem;color:var(--ink-faint);font-weight:600;">Entry Format:</span>
+    <button type="button" class="btn btn-sm btn-stamp" id="composeFormatLogs" style="font-size:0.82rem;padding:5px 12px;">⚡ Technical Dev Log</button>
+    <button type="button" class="btn btn-sm btn-ghost" id="composeFormatBlog" style="font-size:0.82rem;padding:5px 12px;">🌱 Field Notes &amp; Blog</button>
+  </div>
+
+  <form class="drawer-form" id="composeForm" style="padding-top:16px;">
     <div class="field">
       <label for="cTitle">Entry Title</label>
-      <input type="text" id="cTitle" required placeholder="e.g. Why our optical sensor drifted under high humidity..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      <input type="text" id="cTitle" required placeholder="e.g. Post-mortem: our offline sync merge conflicts in rural clinics..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
     </div>
+
+    <div class="form-grid-2col">
+      <div class="field">
+        <label for="cDomain">Primary Domain</label>
+        <select id="cDomain" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+          <option value="climate">Climate &amp; Carbon</option>
+          <option value="hardware">Hardware &amp; Instrumentation</option>
+          <option value="civic">Civic Tech</option>
+          <option value="education">Education &amp; Literacy</option>
+          <option value="health" selected>Health &amp; Diagnostics</option>
+          <option value="forestry">Forestry &amp; Biodiversity</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="cType">Report Type / Format</label>
+        <select id="cType" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+          <option value="post-mortem" selected>Post-Mortem / Bug Analysis</option>
+          <option value="teardown">Hardware Teardown</option>
+          <option value="field-report">Field Testing Note</option>
+          <option value="sprint-update">Sprint Progress Update</option>
+          <option value="article">Editorial Article / Essay</option>
+          <option value="architecture">Architecture Decision</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-grid-2col">
+      <div class="field">
+        <label for="cAuthorName">Author Name / Lead</label>
+        <input type="text" id="cAuthorName" required placeholder="e.g. Dr. Rohan Malhotra" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div class="field">
+        <label for="cGrownFrom">Sprint or Project Link</label>
+        <input type="text" id="cGrownFrom" placeholder="e.g. Sprint: Pediatric Spirometer" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+    </div>
+
     <div class="field">
-      <label for="cDomain">Primary Domain</label>
-      <select id="cDomain" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-        <option value="climate">Climate &amp; Carbon</option>
-        <option value="hardware">Hardware &amp; Instrumentation</option>
-        <option value="civic">Civic Tech</option>
-        <option value="education">Education &amp; Literacy</option>
-        <option value="health">Health &amp; Diagnostics</option>
-        <option value="forestry">Forestry &amp; Biodiversity</option>
-      </select>
+      <label for="cSnippet">Summary Snippet (1-2 sentence card overview)</label>
+      <textarea id="cSnippet" required placeholder="Briefly summarize the core technical observation or outcome (displayed on the card)..." style="min-height:64px;width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;"></textarea>
     </div>
+
     <div class="field">
-      <label for="cType">Report Type</label>
-      <select id="cType" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-        <option value="post-mortem">Post-Mortem / Bug Analysis</option>
-        <option value="teardown">Hardware Teardown</option>
-        <option value="data-cleaning">Dataset Cleaning &amp; Ingestion</option>
-        <option value="field-testing">Field Testing Note</option>
-        <option value="architecture">Architecture Decision</option>
-        <option value="algorithm">Algorithm / Mathematical Tuning</option>
-      </select>
+      <label for="cTeaser">Key Terminal Metric / Code Anchor (Monospace Teaser)</label>
+      <input type="text" id="cTeaser" placeholder="e.g. sync.md → conflicts/day dropped from 40 to 0 after CRDT migration" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:monospace;">
     </div>
+
+    <div class="field" id="coverImageField" style="display:none;">
+      <label for="cCoverImage">Cover Image URL (Optional for Field Notes / Blog)</label>
+      <input type="url" id="cCoverImage" placeholder="https://images.unsplash.com/..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+    </div>
+
     <div class="field">
-      <label for="cGrownFrom">Sprint or Project Link (Optional)</label>
-      <input type="text" id="cGrownFrom" placeholder="e.g. Sprint: Groundwater Sensor" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <label for="cBodyMarkdown">Full Note Markdown Body</label>
+        <button type="button" id="btnLoadStarterTemplate" style="background:none;border:none;color:var(--forest);font-size:0.78rem;font-weight:600;cursor:pointer;text-decoration:underline;">Load Section Template</button>
+      </div>
+      <textarea id="cBodyMarkdown" required placeholder="Document the problem, investigation, resolution, and code snippets in Markdown..." style="min-height:140px;width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.92rem;font-family:monospace;line-height:1.55;"></textarea>
     </div>
+
     <div class="field">
-      <label for="cNote">What did you build, discover, or debug?</label>
-      <textarea id="cNote" required placeholder="Detail the specific technical problem, what you tried, what failed, and how you solved or isolated it..." style="min-height:90px;"></textarea>
+      <label for="cTags">Keywords / Tags (Comma-separated)</label>
+      <input type="text" id="cTags" placeholder="e.g. crdt, offline-first, health, sync" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
     </div>
-    <div class="field">
-      <label for="cTeaser">Key Code Snippet / Terminal Metric (Optional)</label>
-      <input type="text" id="cTeaser" placeholder="e.g. sensor_adc.c:84 → median_filter(raw_buf, 5)" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:monospace;">
-    </div>
+
     <div class="form-foot">
-      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">contributes directly to open engineering knowledge</span>
+      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">contributes directly to Canopy open engineering records</span>
       <button type="submit" class="btn btn-stamp btn-sm" id="btnSubmitReport">Publish Field Report →</button>
     </div>
   </form>
 </div>
+
+<!-- ============ MODAL DRAWER: GROW ENTRY / QUERY BOX ============ -->
+<div class="app-drawer-backdrop" id="growDrawerBackdrop" style="display:none;"></div>
+<div class="app-drawer" id="growDrawer" style="display:none;z-index:97;max-width:680px;">
+  <div class="drawer-drag-handle"></div>
+  <div class="drawer-head">
+    <div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span class="tag-chip skill" style="font-size:0.75rem;padding:2px 8px;">🌱 Thread Branch</span>
+        <span style="font-size:0.75rem;color:var(--forest);font-weight:700;">Lab Notebook Query Box</span>
+      </div>
+      <h3 id="growDrawerHeading" style="margin:0;">Grow Entry &amp; Ask Follow-up</h3>
+      <p class="sub" style="margin:4px 0 0;">Add a technical query, field reflection, or alternative implementation branch to this record</p>
+    </div>
+    <button class="modal-close" id="closeGrowDrawer" aria-label="Close query box">✕</button>
+  </div>
+
+  <div id="growParentContextBox" style="margin:16px 24px 0;padding:12px 16px;background:var(--card);border:1px solid var(--card-edge);border-radius:10px;display:flex;align-items:flex-start;gap:12px;">
+    <div style="font-size:1.4rem;line-height:1;">🌿</div>
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:0.75rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Growing from Original Record:</div>
+      <div id="growParentTitle" style="font-weight:700;color:var(--ink);font-size:0.95rem;margin:2px 0;word-break:break-word;"></div>
+      <div id="growParentAuthor" style="font-size:0.8rem;color:var(--forest);"></div>
+    </div>
+  </div>
+
+  <form class="drawer-form" id="growForm" style="padding-top:14px;">
+    <input type="hidden" id="growParentId">
+
+    <div class="field">
+      <label for="growQueryType">Follow-up Type</label>
+      <select id="growQueryType" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <option value="query">❓ Technical Query / Question (Ask how they solved an edge case)</option>
+        <option value="reflection" selected>💡 Field Reflection / Observation (Share what happened in your trial)</option>
+        <option value="branch">🌿 Alternative Solution Branch (Proposed architectural tweak)</option>
+      </select>
+    </div>
+
+    <div class="form-grid-2col">
+      <div class="field">
+        <label for="growAuthorName">Your Name / Handle</label>
+        <input type="text" id="growAuthorName" required placeholder="e.g. Elena Rostova or Field Contributor" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+      <div class="field">
+        <label for="growTitle">Topic / Question Title</label>
+        <input type="text" id="growTitle" required placeholder="e.g. How did you prune vector clock history?" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="growContent">Query / Reflection Notes</label>
+      <textarea id="growContent" required placeholder="Explain your question or your field findings in detail. Markdown and code snippets are welcomed..." style="min-height:100px;width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="growTeaser">Code Anchor / Diagnostic Metric (Optional)</label>
+      <input type="text" id="growTeaser" placeholder="e.g. crdt_merge.rs:44 → vector_clock_drift &lt; 5ms" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:monospace;">
+    </div>
+
+    <div class="form-foot">
+      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">appends directly to this entry's open knowledge tree</span>
+      <button type="submit" class="btn btn-stamp btn-sm" id="btnSubmitGrow">Plant Follow-up Branch →</button>
+    </div>
+  </form>
+</div>
+
 
 <!-- ==========================================
      READER MODAL (Full Article / Story / Log)
@@ -749,9 +936,10 @@
     </div>
 
     <div style="padding:28px 32px 36px;">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;" id="readerBadges"></div>
-      
-      <h1 id="readerTitle" style="font-family:'Fraunces Var',serif;font-size:clamp(1.5rem,2.8vw,2.1rem);line-height:1.25;color:var(--ink);margin:0 0 14px 0;"></h1>
+      <div class="reader-modal-header-bar" style="padding-right:60px;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;" id="readerBadges"></div>
+        <h1 id="readerTitle" style="font-family:'Fraunces Var',serif;font-size:clamp(1.4rem,2.6vw,2.1rem);line-height:1.25;color:var(--ink);margin:0 0 14px 0;word-break:break-word;"></h1>
+      </div>
       
       <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--card-edge);padding-bottom:16px;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
         <div style="display:flex;align-items:center;gap:10px;">
@@ -766,15 +954,27 @@
         </div>
       </div>
       
-      <div id="readerSnippet" style="font-size:1.02rem;line-height:1.6;color:var(--ink-soft);font-style:italic;margin-bottom:20px;border-left:3px solid var(--forest);padding-left:12px;"></div>
+      <div id="readerSnippet" style="font-size:1.02rem;line-height:1.6;color:var(--ink-soft);font-style:italic;margin-bottom:20px;border-left:3px solid var(--forest);padding-left:12px;word-break:break-word;"></div>
       
-      <div id="readerContent" class="reader-markdown-body" style="font-size:0.98rem;line-height:1.75;color:var(--ink);"></div>
+      <div id="readerContent" class="reader-markdown-body" style="font-size:0.98rem;line-height:1.75;color:var(--ink);word-break:break-word;"></div>
       
       <div id="readerTeaserBox" style="margin-top:20px;display:none;"></div>
 
+      <!-- Follow-up Queries & Branches Section -->
+      <div id="readerBranchesSection" style="margin-top:28px;padding-top:20px;border-top:1px solid var(--card-edge);display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+          <h4 style="margin:0;font-family:'Fraunces Var',serif;font-size:1.15rem;color:var(--ink);">🌿 Follow-up Branches &amp; Queries (<span id="readerBranchesCount">0</span>)</h4>
+          <button type="button" class="btn btn-stamp btn-sm" id="btnReaderAddQuery" style="font-size:0.8rem;padding:5px 12px;">+ Ask / Add Branch</button>
+        </div>
+        <div id="readerBranchesList" style="display:flex;flex-direction:column;gap:12px;"></div>
+      </div>
+
       <div style="margin-top:32px;padding-top:16px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
         <span style="font-size:0.8rem;color:var(--ink-faint);">Canopy Lab Notebook · Open Science &amp; Engineering</span>
-        <button type="button" class="btn btn-secondary btn-sm" id="btnReaderDismiss">Close Reader</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button type="button" class="btn btn-stamp btn-sm" id="btnReaderGrowBottom">🌱 Grow This Entry</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnReaderDismiss">Close Reader</button>
+        </div>
       </div>
     </div>
   </div>
@@ -859,9 +1059,10 @@
       bodyMarkdown: `### Incident Summary\nDuring field trials across three sub-district clinics without reliable cellular coverage, nurses recorded pediatric spirometry measurements on battery-powered field terminals. When clinics reconnected to the central server in the evening, last-write-wins timestamp replication silently overwrote afternoon inhalation flow curves.\n\n### Architectural Migration\nWe replaced timestamp-based REST sync with Automerge Conflict-Free Replicated Data Types (CRDTs). Every spirometry run is represented as an append-only delta event with cryptographic vector clocks.\n\n### Results\nMerge conflicts dropped from an average of 40 per day to zero. Even when two nurses enter patient vitals simultaneously while disconnected, both observations merge cleanly without data loss.`,
       teaser: 'sync.md → conflicts/day dropped from 40 to 0 after CRDT migration',
       tags: ['crdt', 'offline-first', 'health', 'sync'],
-      readingTimeMinutes: 4,
-      viewCount: 204,
-      createdAt: '2026-10-02T16:20:00Z'
+      readingTimeMinutes: 3,
+      viewCount: 6,
+      createdAt: '2026-09-05T16:20:00Z',
+      branches: []
     },
     'entry_radar_speckle': {
       id: 'entry_radar_speckle',
@@ -876,7 +1077,8 @@
       tags: ['sar', 'radar', 'mangroves', 'gis', 'python'],
       readingTimeMinutes: 4,
       viewCount: 189,
-      createdAt: '2026-10-05T10:10:00Z'
+      createdAt: '2026-10-05T10:10:00Z',
+      branches: []
     }
   };
 
@@ -890,19 +1092,42 @@
     })[m]);
   }
 
+  function formatEntryDate(dateStr) {
+    if (!dateStr) return 'Sprint Note';
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      const day = d.getDate();
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
+      const month = months[d.getMonth()];
+      const year = d.getFullYear();
+      return `${day} ${month} ${year}`;
+    } catch (_) {
+      return dateStr;
+    }
+  }
+
+  // Tokenized markdown parser to prevent splitting multi-line code blocks and text overlaps
   function formatMarkdown(md) {
     if (!md) return '';
-    let html = escapeHtml(md);
-    // Code blocks
-    html = html.replace(/```([a-z0-9_-]*)\n([\s\S]*?)```/g, (m, lang, code) => {
-      return `<pre class="reader-code-block" style="background:var(--card);border:1px solid var(--card-edge);padding:14px;border-radius:8px;overflow-x:auto;font-family:monospace;font-size:0.88rem;color:var(--forest);"><code>${code}</code></pre>`;
+    let text = String(md);
+    const codeBlocks = [];
+
+    // Extract code blocks into placeholders
+    text = text.replace(/```([a-z0-9_-]*)\n([\s\S]*?)```/g, (m, lang, code) => {
+      const idx = codeBlocks.length;
+      codeBlocks.push(`<pre class="reader-code-block" style="background:var(--card);border:1px solid var(--card-edge);padding:14px;border-radius:8px;overflow-x:auto;font-family:monospace;font-size:0.88rem;color:var(--forest);white-space:pre-wrap;word-break:break-word;margin:14px 0;"><code>${escapeHtml(code)}</code></pre>`);
+      return `%%%CODEBLOCK_${idx}%%%`;
     });
+
+    let html = escapeHtml(text);
+
     // Inline code
-    html = html.replace(/`([^`]+)`/g, '<code style="background:var(--card);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:0.88em;color:var(--forest);">$1</code>');
+    html = html.replace(/`([^`]+)`/g, '<code style="background:var(--card);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:0.88em;color:var(--forest);word-break:break-all;">$1</code>');
     // Headers
-    html = html.replace(/^### (.*$)/gim, '<h3 style="font-family:\'Fraunces Var\',serif;font-size:1.25rem;color:var(--ink);margin:1.4em 0 0.5em;">$1</h3>');
-    html = html.replace(/^## (.*$)/gim, '<h2 style="font-family:\'Fraunces Var\',serif;font-size:1.45rem;color:var(--ink);margin:1.5em 0 0.5em;">$1</h2>');
-    html = html.replace(/^# (.*$)/gim, '<h1 style="font-family:\'Fraunces Var\',serif;font-size:1.75rem;color:var(--ink);margin:1.6em 0 0.6em;">$1</h1>');
+    html = html.replace(/^### (.*$)/gim, '<h3 style="font-family:\'Fraunces Var\',serif;font-size:1.25rem;color:var(--ink);margin:1.4em 0 0.5em;line-height:1.35;word-break:break-word;">$1</h3>');
+    html = html.replace(/^## (.*$)/gim, '<h2 style="font-family:\'Fraunces Var\',serif;font-size:1.45rem;color:var(--ink);margin:1.5em 0 0.5em;line-height:1.35;word-break:break-word;">$1</h2>');
+    html = html.replace(/^# (.*$)/gim, '<h1 style="font-family:\'Fraunces Var\',serif;font-size:1.75rem;color:var(--ink);margin:1.6em 0 0.6em;line-height:1.35;word-break:break-word;">$1</h1>');
     // Blockquote
     html = html.replace(/^\> (.*$)/gim, '<blockquote style="border-left:3px solid var(--forest);margin:1em 0;padding-left:14px;color:var(--ink-soft);font-style:italic;">$1</blockquote>');
     // Bold & Italics
@@ -910,14 +1135,19 @@
     html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
     // Bullet items
     html = html.replace(/^\- (.*$)/gim, '<li style="margin-left:20px;margin-bottom:6px;">$1</li>');
+
     // Paragraphs
-    html = html.split('\n\n').map(p => {
+    let body = html.split(/\n\s*\n/).map(p => {
       p = p.trim();
       if (!p) return '';
-      if (p.startsWith('<pre') || p.startsWith('<h') || p.startsWith('<blockquote') || p.startsWith('<li')) return p;
-      return `<p style="margin-bottom:14px;line-height:1.7;">${p.replace(/\n/g, '<br>')}</p>`;
+      if (p.includes('%%%CODEBLOCK_') || p.startsWith('<h') || p.startsWith('<blockquote') || p.startsWith('<li')) return p;
+      return `<p style="margin-bottom:14px;line-height:1.75;word-break:break-word;">${p.replace(/\n/g, '<br>')}</p>`;
     }).filter(Boolean).join('');
-    return html;
+
+    // Restore code blocks
+    body = body.replace(/%%%CODEBLOCK_(\d+)%%%/g, (m, idx) => codeBlocks[Number(idx)] || '');
+
+    return body;
   }
 
   function renderNoteCard(item) {
@@ -930,7 +1160,7 @@
     const typeLabel = escapeHtml(item.entryType || 'field-report');
     const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
     const readingTime = item.readingTimeMinutes || 3;
-    const views = item.viewCount || 0;
+    const views = item.viewCount || 1;
 
     const isBlog = item.isFounderPost || item.isFeatured || ['article', 'essay', 'founder-essay', 'deep-dive', 'field-notes'].includes(typeLabel);
     const cardMode = isBlog ? 'blog' : 'logs';
@@ -959,34 +1189,26 @@
     card.innerHTML = `
       ${coverHtml}
       <div class="entry-top">
-        <div class="avatar sm" data-seed="${author}" aria-hidden="true"></div>
+        <div class="avatar sm" data-seed="${author}" aria-hidden="true">${author.charAt(0).toUpperCase()}</div>
         <span class="name">${author}</span>
         ${badgesHtml}
         <span class="when" style="margin-left:auto;">${readingTime} min read</span>
       </div>
       ${breadcrumb}
-      <h4 style="cursor:pointer;">${title}</h4>
-      <p class="snippet">${snippet}</p>
+      <h4 style="cursor:pointer;word-break:break-word;">${title}</h4>
+      <p class="snippet" style="word-break:break-word;">${snippet}</p>
       ${teaser}
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
         <span class="tag-chip skill">${typeLabel}</span>
-        ${views > 0 ? `<span style="font-size:0.75rem;color:var(--ink-faint);margin-left:4px;">👁️ ${views}</span>` : ''}
+        <span class="card-views-badge">👁️ <span class="view-num">${views}</span> views</span>
         <button type="button" class="grow-btn compose-trigger">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           Grow entry
-          <span class="tooltip">Add a follow-up or reflection</span>
+          <span class="tooltip">Add a follow-up or query</span>
         </button>
       </div>
     `;
-
-    // Wire up reader open
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.compose-trigger') || e.target.closest('.grow-btn')) {
-        return; // Let grow button open composer
-      }
-      openReaderModal(item.id || item);
-    });
 
     return card;
   }
@@ -1014,9 +1236,9 @@
         <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
         <span class="shipped-badge">✓ Deployed in Field</span>
       </div>
-      <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;">${title}</h4>
+      <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;word-break:break-word;">${title}</h4>
       ${memberStr ? `<div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">Squad: ${memberStr}</div>` : ''}
-      <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;">${desc}</p>
+      <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;word-break:break-word;">${desc}</p>
       <div class="impact-highlight-box">
         <strong>Measured Impact:</strong> ${impact}
       </div>
@@ -1039,38 +1261,56 @@
   const closeReaderBtn = document.getElementById('closeReaderBtn');
   const btnReaderDismiss = document.getElementById('btnReaderDismiss');
   const readerShareBtn = document.getElementById('readerShareBtn');
+  const btnReaderAddQuery = document.getElementById('btnReaderAddQuery');
+  const btnReaderGrowBottom = document.getElementById('btnReaderGrowBottom');
   let currentReaderEntryId = null;
+
+  function renderBranches(branches) {
+    const branchesSection = document.getElementById('readerBranchesSection');
+    const branchesList = document.getElementById('readerBranchesList');
+    const branchesCountEl = document.getElementById('readerBranchesCount');
+    
+    if (!branchesSection || !branchesList) return;
+    if (Array.isArray(branches) && branches.length > 0) {
+      branchesSection.style.display = 'block';
+      if (branchesCountEl) branchesCountEl.textContent = branches.length;
+      branchesList.innerHTML = branches.map(b => `
+        <div class="grow-branch-card" style="padding:14px 16px;background:var(--card);border:1px solid var(--card-edge);border-radius:10px;border-left:4px solid var(--forest);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;">
+            <span class="tag-chip skill" style="font-size:0.72rem;padding:2px 8px;">${escapeHtml(b.queryType === 'query' ? '❓ Technical Query' : b.queryType === 'branch' ? '🌿 Alternative Branch' : '💡 Field Reflection')}</span>
+            <span style="font-size:0.75rem;color:var(--ink-faint);">${b.createdAt ? new Date(b.createdAt).toLocaleDateString() : 'Recent'}</span>
+          </div>
+          <h5 style="margin:0 0 6px 0;font-size:0.95rem;color:var(--ink);font-weight:600;word-break:break-word;">${escapeHtml(b.title || 'Follow-up Branch')}</h5>
+          <div style="font-size:0.88rem;color:var(--ink-soft);line-height:1.55;margin-bottom:6px;word-break:break-word;">${escapeHtml(b.content || b.summarySnippet || '')}</div>
+          ${b.teaser ? `<div class="teaser" style="margin:4px 0 0;font-size:0.75rem;"><span>${escapeHtml(b.teaser)}</span></div>` : ''}
+          <div style="font-size:0.78rem;color:var(--forest);font-weight:600;margin-top:6px;">— ${escapeHtml(b.authorName || 'Field Contributor')}</div>
+        </div>
+      `).join('');
+    } else {
+      branchesSection.style.display = 'none';
+      branchesList.innerHTML = '';
+      if (branchesCountEl) branchesCountEl.textContent = '0';
+    }
+  }
 
   async function openReaderModal(idOrItem) {
     let entry = typeof idOrItem === 'object' ? idOrItem : liveEntriesMap.get(idOrItem) || SEED_ENTRIES[idOrItem];
-    const entryId = typeof idOrItem === 'string' ? idOrItem : idOrItem.id;
+    const entryId = typeof idOrItem === 'string' ? idOrItem : idOrItem?.id;
     currentReaderEntryId = entryId;
 
-    // Fetch remote fresh copy if available to increment views and get full markdown
-    if (entryId && (!entry || !entry.bodyMarkdown)) {
-      try {
-        const remote = await notebook.getEntry(entryId);
-        if (remote) {
-          entry = remote;
-          liveEntriesMap.set(entryId, remote);
-        }
-      } catch (e) {
-        console.warn('[Canopy] Remote entry fetch error:', e);
-      }
-    }
-
     if (!entry) {
-      entry = SEED_ENTRIES[entryId] || {
+      entry = {
         title: 'Notebook Entry',
         authorName: 'Field Builder',
         domain: 'general',
         entryType: 'field-report',
         summarySnippet: 'Detailed engineering documentation.',
-        bodyMarkdown: 'Content is loading or unavailable.'
+        bodyMarkdown: 'Content is loading or unavailable.',
+        viewCount: 1
       };
     }
 
-    // Populate Reader Modal DOM
+    // Populate Reader Modal DOM immediately for zero-lag response
     const readerTitle = document.getElementById('readerTitle');
     const readerAuthor = document.getElementById('readerAuthor');
     const readerAvatar = document.getElementById('readerAvatar');
@@ -1087,8 +1327,8 @@
     readerAvatar.textContent = authorName.charAt(0).toUpperCase();
 
     const readMins = entry.readingTimeMinutes || Math.max(1, Math.ceil((entry.bodyMarkdown || entry.content || '').split(/\s+/).length / 180));
-    const views = entry.viewCount || 1;
-    const dateStr = entry.createdAt ? new Date(entry.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : 'Sprint Note';
+    let views = entry.viewCount || 1;
+    const dateStr = formatEntryDate(entry.createdAt);
     readerMeta.textContent = `${dateStr} · 📖 ${readMins} min read · 👁️ ${views} views`;
 
     // Badges
@@ -1127,11 +1367,38 @@
       readerTeaserBox.style.display = 'none';
     }
 
+    renderBranches(entry.branches || []);
+
     // Show modal & set URL hash
     readerModal.style.display = 'flex';
     readerModal.setAttribute('aria-hidden', 'false');
     if (entryId) {
       window.history.replaceState(null, '', `#entry=${encodeURIComponent(entryId)}`);
+    }
+
+    // Call server to increment viewCount in storage and fetch live branch updates
+    if (entryId) {
+      try {
+        const fresh = await notebook.getEntry(entryId);
+        if (fresh) {
+          entry = { ...entry, ...fresh };
+          liveEntriesMap.set(entryId, entry);
+          // Update reader meta with verified incremented count
+          if (fresh.viewCount) {
+            views = fresh.viewCount;
+            readerMeta.textContent = `${dateStr} · 📖 ${readMins} min read · 👁️ ${views} views`;
+            // Update the card's view-num badge in the grid immediately
+            const cardEl = document.querySelector(`[data-id="${entryId}"]`);
+            if (cardEl) {
+              const viewNumEl = cardEl.querySelector('.view-num');
+              if (viewNumEl) viewNumEl.textContent = views;
+            }
+          }
+          renderBranches(entry.branches || []);
+        }
+      } catch (err) {
+        console.warn('[Canopy] Remote entry fetch/increment note:', err.message);
+      }
     }
   }
 
@@ -1174,26 +1441,310 @@
     });
   }
 
-  // Wire static cards to open Reader Modal
-  document.querySelectorAll('#entryGrid .entry-card').forEach(card => {
-    const id = card.getAttribute('data-id');
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.compose-trigger') || e.target.closest('.grow-btn')) return;
-      openReaderModal(id);
+  // ==========================================
+  // GROW ENTRY / QUERY BOX DRAWER SYSTEM
+  // ==========================================
+  const growDrawer = document.getElementById('growDrawer');
+  const growDrawerBackdrop = document.getElementById('growDrawerBackdrop');
+  const closeGrowDrawerBtn = document.getElementById('closeGrowDrawer');
+  const growForm = document.getElementById('growForm');
+  let activeGrowParentId = null;
+
+  function openGrowDrawer(parentId) {
+    activeGrowParentId = parentId;
+    const parentEntry = liveEntriesMap.get(parentId) || SEED_ENTRIES[parentId];
+
+    const growParentIdInput = document.getElementById('growParentId');
+    if (growParentIdInput) growParentIdInput.value = parentId || '';
+
+    const growParentTitle = document.getElementById('growParentTitle');
+    const growParentAuthor = document.getElementById('growParentAuthor');
+    if (growParentTitle) {
+      growParentTitle.textContent = parentEntry?.title || 'Selected Notebook Entry';
+    }
+    if (growParentAuthor) {
+      growParentAuthor.textContent = parentEntry ? `by ${parentEntry.authorName || 'Field Contributor'}` : '';
+    }
+
+    if (growDrawer && growDrawerBackdrop) {
+      growDrawerBackdrop.style.display = 'block';
+      growDrawer.style.display = 'block';
+      requestAnimationFrame(() => {
+        growDrawerBackdrop.classList.add('is-open');
+        growDrawer.classList.add('is-open');
+      });
+    }
+  }
+
+  function closeGrowDrawer() {
+    if (!growDrawer || !growDrawerBackdrop) return;
+    growDrawerBackdrop.classList.remove('is-open');
+    growDrawer.classList.remove('is-open');
+    setTimeout(() => {
+      growDrawerBackdrop.style.display = 'none';
+      growDrawer.style.display = 'none';
+    }, 280);
+  }
+
+  if (closeGrowDrawerBtn) closeGrowDrawerBtn.addEventListener('click', closeGrowDrawer);
+  if (growDrawerBackdrop) growDrawerBackdrop.addEventListener('click', closeGrowDrawer);
+
+  if (btnReaderAddQuery) {
+    btnReaderAddQuery.addEventListener('click', () => {
+      if (currentReaderEntryId) openGrowDrawer(currentReaderEntryId);
     });
-  });
+  }
+  if (btnReaderGrowBottom) {
+    btnReaderGrowBottom.addEventListener('click', () => {
+      if (currentReaderEntryId) openGrowDrawer(currentReaderEntryId);
+    });
+  }
+
+  if (growForm) {
+    growForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('btnSubmitGrow');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Planting Branch...';
+      }
+
+      const parentId = document.getElementById('growParentId')?.value || activeGrowParentId;
+      const queryType = document.getElementById('growQueryType')?.value || 'reflection';
+      const authorName = document.getElementById('growAuthorName')?.value || 'Field Contributor';
+      const title = document.getElementById('growTitle')?.value || '';
+      const content = document.getElementById('growContent')?.value || '';
+      const teaser = document.getElementById('growTeaser')?.value || '';
+
+      const branchPayload = {
+        title,
+        content,
+        summarySnippet: content,
+        bodyMarkdown: content,
+        teaser,
+        authorName,
+        queryType
+      };
+
+      try {
+        const result = await notebook.growEntry(parentId, branchPayload);
+        const branch = result?.branch || { ...branchPayload, createdAt: new Date().toISOString() };
+        
+        // Update in-memory entry
+        let targetEntry = liveEntriesMap.get(parentId) || SEED_ENTRIES[parentId];
+        if (targetEntry) {
+          if (!Array.isArray(targetEntry.branches)) targetEntry.branches = [];
+          targetEntry.branches.push(branch);
+          liveEntriesMap.set(parentId, targetEntry);
+        }
+
+        // If reader modal is open for this entry, immediately update branches list
+        if (currentReaderEntryId === parentId) {
+          renderBranches(targetEntry?.branches || [branch]);
+        }
+
+        growForm.reset();
+        closeGrowDrawer();
+
+        const toast = document.getElementById('toast');
+        if (toast) {
+          toast.textContent = '🌿 Follow-up branch planted to open knowledge tree.';
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+      } catch (err) {
+        alert(err.message || 'Could not plant follow-up branch. Please check input.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Plant Follow-up Branch →';
+        }
+      }
+    });
+  }
+
+  // ==========================================
+  // COMPOSE FIELD REPORT DRAWER
+  // ==========================================
+  const composeDrawer = document.getElementById('composeDrawer');
+  const composeBackdrop = document.getElementById('composeBackdrop');
+  const closeComposeBtn = document.getElementById('closeComposeDrawer');
+  const openComposeBtns = [document.getElementById('btnOpenComposeReport'), document.getElementById('btnCtaCompose')].filter(Boolean);
+
+  function openCompose() {
+    if (!composeDrawer || !composeBackdrop) return;
+    composeBackdrop.style.display = 'block';
+    composeDrawer.style.display = 'block';
+    requestAnimationFrame(() => {
+      composeBackdrop.classList.add('is-open');
+      composeDrawer.classList.add('is-open');
+    });
+  }
+
+  function closeCompose() {
+    if (!composeDrawer || !composeBackdrop) return;
+    composeBackdrop.classList.remove('is-open');
+    composeDrawer.classList.remove('is-open');
+    setTimeout(() => {
+      composeBackdrop.style.display = 'none';
+      composeDrawer.style.display = 'none';
+    }, 280);
+  }
+
+  openComposeBtns.forEach(btn => btn.addEventListener('click', openCompose));
+  if (closeComposeBtn) closeComposeBtn.addEventListener('click', closeCompose);
+  if (composeBackdrop) composeBackdrop.addEventListener('click', closeCompose);
+
+  // Format toggles inside compose drawer
+  const composeFormatLogs = document.getElementById('composeFormatLogs');
+  const composeFormatBlog = document.getElementById('composeFormatBlog');
+  const coverImageField = document.getElementById('coverImageField');
+  const btnLoadStarterTemplate = document.getElementById('btnLoadStarterTemplate');
+  let activeComposeFormat = 'logs';
+
+  if (composeFormatLogs && composeFormatBlog) {
+    composeFormatLogs.addEventListener('click', () => {
+      activeComposeFormat = 'logs';
+      composeFormatLogs.className = 'btn btn-sm btn-stamp';
+      composeFormatBlog.className = 'btn btn-sm btn-ghost';
+      if (coverImageField) coverImageField.style.display = 'none';
+      const cType = document.getElementById('cType');
+      if (cType) cType.value = 'post-mortem';
+    });
+
+    composeFormatBlog.addEventListener('click', () => {
+      activeComposeFormat = 'blog';
+      composeFormatBlog.className = 'btn btn-sm btn-stamp';
+      composeFormatLogs.className = 'btn btn-sm btn-ghost';
+      if (coverImageField) coverImageField.style.display = 'block';
+      const cType = document.getElementById('cType');
+      if (cType) cType.value = 'field-report';
+    });
+  }
+
+  if (btnLoadStarterTemplate) {
+    btnLoadStarterTemplate.addEventListener('click', () => {
+      const bodyEl = document.getElementById('cBodyMarkdown');
+      if (!bodyEl) return;
+      if (activeComposeFormat === 'logs') {
+        bodyEl.value = `### The Problem\nDescribe the technical roadblock, unexpected variance, or sensor anomaly encountered during field deployment.\n\n### The Investigation & Root Cause\nExplain what you uncovered when auditing telemetry, traces, or physical hardware:\n\n\`\`\`python\n# Isolated investigation script or diagnostic snippet\ndef verify_edge_case(data):\n    return data.mean() > threshold\n\`\`\`\n\n### Resolution & Architectural Takeaway\nDocument the fix, configuration change, or component replacement that resolved the issue.`;
+      } else {
+        bodyEl.value = `### Field Setting & Context\nDescribe where and how this trial or system was deployed in the real world.\n\n### Observations & Community Findings\nShare direct notes on usability, patient/user reactions, or environmental factors that software simulators miss.\n\n### Next Engineering Steps\nOutline how these reflections will guide the next hardware or software revision.`;
+      }
+    });
+  }
+
+  // Compose Form Submission
+  const composeForm = document.getElementById('composeForm');
+  if (composeForm) {
+    composeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('btnSubmitReport');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Publishing...';
+      }
+
+      const title = document.getElementById('cTitle')?.value || '';
+      const domain = document.getElementById('cDomain')?.value || 'climate';
+      const entryType = document.getElementById('cType')?.value || 'post-mortem';
+      const authorName = document.getElementById('cAuthorName')?.value || 'Field Contributor';
+      const grownFromLabel = document.getElementById('cGrownFrom')?.value || 'Independent Field Note';
+      const summarySnippet = document.getElementById('cSnippet')?.value || '';
+      const teaser = document.getElementById('cTeaser')?.value || '';
+      const coverImageUrl = document.getElementById('cCoverImage')?.value || null;
+      const bodyMarkdown = document.getElementById('cBodyMarkdown')?.value || summarySnippet;
+      const rawTags = document.getElementById('cTags')?.value || '';
+      const tags = rawTags.split(',').map(t => t.trim()).filter(Boolean);
+
+      const payload = {
+        title,
+        domain,
+        entryType,
+        authorName,
+        grownFromLabel,
+        summarySnippet,
+        teaser,
+        coverImageUrl,
+        bodyMarkdown,
+        tags,
+        isFeatured: (activeComposeFormat === 'blog')
+      };
+
+      try {
+        const result = await notebook.publishEntry(payload);
+        const entryGrid = document.getElementById('entryGrid');
+        if (entryGrid) {
+          const newEntry = result?.entry || {
+            ...payload,
+            id: 'entry_' + Date.now(),
+            viewCount: 1,
+            readingTimeMinutes: 3,
+            createdAt: new Date().toISOString()
+          };
+          liveEntriesMap.set(newEntry.id, newEntry);
+          const card = renderNoteCard(newEntry);
+          entryGrid.prepend(card);
+        }
+
+        composeForm.reset();
+        closeCompose();
+
+        const toast = document.getElementById('toast');
+        if (toast) {
+          toast.textContent = '🌱 Field report published to Lab Notebook.';
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 4000);
+        }
+      } catch (err) {
+        alert(err.message || 'Could not publish entry. Please check required fields.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Publish Field Report →';
+        }
+      }
+    });
+  }
+
+  // ==========================================
+  // CARD CLICK & GROW DELEGATION ON ENTRY GRID
+  // ==========================================
+  const entryGrid = document.getElementById('entryGrid');
+  if (entryGrid) {
+    entryGrid.addEventListener('click', (e) => {
+      const growBtn = e.target.closest('.grow-btn, .compose-trigger');
+      const card = e.target.closest('.entry-card');
+      if (!card) return;
+
+      const cardId = card.getAttribute('data-id');
+      if (growBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        openGrowDrawer(cardId);
+      } else {
+        if (cardId) openReaderModal(cardId);
+      }
+    });
+  }
 
   async function loadLiveNotebookAndShipped() {
     try {
       // 1. Load Field Notes & Blog Posts
       const notesRes = await notebook.getEntries();
-      const entryGrid = document.getElementById('entryGrid');
       if (entryGrid && Array.isArray(notesRes) && notesRes.length > 0) {
         notesRes.forEach(entry => {
           liveEntriesMap.set(entry.id, entry);
           if (!entryGrid.querySelector(`[data-id="${entry.id}"]`)) {
             const card = renderNoteCard(entry);
             entryGrid.prepend(card);
+          } else {
+            // Update live view badge if element exists in static HTML
+            const existingCard = entryGrid.querySelector(`[data-id="${entry.id}"]`);
+            if (existingCard && entry.viewCount) {
+              const numEl = existingCard.querySelector('.view-num');
+              if (numEl) numEl.textContent = entry.viewCount;
+            }
           }
         });
       }
@@ -1220,86 +1771,6 @@
     } catch (err) {
       console.warn('[Canopy] Error loading notebook content:', err.message);
     }
-  }
-
-  // Compose Drawer Toggle
-  const composeDrawer = document.getElementById('composeDrawer');
-  const composeBackdrop = document.getElementById('composeBackdrop');
-  const closeComposeBtn = document.getElementById('closeComposeDrawer');
-  const openComposeBtns = [document.getElementById('btnOpenComposeReport'), document.getElementById('btnCtaCompose')].filter(Boolean);
-
-  function openCompose() {
-    if (!composeDrawer || !composeBackdrop) return;
-    composeBackdrop.style.display = 'block';
-    composeDrawer.style.display = 'block';
-    setTimeout(() => {
-      composeBackdrop.classList.add('open');
-      composeDrawer.classList.add('open');
-    }, 10);
-  }
-
-  function closeCompose() {
-    if (!composeDrawer || !composeBackdrop) return;
-    composeBackdrop.classList.remove('open');
-    composeDrawer.classList.remove('open');
-    setTimeout(() => {
-      composeBackdrop.style.display = 'none';
-      composeDrawer.style.display = 'none';
-    }, 260);
-  }
-
-  openComposeBtns.forEach(btn => btn.addEventListener('click', openCompose));
-  if (closeComposeBtn) closeComposeBtn.addEventListener('click', closeCompose);
-  if (composeBackdrop) composeBackdrop.addEventListener('click', closeCompose);
-
-  // Form Submission
-  const composeForm = document.getElementById('composeForm');
-  if (composeForm) {
-    composeForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const submitBtn = document.getElementById('btnSubmitReport');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Publishing...';
-      }
-
-      const payload = {
-        title: document.getElementById('cTitle')?.value || '',
-        domain: document.getElementById('cDomain')?.value || 'climate',
-        entryType: document.getElementById('cType')?.value || 'post-mortem',
-        grownFromLabel: document.getElementById('cGrownFrom')?.value || 'Independent Field Note',
-        summarySnippet: document.getElementById('cNote')?.value || '',
-        bodyMarkdown: document.getElementById('cNote')?.value || '',
-        teaser: document.getElementById('cTeaser')?.value || ''
-      };
-
-      try {
-        const result = await notebook.publishEntry(payload);
-        const entryGrid = document.getElementById('entryGrid');
-        if (entryGrid) {
-          const newEntry = result?.entry || { ...payload, id: 'entry_' + Date.now(), authorName: 'Field Contributor' };
-          liveEntriesMap.set(newEntry.id, newEntry);
-          const card = renderNoteCard(newEntry);
-          entryGrid.prepend(card);
-        }
-
-        composeForm.reset();
-        closeCompose();
-        const toast = document.getElementById('toast');
-        if (toast) {
-          toast.textContent = '🌱 Field report published to Lab Notebook.';
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 4000);
-        }
-      } catch (err) {
-        alert(err.message || 'Could not publish entry. Please try again.');
-      } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Publish Field Report →';
-        }
-      }
-    });
   }
 
   // ==========================================
@@ -1331,7 +1802,7 @@
       
       let matchType = (currentType === 'all') || (cardType === currentType);
       if (currentType === 'article') {
-        matchType = ['article', 'essay', 'founder-essay', 'deep-dive'].includes(cardType);
+        matchType = ['article', 'essay', 'founder-essay', 'deep-dive', 'field-notes'].includes(cardType);
       }
 
       const matchQ = !currentQuery || text.includes(currentQuery);
@@ -1344,7 +1815,6 @@
       const text = (card.textContent || '').toLowerCase();
       const matchDom = (currentDomain === 'all') || (cardDomain === currentDomain);
       const matchQ = !currentQuery || text.includes(currentQuery);
-      // Shipped outcomes display in all and blog mode
       const matchMode = (currentMode !== 'logs');
       card.style.display = (matchDom && matchQ && matchMode) ? '' : 'none';
     });
