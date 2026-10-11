@@ -2,7 +2,7 @@
 // - Single continuous botanical vine that unfurls and branches as the user scrolls through #contentTrack to the end of the site
 // - Zero gap: absolute container with sticky flex rail spanning #problem to #connect
 // - Hero section is 100% clean and minimal (zero ivy)
-// - Polished, high-contrast forest-green stems (#2a4635) and velvety sage leaves
+// - Unified, harmonious botanical green across all vine elements (stems, branches, and leaves)
 // - Emil Kowalski animation principles: critically damped lerp, organic blooming ease, and fluid micro-transitions
 
 export async function initIvyGrowth() {
