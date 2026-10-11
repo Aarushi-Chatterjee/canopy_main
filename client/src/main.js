@@ -23,6 +23,7 @@ import { animate, utils } from 'animejs';
 import { initAmbientPlate } from './ambient-plate.js';
 import { initIvyGrowth } from './ivy-growth.js';
 import { sprints, matches, notebook, auth } from './db.js';
+import { initNotificationCorner, notificationCenter } from './notifications.js';
 
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -32,6 +33,7 @@ import { sprints, matches, notebook, auth } from './db.js';
      ========================================================================== */
   initAmbientPlate();
   initIvyGrowth();
+  initNotificationCorner();
 
   /* ==========================================================================
      SECTION 2: ADAPTIVE BROWSER APPEARANCE & THEME SYSTEM
@@ -619,10 +621,37 @@ import { sprints, matches, notebook, auth } from './db.js';
           throw new Error('Please select an active sprint cycle to join.');
         }
         var activeSkillPill = this.querySelector('[data-group="drawer-skills"] .pill[aria-pressed="true"]');
-        var role = activeSkillPill ? activeSkillPill.textContent : 'Technical Contributor';
-        await sprints.joinSprint(sprintId, role);
+        var role = activeSkillPill ? activeSkillPill.textContent.trim() : 'Technical Contributor';
+        var noteText = document.getElementById('dNote')?.value || '';
+        var linkText = document.getElementById('dLink')?.value || '';
+        var availText = this.querySelector('[data-group="drawer-avail"] .pill[aria-pressed="true"]')?.textContent.trim() || 'Full sprint (2–4 weeks)';
+        var selectedSkills = [...this.querySelectorAll('[data-group="drawer-skills"] .pill[aria-pressed="true"]')].map(p => p.textContent.trim());
+
+        await sprints.joinSprint(sprintId, {
+          squadRole: role,
+          role: role,
+          note: noteText,
+          skills: selectedSkills.length ? selectedSkills : [role],
+          availability: availText,
+          portfolioUrl: linkText,
+          link: linkText,
+          sprintTitle: drawerTitle ? drawerTitle.textContent : 'Active Sprint Squad'
+        });
+
+        // Record in Notification Center so submitter can track review status
+        notificationCenter.addSentNote({
+          sprintId: sprintId,
+          sprintTitle: drawerTitle ? drawerTitle.textContent : 'Active Sprint Squad',
+          role: role,
+          note: noteText,
+          skills: selectedSkills.length ? selectedSkills : [role],
+          availability: availText,
+          link: linkText,
+          status: 'pending_review'
+        });
+
         clearDraft();
-        showToast('🌱 Seat secured! Joined sprint squad as ' + role + '.');
+        showToast('🌱 Note planted! Track review status in Notifications Corner (🔔).');
       } else {
         var recipientId = currentDrawerContext.creatorId || currentDrawerContext.id;
         var reqCallId = currentDrawerContext.creatorId ? currentDrawerContext.id : (currentDrawerContext.callId || null);
@@ -630,8 +659,18 @@ import { sprints, matches, notebook, auth } from './db.js';
           throw new Error('Please select a collaborator or Build Call to initiate a handshake.');
         }
         await matches.sendHandshake(recipientId, note, reqCallId);
+
+        // Record handshake in Notification Center
+        notificationCenter.addSentNote({
+          sprintId: reqCallId || recipientId,
+          sprintTitle: drawerTitle ? drawerTitle.textContent : 'Build Call Collaboration',
+          role: 'Collaborator',
+          note: note,
+          status: 'pending_review'
+        });
+
         clearDraft();
-        showToast('🌱 Note planted: we will be in touch soon.');
+        showToast('🌱 Note planted! Handshake logged in Notifications Corner (🔔).');
       }
       closeAppDrawer();
       this.reset();

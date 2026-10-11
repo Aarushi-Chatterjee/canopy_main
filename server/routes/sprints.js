@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { sprints: sprintsRepo, buildCalls: callsRepo } = require('../repositories');
-const { requireAuth } = require('../middleware/auth');
+const { requireAuth, optionalAuth } = require('../middleware/auth');
 
 // GET /api/sprints
 router.get('/', async (req, res) => {
@@ -48,6 +48,47 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/sprints/my/applications - Outbound & Inbound Sprint Applications
+router.get('/my/applications', optionalAuth, async (req, res) => {
+  try {
+    const currentUserId = req.user?.id || 'usr_current_user';
+    const allSprints = await sprintsRepo.find();
+
+    const sent = [];
+    const received = [];
+
+    allSprints.forEach(sprint => {
+      const apps = Array.isArray(sprint.applications) ? sprint.applications : [];
+      apps.forEach(app => {
+        const appEnriched = {
+          ...app,
+          sprintTitle: sprint.title,
+          domain: sprint.domain,
+          targetDeliverable: sprint.targetDeliverable,
+          creatorId: sprint.creatorId,
+          leadAuthor: sprint.leadAuthor || sprint.members?.[0]?.displayName || 'Sprint Lead'
+        };
+
+        if (app.applicantId === currentUserId || (!req.user && app.isLocalGuest)) {
+          sent.push(appEnriched);
+        }
+
+        if (sprint.creatorId === currentUserId || (!req.user && sprint.isIllustrative)) {
+          received.push(appEnriched);
+        }
+      });
+    });
+
+    res.json({
+      sent,
+      received,
+      total: sent.length + received.length
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to query sprint applications.' });
+  }
+});
+
 // GET /api/sprints/:id
 router.get('/:id', async (req, res) => {
   try {
@@ -68,50 +109,85 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/sprints
-router.post('/', requireAuth, async (req, res) => {
+// POST /api/sprints - Post What You're Working On (Rich Collection Points)
+router.post('/', optionalAuth, async (req, res) => {
   try {
-    const { buildCallId, callId, title, description, domain = 'climate', teamCapacity = 3, startDate, durationDays = 14 } = req.body;
+    const {
+      buildCallId,
+      callId,
+      title,
+      description,
+      problemStatement,
+      targetDeliverable,
+      milestoneMetric,
+      leadAuthor,
+      contactChannel,
+      domain = 'climate',
+      teamCapacity = 3,
+      startDate,
+      durationDays,
+      cycleDuration = 21,
+      neededRoles,
+      referenceUrl
+    } = req.body;
 
-    if (!title) {
-      return res.status(400).json({ error: 'Sprint title is required.' });
+    if (!title || !title.trim()) {
+      return res.status(400).json({ error: 'Problem / Project Title is required.' });
     }
 
+    const duration = parseInt(durationDays || cycleDuration, 10) || 21;
+    const capacity = parseInt(teamCapacity, 10) || 3;
+    const creatorId = req.user?.id || 'usr_lead_' + Date.now().toString(36);
+    const creatorName = leadAuthor || req.user?.displayName || req.user?.email || 'Sprint Lead';
     const sprintId = 'sp_' + Date.now();
     const start = startDate ? new Date(startDate) : new Date();
-    const end = new Date(start.getTime() + durationDays * 24 * 60 * 60 * 1000);
+    const end = new Date(start.getTime() + duration * 24 * 60 * 60 * 1000);
+
+    const rolesList = Array.isArray(neededRoles)
+      ? neededRoles
+      : (typeof neededRoles === 'string' && neededRoles.trim()
+          ? neededRoles.split(',').map(r => r.trim()).filter(Boolean)
+          : ['Technical Contributor']);
 
     const newSprint = {
       id: sprintId,
-      creatorId: req.user.id,
+      creatorId,
       callId: buildCallId || callId || null,
       title: title.trim(),
-      description: description || 'Sprint formed to ship a concrete prototype.',
-      domain,
+      description: (problemStatement || description || 'Sprint formed to ship a concrete prototype.').trim(),
+      problemStatement: (problemStatement || description || '').trim(),
+      targetDeliverable: (targetDeliverable || 'Working Prototype and Documentation').trim(),
+      milestoneMetric: (milestoneMetric || '').trim(),
+      leadAuthor: creatorName,
+      contactChannel: (contactChannel || '').trim(),
+      domain: domain.toLowerCase(),
       stage: 'forming',
       status: 'planning',
-      teamCapacity: parseInt(teamCapacity, 10) || 3,
+      teamCapacity: capacity,
+      cycleDuration: duration,
+      referenceUrl: (referenceUrl || '').trim(),
       participants: [{
-        userId: req.user.id,
+        userId: creatorId,
         role: 'Sprint Lead',
-        displayName: req.user.displayName || req.user.email,
+        displayName: creatorName,
         joinedAt: new Date().toISOString()
       }],
       members: [{
-        userId: req.user.id,
+        userId: creatorId,
         squadRole: 'Sprint Lead',
-        displayName: req.user.displayName || req.user.email,
+        displayName: creatorName,
         joinedAt: new Date().toISOString()
       }],
-      neededRoles: Array.isArray(req.body.neededRoles) ? req.body.neededRoles : (req.body.neededRoles ? [req.body.neededRoles] : ['Technical Contributor']),
-      skillTags: Array.isArray(req.body.skillTags) ? req.body.skillTags : (Array.isArray(req.body.neededRoles) ? req.body.neededRoles : [domain]),
+      applications: [],
+      neededRoles: rolesList.length ? rolesList : ['Technical Contributor'],
+      skillTags: Array.isArray(req.body.skillTags) ? req.body.skillTags : rolesList,
       startDate: start.toISOString().split('T')[0],
       endDate: end.toISOString().split('T')[0],
       startedAt: start.toISOString(),
-      daysTotal: durationDays,
-      daysLeft: durationDays,
+      daysTotal: duration,
+      daysLeft: duration,
       progressPct: 0,
-      statusHint: '1 of ' + teamCapacity + ' spots filled',
+      statusHint: `1 of ${capacity} spots filled`,
       createdAt: new Date().toISOString()
     };
 
@@ -119,19 +195,23 @@ router.post('/', requireAuth, async (req, res) => {
 
     res.status(201).json({
       sprint: saved,
-      message: 'Sprint created in Forming stage.'
+      message: '🌱 Working squad launched in Forming stage.'
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to create sprint.' });
   }
 });
 
-// POST /api/sprints/:id/join ("Grab a Shovel")
-router.post('/:id/join', requireAuth, async (req, res) => {
+// POST /api/sprints/:id/join - Plant this note (Apply to Squad)
+router.post('/:id/join', optionalAuth, async (req, res) => {
   try {
-    const userId = req.user.id;
-    const displayName = req.user.displayName || req.user.email;
-    const squadRole = req.body.squadRole || 'Technical Contributor';
+    const userId = req.user?.id || 'usr_builder_' + Date.now().toString(36);
+    const displayName = req.user?.displayName || req.body.applicantName || req.user?.email || 'Anonymous Builder';
+    const squadRole = req.body.squadRole || req.body.role || 'Technical Contributor';
+    const note = (req.body.note || req.body.pitch || '').trim();
+    const skills = Array.isArray(req.body.skills) ? req.body.skills : [squadRole];
+    const availability = req.body.availability || 'Full sprint (2–4 weeks)';
+    const portfolioUrl = (req.body.portfolioUrl || req.body.link || '').trim();
 
     const sprint = await sprintsRepo.findById(req.params.id);
     if (!sprint) {
@@ -140,47 +220,160 @@ router.post('/:id/join', requireAuth, async (req, res) => {
 
     const members = sprint.members || sprint.participants || [];
     if (members.some(m => m.userId === userId)) {
-      return res.status(409).json({ error: 'You are already a member of this sprint squad.' });
+      return res.status(409).json({ error: 'You are already an active member of this sprint squad.' });
     }
 
     const capacity = sprint.teamCapacity || 3;
-    if (members.length >= capacity) {
-      return res.status(400).json({ error: 'Sprint squad capacity has been reached for this cycle.' });
-    }
+    const existingApps = Array.isArray(sprint.applications) ? sprint.applications : [];
 
-    const newMember = {
-      userId,
-      squadRole,
+    const appId = 'app_sp_' + Date.now();
+    const newApplication = {
+      id: appId,
+      sprintId: sprint.id,
+      sprintTitle: sprint.title,
+      applicantId: userId,
+      applicantName: displayName,
+      applicantEmail: req.user?.email || req.body.email || 'collaborator@canopy.earth',
       role: squadRole,
-      displayName,
-      joinedAt: new Date().toISOString()
+      note,
+      skills,
+      availability,
+      portfolioUrl,
+      status: 'pending_review',
+      isLocalGuest: !req.user,
+      createdAt: new Date().toISOString()
     };
 
-    const updatedMembers = [...members, newMember];
+    const updatedApps = [...existingApps, newApplication];
+
+    const updated = await sprintsRepo.update(
+      s => s.id === req.params.id,
+      { applications: updatedApps },
+      { eq: { id: req.params.id } }
+    );
+
+    res.status(201).json({
+      application: newApplication,
+      sprint: updated,
+      message: `🌱 Note planted! Awaiting squad lead review for "${sprint.title}".`
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to plant note.' });
+  }
+});
+
+// PATCH /api/sprints/applications/:appId/accept - Accept Note / Squad Request
+router.patch('/applications/:appId/accept', optionalAuth, async (req, res) => {
+  try {
+    const { appId } = req.params;
+    const allSprints = await sprintsRepo.find();
+
+    let targetSprint = null;
+    let targetApp = null;
+
+    for (const sprint of allSprints) {
+      const apps = Array.isArray(sprint.applications) ? sprint.applications : [];
+      const found = apps.find(a => a.id === appId);
+      if (found) {
+        targetSprint = sprint;
+        targetApp = found;
+        break;
+      }
+    }
+
+    if (!targetSprint || !targetApp) {
+      return res.status(404).json({ error: 'Application record not found.' });
+    }
+
+    // Update application status
+    const updatedApps = targetSprint.applications.map(a => 
+      a.id === appId ? { ...a, status: 'accepted', acceptedAt: new Date().toISOString() } : a
+    );
+
+    // Add applicant to members if not already member
+    const members = targetSprint.members || targetSprint.participants || [];
+    const capacity = targetSprint.teamCapacity || 3;
+    let updatedMembers = [...members];
+
+    if (!members.some(m => m.userId === targetApp.applicantId)) {
+      updatedMembers.push({
+        userId: targetApp.applicantId,
+        squadRole: targetApp.role,
+        role: targetApp.role,
+        displayName: targetApp.applicantName,
+        joinedAt: new Date().toISOString()
+      });
+    }
+
     const isFull = updatedMembers.length >= capacity;
-    const newStage = isFull && (sprint.stage === 'forming' || sprint.status === 'planning') ? 'building' : sprint.stage;
+    const newStage = isFull && (targetSprint.stage === 'forming' || targetSprint.status === 'planning') ? 'building' : targetSprint.stage;
     const statusHint = isFull 
       ? 'team locked for this cycle' 
       : `${updatedMembers.length} of ${capacity} spots filled`;
 
-    const updated = await sprintsRepo.update(
-      s => s.id === req.params.id,
+    const updatedSprint = await sprintsRepo.update(
+      s => s.id === targetSprint.id,
       {
+        applications: updatedApps,
         members: updatedMembers,
         participants: updatedMembers,
         stage: newStage,
-        status: newStage === 'building' ? 'active' : sprint.status,
+        status: newStage === 'building' ? 'active' : targetSprint.status,
         statusHint
       },
-      { eq: { id: req.params.id } }
+      { eq: { id: targetSprint.id } }
     );
 
     res.json({
-      sprint: updated,
-      message: `🌱 Seat secured! You joined the sprint as ${squadRole}.`
+      application: { ...targetApp, status: 'accepted' },
+      sprint: updatedSprint,
+      revealedContact: targetSprint.contactChannel || 'squad-chat@canopy.internal',
+      message: `✓ Collaborator accepted! Added ${targetApp.applicantName} (${targetApp.role}) to squad.`
     });
   } catch (err) {
-    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to join sprint.' });
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to accept application.' });
+  }
+});
+
+// PATCH /api/sprints/applications/:appId/decline - Decline Squad Request
+router.patch('/applications/:appId/decline', optionalAuth, async (req, res) => {
+  try {
+    const { appId } = req.params;
+    const allSprints = await sprintsRepo.find();
+
+    let targetSprint = null;
+    let targetApp = null;
+
+    for (const sprint of allSprints) {
+      const apps = Array.isArray(sprint.applications) ? sprint.applications : [];
+      const found = apps.find(a => a.id === appId);
+      if (found) {
+        targetSprint = sprint;
+        targetApp = found;
+        break;
+      }
+    }
+
+    if (!targetSprint || !targetApp) {
+      return res.status(404).json({ error: 'Application record not found.' });
+    }
+
+    const updatedApps = targetSprint.applications.map(a => 
+      a.id === appId ? { ...a, status: 'declined', declinedAt: new Date().toISOString() } : a
+    );
+
+    await sprintsRepo.update(
+      s => s.id === targetSprint.id,
+      { applications: updatedApps },
+      { eq: { id: targetSprint.id } }
+    );
+
+    res.json({
+      application: { ...targetApp, status: 'declined' },
+      message: 'Application declined.'
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to decline application.' });
   }
 });
 

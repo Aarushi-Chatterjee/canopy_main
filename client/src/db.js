@@ -372,14 +372,37 @@ export const sprints = {
     };
   },
 
-  async joinSprint(sprintId, squadRole = 'Technical Contributor') {
+  async joinSprint(sprintId, payload = {}) {
+    const body = typeof payload === 'string' ? { squadRole: payload } : payload;
     const remote = await apiRequest(`/sprints/${sprintId}/join`, {
       method: 'POST',
-      body: JSON.stringify({ squadRole })
+      body: JSON.stringify(body)
     });
 
     if (remote.ok && remote.data) return remote.data;
     throw new Error(remote.message || 'Unable to join sprint squad.');
+  },
+
+  async getMyApplications() {
+    const remote = await apiRequest('/sprints/my/applications');
+    if (remote.ok && remote.data) return remote.data;
+    return { sent: [], received: [], total: 0 };
+  },
+
+  async acceptApplication(appId) {
+    const remote = await apiRequest(`/sprints/applications/${appId}/accept`, {
+      method: 'PATCH'
+    });
+    if (remote.ok && remote.data) return remote.data;
+    throw new Error(remote.message || 'Failed to accept squad application.');
+  },
+
+  async declineApplication(appId) {
+    const remote = await apiRequest(`/sprints/applications/${appId}/decline`, {
+      method: 'PATCH'
+    });
+    if (remote.ok && remote.data) return remote.data;
+    throw new Error(remote.message || 'Failed to decline squad application.');
   },
 
   async notifySprint(sprintId, email) {

@@ -54,6 +54,10 @@
       <a href="notebook.html">Lab Notebook</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn btn-ghost btn-sm notification-bell-btn" id="navNotificationsBtn" aria-label="Notifications" title="Collaboration &amp; Notification Corner">
+        <svg class="icon" aria-hidden="true" style="width:16px;height:16px;"><use href="#icon-bell"/></svg>
+        <span class="notification-badge" id="navNotificationBadge" style="display:none;">0</span>
+      </button>
       <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
         <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
         <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
@@ -86,6 +90,10 @@
 
   <div class="nav-drawer-section">
     <span class="nav-drawer-section-label">Workspace Tools</span>
+    <button type="button" class="nav-drawer-link" id="drawerNotificationsBtn" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-family:inherit;font-size:0.95rem;color:var(--ink);">
+      <span>🔔 Notifications &amp; Notes</span>
+      <span class="notification-badge" id="drawerNotificationBadge" style="display:none;position:static;">0</span>
+    </button>
     <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
     <a href="sprint.html" class="nav-drawer-link" style="color:var(--forest);font-weight:700;">Active Sprints</a>
     <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
@@ -557,17 +565,18 @@
   <div class="drawer-head">
     <div>
       <h3>Post What You're Working On</h3>
-      <p class="sub">Upload your active problem statement and recruit teammates to build together</p>
+      <p class="sub">Structured entry collection points: define your problem, target deliverable, and open seats to recruit collaborators.</p>
     </div>
     <button class="modal-close" id="closePostSquadDrawer" aria-label="Close drawer">✕</button>
   </div>
   <form class="drawer-form" id="postSquadForm">
+    <!-- Point 1: Title & Domain -->
     <div class="field">
-      <label for="squadTitle">Problem / Project Title</label>
+      <label for="squadTitle">Problem / Project Title <span style="color:var(--forest);">*</span></label>
       <input type="text" id="squadTitle" required placeholder="e.g. Offline edge frequency logger for microgrids" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
     </div>
     <div class="field">
-      <label for="squadDomain">Primary Domain</label>
+      <label for="squadDomain">Primary Domain <span style="color:var(--forest);">*</span></label>
       <select id="squadDomain" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
         <option value="climate">Climate &amp; Carbon</option>
         <option value="grid">Energy &amp; Grid</option>
@@ -575,12 +584,44 @@
         <option value="civic">Civic &amp; Public Infrastructure</option>
         <option value="ai">AI &amp; Sensing</option>
         <option value="education">Education &amp; Literacy</option>
+        <option value="hardware">Open Hardware &amp; Tooling</option>
       </select>
     </div>
-    <div class="field">
-      <label for="squadDescription">What are you building? (Problem context and current angle)</label>
-      <textarea id="squadDescription" required placeholder="Describe the specific bottleneck, what you've prototyped so far, and the outcome targeted in this cycle..." style="min-height:90px;"></textarea>
+
+    <!-- Point 2: Author / Lead & Coordination Channel -->
+    <div class="collection-grid-2">
+      <div class="field">
+        <label for="squadLead">Lead Author / Squad Lead</label>
+        <input type="text" id="squadLead" placeholder="e.g. Elena Vance / Sensor Guild" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+      <div class="field">
+        <label for="squadContact">Coordination Contact / Channel</label>
+        <input type="text" id="squadContact" placeholder="matrix: #sprint-lead:canopy.earth or email" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
     </div>
+
+    <!-- Point 3: Problem Context & Current Bottleneck -->
+    <div class="field">
+      <label for="squadDescription">Problem Statement &amp; Current Bottleneck <span style="color:var(--forest);">*</span></label>
+      <textarea id="squadDescription" required placeholder="Describe the specific bottleneck, what you've prototyped so far, and what angle needs solving..." style="min-height:85px;"></textarea>
+      <span class="hint-small" style="margin-top:3px;display:block;">Be honest about what is broken, missing, or untested in the field.</span>
+    </div>
+
+    <!-- Point 4: Target Deliverable (The concrete outcome) -->
+    <div class="field">
+      <label for="squadDeliverable">Target Deliverable (What will be shipped?) <span style="color:var(--forest);">*</span></label>
+      <input type="text" id="squadDeliverable" required placeholder="e.g. Open hardware schematic, ESP32 telemetry firmware &amp; Grafana dashboard" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      <span class="hint-small" style="margin-top:3px;display:block;">The tangible artifact that will land in the Canopy Library when cycle closes.</span>
+    </div>
+
+    <!-- Point 5: Key Diagnostic Metric / Success Target -->
+    <div class="field">
+      <label for="squadMetric">Key Diagnostic Metric / Benchmark Target</label>
+      <input type="text" id="squadMetric" placeholder="e.g. Phase drift &lt; 0.05 Hz across 5-day field run; sub-100ms sync latency" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      <span class="hint-small" style="margin-top:3px;display:block;">The empirical test or diagnostic measurement that proves the prototype succeeded.</span>
+    </div>
+
+    <!-- Point 6: Cycle Duration -->
     <div class="field">
       <label>Sprint Cycle Duration</label>
       <div class="pill-group" data-group="squad-duration" data-single="true">
@@ -589,17 +630,31 @@
         <button type="button" class="pill" data-val="28" aria-pressed="false">4 weeks (28 days)</button>
       </div>
     </div>
-    <div class="field">
-      <label for="squadNeededRoles">Teammates &amp; Roles Needed (Comma-separated)</label>
-      <input type="text" id="squadNeededRoles" required placeholder="e.g. Firmware Engineer, Accessible UI Designer" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      <span class="hint-small" style="margin-top:4px;display:block;">Tell potential collaborators which specific crafts your squad needs.</span>
+
+    <!-- Point 7: Squad Capacity & Needed Roles -->
+    <div class="collection-grid-2">
+      <div class="field">
+        <label for="squadCapacity">Squad Capacity</label>
+        <select id="squadCapacity" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+          <option value="3" selected>3 seats (Focused tight squad)</option>
+          <option value="4">4 seats (Full-stack squad)</option>
+          <option value="5">5 seats (Cross-disciplinary team)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="squadNeededRoles">Roles &amp; Crafts Needed <span style="color:var(--forest);">*</span></label>
+        <input type="text" id="squadNeededRoles" required placeholder="e.g. Firmware Engineer (1), DSP Specialist (1)" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
     </div>
+
+    <!-- Point 8: Reference URL / Dataset / Repo -->
     <div class="field">
-      <label for="squadRepoLink">Reference URL / Repo / Notes (Optional)</label>
-      <input type="text" id="squadRepoLink" placeholder="GitHub repo, spec doc, or dataset URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      <label for="squadRepoLink">Reference Repo / Dataset / Spec URL (Optional)</label>
+      <input type="text" id="squadRepoLink" placeholder="GitHub repo, CAD schematic, or dataset URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
     </div>
+
     <div class="form-foot">
-      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">takes two minutes to launch your squad</span>
+      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">takes ninety seconds to seed your squad</span>
       <button type="submit" class="btn btn-stamp btn-sm" id="btnSubmitWorkingSquad">Launch Working Squad →</button>
     </div>
   </form>
@@ -706,6 +761,7 @@
 <script type="module" src="/src/main.js"></script>
 <script type="module">
   import { sprints, calls } from '/src/db.js';
+  import { notificationCenter } from '/src/notifications.js';
 
   function escapeHtml(str) {
     if (!str) return '';
@@ -716,7 +772,7 @@
 
   function createSquadCard(sprint) {
     const card = document.createElement('article');
-    const domain = escapeHtml(sprint.domain || 'general').toLowerCase();
+    const domain = escapeHtml(sprint.domain || 'climate').toLowerCase();
     card.className = 'elevated-card sprint-card reveal';
     card.setAttribute('data-domain', domain);
     card.setAttribute('data-id', sprint.id || '');
@@ -727,22 +783,44 @@
     const roleChips = neededRoles.map(r => `<span class="tag-chip skill" style="border-style:dashed;">Needs: ${escapeHtml(r)}</span>`).join('');
     const cycle = sprint.cycleDuration ? `${sprint.cycleDuration}d cycle` : '21-day cycle';
     const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
+    const capacity = parseInt(sprint.teamCapacity || 3, 10);
+    const currentMembers = Array.isArray(sprint.members) ? sprint.members.length : 1;
+    const seatsOpen = Math.max(0, capacity - currentMembers);
+    const seatsLabel = seatsOpen > 0 ? `${seatsOpen} of ${capacity} seats open` : 'Squad capacity full';
 
     card.innerHTML = `
       <div class="squad-status-row">
         <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
-        <span class="growth-badge" data-stage="forming">Recruiting Teammates</span>
+        <span class="growth-badge" data-stage="forming">${seatsOpen > 0 ? 'Recruiting Teammates' : 'Squad Active'}</span>
       </div>
       <h4>${title}</h4>
+      ${sprint.leadAuthor ? `
+        <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-top:-6px;margin-bottom:6px;">
+          Lead: <strong>${escapeHtml(sprint.leadAuthor)}</strong>${sprint.contactChannel ? ` · <code>${escapeHtml(sprint.contactChannel)}</code>` : ''}
+        </div>` : ''}
       ${desc ? `<p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">${desc}</p>` : ''}
-      <div style="margin-top:2px;font-size:0.8rem;color:var(--ink-faint);">
-        Active working squad · Cycle: ${escapeHtml(cycle)}
+      ${sprint.targetDeliverable ? `
+        <div class="deliverables-box" style="margin:8px 0;padding:8px 10px;border-left:3px solid var(--forest);background:var(--paper);border-radius:4px;font-size:0.82rem;">
+          <strong>Target Deliverable:</strong> ${escapeHtml(sprint.targetDeliverable)}
+        </div>` : ''}
+      ${sprint.milestoneMetric ? `
+        <div class="metric-badge-box" style="margin:6px 0;padding:6px 10px;background:var(--card-edge);border-radius:4px;font-size:0.79rem;color:var(--ink-soft);">
+          <strong>Target Metric:</strong> ${escapeHtml(sprint.milestoneMetric)}
+        </div>` : ''}
+      ${sprint.referenceUrl ? `
+        <div style="margin:4px 0;">
+          <a href="${escapeHtml(sprint.referenceUrl)}" target="_blank" rel="noopener noreferrer" class="research-ref-link" style="font-size:0.8rem;color:var(--forest);">
+            <span>Reference Spec / Repo ↗</span>
+          </a>
+        </div>` : ''}
+      <div style="margin-top:4px;font-size:0.8rem;color:var(--ink-faint);">
+        Active working squad · Cycle: ${escapeHtml(cycle)} · Capacity: ${capacity} seats
       </div>
       <div class="chip-row">
         ${roleChips}
       </div>
       <div class="card-foot">
-        <span class="hint-small">1-2 seats open</span>
+        <span class="hint-small">${seatsLabel}</span>
         <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Join Squad</button>
       </div>
     `;
@@ -885,22 +963,33 @@
       const durationVal = activeDurationPill ? parseInt(activeDurationPill.getAttribute('data-val'), 10) : 21;
       const rolesInput = document.getElementById('squadNeededRoles')?.value || '';
       const neededRoles = rolesInput.split(',').map(r => r.trim()).filter(Boolean);
+      const capacityVal = parseInt(document.getElementById('squadCapacity')?.value || '3', 10);
+      const leadVal = document.getElementById('squadLead')?.value || 'You (Squad Creator)';
+      const contactVal = document.getElementById('squadContact')?.value || '';
+      const deliverableVal = document.getElementById('squadDeliverable')?.value || '';
+      const metricVal = document.getElementById('squadMetric')?.value || '';
+      const repoVal = document.getElementById('squadRepoLink')?.value || '';
 
       const payload = {
         title: document.getElementById('squadTitle')?.value || '',
         domain: document.getElementById('squadDomain')?.value || 'climate',
+        leadAuthor: leadVal,
+        contactChannel: contactVal,
         problemStatement: document.getElementById('squadDescription')?.value || '',
         objective: document.getElementById('squadDescription')?.value || '',
+        targetDeliverable: deliverableVal,
+        milestoneMetric: metricVal,
         cycleDuration: durationVal,
+        teamCapacity: capacityVal,
         neededRoles: neededRoles.length ? neededRoles : ['Technical Contributor'],
-        referenceUrl: document.getElementById('squadRepoLink')?.value || ''
+        referenceUrl: repoVal
       };
 
       try {
         const result = await sprints.createSprint(payload);
         const squadsGrid = document.getElementById('activeSquadsGrid');
+        const newSprint = result?.sprint || { ...payload, id: 'sp_' + Date.now(), members: [leadVal] };
         if (squadsGrid) {
-          const newSprint = result?.sprint || { ...payload, id: 'sp_' + Date.now() };
           const card = createSquadCard(newSprint);
           squadsGrid.prepend(card);
 
@@ -908,13 +997,27 @@
           if (squadCountEl) squadCountEl.textContent = squadsGrid.querySelectorAll('.sprint-card').length;
         }
 
+        // Add incoming review notification so squad creator can test reviewing collaborator notes
+        notificationCenter.addIncomingRequest({
+          sprintId: newSprint.id,
+          sprintTitle: payload.title,
+          applicantName: 'Tariq Al-Mansoor',
+          applicantEmail: 'tariq.mansoor@canopy.earth',
+          role: neededRoles[0] || 'Technical Contributor',
+          note: `Interested in joining "${payload.title}". I can build the prototype and telemetry stack for the ${durationVal}-day cycle.`,
+          skills: ['Telemetry', 'Hardware', 'Full-Stack'],
+          availability: 'Full sprint (2–4 weeks)',
+          portfolioUrl: 'https://github.com/tariq-canopy/working-squad',
+          status: 'pending_review'
+        });
+
         postSquadForm.reset();
         closePostSquad();
         const toast = document.getElementById('toast');
         if (toast) {
-          toast.textContent = '🌱 Working squad launched: active in the cycle.';
+          toast.textContent = '🌱 Working squad launched! Incoming candidate request logged in Notifications Corner (🔔).';
           toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 4000);
+          setTimeout(() => toast.classList.remove('show'), 4500);
         }
       } catch (err) {
         alert(err.message || 'Could not launch squad. Please try again.');
