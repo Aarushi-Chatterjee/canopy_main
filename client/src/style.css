@@ -233,10 +233,21 @@ body.landing-page{
   border-bottom: none;
 }
 
-/* Interior workspace pages (Solid theme backdrop without grid lines or gradients) */
-body.interior-page{
+/* Interior workspace pages (Match, Sprint, Lab Notebook) — ruled horizontal grid lines */
+body.interior-page,
+body.match-page,
+body.sprint-page,
+body.notebook-page {
   background-color: var(--paper);
-  background-image: none;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 31px,
+      color-mix(in srgb, var(--ink) 5.5%, transparent) 31px,
+      color-mix(in srgb, var(--ink) 5.5%, transparent) 32px
+    );
+  background-size: 100% 32px;
 }
 
 /* ──────────────────────────────────────────────────────────────────────
