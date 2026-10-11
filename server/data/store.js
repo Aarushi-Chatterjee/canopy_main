@@ -170,61 +170,93 @@ const INITIAL_DATA = {
   ]
 };
 
+const os = require('os');
+
+const TMP_DB_FILE = path.join(os.tmpdir(), 'canopy-db.json');
+const STORAGE_BUCKET = 'canopy_store';
+const STORAGE_FILE = 'canopy-db.json';
+
 let inMemoryDb = null;
+let lastRemoteSync = 0;
+const SYNC_THROTTLE_MS = 2500;
 
 function isIsolated() {
-  return process.env.CANOPY_ISOLATE_STORE === 'true' || process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production';
+  return process.env.CANOPY_ISOLATE_STORE === 'true' || process.env.NODE_ENV === 'test';
 }
 
 function readDb() {
-  if (isIsolated()) {
-    if (!inMemoryDb) {
-      try {
-        if (fs.existsSync(DB_FILE)) {
-          const raw = fs.readFileSync(DB_FILE, 'utf-8');
-          inMemoryDb = JSON.parse(raw);
-        } else {
-          inMemoryDb = JSON.parse(JSON.stringify(INITIAL_DATA));
-        }
-      } catch (e) {
-        inMemoryDb = JSON.parse(JSON.stringify(INITIAL_DATA));
-      }
-    }
+  if (inMemoryDb) {
     return inMemoryDb;
   }
 
-  try {
-    if (!fs.existsSync(DB_FILE)) {
-      fs.writeFileSync(DB_FILE, JSON.stringify(INITIAL_DATA, null, 2), 'utf-8');
-      return JSON.parse(JSON.stringify(INITIAL_DATA));
-    }
-    const raw = fs.readFileSync(DB_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch (err) {
-    console.error('[Canopy Store] Read error, resetting to initial data:', err);
-    return JSON.parse(JSON.stringify(INITIAL_DATA));
+  // 1. In serverless / test mode, check tmp file first if fresher
+  if (fs.existsSync(TMP_DB_FILE)) {
+    try {
+      const raw = fs.readFileSync(TMP_DB_FILE, 'utf-8');
+      inMemoryDb = JSON.parse(raw);
+      for (const [col, defaultVal] of Object.entries(INITIAL_DATA)) {
+        if (!Array.isArray(inMemoryDb[col])) {
+          inMemoryDb[col] = JSON.parse(JSON.stringify(defaultVal));
+        }
+      }
+      return inMemoryDb;
+    } catch (_) {}
   }
+
+  // 2. Read from repo DB_FILE
+  try {
+    if (fs.existsSync(DB_FILE)) {
+      const raw = fs.readFileSync(DB_FILE, 'utf-8');
+      inMemoryDb = JSON.parse(raw);
+      for (const [col, defaultVal] of Object.entries(INITIAL_DATA)) {
+        if (!Array.isArray(inMemoryDb[col])) {
+          inMemoryDb[col] = JSON.parse(JSON.stringify(defaultVal));
+        }
+      }
+      return inMemoryDb;
+    }
+  } catch (err) {
+    console.error('[Canopy Store] DB_FILE read error:', err.message);
+  }
+
+  // 3. Fallback to INITIAL_DATA
+  inMemoryDb = JSON.parse(JSON.stringify(INITIAL_DATA));
+  return inMemoryDb;
 }
 
 function writeDb(data) {
   inMemoryDb = data;
+  const jsonStr = JSON.stringify(data, null, 2);
 
-  if (process.env.NODE_ENV === 'production') {
-    // Retain warm in-memory container state in serverless production environments
-    return true;
-  }
-
-  if (isIsolated()) {
-    return true;
-  }
-
+  // Write to primary DB_FILE if writable
   try {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
-    return true;
-  } catch (err) {
-    console.error('[Canopy Store] Write error:', err);
-    return false;
+    fs.writeFileSync(DB_FILE, jsonStr, 'utf-8');
+  } catch (_) {
+    // Expected on read-only serverless filesystems (e.g. AWS Lambda / Vercel)
   }
+
+  // Always write to OS tmpdir for local container durability
+  try {
+    fs.writeFileSync(TMP_DB_FILE, jsonStr, 'utf-8');
+  } catch (_) {}
+
+  // Asynchronously sync to Supabase Storage if configured
+  try {
+    const { supabase, isConfigured } = require('../config/supabase');
+    if (isConfigured() && supabase) {
+      supabase.storage
+        .from(STORAGE_BUCKET)
+        .upload(STORAGE_FILE, jsonStr, { contentType: 'application/json', upsert: true })
+        .then(() => {
+          lastRemoteSync = Date.now();
+        })
+        .catch(err => {
+          console.warn('[Canopy Store:AsyncUpload:Warn]', err.message);
+        });
+    }
+  } catch (_) {}
+
+  return true;
 }
 
 const store = {
@@ -232,9 +264,100 @@ const store = {
     inMemoryDb = JSON.parse(JSON.stringify(INITIAL_DATA));
   },
 
+  async ensureSynced(force = false) {
+    if (isIsolated()) {
+      return inMemoryDb || readDb();
+    }
+    const now = Date.now();
+    if (!force && lastRemoteSync && (now - lastRemoteSync) < SYNC_THROTTLE_MS) {
+      return inMemoryDb || readDb();
+    }
+    try {
+      const { supabase, isConfigured } = require('../config/supabase');
+      if (isConfigured() && supabase) {
+        const { data, error } = await supabase.storage.from(STORAGE_BUCKET).download(STORAGE_FILE);
+        if (!error && data) {
+          const text = await data.text();
+          const parsed = JSON.parse(text);
+          if (parsed && typeof parsed === 'object') {
+            // MERGE: Preserve any local in-memory users and profiles that are newer or not yet synced
+            if (inMemoryDb && Array.isArray(inMemoryDb.users)) {
+              if (!Array.isArray(parsed.users)) parsed.users = [];
+              for (const localUser of inMemoryDb.users) {
+                const remoteIdx = parsed.users.findIndex(u => 
+                  u.id === localUser.id || 
+                  (u.email && localUser.email && u.email.toLowerCase() === localUser.email.toLowerCase())
+                );
+                if (remoteIdx === -1) {
+                  parsed.users.unshift(localUser);
+                } else if (localUser.isVerified && !parsed.users[remoteIdx].isVerified) {
+                  parsed.users[remoteIdx] = localUser;
+                }
+              }
+            }
+            if (inMemoryDb && Array.isArray(inMemoryDb.profiles)) {
+              if (!Array.isArray(parsed.profiles)) parsed.profiles = [];
+              for (const localProf of inMemoryDb.profiles) {
+                if (!parsed.profiles.some(p => p.id === localProf.id || p.userId === localProf.userId)) {
+                  parsed.profiles.unshift(localProf);
+                }
+              }
+            }
+            for (const [col, defaultVal] of Object.entries(INITIAL_DATA)) {
+              if (!Array.isArray(parsed[col])) {
+                parsed[col] = inMemoryDb && Array.isArray(inMemoryDb[col]) 
+                  ? inMemoryDb[col] 
+                  : JSON.parse(JSON.stringify(defaultVal));
+              }
+            }
+
+            inMemoryDb = parsed;
+            lastRemoteSync = now;
+            try {
+              fs.writeFileSync(TMP_DB_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+            } catch (_) {}
+            try {
+              fs.writeFileSync(DB_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
+            } catch (_) {}
+            return inMemoryDb;
+          }
+        }
+      }
+    } catch (err) {
+      // Remote download graceful fallback
+    }
+    lastRemoteSync = now;
+    return inMemoryDb || readDb();
+  },
+
+  async persistRemote() {
+    const db = inMemoryDb || readDb();
+    try {
+      const { supabase, isConfigured } = require('../config/supabase');
+      if (isConfigured() && supabase) {
+        const payload = JSON.stringify(db, null, 2);
+        const { error } = await supabase.storage.from(STORAGE_BUCKET).upload(STORAGE_FILE, payload, {
+          contentType: 'application/json',
+          upsert: true
+        });
+        if (error) {
+          console.warn('[Canopy Store] Remote upload warning:', error.message);
+        } else {
+          lastRemoteSync = Date.now();
+        }
+      }
+    } catch (err) {
+      console.warn('[Canopy Store] Remote upload warning:', err.message);
+    }
+    return db;
+  },
+
   getCollection(name) {
     const db = readDb();
-    return db[name] || [];
+    if (!Array.isArray(db[name])) {
+      db[name] = INITIAL_DATA[name] ? JSON.parse(JSON.stringify(INITIAL_DATA[name])) : [];
+    }
+    return db[name];
   },
 
   getItem(name, predicate) {

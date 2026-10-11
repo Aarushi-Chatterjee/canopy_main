@@ -208,14 +208,30 @@ const server = app.listen(PORT, async () => {
     });
     assert(unauthCall.status === 401, 'P0 Security Gate: POST /api/calls rejects unauthenticated submission with 401');
 
-    // 4.2 Authenticated POST /api/calls creates call with pending_review status
-    const postCallRes = await request('POST', '/api/calls', {
+    // 4.2 Role Gate: Builder accounts strictly rejected from posting sponsored challenges
+    const builderPostFail = await request('POST', '/api/calls', {
       title: 'Automated Soil Microgrid Sensor Hub',
       orgName: 'Canopy Agritech',
       problemStatement: 'Scope low-power telemetry for drought forecasting.',
-      domain: 'climate',
-      neededSkills: ['Firmware', 'Rust']
+      domain: 'climate'
     }, cookieHeaders);
+    assert(builderPostFail.status === 403 && builderPostFail.data.code === 'ROLE_RESTRICTED',
+      'Role Gate: Builder accounts strictly rejected from posting sponsored challenges with 403 ROLE_RESTRICTED');
+
+    // 4.3 Authenticated Problem Holder / Enabler POST /api/calls creates call with pending_review status
+    const holderToken = generateToken({ id: 'usr_org_holder', email: 'org@agritech.org', isVerified: true, role: 'problem_holder' });
+    const postCallRes = await request('POST', '/api/calls', {
+      title: 'Automated Soil Microgrid Sensor Hub',
+      orgName: 'Canopy Agritech',
+      organizationSubtitle: 'Drought Forecasting Unit',
+      problemStatement: 'Scope low-power telemetry for drought forecasting.',
+      domain: 'climate',
+      pilotBudget: '$15,000 Deployment Grant',
+      targetDeliverable: 'Open hardware soil moisture probe and live telemetry pipeline',
+      datasetAccessUrl: 'https://data.example.org/soil-grid',
+      timeline: '2–4 weeks',
+      neededSkills: ['Firmware', 'Rust']
+    }, { Authorization: `Bearer ${holderToken}` });
     assert(postCallRes.status === 201 && postCallRes.data.call?.status === 'pending_review', 
       'Build Call: sets status pending_review (not open) for curator evaluation');
     const createdCallId = postCallRes.data.call?.id;
@@ -225,14 +241,14 @@ const server = app.listen(PORT, async () => {
     const isPubliclyVisible = publicCalls.data.calls.some(c => c.id === createdCallId);
     assert(!isPubliclyVisible, 'Content Gate: pending_review call is NOT publicly broadcast in open calls directory');
 
-    // 4.3 Moderation Queue Inspection
+    // 4.4 Moderation Queue Inspection
     const modToken = generateToken({ id: 'usr_mod', email: 'moderator@canopy.test', isVerified: true, role: 'moderator' });
     const modQueueRes = await request('GET', '/api/moderation/queue', null, { Authorization: `Bearer ${modToken}` });
     assert(modQueueRes.status === 200 && Array.isArray(modQueueRes.data.queue), 'Moderation Queue: moderator retrieves review queue');
     const queuedItem = modQueueRes.data.queue.find(item => item.entityId === createdCallId);
     assert(queuedItem && queuedItem.status === 'pending', 'Moderation Queue: contains pending submission for new build call');
 
-    // 4.4 Moderation Review Approval
+    // 4.5 Moderation Review Approval
     const reviewApprove = await request('POST', '/api/moderation/review', {
       entityType: 'build_call',
       entityId: createdCallId,
@@ -251,11 +267,11 @@ const server = app.listen(PORT, async () => {
     assert(auditRes.status === 200 && auditRes.data.auditEvents.some(e => e.targetEntityId === createdCallId), 
       'Audit Logging: records immutable event for moderation approval');
 
-    // 4.5 Organization Dashboard: GET /api/calls/mine
+    // 4.6 Organization Dashboard: GET /api/calls/mine
     const unauthMyCalls = await request('GET', '/api/calls/mine');
     assert(unauthMyCalls.status === 401, 'Organization Pipeline: Unauthenticated GET /api/calls/mine rejected with 401');
 
-    const myCallsRes = await request('GET', '/api/calls/mine', null, cookieHeaders);
+    const myCallsRes = await request('GET', '/api/calls/mine', null, { Authorization: `Bearer ${holderToken}` });
     assert(myCallsRes.status === 200 && Array.isArray(myCallsRes.data.calls), 'Organization Pipeline: Authenticated GET /api/calls/mine returns user challenges');
     const myCallItem = myCallsRes.data.calls.find(c => c.id === createdCallId);
     assert(myCallItem && myCallItem.interestMetrics !== undefined, 'Organization Pipeline: Call contains real-time builder interest metrics');

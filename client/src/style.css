@@ -983,9 +983,9 @@ main#top{
 
 .stage{
   max-width:1180px; margin:0 auto;
-  padding:52px clamp(18px,5vw,56px) 110px;
+  padding:36px clamp(18px,5vw,56px) 44px;
 }
-.stage-head{ max-width:760px; margin-bottom:44px; }
+.stage-head{ max-width:760px; margin-bottom:32px; }
 .stage-head h1{ font-size:clamp(2rem,3.6vw,2.85rem); line-height:1.08; letter-spacing:-.02em; }
 .stage-head .lede{ margin-top:16px; font-size:1.08rem; }
 
@@ -1311,8 +1311,8 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 
 /* ---- Sprint Page Two-Section Layout & Cards ---- */
 .sprint-section-wrap{
-  margin-top:36px;
-  margin-bottom:52px;
+  margin-top:20px;
+  margin-bottom:28px;
 }
 .sprint-section-head{
   display:flex;
@@ -1672,7 +1672,7 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 
 /* ---- shared closing CTA (evolves .connect-card for the workspace pages) ---- */
 .stage-cta{
-  margin-top:70px; padding:48px clamp(24px,5vw,64px); text-align:center;
+  margin-top:36px; padding:32px clamp(20px,4vw,48px); text-align:center;
   --domain: var(--forest);
 }
 .stage-cta h2{ font-size:clamp(1.5rem,2.8vw,2.05rem); max-width:26ch; margin:0 auto; }
@@ -1703,7 +1703,7 @@ footer{
   background:var(--footer-bg);
   color:var(--footer-text);
   border-top:1px solid var(--footer-border);
-  padding:64px 0 28px;
+  padding:44px 0 24px;
   position:relative;
   z-index:1;
   transition:background .22s ease, color .22s ease, border-color .22s ease;

@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255),
     role VARCHAR(32) NOT NULL DEFAULT 'builder' CHECK (role IN ('builder', 'problem_holder', 'enabler')),
     display_name VARCHAR(128) NOT NULL,
-    verification_token VARCHAR(32),
+    verification_token VARCHAR(255),
     is_verified BOOLEAN DEFAULT FALSE,
     verified_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW(),

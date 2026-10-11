@@ -118,10 +118,11 @@ export async function apiRequest(endpoint, options = {}) {
    ============================================================ */
 export const auth = {
   async signUp(email, password, metadata = {}) {
+    const cleanEmail = (email || '').toLowerCase().trim();
     const remote = await apiRequest('/auth/register', {
       method: 'POST',
       body: JSON.stringify({
-        email,
+        email: cleanEmail,
         password,
         role: metadata.role || 'builder',
         displayName: metadata.displayName,
@@ -132,16 +133,18 @@ export const auth = {
     if (remote.ok && remote.data?.user) {
       setLocal(STORAGE_KEYS.USER, remote.data.user);
       if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
-      return { data: remote.data, error: null, verificationNotice: remote.data.verificationNotice };
+      return { data: remote.data, error: null, verificationNotice: remote.data.verificationNotice, email: cleanEmail };
     }
 
     throw new Error(remote.message || 'Registration failed.');
   },
 
   async verifyOtp(email, token) {
+    const cleanEmail = (email || '').toLowerCase().trim();
+    const cleanToken = (token || '').trim();
     const remote = await apiRequest('/auth/verify', {
       method: 'POST',
-      body: JSON.stringify({ email, token })
+      body: JSON.stringify({ email: cleanEmail, token: cleanToken })
     });
 
     if (remote.ok && remote.data?.user) {
@@ -153,16 +156,38 @@ export const auth = {
     throw new Error(remote.message || 'Verification failed.');
   },
 
+  async resendVerification(email) {
+    const cleanEmail = (email || '').toLowerCase().trim();
+    const remote = await apiRequest('/auth/resend-verification', {
+      method: 'POST',
+      body: JSON.stringify({ email: cleanEmail })
+    });
+
+    if (remote.ok) {
+      return { ok: true, message: remote.data?.message || 'Verification passcode dispatched.' };
+    }
+
+    throw new Error(remote.message || 'Failed to resend verification code.');
+  },
+
   async signIn(email, password) {
+    const cleanEmail = (email || '').toLowerCase().trim();
     const remote = await apiRequest('/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email: cleanEmail, password })
     });
 
     if (remote.ok && remote.data?.user) {
       setLocal(STORAGE_KEYS.USER, remote.data.user);
       if (remote.data.profile) setLocal(STORAGE_KEYS.PROFILE, remote.data.profile);
       return { data: remote.data, user: remote.data.user, error: null };
+    }
+
+    if (remote.status === 403 && (remote.data?.verificationRequired || /verification|verify/i.test(remote.message))) {
+      const err = new Error(remote.message || 'Email verification required before accessing terminal.');
+      err.verificationRequired = true;
+      err.email = cleanEmail;
+      throw err;
     }
 
     throw new Error(remote.message || 'Invalid email or password.');
@@ -234,9 +259,10 @@ export const auth = {
   },
 
   async requestPasswordReset(email) {
+    const cleanEmail = (email || '').toLowerCase().trim();
     const remote = await apiRequest('/auth/reset-password-request', {
       method: 'POST',
-      body: JSON.stringify({ email })
+      body: JSON.stringify({ email: cleanEmail })
     });
     if (remote.ok) {
       return { ok: true, message: remote.data?.message || 'Passcode reset instructions dispatched.' };
@@ -245,9 +271,11 @@ export const auth = {
   },
 
   async confirmPasswordReset(email, token, newPassword) {
+    const cleanEmail = (email || '').toLowerCase().trim();
+    const cleanToken = (token || '').trim();
     const remote = await apiRequest('/auth/reset-password-confirm', {
       method: 'POST',
-      body: JSON.stringify({ email, token, newPassword })
+      body: JSON.stringify({ email: cleanEmail, token: cleanToken, newPassword })
     });
     if (remote.ok) {
       if (remote.data?.user) setLocal(STORAGE_KEYS.USER, remote.data.user);

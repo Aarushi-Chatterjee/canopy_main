@@ -451,11 +451,22 @@
 
     <!-- OTP Section (hidden by default) -->
     <div id="otpSection" style="display:none;margin-top:20px;padding-top:20px;border-top:1px dashed var(--line);">
-      <h4 style="font-size:1.02rem;margin-bottom:6px;color:var(--ink);">Enter 6-Character Verification Code</h4>
-      <p style="font-size:0.84rem;color:var(--ink-soft);margin-bottom:14px;" id="otpNotice">A verification code has been dispatched to your email.</p>
-      <div style="display:flex;gap:10px;">
+      <h4 style="font-size:1.02rem;margin-bottom:6px;color:var(--ink);">Enter 6-Digit Verification Code</h4>
+      <p style="font-size:0.84rem;color:var(--ink-soft);margin-bottom:12px;" id="otpNotice">A verification code has been dispatched to your email.</p>
+      
+      <div class="pass-input-group" style="margin-bottom:12px;">
+        <label for="otpEmailInput">Verification Email</label>
+        <input type="email" id="otpEmailInput" placeholder="your.name@domain.org" style="width:100%;padding:9px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
+      </div>
+
+      <div style="display:flex;gap:10px;margin-bottom:10px;">
         <input type="text" id="otpInput" maxlength="6" placeholder="e.g. 123456" style="flex:1;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;text-align:center;">
         <button type="button" id="verifyBtn" class="btn btn-stamp btn-sm">Verify Pass</button>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;padding-top:4px;">
+        <button type="button" id="resendOtpBtn" style="background:none;border:none;padding:0;color:var(--forest);font-weight:600;cursor:pointer;text-decoration:underline;">Resend verification code</button>
+        <button type="button" id="hideOtpBtn" style="background:none;border:none;padding:0;color:var(--ink-faint);cursor:pointer;">Dismiss</button>
       </div>
     </div>
 
@@ -526,11 +537,17 @@
   const otpSection = document.getElementById('otpSection');
   const otpNotice = document.getElementById('otpNotice');
   const otpInput = document.getElementById('otpInput');
+  const otpEmailInput = document.getElementById('otpEmailInput');
   const verifyBtn = document.getElementById('verifyBtn');
+  const resendOtpBtn = document.getElementById('resendOtpBtn');
+  const hideOtpBtn = document.getElementById('hideOtpBtn');
   const toast = document.getElementById('toast');
   const passStatusStamp = document.getElementById('passStatusStamp');
 
-  let pendingEmail = '';
+  let pendingEmail = localStorage.getItem('canopy_pending_email') || '';
+  if (otpEmailInput && pendingEmail) {
+    otpEmailInput.value = pendingEmail;
+  }
 
   // Attach Google Authentication handler to all Google buttons across both tabs
   document.querySelectorAll('.googleAuthBtn').forEach(btn => {
@@ -650,12 +667,24 @@
   tabSignIn.addEventListener('click', () => setMode('signin'));
   tabSignUp.addEventListener('click', () => setMode('signup'));
 
-  // Check URL query parameters for default tab
+  // Check URL query parameters for default tab and verification
   const params = new URLSearchParams(window.location.search);
   if (params.get('tab') === 'signup') {
     setMode('signup');
   } else {
     setMode('signin');
+  }
+
+  const urlEmail = params.get('email');
+  if (urlEmail) {
+    pendingEmail = urlEmail.trim();
+    localStorage.setItem('canopy_pending_email', pendingEmail);
+    if (otpEmailInput) otpEmailInput.value = pendingEmail;
+    const loginEmailInput = document.getElementById('loginEmail');
+    if (loginEmailInput) loginEmailInput.value = pendingEmail;
+  }
+  if (params.get('verify') === 'true') {
+    otpSection.style.display = 'block';
   }
 
   const signInSubmitBtn = document.getElementById('signInSubmitBtn');
@@ -719,6 +748,7 @@
               <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
                 <input type="text" id="resetTokenInput" placeholder="6-digit code (e.g. 123456)" maxlength="6" style="padding:8px 10px;font-size:13px;border:1px solid var(--border);border-radius:6px;background:var(--paper);color:var(--ink);" />
                 <input type="password" id="resetNewPassInput" placeholder="New passcode (min 8 characters)" style="padding:8px 10px;font-size:13px;border:1px solid var(--border);border-radius:6px;background:var(--paper);color:var(--ink);" />
+                <input type="password" id="resetConfirmPassInput" placeholder="Confirm new passcode" style="padding:8px 10px;font-size:13px;border:1px solid var(--border);border-radius:6px;background:var(--paper);color:var(--ink);" />
                 <button type="button" id="confirmResetBtn" class="btn btn-primary" style="padding:8px 14px;font-size:12px;width:100%;">Set New Passcode</button>
               </div>
               <div id="confirmErrorMsg" style="color:var(--rust, #c53030);font-size:12px;margin-bottom:6px;display:none;"></div>
@@ -728,6 +758,7 @@
 
           const resetTokenInput = document.getElementById('resetTokenInput');
           const resetNewPassInput = document.getElementById('resetNewPassInput');
+          const resetConfirmPassInput = document.getElementById('resetConfirmPassInput');
           const confirmResetBtn = document.getElementById('confirmResetBtn');
           const confirmErrorMsg = document.getElementById('confirmErrorMsg');
           const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
@@ -739,6 +770,8 @@
           confirmResetBtn.addEventListener('click', async () => {
             const token = resetTokenInput.value.trim();
             const newPass = resetNewPassInput.value;
+            const confirmPass = resetConfirmPassInput ? resetConfirmPassInput.value : newPass;
+
             if (!token || token.length < 6) {
               confirmErrorMsg.textContent = 'Please enter the complete 6-digit code.';
               confirmErrorMsg.style.display = 'block';
@@ -746,6 +779,11 @@
             }
             if (!newPass || newPass.length < 8) {
               confirmErrorMsg.textContent = 'Passcode must be at least 8 characters.';
+              confirmErrorMsg.style.display = 'block';
+              return;
+            }
+            if (newPass !== confirmPass) {
+              confirmErrorMsg.textContent = 'Passcodes do not match.';
               confirmErrorMsg.style.display = 'block';
               return;
             }
@@ -760,11 +798,12 @@
               loginAlert.innerHTML = `
                 <div style="font-size:13px;line-height:1.5;">
                   <div style="font-weight:700;color:var(--forest);margin-bottom:4px;">✅ Passcode Updated</div>
-                  <p style="margin:0;color:var(--ink-light);">Your passcode was successfully updated. Sign in with your new passcode.</p>
+                  <p style="margin:0;color:var(--ink-light);">Your passcode was successfully updated. Sign in with your new passcode below.</p>
                 </div>
               `;
               document.getElementById('loginEmail').value = targetEmail;
               document.getElementById('loginPassword').value = newPass;
+              showToast('🌱 Passcode updated. You may now access your terminal.');
             } catch (err) {
               confirmResetBtn.disabled = false;
               confirmResetBtn.textContent = 'Set New Passcode';
@@ -805,6 +844,20 @@
       const targetDest = resolveRedirectDest(isStaff);
       setTimeout(() => { window.location.href = targetDest; }, 900);
     } catch (err) {
+      if (err.verificationRequired || /verification|verify/i.test(err.message)) {
+        pendingEmail = email;
+        localStorage.setItem('canopy_pending_email', email);
+        if (otpEmailInput) otpEmailInput.value = email;
+        otpSection.style.display = 'block';
+        if (passStatusStamp) passStatusStamp.textContent = 'Verification Required';
+        if (otpNotice) otpNotice.textContent = err.message || 'Verification is required. Enter your 6-digit code or request a new one below.';
+        showToast('⚠️ Verification required for ' + email);
+        otpSection.scrollIntoView({ behavior: 'smooth' });
+        signInSubmitBtn.disabled = false;
+        signInSubmitBtn.innerHTML = origText;
+        return;
+      }
+
       if (loginAlert) {
         loginAlert.className = 'status-alert status-alert-error';
         loginAlert.innerHTML = `
@@ -882,6 +935,8 @@
         linkedin,
         portfolio
       });
+      localStorage.setItem('canopy_pending_email', pendingEmail);
+      if (otpEmailInput) otpEmailInput.value = pendingEmail;
       otpSection.style.display = 'block';
       if (passStatusStamp) passStatusStamp.textContent = 'Code Dispatched · Verification Required';
       if (res.verificationNotice) {
@@ -911,9 +966,17 @@
   });
 
   verifyBtn.addEventListener('click', async () => {
+    const targetEmail = (otpEmailInput?.value || pendingEmail || localStorage.getItem('canopy_pending_email') || '').trim();
+    if (!targetEmail || !targetEmail.includes('@')) {
+      showToast('⚠️ Please enter the email address to verify.');
+      if (otpEmailInput) otpEmailInput.focus();
+      return;
+    }
+
     const token = otpInput.value.trim();
     if (!token || token.length < 6) {
       showToast('⚠️ Please enter the 6-digit verification code.');
+      otpInput.focus();
       return;
     }
 
@@ -922,8 +985,10 @@
     verifyBtn.innerHTML = 'Verifying...';
 
     try {
-      const res = await auth.verifyOtp(pendingEmail, token);
+      const res = await auth.verifyOtp(targetEmail, token);
+      localStorage.removeItem('canopy_pending_email');
       if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
+      showToast('🌱 Pass successfully verified! Accessing Canopy...');
       window.dispatchEvent(new Event('canopy:auth-changed'));
       const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
       const targetDest = resolveRedirectDest(isStaff);
@@ -934,6 +999,36 @@
       verifyBtn.innerHTML = origText;
     }
   });
+
+  if (resendOtpBtn) {
+    resendOtpBtn.addEventListener('click', async () => {
+      const targetEmail = (otpEmailInput?.value || pendingEmail || localStorage.getItem('canopy_pending_email') || '').trim();
+      if (!targetEmail || !targetEmail.includes('@')) {
+        showToast('⚠️ Please enter a valid email address to resend the code.');
+        if (otpEmailInput) otpEmailInput.focus();
+        return;
+      }
+      resendOtpBtn.disabled = true;
+      const origResendText = resendOtpBtn.textContent;
+      resendOtpBtn.textContent = 'Dispatching...';
+      try {
+        const res = await auth.resendVerification(targetEmail);
+        showToast('🌱 ' + (res.message || 'Fresh verification code dispatched.'));
+        if (otpNotice) otpNotice.textContent = res.message || `A fresh 6-digit verification code was sent to ${targetEmail}.`;
+      } catch (err) {
+        showToast('⚠️ ' + (err.message || 'Failed to dispatch verification code.'));
+      } finally {
+        resendOtpBtn.disabled = false;
+        resendOtpBtn.textContent = origResendText;
+      }
+    });
+  }
+
+  if (hideOtpBtn) {
+    hideOtpBtn.addEventListener('click', () => {
+      otpSection.style.display = 'none';
+    });
+  }
 </script>
 </body>
 </html>

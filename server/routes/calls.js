@@ -81,20 +81,31 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/calls — Submit a new Build Call (Strictly Authenticated)
+// POST /api/calls — Submit a new Build Call / Sponsored Challenge (Restricted to Problem Statement Owners & Enablers)
 router.post('/', requireAuth, async (req, res) => {
   try {
     const creatorId = req.user.id;
+    const userRole = (req.user?.role || '').toLowerCase().replace('-', '_');
+    const allowedRoles = ['problem_holder', 'enabler', 'admin', 'owner'];
+
+    if (!allowedRoles.includes(userRole)) {
+      return res.status(403).json({
+        error: 'Posting sponsored challenges is restricted to Problem Statement Owners and Enablers only. Builder accounts cannot post sponsored challenges.',
+        code: 'ROLE_RESTRICTED'
+      });
+    }
+
     const {
       title,
       organization = 'Open Lab Contributor',
       orgName,
+      organizationSubtitle = '',
       problemStatement,
       desc,
       domain = 'climate',
       targetDeliverable = 'Functional prototype code and field evaluation report',
       targetOutcomes,
-      timeline = '6 weeks',
+      timeline = '2–4 weeks',
       rewardPool = 'Community Grant',
       reward,
       pilotBudget,
@@ -111,17 +122,29 @@ router.post('/', requireAuth, async (req, res) => {
     }
 
     const callId = 'call_' + Date.now();
+    const cleanSkills = Array.isArray(neededSkills)
+      ? neededSkills.map(s => String(s).trim()).filter(Boolean)
+      : typeof neededSkills === 'string'
+        ? neededSkills.split(',').map(s => s.trim()).filter(Boolean)
+        : [];
+
     const newCall = {
       id: callId,
       createdBy: creatorId,
+      creatorRole: userRole,
       title: finalTitle,
       organization: (orgName || organization).trim(),
+      organizationSubtitle: organizationSubtitle.trim(),
       problemStatement: finalProblem,
       domain: domain.toLowerCase(),
-      targetOutcomes: Array.isArray(targetOutcomes) ? targetOutcomes : [targetDeliverable.trim()],
+      targetDeliverable: targetDeliverable.trim(),
+      targetOutcomes: Array.isArray(targetOutcomes) && targetOutcomes.length ? targetOutcomes : [targetDeliverable.trim()],
       timeline: timeline.trim(),
-      rewardPool: (pilotBudget || rewardPool).trim(),
-      contactChannel: (contactChannel || datasetAccessUrl).trim(),
+      rewardPool: (pilotBudget || rewardPool || reward || 'Community Pilot Support').trim(),
+      pilotBudget: (pilotBudget || rewardPool || reward || 'Community Pilot Support').trim(),
+      contactChannel: (contactChannel || req.user.email || '').trim(),
+      datasetAccessUrl: datasetAccessUrl.trim(),
+      neededSkills: cleanSkills,
       status: 'pending_review', // Strictly queued for review, not immediately public
       createdAt: new Date().toISOString()
     };

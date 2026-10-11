@@ -3,12 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Post a Build Call - Canopy</title>
-<meta name="description" content="Submit a structured Build Call for your organization, lab, or startup. Define the challenge, resources, and reward to attract verified builders.">
+<title>Post a Sponsored Challenge - Canopy</title>
+<meta name="description" content="Submit a scoped, grant-backed problem statement for multidisciplinary builder squads. Dedicated deployment stipends, experimental hardware access, and validated ground-truth briefs.">
 <link rel="canonical" href="/post-call.html">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
+<style>
+  .role-gate-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .role-gate-restricted {
+    background: color-mix(in srgb, var(--coral, #c53030) 12%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--coral, #c53030) 35%, transparent);
+    color: var(--ink);
+  }
+  .role-gate-verified {
+    background: color-mix(in srgb, var(--forest, #2d5a3f) 12%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--forest, #2d5a3f) 35%, transparent);
+    color: var(--ink);
+  }
+  .role-gate-guest {
+    background: color-mix(in srgb, var(--sun, #d97706) 12%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--sun, #d97706) 35%, transparent);
+    color: var(--ink);
+  }
+  .form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 640px) {
+    .form-grid-2 {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+  }
+  .field label {
+    display: block;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--card-edge);
+    border-radius: 6px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 0.94rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color .18s ease, box-shadow .18s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--forest);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--forest) 15%, transparent);
+  }
+  .field .field-hint {
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    margin-top: 4px;
+    line-height: 1.35;
+  }
+  .field input:disabled, .field select:disabled, .field textarea:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    background: color-mix(in srgb, var(--paper) 80%, var(--card-edge));
+  }
+</style>
 </head>
 <body class="interior-page">
 
@@ -71,7 +146,7 @@
   <div class="nav-drawer-divider"></div>
   <div class="nav-drawer-section">
     <span class="nav-drawer-section-label">Intake &amp; Access</span>
-    <a href="post-call.html" class="nav-drawer-link">Post a Build Call</a>
+    <a href="post-call.html" class="nav-drawer-link">Post a Sponsored Challenge</a>
     <a href="apply.html" class="nav-drawer-link">Apply to Canopy</a>
     <a href="login.html" class="nav-drawer-link">Sign In / Verify</a>
     <a href="login.html?tab=signup" class="nav-drawer-link" style="color:var(--forest);font-weight:600;">Create Account</a>
@@ -87,79 +162,145 @@
 </aside>
 
 <main id="top">
-<div class="stage" style="max-width:760px;">
+<div class="stage" style="max-width:780px;">
   <div class="stage-head reveal">
-    <span class="kicker" style="font-size:1.15rem;">Organization Intake</span>
-    <h1 style="font-size:clamp(2rem,3.8vw,2.8rem);margin-top:4px;">Post a Build Call</h1>
-    <p class="lede">Define a scoped real-world challenge. Scoped problems with clear requirements and pilot support attract high-velocity multidisciplinary teams.</p>
+    <span class="kicker" style="font-size:1.15rem;">Organization Challenges · Grants &amp; Pilots</span>
+    <h1 style="font-size:clamp(2rem,3.8vw,2.8rem);margin-top:4px;">Post a Sponsored Challenge</h1>
+    <p class="lede">Submit a scoped, grant-backed problem statement for multidisciplinary builder squads. Dedicated deployment stipends, experimental hardware access, and validated ground-truth briefs attract focused engineering teams.</p>
   </div>
 
-  <div class="elevated-card paper-card" style="padding:36px clamp(20px,5vw,40px);border-radius:14px;margin-top:24px;">
+  <!-- ============ ROLE GATE NOTICE BANNER ============ -->
+  <div id="roleGateNotice" class="role-gate-banner role-gate-guest" role="status">
+    <div style="font-size:1.4rem;line-height:1;">🔑</div>
+    <div>
+      <strong>Account Authority Required:</strong> Posting a sponsored challenge requires signing in as a verified <strong>Problem Statement Owner</strong> or <strong>Enabler</strong>.
+      <br><span style="font-size:0.84rem;color:var(--ink-soft);">Builder accounts cannot post sponsored briefs, but are invited to take on open challenges on the Sprint board.</span>
+      <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="/login.html?redirect=/post-call.html" class="btn btn-stamp btn-sm">Sign In / Verify Account →</a>
+        <a href="/login.html?tab=signup&role=problem_holder" class="btn btn-outline btn-sm">Sign Up as Problem Holder</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="elevated-card paper-card" style="padding:36px clamp(20px,5vw,40px);border-radius:14px;margin-top:18px;">
     <form id="postCallForm" style="display:flex;flex-direction:column;gap:22px;">
-      <div class="field">
-        <label for="orgName" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Organization or Initiative Name</label>
-        <input type="text" id="orgName" required placeholder="e.g. Rural Water Alliance / Stanford BioLab" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      </div>
-
-      <div class="field">
-        <label for="contactEmail" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Direct Contact Email</label>
-        <input type="email" id="contactEmail" required placeholder="name@organization.org" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      </div>
-
-      <div class="field">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <label for="callTitle" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Build Call Headline (1 line)</label>
-          <span id="callTitleCount" style="font-size:0.75rem;color:var(--ink-faint);">0 / 80</span>
+      
+      <!-- Organization Name & Sponsoring Unit -->
+      <div class="form-grid-2">
+        <div class="field">
+          <label for="orgName">Sponsoring Organization *</label>
+          <input type="text" id="orgName" required placeholder="e.g. Cooling Singapore Lab / Stanford BioLab">
+          <div class="field-hint">Research institute, foundation, startup, or public agency</div>
         </div>
-        <input type="text" id="callTitle" required maxlength="80" placeholder="e.g. Build an offline telemetry node for agricultural microgrids" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <div class="field">
+          <label for="organizationSubtitle">Initiative or Sponsoring Unit</label>
+          <input type="text" id="organizationSubtitle" placeholder="e.g. Urban Climate Initiative / Watershed Stewardship">
+          <div class="field-hint">Program name, lab group, or specific grant consortium</div>
+        </div>
       </div>
 
+      <!-- Contact Email & Timeline -->
+      <div class="form-grid-2">
+        <div class="field">
+          <label for="contactEmail">Direct Lead Contact Email *</label>
+          <input type="email" id="contactEmail" required placeholder="lead@organization.org">
+          <div class="field-hint">Used for curator review and squad handshake notifications</div>
+        </div>
+        <div class="field">
+          <label for="timeline">Sprint Target Duration *</label>
+          <select id="timeline" required>
+            <option value="2–4 weeks" selected>2–4 weeks (standard rapid sprint)</option>
+            <option value="4–6 weeks">4–6 weeks (field deployment cycle)</option>
+            <option value="6–8 weeks">6–8 weeks (deep research pilot)</option>
+          </select>
+          <div class="field-hint">Target timeframe for working prototype and evaluation</div>
+        </div>
+      </div>
+
+      <!-- Domain Selection -->
       <div class="field">
-        <label style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Primary Domain</label>
+        <label>Primary Domain *</label>
         <div class="pill-group" data-group="domain" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
           <button type="button" class="pill" data-domain="climate" aria-pressed="true">Climate</button>
+          <button type="button" class="pill" data-domain="grid" aria-pressed="false">Grid</button>
+          <button type="button" class="pill" data-domain="forestry" aria-pressed="false">Forestry</button>
           <button type="button" class="pill" data-domain="health" aria-pressed="false">Health</button>
-          <button type="button" class="pill" data-domain="education" aria-pressed="false">Education</button>
           <button type="button" class="pill" data-domain="civic" aria-pressed="false">Civic Tech</button>
           <button type="button" class="pill" data-domain="hardware" aria-pressed="false">Hardware</button>
           <button type="button" class="pill" data-domain="ai" aria-pressed="false">AI / ML</button>
-          <button type="button" class="pill" data-domain="design" aria-pressed="false">Design</button>
+          <button type="button" class="pill" data-domain="education" aria-pressed="false">Education</button>
         </div>
       </div>
 
+      <!-- Challenge Headline -->
       <div class="field">
-        <label for="callDesc" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Problem Context and Scope</label>
-        <textarea id="callDesc" required rows="4" placeholder="Explain the ground truth context, what data or hardware is already available, and what a 2-4 week prototype would accomplish..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:inherit;"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <label for="callTitle" style="margin-bottom:0;">Sponsored Challenge Title (Headline) *</label>
+          <span id="callTitleCount" style="font-size:0.75rem;color:var(--ink-faint);">0 / 80</span>
+        </div>
+        <input type="text" id="callTitle" required maxlength="80" placeholder="e.g. Urban Heat Island Mitigation &amp; Thermal Sensor Mesh">
+        <div class="field-hint">Clear, actionable title that explains what squads will build</div>
       </div>
 
+      <!-- Deployment Grant / Pilot Budget -->
       <div class="field">
-        <label for="callReward" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Reward or Pilot Resources</label>
-        <input type="text" id="callReward" placeholder="e.g. $5,000 deployment grant + open hardware kit sponsorship" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <label for="pilotBudget">Deployment Grant or Pilot Budget *</label>
+        <input type="text" id="pilotBudget" required placeholder="e.g. $15,000 Deployment Grant + Lab Calibration (or $8,500 Pilot Stipend + Sensor Kit)">
+        <div class="field-hint">Specify grant amount, hardware access, test sites, or stipend provided</div>
       </div>
 
-      <div class="field" style="display:flex;align-items:flex-start;gap:8px;margin-top:4px;">
-        <input type="checkbox" id="callConsent" required style="margin-top:3px;accent-color:var(--forest);">
-        <label for="callConsent" style="font-size:0.8rem;color:var(--ink-soft);line-height:1.4;">
-          I confirm this Build Call represents an authentic scoped challenge, and agree to the <a href="terms.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Terms</a> and <a href="privacy.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Privacy Covenant</a>.
+      <!-- Problem Statement & Ground Truth Context -->
+      <div class="field">
+        <label for="callDesc">Problem Statement &amp; Ground Reality *</label>
+        <textarea id="callDesc" required rows="4" placeholder="Explain the ground reality, what data or hardware is already available, why existing solutions fall short, and what squads will address..."></textarea>
+        <div class="field-hint">Ground-truth context helps builders propose exact architectural approaches</div>
+      </div>
+
+      <!-- Target Deliverable -->
+      <div class="field">
+        <label for="targetDeliverable">Target Deliverable *</label>
+        <input type="text" id="targetDeliverable" required placeholder="e.g. Open hardware multi-point radiant temperature logger + live microclimate map pipeline">
+        <div class="field-hint">The tangible artifact expected (e.g. working prototype, firmware, dataset pipeline)</div>
+      </div>
+
+      <!-- Dataset or Research Reference URL -->
+      <div class="field">
+        <label for="datasetAccessUrl">Research Reference or Dataset Link</label>
+        <input type="url" id="datasetAccessUrl" placeholder="https://www.cooling.sg/research/urban-heat-island">
+        <div class="field-hint">Link to whitepaper, study, GitHub repo, or public survey data (optional but recommended)</div>
+      </div>
+
+      <!-- Needed Skills / Tags -->
+      <div class="field">
+        <label for="neededSkills">Needed Skills &amp; Crafts *</label>
+        <input type="text" id="neededSkills" required placeholder="Hardware, Thermal Modeling, IoT, Data Viz">
+        <div class="field-hint">Comma-separated tags for the multidisciplinary squad roles needed</div>
+      </div>
+
+      <!-- Consent Checkbox -->
+      <div class="field" style="display:flex;align-items:flex-start;gap:10px;margin-top:4px;">
+        <input type="checkbox" id="callConsent" required style="margin-top:3px;width:auto;accent-color:var(--forest);">
+        <label for="callConsent" style="font-size:0.82rem;color:var(--ink-soft);line-height:1.45;text-transform:none;letter-spacing:normal;font-weight:400;margin-bottom:0;">
+          I confirm that our organization has allocated the stated pilot resources/grants, and agree to the <a href="terms.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Terms</a> and <a href="privacy.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Privacy Covenant</a>.
         </label>
       </div>
 
       <div id="postCallAlert" style="display:none;" role="alert"></div>
 
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:16px;border-top:1px solid var(--line);">
-        <span style="font-size:0.8rem;color:var(--ink-faint);">Reviewed by our team on a rolling basis</span>
-        <button type="submit" id="postCallSubmitBtn" class="btn btn-stamp">Publish Build Call →</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap;gap:12px;">
+        <span style="font-size:0.8rem;color:var(--ink-faint);">Curator review queue: evaluated within 24–48 hours</span>
+        <button type="submit" id="postCallSubmitBtn" class="btn btn-stamp">Publish Sponsored Challenge →</button>
       </div>
     </form>
   </div>
 
   <!-- ============ MY SUBMITTED BUILD CALLS PANEL ============ -->
-  <div style="margin-top:52px;" id="myBuildCallsSection">
+  <div style="margin-top:48px;" id="myBuildCallsSection">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
       <div>
         <span class="kicker" style="font-size:0.95rem;">Organization Pipeline</span>
-        <h2 style="font-size:clamp(1.5rem,2.5vw,2rem);margin-top:2px;margin-bottom:4px;">My Submitted Build Calls</h2>
-        <p style="font-size:0.86rem;color:var(--ink-soft);margin:0;">Track approval status and verified builder interest in your challenges.</p>
+        <h2 style="font-size:clamp(1.5rem,2.5vw,2rem);margin-top:2px;margin-bottom:4px;">My Submitted Challenges</h2>
+        <p style="font-size:0.86rem;color:var(--ink-soft);margin:0;">Track approval status, curator review, and verified builder interest in your sponsored briefs.</p>
       </div>
       <button type="button" class="btn btn-sm btn-outline" id="btnRefreshMyCalls" style="display:inline-flex;align-items:center;gap:6px;">
         <svg class="icon" aria-hidden="true" style="width:14px;height:14px;" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
@@ -170,14 +311,14 @@
     <div id="myCallsContainer" class="my-calls-grid">
       <!-- Dynamically populated via calls.getMyCalls() -->
       <div class="empty-state show" style="padding:28px 20px;">
-        <p>Loading your Build Calls pipeline...</p>
+        <p>Loading your challenge pipeline...</p>
       </div>
     </div>
   </div>
 </div>
 </main>
 
-<div class="toast" id="toast">🌱 Build Call submitted: added to review pipeline.</div>
+<div class="toast" id="toast">🌱 Sponsored challenge submitted: queued for curator review.</div>
 
 <!-- ============ FOOTER ============ -->
 <footer>
@@ -203,7 +344,7 @@
     </div>
     <div>
       <h5>Workspaces</h5>
-      <a href="post-call.html">Post a Build Call</a>
+      <a href="post-call.html">Post a Sponsored Challenge</a>
       <a href="builders.html">Builders Guild</a>
       <a href="problem-holders.html">Problem Holders</a>
       <a href="enablers.html">Sponsors &amp; Enablers</a>
@@ -229,6 +370,7 @@
   const toast = document.getElementById('toast');
   const submitBtn = document.getElementById('postCallSubmitBtn');
   const postCallAlert = document.getElementById('postCallAlert');
+  const roleGateNotice = document.getElementById('roleGateNotice');
   const myCallsContainer = document.getElementById('myCallsContainer');
   const btnRefreshMyCalls = document.getElementById('btnRefreshMyCalls');
 
@@ -244,13 +386,90 @@
 
   function getStatusBadge(status) {
     if (status === 'open') {
-      return '<span class="badge-status open">✅ Live &amp; Broadcasted</span>';
+      return '<span class="badge-status open">✅ Live on Sprint Board</span>';
     } else if (status === 'filled') {
       return '<span class="badge-status filled">🌱 Squad Formed</span>';
     } else if (status === 'rejected') {
       return '<span class="badge-status" style="background:#fee2e2;color:#991b1b;border:1px solid #f87171;">Revision Needed</span>';
     } else {
       return '<span class="badge-status pending">⏳ Pending Review</span>';
+    }
+  }
+
+  // Set form enablement
+  function setFormEnabled(enabled) {
+    if (!form) return;
+    const inputs = form.querySelectorAll('input, select, textarea, button[type="submit"]');
+    inputs.forEach(el => {
+      el.disabled = !enabled;
+    });
+  }
+
+  // Check role authorization on load
+  async function checkRoleAuthorization() {
+    try {
+      const user = await auth.getCurrentUser().catch(() => null);
+      if (!user || user.isGuest) {
+        if (roleGateNotice) {
+          roleGateNotice.className = 'role-gate-banner role-gate-guest';
+          roleGateNotice.innerHTML = `
+            <div style="font-size:1.4rem;line-height:1;">🔑</div>
+            <div>
+              <strong>Account Required:</strong> Posting a sponsored challenge requires signing in as a verified <strong>Problem Statement Owner</strong> or <strong>Enabler</strong>.
+              <br><span style="font-size:0.84rem;color:var(--ink-soft);">Builder accounts cannot post sponsored briefs, but are invited to take on open challenges on the Sprint board.</span>
+              <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+                <a href="/login.html?redirect=/post-call.html" class="btn btn-stamp btn-sm">Sign In / Verify Account →</a>
+                <a href="/login.html?tab=signup&role=problem_holder" class="btn btn-outline btn-sm">Sign Up as Problem Holder</a>
+              </div>
+            </div>
+          `;
+          roleGateNotice.style.display = 'flex';
+        }
+        setFormEnabled(false);
+        return false;
+      }
+
+      const role = (user.role || '').toLowerCase().replace('-', '_');
+      const isAllowed = ['problem_holder', 'enabler', 'admin', 'owner'].includes(role);
+
+      if (!isAllowed) {
+        if (roleGateNotice) {
+          roleGateNotice.className = 'role-gate-banner role-gate-restricted';
+          roleGateNotice.innerHTML = `
+            <div style="font-size:1.4rem;line-height:1;">⛔</div>
+            <div>
+              <strong>Account Role Restricted:</strong> You are signed in as a <strong>Builder (${escapeHtml(user.email)})</strong>.
+              Posting sponsored problem briefs and grant-backed challenges is restricted to <strong>Problem Statement Owners</strong> (organizations, labs) and <strong>Enablers</strong> (foundations, sponsors).
+              <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                <a href="sprint.html#sponsoredSection" class="btn btn-stamp btn-sm">Browse Active Sponsored Challenges →</a>
+                <a href="/login.html?redirect=/post-call.html" class="btn btn-outline btn-sm">Switch Account</a>
+              </div>
+            </div>
+          `;
+          roleGateNotice.style.display = 'flex';
+        }
+        setFormEnabled(false);
+        return false;
+      }
+
+      // User is authorized
+      const roleTitle = role === 'problem_holder' ? 'Problem Statement Owner' : role === 'enabler' ? 'Enabler / Sponsor' : 'Platform Administrator';
+      if (roleGateNotice) {
+        roleGateNotice.className = 'role-gate-banner role-gate-verified';
+        roleGateNotice.innerHTML = `
+          <div style="font-size:1.4rem;line-height:1;">✅</div>
+          <div>
+            <strong>Authorized Account:</strong> Verified as <strong>${roleTitle}</strong> (${escapeHtml(user.displayName || user.email)}).
+            <br><span style="font-size:0.84rem;color:var(--ink-soft);">Your challenge will be queued for curator review and featured in the Sprint board upon approval.</span>
+          </div>
+        `;
+        roleGateNotice.style.display = 'flex';
+      }
+      setFormEnabled(true);
+      return true;
+    } catch (e) {
+      console.warn('Role verification failed', e);
+      return false;
     }
   }
 
@@ -261,15 +480,27 @@
       if (!user || user.isGuest) {
         myCallsContainer.innerHTML = `
           <div class="empty-state show" style="padding:32px 24px;border-radius:12px;background:var(--card);border:1px dashed var(--card-edge);">
-            <h4 style="margin-bottom:8px;">🔑 Field Station Pass Required</h4>
-            <p style="margin-bottom:14px;color:var(--ink-soft);">Sign in to track your submitted build calls, curator review stages, and real-time builder interest.</p>
+            <h4 style="margin-bottom:8px;">🔑 Organization Pass Required</h4>
+            <p style="margin-bottom:14px;color:var(--ink-soft);">Sign in with a Problem Statement Owner or Enabler account to track your submitted challenges.</p>
             <a href="/login.html?redirect=/post-call.html" class="btn btn-stamp btn-sm">Sign In / Access Pass →</a>
           </div>
         `;
         return;
       }
 
-      myCallsContainer.innerHTML = '<div class="empty-state show" style="padding:24px;"><p>Loading your Build Calls pipeline...</p></div>';
+      const role = (user.role || '').toLowerCase().replace('-', '_');
+      if (!['problem_holder', 'enabler', 'admin', 'owner'].includes(role)) {
+        myCallsContainer.innerHTML = `
+          <div class="empty-state show" style="padding:28px 20px;border-radius:12px;background:var(--card);border:1px dashed var(--card-edge);">
+            <h4 style="margin-bottom:6px;">Builder Account</h4>
+            <p style="color:var(--ink-soft);max-width:440px;margin:0 auto 12px;">Organization challenges can only be managed by Problem Statement Owners and Enablers.</p>
+            <a href="sprint.html#sponsoredSection" class="btn btn-sm btn-outline">Explore Open Challenges →</a>
+          </div>
+        `;
+        return;
+      }
+
+      myCallsContainer.innerHTML = '<div class="empty-state show" style="padding:24px;"><p>Loading your challenge pipeline...</p></div>';
 
       const userCalls = await calls.getMyCalls().catch(() => []);
 
@@ -277,8 +508,8 @@
         myCallsContainer.innerHTML = `
           <div class="empty-state show" style="padding:36px 24px;border-radius:12px;background:var(--card);border:1px dashed var(--card-edge);">
             <div style="font-size:1.8rem;margin-bottom:8px;">🌱</div>
-            <h4 style="margin-bottom:6px;">No Build Calls Submitted Yet</h4>
-            <p style="color:var(--ink-soft);max-width:440px;margin:0 auto;">Your organization has not submitted any active challenges under this account. Use the intake form above to publish your first call.</p>
+            <h4 style="margin-bottom:6px;">No Sponsored Challenges Yet</h4>
+            <p style="color:var(--ink-soft);max-width:440px;margin:0 auto;">Your organization has not submitted any active challenges under this account. Use the form above to publish your first brief.</p>
           </div>
         `;
         return;
@@ -288,9 +519,11 @@
         const title = escapeHtml(c.title || 'Untitled Challenge');
         const domain = escapeHtml((c.domain || 'climate').toUpperCase());
         const org = escapeHtml(c.organization || c.orgName || 'Your Organization');
+        const subtitle = c.organizationSubtitle ? ` · ${escapeHtml(c.organizationSubtitle)}` : '';
         const desc = escapeHtml(c.problemStatement || c.desc || '');
         const excerpt = desc.length > 200 ? desc.slice(0, 200) + '...' : desc;
-        const reward = c.rewardPool || c.reward ? escapeHtml(c.rewardPool || c.reward) : 'Community Pilot';
+        const grant = escapeHtml(c.pilotBudget || c.rewardPool || c.reward || 'Community Pilot');
+        const deliverable = c.targetDeliverable ? escapeHtml(c.targetDeliverable) : '';
         const dateStr = c.createdAt ? new Date(c.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently';
         const statusBadge = getStatusBadge(c.status);
         const interestCount = c.interestMetrics?.totalBuildersInterested || 0;
@@ -298,35 +531,44 @@
         const appsCount = c.interestMetrics?.applicationsCount || 0;
 
         const interestLabel = interestCount === 1 
-          ? '⚡ 1 Builder Showed Interest' 
+          ? '⚡ 1 Builder Interested' 
           : interestCount > 1 
-            ? `⚡ ${interestCount} Builders Showed Interest` 
+            ? `⚡ ${interestCount} Builders Interested` 
             : '🌱 0 Builders Yet';
 
         const viewLink = c.status === 'open' 
-          ? `<a href="match.html" class="btn btn-sm btn-outline" style="font-size:0.78rem;padding:5px 12px;">View in Match Sandbox →</a>`
+          ? `<a href="sprint.html#sponsoredSection" class="btn btn-sm btn-outline" style="font-size:0.78rem;padding:5px 12px;">View in Sprint Board →</a>`
           : `<span style="font-size:0.75rem;color:var(--ink-faint);">Evaluation in progress by curators</span>`;
 
+        const skillsHtml = Array.isArray(c.neededSkills) && c.neededSkills.length 
+          ? `<div class="chip-row" style="margin-top:10px;">${c.neededSkills.slice(0, 4).map(s => `<span class="tag-chip skill" style="font-size:0.7rem;padding:2px 8px;">${escapeHtml(s)}</span>`).join('')}</div>`
+          : '';
+
         return `
-          <article class="my-call-card">
-            <div class="my-call-head">
+          <article class="my-call-card" style="padding:20px;border-radius:10px;background:var(--card);border:1px solid var(--card-edge);margin-bottom:16px;">
+            <div class="my-call-head" style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
               <div class="my-call-title-wrap">
-                <div class="my-call-meta" style="margin-bottom:4px;">
+                <div class="my-call-meta" style="margin-bottom:6px;font-size:0.78rem;color:var(--ink-faint);display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                   <span class="tag-chip" style="font-size:0.68rem;padding:2px 8px;">${domain}</span>
                   <span>·</span>
                   <span>Submitted ${dateStr}</span>
                   <span>·</span>
-                  <span>${org}</span>
+                  <strong>${org}${subtitle}</strong>
                 </div>
-                <h3 class="my-call-title">${title}</h3>
+                <h3 class="my-call-title" style="margin:0 0 6px;font-size:1.18rem;line-height:1.25;">${title}</h3>
+                <div style="display:inline-block;padding:2px 8px;border-radius:4px;background:color-mix(in srgb,var(--sun,#d97706) 15%,var(--card));font-size:0.78rem;font-weight:600;color:var(--ink);margin-bottom:8px;">
+                  💰 ${grant}
+                </div>
               </div>
               <div class="my-call-badges">
                 ${statusBadge}
               </div>
             </div>
-            <p class="my-call-desc">${excerpt}</p>
-            <div class="my-call-foot">
-              <div class="my-call-interest" title="${handshakesCount} direct shovel notes, ${appsCount} application handshakes">
+            <p class="my-call-desc" style="font-size:0.88rem;color:var(--ink-soft);line-height:1.45;margin:6px 0;">${excerpt}</p>
+            ${deliverable ? `<div style="font-size:0.82rem;background:color-mix(in srgb,var(--forest) 8%,var(--paper));padding:6px 10px;border-radius:4px;margin-top:6px;"><strong>Deliverable:</strong> ${deliverable}</div>` : ''}
+            ${skillsHtml}
+            <div class="my-call-foot" style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:10px;border-top:1px solid var(--line);flex-wrap:wrap;gap:8px;">
+              <div class="my-call-interest" style="display:flex;align-items:center;gap:6px;font-size:0.82rem;font-weight:600;" title="${handshakesCount} direct shovel notes, ${appsCount} application handshakes">
                 <svg class="icon" aria-hidden="true" style="width:14px;height:14px;" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                 <span>${interestLabel}</span>
                 ${interestCount > 0 ? `<small style="font-weight:400;color:var(--ink-soft);font-size:0.75rem;">(${handshakesCount} notes, ${appsCount} applications)</small>` : ''}
@@ -343,7 +585,7 @@
       if (myCallsContainer) {
         myCallsContainer.innerHTML = `
           <div class="empty-state show">
-            <p style="color:var(--rust,#c53030);">Unable to retrieve your build calls at this time.</p>
+            <p style="color:var(--rust,#c53030);">Unable to retrieve your challenges at this time.</p>
             <button type="button" class="btn btn-sm btn-outline" onclick="window.renderMyBuildCalls?.()">↻ Retry</button>
           </div>
         `;
@@ -352,7 +594,11 @@
   }
 
   window.renderMyBuildCalls = renderMyBuildCalls;
-  renderMyBuildCalls();
+
+  // Run role check and render my calls
+  checkRoleAuthorization().then(() => {
+    renderMyBuildCalls();
+  });
 
   if (btnRefreshMyCalls) {
     btnRefreshMyCalls.addEventListener('click', () => {
@@ -367,22 +613,6 @@
       });
     });
   }
-
-  // Verify authentication state on load
-  auth.getCurrentUser().then(user => {
-    if (!user) {
-      if (postCallAlert) {
-        postCallAlert.className = 'status-alert status-alert-pending';
-        postCallAlert.innerHTML = `
-          <div>
-            <strong>Field Station Pass Required:</strong> Submitting a Build Call requires an active Canopy account.
-            <a href="/login.html?redirect=/post-call.html" style="margin-left:6px;font-weight:600;color:var(--forest);text-decoration:underline;">Sign In / Access Pass →</a>
-          </div>
-        `;
-        postCallAlert.style.display = 'flex';
-      }
-    }
-  }).catch(() => {});
 
   const callTitleInput = document.getElementById('callTitle');
   const callTitleCount = document.getElementById('callTitleCount');
@@ -401,23 +631,17 @@
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const org = document.getElementById('orgName').value.trim();
-      const email = document.getElementById('contactEmail').value.trim();
-      const title = document.getElementById('callTitle').value.trim();
-      const desc = document.getElementById('callDesc').value.trim();
-      const reward = document.getElementById('callReward').value.trim();
-      const activePill = form.querySelector('.pill[aria-pressed="true"]');
-      const domain = activePill ? (activePill.dataset.domain || activePill.textContent.trim().toLowerCase()) : 'climate';
 
       if (postCallAlert) postCallAlert.style.display = 'none';
 
+      // Check user authorization
       const user = await auth.getCurrentUser().catch(() => null);
-      if (!user) {
+      if (!user || user.isGuest) {
         if (postCallAlert) {
           postCallAlert.className = 'status-alert status-alert-pending';
           postCallAlert.innerHTML = `
             <div>
-              <strong>Sign In Required:</strong> Please sign in to verify your identity before publishing a Build Call.
+              <strong>Sign In Required:</strong> You must sign in with a verified Problem Statement Owner or Enabler account to submit.
               <a href="/login.html?redirect=/post-call.html" style="margin-left:6px;font-weight:600;color:var(--forest);text-decoration:underline;">Sign In Now →</a>
             </div>
           `;
@@ -426,34 +650,75 @@
         return;
       }
 
+      const role = (user.role || '').toLowerCase().replace('-', '_');
+      if (!['problem_holder', 'enabler', 'admin', 'owner'].includes(role)) {
+        if (postCallAlert) {
+          postCallAlert.className = 'status-alert status-alert-error';
+          postCallAlert.innerHTML = `
+            <div>
+              <strong>Role Restricted:</strong> Only Problem Statement Owners and Enablers are permitted to publish sponsored challenges.
+            </div>
+          `;
+          postCallAlert.style.display = 'flex';
+        }
+        return;
+      }
+
+      const org = document.getElementById('orgName').value.trim();
+      const orgSubtitle = document.getElementById('organizationSubtitle').value.trim();
+      const email = document.getElementById('contactEmail').value.trim();
+      const timeline = document.getElementById('timeline').value.trim();
+      const title = document.getElementById('callTitle').value.trim();
+      const pilotBudget = document.getElementById('pilotBudget').value.trim();
+      const desc = document.getElementById('callDesc').value.trim();
+      const deliverable = document.getElementById('targetDeliverable').value.trim();
+      const datasetUrl = document.getElementById('datasetAccessUrl').value.trim();
+      const skillsStr = document.getElementById('neededSkills').value.trim();
+      
+      const activePill = form.querySelector('.pill[aria-pressed="true"]');
+      const domain = activePill ? (activePill.dataset.domain || activePill.textContent.trim().toLowerCase()) : 'climate';
+
       const origText = submitBtn ? submitBtn.innerHTML : '';
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = 'Publishing Call...';
+        submitBtn.innerHTML = 'Publishing Sponsored Challenge...';
       }
 
       try {
+        const cleanSkills = skillsStr ? skillsStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+
         await db.postBuildCall({
           title,
           orgName: org,
           organization: org,
+          organizationSubtitle: orgSubtitle,
           contactChannel: email,
+          contactEmail: email,
           problemStatement: desc,
           desc,
-          rewardPool: reward,
-          reward,
+          targetDeliverable: deliverable,
+          targetOutcomes: [deliverable],
+          pilotBudget,
+          rewardPool: pilotBudget,
+          reward: pilotBudget,
+          datasetAccessUrl: datasetUrl,
+          neededSkills: cleanSkills,
+          timeline: timeline || '2–4 weeks',
           domain: domain.toLowerCase()
         });
+
         if (toast) {
-          toast.textContent = '🌱 Build Call submitted: queued for curator review.';
+          toast.textContent = '🌱 Sponsored challenge submitted: queued for curator review.';
           toast.classList.add('show');
         }
+
         form.reset();
         if (callTitleCount) {
           callTitleCount.textContent = '0 / 80';
           callTitleCount.style.color = 'var(--ink-faint)';
         }
-        // Immediately refresh the My Build Calls panel so newly posted call appears right away
+
+        // Refresh pipeline
         renderMyBuildCalls();
         setTimeout(() => toast && toast.classList.remove('show'), 3500);
       } catch (err) {
@@ -461,8 +726,8 @@
           postCallAlert.className = 'status-alert status-alert-error';
           postCallAlert.innerHTML = `
             <div>
-              <strong>Build Call could not be published:</strong> <span class="err-desc"></span>
-              <br><small style="color:var(--ink-soft);">Your drafted challenge details have been preserved below.</small>
+              <strong>Challenge could not be published:</strong> <span class="err-desc"></span>
+              <br><small style="color:var(--ink-soft);">Your drafted challenge details have been preserved.</small>
               <br><button type="button" class="btn-retry" onclick="document.getElementById('postCallSubmitBtn').click();">↻ Retry Publishing</button>
             </div>
           `;
@@ -471,7 +736,7 @@
           postCallAlert.style.display = 'flex';
         }
         if (toast) {
-          toast.textContent = '⚠️ ' + (err.message || 'Failed to submit Build Call.');
+          toast.textContent = '⚠️ ' + (err.message || 'Failed to submit sponsored challenge.');
           toast.classList.add('show');
           setTimeout(() => toast && toast.classList.remove('show'), 4000);
         }

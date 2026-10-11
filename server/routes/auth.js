@@ -7,6 +7,7 @@ const { generateToken, setSessionCookie, clearSessionCookie, optionalAuth } = re
 const { rateLimit } = require('../middleware/rate-limit');
 const emailService = require('../services/email');
 const { supabase, isConfigured } = require('../config/supabase');
+const { store } = require('../data/store');
 
 // Auth endpoints rate limiting: 15 attempts per minute per IP
 const authLimiter = rateLimit({
@@ -41,7 +42,9 @@ router.post('/register', authLimiter, async (req, res) => {
       hoursPerWeek
     } = req.body;
 
-    if (!email || !email.includes('@')) {
+    const cleanEmail = String(email).toLowerCase().trim();
+
+    if (!cleanEmail || !cleanEmail.includes('@')) {
       return res.status(400).json({ error: 'Please provide a valid email address.' });
     }
 
@@ -49,7 +52,9 @@ router.post('/register', authLimiter, async (req, res) => {
       return res.status(400).json({ error: 'Password must be at least 8 characters in length.' });
     }
 
-    const existing = await usersRepo.findByEmail(email);
+    await store.ensureSynced();
+
+    const existing = await usersRepo.findByEmail(cleanEmail);
     if (existing) {
       return res.status(409).json({ error: 'An account with this email already exists. Please sign in.' });
     }
@@ -61,7 +66,7 @@ router.post('/register', authLimiter, async (req, res) => {
 
     const newUser = {
       id: userId,
-      email: email.toLowerCase().trim(),
+      email: cleanEmail,
       passwordHash: hashPassword(password),
       role: ['builder', 'problem_holder', 'enabler'].includes(role) ? role : 'builder',
       displayName: name,
@@ -114,6 +119,9 @@ router.post('/register', authLimiter, async (req, res) => {
       throw profileErr;
     }
 
+    // Persist to remote storage to ensure cross-serverless container visibility
+    await store.persistRemote();
+
     // Dispatch verification code via Email Service (no token leak in response payload)
     await emailService.sendVerificationCode(newUser.email, token);
 
@@ -140,7 +148,10 @@ router.post('/verify', authLimiter, async (req, res) => {
       return res.status(400).json({ error: 'Email and verification code are required.' });
     }
 
-    const user = await usersRepo.findByEmail(email);
+    await store.ensureSynced();
+
+    const cleanEmail = String(email).toLowerCase().trim();
+    const user = await usersRepo.findByEmail(cleanEmail);
     if (!user) {
       return res.status(404).json({ error: 'User record not found.' });
     }
@@ -193,6 +204,8 @@ router.post('/verify', authLimiter, async (req, res) => {
       { eq: { id: user.id } }
     );
 
+    await store.persistRemote();
+
     const profile = await profilesRepo.findByUserId(user.id);
     const sessionToken = generateToken(updatedUser);
     setSessionCookie(res, sessionToken);
@@ -216,7 +229,9 @@ router.post('/resend-verification', authLimiter, async (req, res) => {
       return res.status(400).json({ error: 'Email is required.' });
     }
 
-    const user = await usersRepo.findByEmail(email);
+    await store.ensureSynced();
+    const cleanEmail = String(email).toLowerCase().trim();
+    const user = await usersRepo.findByEmail(cleanEmail);
     if (!user) {
       // Return neutral success to prevent email enumeration
       return res.json({
@@ -252,6 +267,7 @@ router.post('/resend-verification', authLimiter, async (req, res) => {
       { eq: { id: user.id } }
     );
 
+    await store.persistRemote();
     await emailService.sendVerificationCode(user.email, newToken);
 
     res.json({
@@ -268,7 +284,9 @@ router.post('/login', authLimiter, async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !email.includes('@')) {
+    const cleanEmail = String(email).toLowerCase().trim();
+
+    if (!cleanEmail || !cleanEmail.includes('@')) {
       return res.status(400).json({ error: 'Please enter a valid email address.' });
     }
 
@@ -276,7 +294,8 @@ router.post('/login', authLimiter, async (req, res) => {
       return res.status(400).json({ error: 'Please enter your password.' });
     }
 
-    const user = await usersRepo.findByEmail(email);
+    await store.ensureSynced();
+    const user = await usersRepo.findByEmail(cleanEmail);
 
     // Prevent account enumeration with generic authentication rejection
     if (!user || !user.passwordHash) {
@@ -320,7 +339,9 @@ router.post(['/reset-password-request', '/password-reset/request'], authLimiter,
       return res.status(400).json({ error: 'Please provide a valid email address.' });
     }
 
-    const user = await usersRepo.findByEmail(email);
+    await store.ensureSynced();
+    const cleanEmail = String(email).toLowerCase().trim();
+    const user = await usersRepo.findByEmail(cleanEmail);
 
     if (user) {
       const resetToken = crypto.randomInt(100000, 999999).toString();
@@ -333,6 +354,7 @@ router.post(['/reset-password-request', '/password-reset/request'], authLimiter,
         },
         { eq: { id: user.id } }
       );
+      await store.persistRemote();
       // Dispatch via email service; no token returned in HTTP response
       await emailService.sendPasswordResetCode(user.email, resetToken);
     }
@@ -359,7 +381,9 @@ router.post(['/reset-password-confirm', '/password-reset/confirm'], authLimiter,
       return res.status(400).json({ error: 'Password must be at least 8 characters in length.' });
     }
 
-    const user = await usersRepo.findByEmail(email);
+    await store.ensureSynced();
+    const cleanEmail = String(email).toLowerCase().trim();
+    const user = await usersRepo.findByEmail(cleanEmail);
     if (!user || !user.resetToken) {
       return res.status(400).json({ error: 'Invalid or expired passcode reset request.' });
     }
@@ -372,6 +396,7 @@ router.post(['/reset-password-confirm', '/password-reset/confirm'], authLimiter,
         { resetToken: null, resetExpiresAt: null },
         { eq: { id: user.id } }
       );
+      await store.persistRemote();
       return res.status(429).json({ error: 'Too many failed reset attempts. Request a new password reset.' });
     }
 
@@ -386,6 +411,7 @@ router.post(['/reset-password-confirm', '/password-reset/confirm'], authLimiter,
         { resetAttempts: attempts + 1 },
         { eq: { id: user.id } }
       );
+      await store.persistRemote();
       return res.status(400).json({ error: 'Invalid or expired passcode reset request.' });
     }
 
@@ -401,6 +427,8 @@ router.post(['/reset-password-confirm', '/password-reset/confirm'], authLimiter,
       },
       { eq: { id: user.id } }
     );
+
+    await store.persistRemote();
 
     const sessionToken = generateToken(updated);
     setSessionCookie(res, sessionToken);
