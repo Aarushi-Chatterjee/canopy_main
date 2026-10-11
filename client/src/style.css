@@ -292,13 +292,17 @@ body.interior-page{
   pointer-events: none;
   user-select: none;
   mix-blend-mode: multiply;
-  opacity: 0.90;
-  transition: opacity .3s ease;
+  opacity: 1;
+  filter: contrast(1.18) saturate(1.26) brightness(0.96);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
+  transition: opacity .3s ease, filter .3s ease;
 }
 
 :root[data-theme="dark"] .ivy-unit {
   mix-blend-mode: normal;
-  opacity: 0.82;
+  opacity: 0.85;
+  filter: none;
 }
 
 #ivyRight {
@@ -311,6 +315,8 @@ body.interior-page{
   height: auto;
   aspect-ratio: calc(564 * 1.5 / (1024 * 1.25));
   pointer-events: none;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .ivy-leaves-container {
@@ -320,6 +326,8 @@ body.interior-page{
   width: 564px;
   height: 1024px;
   pointer-events: none;
+  transform-origin: top left;
+  will-change: transform;
 }
 
 .ivy-leaf-node {
@@ -331,6 +339,10 @@ body.interior-page{
   opacity: 0;
   will-change: transform, opacity;
   pointer-events: none;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 @media (max-width: 800px) {
