@@ -140,7 +140,7 @@
   </div>
 
   <!-- Filter & Quick Action Toolbar -->
-  <div class="match-filter-bar reveal" style="margin-top:20px;margin-bottom:32px;">
+  <div class="match-filter-bar reveal" style="margin-top:12px;margin-bottom:20px;">
     <div style="flex:1;min-width:260px;max-width:420px;">
       <input type="text" id="sprintSearch" placeholder="Search problem statements, skills, or roles..." style="width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font-size:0.86rem;">
     </div>
@@ -508,7 +508,7 @@
   </section>
 
   <!-- Parallel Squad Formation & Shipped Library Banner -->
-  <div class="parallel-squad-callout elevated-card reveal" style="margin:36px 0;padding:24px 28px;border-left:4px solid var(--forest);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;background:color-mix(in srgb, var(--paper) 60%, var(--card));border-radius:12px;">
+  <div class="parallel-squad-callout elevated-card reveal" style="margin:24px 0;padding:24px 28px;border-left:4px solid var(--forest);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;background:color-mix(in srgb, var(--paper) 60%, var(--card));border-radius:12px;">
     <div style="max-width:620px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <span style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--forest);">Parallel Exploration Standard</span>
@@ -667,7 +667,7 @@
       <a href="terms.html">Community Charter</a>
       <a href="privacy.html">Data Privacy</a>
       <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
-      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.linkedin.com/company/canopy-collaborate/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
   <div class="foot-bottom">
@@ -862,7 +862,8 @@
           }
         });
         const squadCountEl = document.getElementById('squadCount');
-        if (squadCountEl) squadCountEl.textContent = squadsGrid.querySelectorAll('.sprint-card').length;
+        const count = squadsGrid.querySelectorAll('.sprint-card').length;
+        if (squadCountEl) squadCountEl.textContent = `${count} active squad${count === 1 ? '' : 's'}`;
       }
 
       // 2. Load Sponsored Challenges
@@ -876,8 +877,10 @@
           }
         });
         const sponsoredCountEl = document.getElementById('sponsoredCount');
-        if (sponsoredCountEl) sponsoredCountEl.textContent = sponsoredGrid.querySelectorAll('.sprint-card').length;
+        const sCount = sponsoredGrid.querySelectorAll('.sprint-card').length;
+        if (sponsoredCountEl) sponsoredCountEl.textContent = `${sCount} sponsored brief${sCount === 1 ? '' : 's'}`;
       }
+      applySprintFilters();
     } catch (err) {
       console.warn('[Canopy] Live load warning:', err.message);
     }
@@ -1007,6 +1010,30 @@
   let currentDomainFilter = 'all';
   let currentSearchQuery = '';
 
+  function updateGridEmptyState(gridEl, emptyId, title, message, actionHtml) {
+    if (!gridEl) return;
+    let emptyEl = gridEl.querySelector('#' + emptyId);
+    const visibleCards = gridEl.querySelectorAll('.sprint-card:not([style*="display: none"])');
+    if (visibleCards.length === 0) {
+      if (!emptyEl) {
+        emptyEl = document.createElement('div');
+        emptyEl.id = emptyId;
+        emptyEl.className = 'empty-state-notice reveal';
+        emptyEl.innerHTML = `
+          <svg class="empty-icon" viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor"/></svg>
+          <h4>${title}</h4>
+          <p>${message}</p>
+          ${actionHtml ? `<div class="empty-action">${actionHtml}</div>` : ''}
+        `;
+        gridEl.appendChild(emptyEl);
+      } else {
+        emptyEl.style.display = 'flex';
+      }
+    } else if (emptyEl) {
+      emptyEl.style.display = 'none';
+    }
+  }
+
   function applySprintFilters() {
     const allCards = document.querySelectorAll('#activeSquadsGrid .sprint-card, #sponsoredGrid .sprint-card');
     allCards.forEach(card => {
@@ -1022,6 +1049,24 @@
         card.style.display = 'none';
       }
     });
+
+    const squadsGrid = document.getElementById('activeSquadsGrid');
+    updateGridEmptyState(
+      squadsGrid,
+      'squadsEmptyNotice',
+      'No active squads found in this view',
+      'Have an active problem statement or need collaborators? Post what you are building and start an active sprint cycle.',
+      '<button type="button" class="btn btn-stamp btn-sm" onclick="document.getElementById(\'btnOpenPostSquad\')?.click()">Post What You\'re Working On →</button>'
+    );
+
+    const sponsoredGrid = document.getElementById('sponsoredGrid');
+    updateGridEmptyState(
+      sponsoredGrid,
+      'sponsoredEmptyNotice',
+      'No sponsored briefs found in this view',
+      'Organizations and researchers regularly sponsor challenges with research context and experimental support.',
+      '<a href="post-call.html" class="btn btn-ghost btn-sm">Post a Sponsored Challenge →</a>'
+    );
   }
 
   // Search input listener

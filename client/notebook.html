@@ -308,7 +308,7 @@
   <!-- ==========================================
        SECTION 1: ACTIVE DEV LOGS & FIELD REPORTS
        ========================================== -->
-  <section id="fieldNotesSection" style="margin-top:40px;">
+  <section id="fieldNotesSection" style="margin-top:16px;">
     <div class="sprint-section-head" style="margin-bottom:16px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <span class="section-kicker" style="color:var(--forest);font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;">Loop Section 1</span>
@@ -684,7 +684,7 @@
     </div>
   </section>
 
-  <div class="stage-cta elevated-card reveal" style="margin-top:56px;">
+  <div class="stage-cta elevated-card reveal">
     <h2>Open your notebook. Share your process.</h2>
     <p class="lede">Let others learn from your digging: contributing your field notes grows the library, while shipped outcomes inspire the next cohort of builders.</p>
     <div class="connect-row">
@@ -729,7 +729,7 @@
       <a href="terms.html">Community Charter</a>
       <a href="privacy.html">Data Privacy</a>
       <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
-      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.linkedin.com/company/canopy-collaborate/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
   <div class="foot-bottom">
@@ -1750,6 +1750,7 @@
         const shippedCountEl = document.getElementById('shippedCount');
         if (shippedCountEl) shippedCountEl.textContent = shippedGrid.querySelectorAll('.shipped-card').length;
       }
+      applyFilters();
     } catch (err) {
       console.warn('[Canopy] Error loading notebook content:', err.message);
     }
@@ -1768,6 +1769,31 @@
     'blog': 'Showing editorial Field Notes, deep-dive articles, and founder essays.',
     'logs': 'Showing technical dev logs, architecture post-mortems, and hardware teardowns.'
   };
+
+  function updateGridEmptyState(gridEl, emptyId, title, message, actionHtml) {
+    if (!gridEl) return;
+    let emptyEl = gridEl.querySelector('#' + emptyId);
+    const cardSelector = gridEl.id === 'entryGrid' ? '.entry-card' : '.shipped-card';
+    const visibleCards = gridEl.querySelectorAll(`${cardSelector}:not([style*="display: none"])`);
+    if (visibleCards.length === 0) {
+      if (!emptyEl) {
+        emptyEl = document.createElement('div');
+        emptyEl.id = emptyId;
+        emptyEl.className = 'empty-state-notice reveal';
+        emptyEl.innerHTML = `
+          <svg class="empty-icon" viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor"/></svg>
+          <h4>${title}</h4>
+          <p>${message}</p>
+          ${actionHtml ? `<div class="empty-action">${actionHtml}</div>` : ''}
+        `;
+        gridEl.appendChild(emptyEl);
+      } else {
+        emptyEl.style.display = 'flex';
+      }
+    } else if (emptyEl) {
+      emptyEl.style.display = 'none';
+    }
+  }
 
   function applyFilters() {
     const allNoteCards = document.querySelectorAll('#entryGrid .entry-card');
@@ -1800,6 +1826,24 @@
       const matchMode = (currentMode !== 'logs');
       card.style.display = (matchDom && matchQ && matchMode) ? '' : 'none';
     });
+
+    const entryGrid = document.getElementById('entryGrid');
+    updateGridEmptyState(
+      entryGrid,
+      'notesEmptyNotice',
+      'No dev logs or field reports found in this view',
+      'Field reports document raw engineering progress, unexpected findings, and post-mortems from sprint teams in the field.',
+      '<button type="button" class="btn btn-stamp btn-sm" onclick="document.getElementById(\'btnOpenComposeReport\')?.click()">+ Log Field Report →</button>'
+    );
+
+    const shippedGrid = document.getElementById('shippedGrid');
+    updateGridEmptyState(
+      shippedGrid,
+      'shippedEmptyNotice',
+      'No shipped outcomes found in this view',
+      'When an active sprint finishes and verifies its prototype, deliverable repositories and deployment pilots are logged here.',
+      '<a href="sprint.html" class="btn btn-ghost btn-sm">Browse Active Sprints Board →</a>'
+    );
   }
 
   // Mode Switcher Buttons

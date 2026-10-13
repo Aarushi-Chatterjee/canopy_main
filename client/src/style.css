@@ -1261,7 +1261,7 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 /* ---- workspace head flex (stage-head + optional accessory) ---- */
 .stage-head-flex{
   display:flex; justify-content:space-between; align-items:flex-start; gap:36px; flex-wrap:wrap;
-  margin-bottom:44px;
+  margin-bottom:24px;
 }
 /* Stat cluster removed (fake counters eliminated); legacy selectors kept
    empty to avoid breaking JS references that might query .stat-cluster. */
@@ -1379,8 +1379,8 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 
 /* ---- Sprint Page Two-Section Layout & Cards ---- */
 .sprint-section-wrap{
-  margin-top:20px;
-  margin-bottom:28px;
+  margin-top:16px;
+  margin-bottom:24px;
 }
 .sprint-section-head{
   display:flex;
@@ -1549,8 +1549,8 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
   grid-template-columns:repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap:22px;
   align-items:stretch;
-  margin-top:20px;
-  margin-bottom:44px;
+  margin-top:16px;
+  margin-bottom:24px;
 }
 
 .entry-card{
@@ -1676,8 +1676,8 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 
 /* ---- Shipped Success Stories Gallery ---- */
 .shipped-section-wrap {
-  margin-top: 56px;
-  padding-top: 36px;
+  margin-top: 32px;
+  padding-top: 24px;
   border-top: 2px dashed var(--line);
 }
 
@@ -1776,6 +1776,47 @@ a.elevated-card, button.elevated-card, .elevated-card[tabindex]{ cursor:pointer;
 .stage-cta .lede{ margin:12px auto 0; text-align:center; }
 .stage-cta .connect-row{ margin-top:26px; }
 .stage-cta .hint-small{ margin-top:16px; }
+
+/* ---- Launch-Ready Empty State Notices ---- */
+.empty-state-notice {
+  grid-column: 1 / -1;
+  padding: 36px 28px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1.5px dashed var(--card-edge);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--ink-soft);
+  margin: 8px 0 16px;
+  box-shadow: 0 4px 16px -6px var(--shadow);
+}
+.empty-state-notice .empty-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--forest);
+  opacity: 0.85;
+}
+.empty-state-notice h4 {
+  font-family: 'Fraunces Var', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+}
+.empty-state-notice p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 54ch;
+  margin: 0;
+}
+.empty-state-notice .empty-action {
+  margin-top: 6px;
+}
 
 @media (max-width:980px){
   .match-grid{ grid-template-columns:repeat(2,1fr); }
