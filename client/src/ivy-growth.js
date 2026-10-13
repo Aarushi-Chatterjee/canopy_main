@@ -123,15 +123,33 @@ export async function initIvyGrowth() {
     unitEl.appendChild(leavesContainer);
     rail.appendChild(unitEl);
 
-    // Coordinate scale: uniform aspect ratio across mobile, tablet, and desktop
+    // Coordinate scale: uniform aspect ratio across mobile, tablet, and desktop.
+    // Scales based on viewport height so the vine flows gracefully down the viewport
+    // instead of bunching up into a tiny clump at the top.
     function syncScale() {
-      const curW = unitEl.clientWidth || 330;
-      const s = curW / W;
-      const sx = s;
-      const sy = s;
-      const curH = H * sy;
+      const vh = window.innerHeight || 800;
+      const isMobile = window.innerWidth <= 640;
+      const isTablet = window.innerWidth <= 980;
+
+      // Ensure the vine flows down 85-92% of the viewport on all screens
+      let targetH;
+      if (isMobile) {
+        targetH = Math.min(Math.max(vh * 0.88, 560), 760);
+      } else if (isTablet) {
+        targetH = Math.min(Math.max(vh * 0.90, 640), 860);
+      } else {
+        targetH = Math.min(Math.max(vh * 0.94, 680), 1024);
+      }
+
+      const s = targetH / H;
+      const curW = Math.round(W * s);
+      const curH = Math.round(H * s);
+
+      unitEl.style.width = `${curW}px`;
+      unitEl.style.height = `${curH}px`;
+      canvas.style.width = `${curW}px`;
       canvas.style.height = `${curH}px`;
-      leavesContainer.style.transform = `scale(${sx}, ${sy})`;
+      leavesContainer.style.transform = `scale(${s}, ${s})`;
       leavesContainer.style.transformOrigin = 'top left';
       leavesContainer.style.width = `${W}px`;
       leavesContainer.style.height = `${H}px`;
