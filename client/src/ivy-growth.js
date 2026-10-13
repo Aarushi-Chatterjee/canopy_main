@@ -123,12 +123,12 @@ export async function initIvyGrowth() {
     unitEl.appendChild(leavesContainer);
     rail.appendChild(unitEl);
 
-    // Coordinate scale: 1.5x width-wise, 1.25x length-wise with viewport height coverage
+    // Coordinate scale: uniform aspect ratio across mobile, tablet, and desktop
     function syncScale() {
       const curW = unitEl.clientWidth || 330;
-      const sx = curW / W;
-      const minSy = (window.innerHeight * 1.05) / H;
-      const sy = Math.max(sx * (1.25 / 1.5), minSy);
+      const s = curW / W;
+      const sx = s;
+      const sy = s;
       const curH = H * sy;
       canvas.style.height = `${curH}px`;
       leavesContainer.style.transform = `scale(${sx}, ${sy})`;

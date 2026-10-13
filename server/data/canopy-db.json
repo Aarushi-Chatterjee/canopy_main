@@ -3,7 +3,7 @@
   "profiles": [],
   "build_calls": [
     {
-      "id": "call_1791870315425",
+      "id": "call_1791901588213",
       "creatorId": "usr_org_holder",
       "createdBy": "usr_org_holder",
       "title": "Automated Soil Microgrid Sensor Hub",
@@ -25,8 +25,8 @@
       "status": "open",
       "moderationStatus": "approved",
       "isIllustrative": false,
-      "createdAt": "2026-10-13T05:45:15.426Z",
-      "updatedAt": "2026-10-13T05:45:18.222Z"
+      "createdAt": "2026-10-13T14:26:28.213Z",
+      "updatedAt": "2026-10-13T14:26:32.410Z"
     },
     {
       "id": "call_groundwater",
@@ -50,7 +50,7 @@
   ],
   "matches": [
     {
-      "id": "mat_man_1791870368101",
+      "id": "mat_man_1791901643396",
       "requesterId": "usr_founder_aarushi",
       "recipientId": "usr_water_ngo",
       "userId": "usr_founder_aarushi",
@@ -76,16 +76,16 @@
       "requesterConsentAt": null,
       "contactReleasedAt": null,
       "contactReleasedBy": null,
-      "introductionSentAt": "2026-10-13T05:46:08.101Z",
+      "introductionSentAt": "2026-10-13T14:27:23.396Z",
       "expiresAt": null,
-      "createdAt": "2026-10-13T05:46:08.101Z",
-      "updatedAt": "2026-10-13T05:46:08.101Z"
+      "createdAt": "2026-10-13T14:27:23.396Z",
+      "updatedAt": "2026-10-13T14:27:23.396Z"
     },
     {
-      "id": "mtc_1791870321569",
-      "requesterId": "usr_1791870306264",
+      "id": "mtc_1791901596169",
+      "requesterId": "usr_1791901581777",
       "recipientId": "usr_water_ngo",
-      "userId": "usr_1791870306264",
+      "userId": "usr_1791901581777",
       "matchUserId": "usr_water_ngo",
       "buildCallId": null,
       "callId": null,
@@ -110,7 +110,7 @@
       "contactReleasedBy": null,
       "introductionSentAt": null,
       "expiresAt": null,
-      "createdAt": "2026-10-13T05:45:21.569Z",
+      "createdAt": "2026-10-13T14:26:36.169Z",
       "updatedAt": null
     }
   ],
@@ -144,12 +144,12 @@
       "statusHint": "Illustrative demonstration cycle",
       "applications": [
         {
-          "id": "app_sp_1791870323178",
+          "id": "app_sp_1791901597740",
           "sprintId": "sp_groundwater_sample",
           "sprintTitle": "Groundwater optical probe calibration squad",
-          "applicantId": "usr_1791870306264",
+          "applicantId": "usr_1791901581777",
           "applicantName": "Elena Test",
-          "applicantEmail": "builder.1791870305682@canopy.test",
+          "applicantEmail": "builder.1791901581458@canopy.test",
           "role": "Sensors Lead",
           "note": "",
           "skills": [
@@ -159,17 +159,17 @@
           "portfolioUrl": "",
           "status": "pending_review",
           "isLocalGuest": false,
-          "createdAt": "2026-10-13T05:45:23.178Z"
+          "createdAt": "2026-10-13T14:26:37.740Z"
         }
       ],
-      "updatedAt": "2026-10-13T05:45:23.349Z"
+      "updatedAt": "2026-10-13T14:26:37.947Z"
     }
   ],
   "notebook_entries": [
     {
-      "id": "entry_1791870323993",
-      "authorId": "usr_1791870306264",
-      "userId": "usr_1791870306264",
+      "id": "entry_1791901598769",
+      "authorId": "usr_1791901581777",
+      "userId": "usr_1791901581777",
       "authorName": "Elena Test",
       "sprintId": null,
       "parentEntryId": null,
@@ -192,7 +192,7 @@
       "isFeatured": false,
       "isFounderPost": false,
       "status": "published",
-      "createdAt": "2026-10-13T05:45:23.993Z",
+      "createdAt": "2026-10-13T14:26:38.769Z",
       "updatedAt": null
     },
     {
@@ -218,7 +218,7 @@
   ],
   "applications": [
     {
-      "id": "app_1791870324197",
+      "id": "app_1791901599077",
       "fullName": "Dr. Jane Vance",
       "email": "jane.vance@ecology.org",
       "role": "problem_holder",
@@ -232,61 +232,61 @@
       "reviewedAt": null,
       "callId": null,
       "builderId": null,
-      "appliedAt": "2026-10-13T05:45:24.197Z",
-      "submittedAt": "2026-10-13T05:45:24.197Z",
-      "createdAt": "2026-10-13T05:45:24.197Z",
+      "appliedAt": "2026-10-13T14:26:39.077Z",
+      "submittedAt": "2026-10-13T14:26:39.077Z",
+      "createdAt": "2026-10-13T14:26:39.077Z",
       "updatedAt": null
     }
   ],
   "moderation_queue": [
     {
-      "id": "mod_1791870324487",
+      "id": "mod_1791901599285",
       "entityType": "application",
-      "entityId": "app_1791870324197",
+      "entityId": "app_1791901599077",
       "status": "pending",
       "flaggedReason": "application_intake",
       "submittedBy": null,
       "reviewedBy": null,
       "decisionNote": null,
-      "createdAt": "2026-10-13T05:45:24.487Z",
+      "createdAt": "2026-10-13T14:26:39.285Z",
       "reviewedAt": null
     },
     {
-      "id": "mod_1791870315610",
+      "id": "mod_1791901588419",
       "entityType": "build_call",
-      "entityId": "call_1791870315425",
+      "entityId": "call_1791901588213",
       "status": "approved",
       "flaggedReason": "new_submission",
       "submittedBy": "usr_org_holder",
       "reviewedBy": "usr_mod",
       "decisionNote": "Verified problem holder identity and pilot budget allocation.",
-      "createdAt": "2026-10-13T05:45:15.610Z",
-      "reviewedAt": "2026-10-13T05:45:17.795Z",
-      "updatedAt": "2026-10-13T05:45:18.401Z"
+      "createdAt": "2026-10-13T14:26:28.419Z",
+      "reviewedAt": "2026-10-13T14:26:31.803Z",
+      "updatedAt": "2026-10-13T14:26:32.616Z"
     }
   ],
   "audit_events": [
     {
-      "id": "aud_1791870378462_n08b7",
+      "id": "aud_1791901654013_5ktje",
       "eventType": "notebook.deleted_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "notebook_entry",
-      "targetEntityId": "entry_1791870370487",
+      "targetEntityId": "entry_1791901645624",
       "payload": {
         "title": "Decentralized Microgrid Frequency Drift Calibration",
         "entryType": "article"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:46:18.462Z"
+      "createdAt": "2026-10-13T14:27:34.013Z"
     },
     {
-      "id": "aud_1791870374941_pb96q",
+      "id": "aud_1791901650325_st353",
       "eventType": "notebook.updated_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "notebook_entry",
-      "targetEntityId": "entry_1791870370487",
+      "targetEntityId": "entry_1791901645624",
       "payload": {
         "updates": [
           "readingTimeMinutes",
@@ -295,15 +295,15 @@
         ]
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:46:14.941Z"
+      "createdAt": "2026-10-13T14:27:30.325Z"
     },
     {
-      "id": "aud_1791870370653_r36np",
+      "id": "aud_1791901645832_u6c63",
       "eventType": "notebook.created_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "notebook_entry",
-      "targetEntityId": "entry_1791870370487",
+      "targetEntityId": "entry_1791901645624",
       "payload": {
         "title": "Decentralized Microgrid Frequency Drift Calibration",
         "domain": "climate",
@@ -311,24 +311,24 @@
         "isFounderPost": true
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:46:10.653Z"
+      "createdAt": "2026-10-13T14:27:25.832Z"
     },
     {
-      "id": "aud_1791870368291_rqqjf",
+      "id": "aud_1791901643664_thle3",
       "eventType": "match.manual_curated",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "match",
-      "targetEntityId": "mat_man_1791870368101",
+      "targetEntityId": "mat_man_1791901643396",
       "payload": {
         "initiatorId": "usr_founder_aarushi",
         "recipientId": "usr_water_ngo"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:46:08.291Z"
+      "createdAt": "2026-10-13T14:27:23.664Z"
     },
     {
-      "id": "aud_1791870364171_7wq7h",
+      "id": "aud_1791901640485_q7t8d",
       "eventType": "settings.updated",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
@@ -343,29 +343,29 @@
         }
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:46:04.171Z"
+      "createdAt": "2026-10-13T14:27:20.485Z"
     },
     {
-      "id": "aud_1791870358817_hntmz",
+      "id": "aud_1791901635869_6ks6m",
       "eventType": "build_call.deleted_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "build_call",
-      "targetEntityId": "call_1791870351541",
+      "targetEntityId": "call_1791901628547",
       "payload": {
         "title": "Decentralized Grid Frequency Sensor",
         "domain": "energy"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:45:58.817Z"
+      "createdAt": "2026-10-13T14:27:15.869Z"
     },
     {
-      "id": "aud_1791870356479_6bz1z",
+      "id": "aud_1791901633287_fti3e",
       "eventType": "build_call.updated_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "build_call",
-      "targetEntityId": "call_1791870351541",
+      "targetEntityId": "call_1791901628547",
       "payload": {
         "updates": [
           "status",
@@ -374,95 +374,95 @@
         ]
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:45:56.479Z"
+      "createdAt": "2026-10-13T14:27:13.287Z"
     },
     {
-      "id": "aud_1791870351805_oxuar",
+      "id": "aud_1791901628738_soh6y",
       "eventType": "build_call.created_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "build_call",
-      "targetEntityId": "call_1791870351541",
+      "targetEntityId": "call_1791901628547",
       "payload": {
         "title": "Decentralized Grid Frequency Sensor",
         "domain": "energy",
         "status": "open"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:45:51.805Z"
+      "createdAt": "2026-10-13T14:27:08.738Z"
     },
     {
-      "id": "aud_1791870349530_dg1gv",
+      "id": "aud_1791901625802_h8uvy",
       "eventType": "content.deleted_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "content_item",
-      "targetEntityId": "cnt_1791870342863",
+      "targetEntityId": "cnt_1791901619192",
       "payload": {
         "contentKey": "call_solar_microgrid",
         "title": "Decentralized Microgrid Telemetry"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:45:49.530Z"
+      "createdAt": "2026-10-13T14:27:05.802Z"
     },
     {
-      "id": "aud_1791870346140_86zgf",
+      "id": "aud_1791901622319_g91t5",
       "eventType": "content.published",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "content_item",
-      "targetEntityId": "cnt_1791870342863",
+      "targetEntityId": "cnt_1791901619192",
       "payload": {
         "contentKey": "call_solar_microgrid",
         "version": 2
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:45:46.140Z"
+      "createdAt": "2026-10-13T14:27:02.319Z"
     },
     {
-      "id": "aud_1791870343071_r7bc9",
+      "id": "aud_1791901619450_5rwkq",
       "eventType": "content.draft_created",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "content_item",
-      "targetEntityId": "cnt_1791870342863",
+      "targetEntityId": "cnt_1791901619192",
       "payload": {
         "contentKey": "call_solar_microgrid"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:45:43.071Z"
+      "createdAt": "2026-10-13T14:26:59.450Z"
     },
     {
-      "id": "aud_1791870340621_vh15u",
+      "id": "aud_1791901616709_i2deb",
       "eventType": "content.media_uploaded",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "media",
-      "targetEntityId": "content/1791870340414_sensor-diagram.png",
+      "targetEntityId": "content/1791901616484_sensor-diagram.png",
       "payload": {
         "mimeType": "image/png",
         "sizeBytes": 70,
         "provider": "local"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:45:40.621Z"
+      "createdAt": "2026-10-13T14:26:56.709Z"
     },
     {
-      "id": "aud_1791870335395_rth9f",
+      "id": "aud_1791901611977_ivipl",
       "eventType": "role.grant",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "user",
-      "targetEntityId": "usr_1791870306264",
+      "targetEntityId": "usr_1791901581777",
       "payload": {
         "role": "approved_builder",
-        "targetEmail": "builder.1791870305682@canopy.test"
+        "targetEmail": "builder.1791901581458@canopy.test"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:45:35.395Z"
+      "createdAt": "2026-10-13T14:26:51.977Z"
     },
     {
-      "id": "aud_1791870325564_61l6i",
+      "id": "aud_1791901600390_4cquc",
       "eventType": "founder.bootstrap_granted",
       "actorId": "usr_founder_aarushi",
       "actorRole": "owner",
@@ -473,44 +473,44 @@
         "email": "canopy.connect.collaborate@gmail.com"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:45:25.564Z"
+      "createdAt": "2026-10-13T14:26:40.390Z"
     },
     {
-      "id": "aud_1791870318404_zme6p",
+      "id": "aud_1791901592620_vav4k",
       "eventType": "moderation.approve",
       "actorId": "usr_mod",
       "actorRole": "moderator",
       "targetEntityType": "build_call",
-      "targetEntityId": "call_1791870315425",
+      "targetEntityId": "call_1791901588213",
       "payload": {
         "note": "Verified problem holder identity and pilot budget allocation.",
         "action": "approve"
       },
       "ipAddress": "::1",
-      "createdAt": "2026-10-13T05:45:18.404Z"
+      "createdAt": "2026-10-13T14:26:32.620Z"
     },
     {
-      "id": "aud_1791870315794_jogx2",
+      "id": "aud_1791901588627_25inr",
       "eventType": "build_call.submitted",
       "actorId": "usr_org_holder",
       "actorRole": "problem_holder",
       "targetEntityType": "build_call",
-      "targetEntityId": "call_1791870315425",
+      "targetEntityId": "call_1791901588213",
       "payload": {
         "title": "Automated Soil Microgrid Sensor Hub",
         "domain": "climate"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-13T05:45:15.794Z"
+      "createdAt": "2026-10-13T14:26:28.627Z"
     }
   ],
   "user_roles": [
     {
-      "id": "rol_1791870325387_k9fe",
+      "id": "rol_1791901600182_wbm1",
       "userId": "usr_founder_aarushi",
       "role": "owner",
       "grantedBy": "system_founder_bootstrap",
-      "grantedAt": "2026-10-13T05:45:25.388Z"
+      "grantedAt": "2026-10-13T14:26:40.182Z"
     }
   ],
   "content_items": [
@@ -601,7 +601,7 @@
       "description": "Default card pagination and listing limits for public directories",
       "updatedBy": "canopy.connect.collaborate@gmail.com",
       "createdAt": "2026-08-01T00:00:00Z",
-      "updatedAt": "2026-10-13T05:46:04.169Z"
+      "updatedAt": "2026-10-13T14:27:20.481Z"
     },
     {
       "key": "feature_flags",

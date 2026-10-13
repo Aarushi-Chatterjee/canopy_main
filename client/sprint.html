@@ -568,96 +568,93 @@
   <div class="drawer-head">
     <div>
       <h3>Post What You're Working On</h3>
-      <p class="sub">Structured entry collection points: define your problem, target deliverable, and open seats to recruit collaborators.</p>
+      <p class="sub">Define your project and recruit teammates.</p>
     </div>
     <button class="modal-close" id="closePostSquadDrawer" aria-label="Close drawer">✕</button>
   </div>
   <form class="drawer-form" id="postSquadForm">
-    <!-- Point 1: Title & Domain -->
+    <!-- Title & Domain -->
     <div class="field">
-      <label for="squadTitle">Problem / Project Title <span style="color:var(--forest);">*</span></label>
-      <input type="text" id="squadTitle" required placeholder="e.g. Offline edge frequency logger for microgrids" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      <label for="squadTitle">Project Title <span style="color:var(--forest);">*</span></label>
+      <input type="text" id="squadTitle" required placeholder="e.g. Offline edge frequency logger" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
     </div>
     <div class="field">
-      <label for="squadDomain">Primary Domain <span style="color:var(--forest);">*</span></label>
+      <label for="squadDomain">Domain <span style="color:var(--forest);">*</span></label>
       <select id="squadDomain" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
         <option value="climate">Climate &amp; Carbon</option>
         <option value="grid">Energy &amp; Grid</option>
         <option value="forestry">Forestry &amp; Biodiversity</option>
-        <option value="civic">Civic &amp; Public Infrastructure</option>
-        <option value="ai">AI &amp; Sensing</option>
-        <option value="education">Education &amp; Literacy</option>
-        <option value="hardware">Open Hardware &amp; Tooling</option>
+        <option value="civic">Civic Tech</option>
+        <option value="ai">AI / ML</option>
+        <option value="education">Education</option>
+        <option value="hardware">Hardware &amp; Tooling</option>
       </select>
     </div>
 
-    <!-- Point 2: Author / Lead & Coordination Channel -->
+    <!-- Lead & Contact -->
     <div class="collection-grid-2">
       <div class="field">
-        <label for="squadLead">Lead Author / Squad Lead</label>
-        <input type="text" id="squadLead" placeholder="e.g. Elena Vance / Sensor Guild" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <label for="squadLead">Lead Author / Name</label>
+        <input type="text" id="squadLead" placeholder="Elena Vance" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
       <div class="field">
-        <label for="squadContact">Coordination Contact / Channel</label>
-        <input type="text" id="squadContact" placeholder="matrix: #sprint-lead:canopy.earth or email" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <label for="squadContact">Contact / Channel</label>
+        <input type="text" id="squadContact" placeholder="email or chat handle" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
     </div>
 
-    <!-- Point 3: Problem Context & Current Bottleneck -->
+    <!-- Problem Statement -->
     <div class="field">
-      <label for="squadDescription">Problem Statement &amp; Current Bottleneck <span style="color:var(--forest);">*</span></label>
-      <textarea id="squadDescription" required placeholder="Describe the specific bottleneck, what you've prototyped so far, and what angle needs solving..." style="min-height:85px;"></textarea>
-      <span class="hint-small" style="margin-top:3px;display:block;">Be honest about what is broken, missing, or untested in the field.</span>
+      <label for="squadDescription">Problem Statement <span style="color:var(--forest);">*</span></label>
+      <textarea id="squadDescription" required placeholder="What is the bottleneck and what needs solving?" style="min-height:85px;"></textarea>
     </div>
 
-    <!-- Point 4: Target Deliverable (The concrete outcome) -->
+    <!-- Target Deliverable -->
     <div class="field">
-      <label for="squadDeliverable">Target Deliverable (What will be shipped?) <span style="color:var(--forest);">*</span></label>
-      <input type="text" id="squadDeliverable" required placeholder="e.g. Open hardware schematic, ESP32 telemetry firmware &amp; Grafana dashboard" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      <span class="hint-small" style="margin-top:3px;display:block;">The tangible artifact that will land in the Canopy Library when cycle closes.</span>
+      <label for="squadDeliverable">Target Deliverable <span style="color:var(--forest);">*</span></label>
+      <input type="text" id="squadDeliverable" required placeholder="e.g. Schematic, firmware &amp; telemetry dashboard" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
     </div>
 
-    <!-- Point 5: Key Diagnostic Metric / Success Target -->
+    <!-- Success Metric -->
     <div class="field">
-      <label for="squadMetric">Key Diagnostic Metric / Benchmark Target</label>
-      <input type="text" id="squadMetric" placeholder="e.g. Phase drift &lt; 0.05 Hz across 5-day field run; sub-100ms sync latency" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      <span class="hint-small" style="margin-top:3px;display:block;">The empirical test or diagnostic measurement that proves the prototype succeeded.</span>
+      <label for="squadMetric">Success Metric (Optional)</label>
+      <input type="text" id="squadMetric" placeholder="e.g. Phase drift &lt; 0.05 Hz across 5-day field run" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
     </div>
 
-    <!-- Point 6: Cycle Duration -->
+    <!-- Duration -->
     <div class="field">
-      <label>Sprint Cycle Duration</label>
+      <label>Sprint Duration</label>
       <div class="pill-group" data-group="squad-duration" data-single="true">
-        <button type="button" class="pill" data-val="14" aria-pressed="true">2 weeks (14 days)</button>
-        <button type="button" class="pill" data-val="21" aria-pressed="false">3 weeks (21 days)</button>
-        <button type="button" class="pill" data-val="28" aria-pressed="false">4 weeks (28 days)</button>
+        <button type="button" class="pill" data-val="14" aria-pressed="true">2 weeks</button>
+        <button type="button" class="pill" data-val="21" aria-pressed="false">3 weeks</button>
+        <button type="button" class="pill" data-val="28" aria-pressed="false">4 weeks</button>
       </div>
     </div>
 
-    <!-- Point 7: Squad Capacity & Needed Roles -->
+    <!-- Capacity & Needed Roles -->
     <div class="collection-grid-2">
       <div class="field">
-        <label for="squadCapacity">Squad Capacity</label>
+        <label for="squadCapacity">Capacity</label>
         <select id="squadCapacity" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-          <option value="3" selected>3 seats (Focused tight squad)</option>
-          <option value="4">4 seats (Full-stack squad)</option>
-          <option value="5">5 seats (Cross-disciplinary team)</option>
+          <option value="3" selected>3 seats</option>
+          <option value="4">4 seats</option>
+          <option value="5">5 seats</option>
         </select>
       </div>
       <div class="field">
-        <label for="squadNeededRoles">Roles &amp; Crafts Needed <span style="color:var(--forest);">*</span></label>
-        <input type="text" id="squadNeededRoles" required placeholder="e.g. Firmware Engineer (1), DSP Specialist (1)" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <label for="squadNeededRoles">Roles Needed <span style="color:var(--forest);">*</span></label>
+        <input type="text" id="squadNeededRoles" required placeholder="e.g. Firmware Engineer, DSP Specialist" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
     </div>
 
-    <!-- Point 8: Reference URL / Dataset / Repo -->
+    <!-- Reference URL -->
     <div class="field">
-      <label for="squadRepoLink">Reference Repo / Dataset / Spec URL (Optional)</label>
-      <input type="text" id="squadRepoLink" placeholder="GitHub repo, CAD schematic, or dataset URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      <label for="squadRepoLink">Reference Repo / Link (Optional)</label>
+      <input type="text" id="squadRepoLink" placeholder="GitHub, schematic, or spec URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
     </div>
 
     <div class="form-foot">
-      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">takes ninety seconds to seed your squad</span>
+      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">ready in 60 seconds</span>
       <button type="submit" class="btn btn-stamp btn-sm" id="btnSubmitWorkingSquad">Launch Working Squad →</button>
     </div>
   </form>
@@ -924,19 +921,19 @@
     postSquadBackdrop.style.display = 'block';
     postSquadDrawer.style.display = 'block';
     setTimeout(() => {
-      postSquadBackdrop.classList.add('open');
-      postSquadDrawer.classList.add('open');
+      postSquadBackdrop.classList.add('is-open', 'open');
+      postSquadDrawer.classList.add('is-open', 'open');
     }, 10);
   }
 
   function closePostSquad() {
     if (!postSquadDrawer || !postSquadBackdrop) return;
-    postSquadBackdrop.classList.remove('open');
-    postSquadDrawer.classList.remove('open');
+    postSquadBackdrop.classList.remove('is-open', 'open');
+    postSquadDrawer.classList.remove('is-open', 'open');
     setTimeout(() => {
       postSquadBackdrop.style.display = 'none';
       postSquadDrawer.style.display = 'none';
-    }, 260);
+    }, 280);
   }
 
   openPostSquadBtns.forEach(btn => btn.addEventListener('click', openPostSquad));
