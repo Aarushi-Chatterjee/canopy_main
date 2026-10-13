@@ -510,18 +510,21 @@ a.btn, a.btn:hover, a.btn:focus, a.btn:active {
 .btn-ghost:active{ transform:scale(.97); }
 .btn-sm{ padding:8px 16px; font-size:.85rem; text-decoration:none !important; }
 
-/* Three-line hamburger menu toggle */
+/* Three-line hamburger menu toggle (mobile/tablet only) */
 .menu-toggle{
-  display:inline-flex;
+  display:none;
   background:var(--card);
   border:1px solid var(--card-edge);
-  border-radius:6px;
+  border-radius:8px;
   cursor:pointer;
-  padding:8px 9px;
+  padding:0;
+  width:38px;
+  height:38px;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   transition:background .16s ease, border-color .16s ease, transform .16s ease;
+  flex-shrink:0;
 }
 .menu-toggle:hover{
   background:color-mix(in srgb, var(--forest) 8%, var(--card));
@@ -531,7 +534,7 @@ a.btn, a.btn:hover, a.btn:focus, a.btn:active {
   transform:scale(.95);
 }
 .menu-toggle:focus-visible{ outline:3px solid var(--sun); outline-offset:2px; border-radius:4px; }
-.menu-toggle span{ display:block; width:20px; height:2px; background:var(--ink); border-radius:2px; transition:transform .22s var(--ease-out), opacity .18s var(--ease-out); }
+.menu-toggle span{ display:block; width:18px; height:2px; background:var(--ink); border-radius:2px; transition:transform .22s var(--ease-out), opacity .18s var(--ease-out); }
 .menu-toggle span:nth-child(1){ margin-bottom:4px; }
 .menu-toggle span:nth-child(2){ margin-bottom:4px; }
 .menu-toggle.is-open span:nth-child(1){ transform:translateY(6px) rotate(45deg); }
@@ -1879,12 +1882,69 @@ form.apply-form{ padding:24px 26px 26px; display:flex; flex-direction:column; ga
   .deck-wrap{ grid-template-columns:1fr; }
   footer .wrap{ grid-template-columns:1fr 1fr; gap:32px 28px; }
   footer .wrap > div:first-child{ grid-column:1 / -1; } /* quote col spans full width on tablet */
-  nav.primary-nav{ display:none; }
-  .menu-toggle{ display:block; }
+  
+  /* Primary nav hides into Drawer on tablets and phones */
+  nav.primary-nav{ display:none !important; }
+  .menu-toggle{ display:inline-flex !important; }
+  
+  /* Keep mobile header uncluttered and prevent overflow */
+  #navAuthArea,
+  .nav-auth-link,
+  #navPostCall,
+  .btn-stamp.btn-sm[href*="signup"] {
+    display: none !important;
+  }
+
+  .header-inner {
+    padding: 10px clamp(14px, 3.5vw, 24px);
+    gap: 10px;
+  }
 }
+
 @media (max-width:600px){
   footer .wrap{ grid-template-columns:1fr; gap:28px; }
   .vine-note{ max-width:100%; }
+
+  .header-inner {
+    padding: 8px 12px;
+  }
+  .logo-tagline {
+    display: none;
+  }
+  .logo-main {
+    font-size: 1.25rem;
+    gap: 8px;
+  }
+  .logo img, .logo-main img {
+    height: 30px !important;
+  }
+  
+  /* Full fluid width on all mobile forms */
+  .stage {
+    padding: 20px 14px 40px !important;
+  }
+  .elevated-card, .paper-card {
+    padding: 22px 14px !important;
+  }
+  .form-grid-2, .pass-grid-2, .form-grid-2col, .collection-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  
+  /* Touch target sizes & prevent iOS Safari auto-zoom */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="url"],
+  select,
+  textarea {
+    font-size: 16px !important;
+    box-sizing: border-box;
+  }
+  .pill {
+    padding: 7px 13px !important;
+    font-size: 0.84rem !important;
+  }
 }
 
 /* ── FOOTER LOGO — stacked vertical lockup ────────── */
@@ -2515,35 +2575,80 @@ body.page-entering {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 7px 10px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
   border-radius: 8px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--card-edge);
   background: var(--card);
-  color: var(--ink-soft);
+  color: var(--ink);
   cursor: pointer;
   transition: all 0.16s ease;
+  flex-shrink: 0;
 }
 .notification-bell-btn:hover {
   color: var(--forest);
   border-color: var(--forest);
   background: color-mix(in srgb, var(--forest) 8%, var(--card));
 }
+.notification-bell-btn svg,
+.notif-bell-icon {
+  width: 18px !important;
+  height: 18px !important;
+  display: block !important;
+  color: var(--ink) !important;
+  stroke: currentColor !important;
+}
+.notification-bell-btn:hover svg,
+.notification-bell-btn:hover .notif-bell-icon {
+  color: var(--forest) !important;
+}
+
+/* Unified Desktop Theme Toggle button */
+.desktop-theme-btn {
+  width: 38px !important;
+  height: 38px !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--card-edge) !important;
+  background: var(--card) !important;
+  color: var(--ink) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  flex-shrink: 0;
+}
+.desktop-theme-btn:hover {
+  color: var(--forest) !important;
+  border-color: var(--forest) !important;
+  background: color-mix(in srgb, var(--forest) 8%, var(--card)) !important;
+}
+.desktop-theme-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+  display: block !important;
+  stroke: currentColor !important;
+}
+
 .notification-badge {
   position: absolute;
-  top: -6px;
-  right: -6px;
+  top: -4px;
+  right: -4px;
   min-width: 18px;
   height: 18px;
-  padding: 0 5px;
+  padding: 0 4px;
   border-radius: 9px;
   background: var(--forest);
   color: #fff;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 700;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 6px rgba(0,0,0,0.24);
+  border: 2px solid var(--paper);
   line-height: 1;
 }
 .notification-badge.pulse {
@@ -2573,7 +2678,7 @@ body.page-entering {
   top: 66px;
   right: 20px;
   z-index: 999;
-  width: 450px;
+  width: 440px;
   max-width: calc(100vw - 32px);
   max-height: calc(100vh - 86px);
   background: var(--card);
@@ -2590,6 +2695,25 @@ body.page-entering {
 .notifications-panel.open {
   transform: translateY(0) scale(1);
   opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .notifications-panel {
+    top: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: 20px 20px 0 0;
+    border-bottom: none;
+    box-shadow: 0 -12px 36px rgba(0,0,0,0.25);
+    transform: translateY(100%);
+  }
+  .notifications-panel.open {
+    transform: translateY(0);
+  }
 }
 
 .notif-panel-header {

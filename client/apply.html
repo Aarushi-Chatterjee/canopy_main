@@ -28,9 +28,12 @@
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
     </nav>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:4px;">Log In</a>
-      <a class="btn btn-stamp btn-sm" href="login.html?tab=signup">Sign Up</a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:6px;">Log In</a>
+        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;">Sign Up</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html">Post a Call</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -89,60 +92,54 @@
 <main id="top">
 <div class="stage" style="max-width:720px;">
   <div class="stage-head reveal">
-    <span class="kicker" style="font-size:1.15rem;">Sandbox Membership</span>
-    <h1 style="font-size:clamp(2rem,3.8vw,2.8rem);margin-top:4px;">Yes, plant me into Canopy</h1>
-    <p class="lede">A few honest lines beat a long resume. Takes about ninety seconds to build your verified collaborator profile.</p>
+    <span class="kicker">Membership</span>
+    <h1 style="font-size:clamp(1.9rem,3.6vw,2.6rem);margin-top:4px;">Join Canopy</h1>
+    <p class="lede">Build your verified collaborator profile in under two minutes.</p>
 
     <!-- Auth Notice Banner (shown when unauthenticated) -->
-    <div id="authGateNotice" class="paper-card" style="display:none;margin-top:20px;padding:18px 22px;background:color-mix(in srgb, var(--coral) 8%, var(--paper));border:1px solid color-mix(in srgb, var(--coral) 35%, transparent);border-radius:12px;text-align:left;">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-        <div>
-          <div style="font-size:0.98rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:6px;">
-            <span>🔒</span> Field Station Pass Required to Plant Your Profile
-          </div>
-          <p style="margin:4px 0 0;font-size:0.84rem;color:var(--ink-soft);max-width:440px;">
-            Please log in or create an account first so your application progress is saved and linked to your verified pass.
-          </p>
+    <div id="authGateNotice" class="paper-card" style="display:none;margin-top:16px;padding:14px 18px;background:color-mix(in srgb, var(--coral) 8%, var(--paper));border:1px solid color-mix(in srgb, var(--coral) 35%, transparent);border-radius:10px;text-align:left;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div style="font-size:0.92rem;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:6px;">
+          <span>🔒</span> Sign in to save and link your profile pass.
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
-          <button type="button" id="applyGoogleAuthBtn" class="btn-google" style="width:auto;padding:7px 14px;font-size:0.84rem;">
+          <button type="button" id="applyGoogleAuthBtn" class="btn-google" style="width:auto;padding:6px 12px;font-size:0.82rem;">
             <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
             <span>Google</span>
           </button>
-          <a href="login.html?redirect=/apply.html" id="applySignInBtn" class="btn btn-stamp btn-sm">Log In / Sign Up →</a>
+          <a href="login.html?redirect=/apply.html" id="applySignInBtn" class="btn btn-stamp btn-sm">Sign In →</a>
         </div>
       </div>
     </div>
 
     <!-- Verified User Badge (shown when authenticated) -->
-    <div id="authIdentityBadge" class="paper-card" style="display:none;margin-top:20px;padding:12px 18px;background:color-mix(in srgb, var(--forest) 8%, var(--paper));border:1px solid color-mix(in srgb, var(--forest) 25%, transparent);border-radius:10px;display:flex;align-items:center;justify-content:space-between;font-size:0.88rem;text-align:left;">
+    <div id="authIdentityBadge" class="paper-card" style="display:none;margin-top:16px;padding:12px 18px;background:color-mix(in srgb, var(--forest) 8%, var(--paper));border:1px solid color-mix(in srgb, var(--forest) 25%, transparent);border-radius:10px;display:flex;align-items:center;justify-content:space-between;font-size:0.88rem;text-align:left;">
       <span style="color:var(--forest);font-weight:600;display:flex;align-items:center;gap:6px;">
         <span>🌱</span> Submitting as: <strong id="authUserName" style="color:var(--ink);"></strong> (<span id="authUserEmail" style="color:var(--ink-soft);"></span>)
       </span>
-      <span style="font-size:0.78rem;color:var(--forest);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;background:rgba(255,255,255,0.7);padding:3px 8px;border-radius:4px;">Pass Verified ✓</span>
+      <span style="font-size:0.78rem;color:var(--forest);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;background:rgba(255,255,255,0.7);padding:3px 8px;border-radius:4px;">Verified ✓</span>
     </div>
   </div>
 
-  <div class="elevated-card paper-card" style="padding:36px clamp(20px,5vw,40px);border-radius:14px;margin-top:24px;">
-    <form id="fullApplyForm" style="display:flex;flex-direction:column;gap:22px;">
+  <div class="elevated-card paper-card" style="padding:32px clamp(18px,4vw,36px);border-radius:14px;margin-top:20px;">
+    <form id="fullApplyForm" style="display:flex;flex-direction:column;gap:18px;">
       <div class="field">
-        <label for="appName" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Full Name or Handle</label>
-        <input type="text" id="appName" required placeholder="e.g. Elena Rostova" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <label for="appName" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Full Name</label>
+        <input type="text" id="appName" required placeholder="Elena Rostova" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
 
       <div class="field">
-        <label for="appEmail" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Email Address (for sprint confirmation)</label>
+        <label for="appEmail" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Email Address</label>
         <input type="email" id="appEmail" required placeholder="elena@domain.org" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
 
       <div class="field" id="appPasswordGroup">
-        <label for="appPassword" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Create Passcode (min 8 characters)</label>
-        <input type="password" id="appPassword" placeholder="Create a password to secure your Field Station Pass" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-        <span style="font-size:0.78rem;color:var(--ink-faint);margin-top:2px;">Secures your pass and enables sprint tracking.</span>
+        <label for="appPassword" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Password (min. 8 characters)</label>
+        <input type="password" id="appPassword" placeholder="••••••••" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
 
       <div class="field">
-        <label style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Your Community Role</label>
+        <label style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Role</label>
         <div class="pill-group" data-group="role" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
           <button type="button" class="pill" aria-pressed="true">Builder</button>
           <button type="button" class="pill" aria-pressed="false">Problem Holder</button>
@@ -164,27 +161,27 @@
       </div>
 
       <div class="field">
-        <label for="appLink" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Link to something you have built or written</label>
-        <input type="text" id="appLink" placeholder="GitHub, portfolio, writeup, or repo URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <label for="appLink" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Work / Portfolio Link</label>
+        <input type="text" id="appLink" placeholder="GitHub, portfolio, or repo URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
 
       <div class="field">
-        <label for="appNote" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">What would you bring to a 2 to 4 week sprint?</label>
-        <textarea id="appNote" required rows="3" placeholder="Tell us about your specific technical skills or domain questions..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:inherit;"></textarea>
+        <label for="appNote" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">What do you build or bring?</label>
+        <textarea id="appNote" required rows="3" placeholder="Key technical skills, domain focus, or project ideas..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:inherit;"></textarea>
       </div>
 
-      <div class="field" style="display:flex;align-items:flex-start;gap:8px;margin-top:4px;">
+      <div class="field" style="display:flex;align-items:flex-start;gap:8px;margin-top:2px;">
         <input type="checkbox" id="appConsent" required style="margin-top:3px;accent-color:var(--forest);">
         <label for="appConsent" style="font-size:0.8rem;color:var(--ink-soft);line-height:1.4;">
-          I agree to the <a href="privacy.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Privacy Policy</a> and understand that my application will be reviewed before verified cohort access.
+          I agree to the <a href="privacy.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Privacy Policy</a>.
         </label>
       </div>
 
       <div id="applyAlert" style="display:none;" role="alert"></div>
 
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:16px;border-top:1px solid var(--line);">
-        <span style="font-size:0.8rem;color:var(--ink-faint);">Reviewed by our team on a rolling basis</span>
-        <button type="submit" id="appSubmitBtn" class="btn btn-stamp">Plant My Profile →</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:14px;border-top:1px solid var(--line);">
+        <span style="font-size:0.8rem;color:var(--ink-faint);">Rolling reviews</span>
+        <button type="submit" id="appSubmitBtn" class="btn btn-stamp">Submit Application →</button>
       </div>
     </form>
   </div>

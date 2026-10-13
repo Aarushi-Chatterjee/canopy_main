@@ -55,8 +55,8 @@
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
       <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
-        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
         <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
+        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
       </div>
       <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html">Post a Call</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
@@ -558,18 +558,18 @@
   <div class="drawer-auth-notice" id="drawerAuthNotice" style="display:none;">
     <span class="drawer-auth-notice-icon">🌱</span>
     <div class="drawer-auth-notice-body">
-      <strong>Sign in with Google / Field Station Pass to send this note</strong>
-      <p>Draft your note below. We'll automatically save your work and connect your account seamlessly.</p>
+      <strong>Sign in to send this note</strong>
+      <p>Draft your note below. We'll connect it to your account on sign in.</p>
     </div>
     <a href="login.html" class="drawer-auth-login-link btn btn-sm btn-outline">Sign In</a>
   </div>
   <form class="drawer-form" id="appDrawerForm">
     <div class="field">
-      <label for="dNote">What would you bring to this sprint?</label>
-      <textarea id="dNote" placeholder="Start honest. What's your angle on this problem? (e.g. I can build the telemetry pipeline in 2 weeks...)" required></textarea>
+      <label for="dNote">Your Angle / Approach *</label>
+      <textarea id="dNote" placeholder="What is your angle or how would you approach this problem?" required></textarea>
     </div>
     <div class="field">
-      <label>Your relevant skills</label>
+      <label>Relevant Skills</label>
       <div class="pill-group" data-group="drawer-skills">
         <button type="button" class="pill" aria-pressed="true">Hardware / Embedded</button>
         <button type="button" class="pill" aria-pressed="false">AI / Machine Learning</button>
@@ -579,7 +579,7 @@
       </div>
     </div>
     <div class="field">
-      <label>Availability for this sprint</label>
+      <label>Availability</label>
       <div class="pill-group" data-group="drawer-avail" data-single="true">
         <button type="button" class="pill" aria-pressed="true">Full sprint (2–4 weeks)</button>
         <button type="button" class="pill" aria-pressed="false">Part-time (10–15 hrs/wk)</button>
@@ -587,12 +587,12 @@
       </div>
     </div>
     <div class="field">
-      <label for="dLink">Link something you've shipped or written</label>
-      <input type="text" id="dLink" placeholder="GitHub, portfolio, writeup URL (optional)">
+      <label for="dLink">Work / Portfolio Link</label>
+      <input type="text" id="dLink" placeholder="GitHub, portfolio, or project URL (optional)">
     </div>
     <div class="form-foot">
-      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">take ninety seconds to make it honest</span>
-      <button type="submit" class="btn btn-stamp btn-sm">Plant this note →</button>
+      <span class="hint-small script" style="font-size:.85rem;color:var(--forest);">Quick note to challenge leads</span>
+      <button type="submit" class="btn btn-stamp btn-sm">Send Note →</button>
     </div>
   </form>
 </div>

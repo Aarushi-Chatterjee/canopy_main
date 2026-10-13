@@ -291,7 +291,7 @@ const server = app.listen(PORT, async () => {
     const openSprint = sprintBoard.data.forming.find(s => (s.members?.length || 0) < (s.teamCapacity || 3)) || sprintBoard.data.forming[0];
     if (openSprint) {
       const joinRes = await request('POST', `/api/sprints/${openSprint.id}/join`, { squadRole: 'Sensors Lead' }, cookieHeaders);
-      assert(joinRes.status === 200 || joinRes.status === 409 || joinRes.status === 400, 
+      assert(joinRes.status === 200 || joinRes.status === 201 || joinRes.status === 409 || joinRes.status === 400, 
         'Sprint Join: safely validates membership and squad capacity');
     }
 

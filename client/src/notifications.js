@@ -327,25 +327,45 @@ function formatTimeAgo(isoString) {
 export function initNotificationCorner() {
   // Ensure header has notification bell
   const headerRight = document.querySelector('header .header-inner > div:last-child');
-  if (headerRight && !document.getElementById('navNotificationsBtn')) {
-    const btn = document.createElement('button');
+  let btn = document.getElementById('navNotificationsBtn');
+
+  const bellIconHtml = `
+    <svg class="icon notif-bell-icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+    </svg>
+    <span class="notification-badge" id="navNotificationBadge" style="display:none;">0</span>
+  `;
+
+  if (headerRight && !btn) {
+    btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'btn btn-ghost btn-sm notification-bell-btn';
     btn.id = 'navNotificationsBtn';
     btn.setAttribute('aria-label', 'Open Notification Corner');
     btn.title = 'Collaboration & Notification Corner';
-    btn.innerHTML = `
-      <svg class="icon" aria-hidden="true" style="width:16px;height:16px;">
-        <use href="#icon-bell"/>
-      </svg>
-      <span class="notification-badge" id="navNotificationBadge" style="display:none;">0</span>
-    `;
-    // Place right before navPostCall or as first button
-    const postCall = document.getElementById('navPostCall');
-    if (postCall) {
-      headerRight.insertBefore(btn, postCall);
+    btn.innerHTML = bellIconHtml;
+
+    // Place cleanly before theme toggle or mobile menu button
+    const themeBtn = document.getElementById('desktopThemeToggle');
+    const menuBtn = document.getElementById('menuToggle');
+    const anchor = themeBtn || menuBtn;
+    if (anchor && anchor.parentNode === headerRight) {
+      headerRight.insertBefore(btn, anchor);
     } else {
-      headerRight.prepend(btn);
+      headerRight.appendChild(btn);
+    }
+  } else if (btn) {
+    // If button already exists (e.g. sprint.html), ensure it uses reliable inline SVG
+    if (!btn.querySelector('.notif-bell-icon') || btn.querySelector('use')) {
+      const badgeCount = document.getElementById('navNotificationBadge')?.textContent || '0';
+      const badgeVisible = document.getElementById('navNotificationBadge')?.style.display !== 'none';
+      btn.innerHTML = bellIconHtml;
+      const newBadge = btn.querySelector('#navNotificationBadge');
+      if (newBadge) {
+        newBadge.textContent = badgeCount;
+        newBadge.style.display = badgeVisible ? 'inline-flex' : 'none';
+      }
     }
   }
 

@@ -94,8 +94,9 @@ import { initNotificationCorner, notificationCenter } from './notifications.js';
       btn.id = 'desktopThemeToggle';
       btn.className = 'theme-toggle desktop-theme-btn';
       btn.type = 'button';
-      btn.style.cssText = 'background:transparent;border:1px solid var(--card-edge);border-radius:6px;padding:6px 9px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:all 180ms ease;';
-      btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>';
+      btn.setAttribute('aria-label', 'Toggle theme');
+      btn.title = 'Toggle theme';
+      btn.innerHTML = '<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>';
       menuBtn.parentNode.insertBefore(btn, menuBtn);
     }
 
@@ -890,8 +891,8 @@ import { initNotificationCorner, notificationCenter } from './notifications.js';
       // Guest state: ensure Sign Up & Log In are displayed
       if (navAuthArea) {
         navAuthArea.innerHTML = `
-          <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
           <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
+          <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
         `;
       }
       if (drawerAuthArea) {

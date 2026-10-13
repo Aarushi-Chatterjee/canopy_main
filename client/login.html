@@ -207,10 +207,11 @@
       <a href="notebook.html">Lab Notebook</a>
     </nav>
     <div style="display:flex;align-items:center;gap:10px;">
-      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--forest);text-decoration:none;padding:6px 10px;border-radius:6px;background:color-mix(in srgb, var(--forest) 8%, transparent);">Log In</a>
-      <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
-      <a class="btn btn-ghost btn-sm" href="post-call.html">Post a Call</a>
-      <a class="btn btn-stamp btn-sm" href="apply.html">Apply</a>
+      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--forest);text-decoration:none;padding:6px 10px;border-radius:6px;background:color-mix(in srgb, var(--forest) 8%, transparent);">Log In</a>
+        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html">Post a Call</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -290,17 +291,17 @@
   <div class="stage-head reveal" style="text-align:center;max-width:540px;margin:0 auto 16px;">
     <span class="kicker" style="font-size:1.1rem;color:var(--coral);">Field Station Authentication</span>
     <h1 style="font-size:clamp(1.9rem,3.4vw,2.5rem);margin-top:6px;">Enter the Sandbox</h1>
-    <p class="lede" style="margin:10px auto 0;font-size:1.02rem;">Authenticate with your registered email to track active sprints, team responses, and notebook drafts.</p>
+    <p class="lede" style="margin:8px auto 0;font-size:0.96rem;">Sign in to track sprints, matches, and notebook drafts.</p>
   </div>
 
-    <!-- The Field Pass Card -->
+  <!-- The Field Pass Card -->
   <div class="field-pass-card reveal">
     <div class="field-pass-stamp" id="passStatusStamp">Field Station Pass · Entry Gate</div>
 
     <!-- Tab Toggle -->
     <div class="pass-segmented" role="tablist">
-      <button type="button" id="tabSignIn" class="pass-tab-btn active" role="tab" aria-selected="true">Collaborator Pass (Sign In)</button>
-      <button type="button" id="tabSignUp" class="pass-tab-btn" role="tab" aria-selected="false">New Pass (Register)</button>
+      <button type="button" id="tabSignIn" class="pass-tab-btn active" role="tab" aria-selected="true">Sign In</button>
+      <button type="button" id="tabSignUp" class="pass-tab-btn" role="tab" aria-selected="false">Create Account</button>
     </div>
 
     <div id="loginAlert" style="display:none;" role="alert"></div>
@@ -319,7 +320,7 @@
       </button>
 
       <div class="auth-divider">
-        <span>or sign in with email passcode</span>
+        <span>or with email</span>
       </div>
 
       <div class="pass-input-group">
@@ -329,13 +330,13 @@
 
       <div class="pass-input-group">
         <div style="display:flex;justify-content:space-between;align-items:center;">
-          <label for="loginPassword">Passcode</label>
-          <button type="button" id="forgotPwdLink" style="background:none;border:none;padding:0;font-size:0.75rem;color:var(--forest);cursor:pointer;text-decoration:underline;">Forgot passcode?</button>
+          <label for="loginPassword">Password</label>
+          <button type="button" id="forgotPwdLink" style="background:none;border:none;padding:0;font-size:0.75rem;color:var(--forest);cursor:pointer;text-decoration:underline;">Forgot password?</button>
         </div>
         <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
       </div>
 
-      <button type="submit" id="signInSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;">Access Collaborator Terminal →</button>
+      <button type="submit" id="signInSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;">Sign In →</button>
     </form>
 
     <!-- Unified Sign Up & Builder Intake Form (hidden by default) -->
@@ -348,22 +349,18 @@
           <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
           <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
         </svg>
-        <span>Create Pass with Google</span>
+        <span>Sign up with Google</span>
       </button>
 
       <div class="auth-divider">
-        <span>or create pass and profile</span>
-      </div>
-
-      <div style="font-size:0.83rem;color:var(--ink-soft);line-height:1.5;margin-bottom:2px;background:color-mix(in srgb, var(--paper) 80%, var(--card));padding:8px 12px;border-radius:6px;border:1px dashed var(--card-edge);">
-        Pass creation and builder intake are completed together in this single step. Your verified profile appears immediately in the Match Sandbox.
+        <span>or with email</span>
       </div>
 
       <!-- Part 1: Credentials -->
-      <div class="pass-section-header">1. Collaborator Credentials</div>
+      <div class="pass-section-header">1. Account Details</div>
       <div class="pass-grid-2">
         <div class="pass-input-group">
-          <label for="regDisplayName">Full Name / Handle</label>
+          <label for="regDisplayName">Full Name</label>
           <input type="text" id="regDisplayName" required placeholder="e.g. Elena Rostova" autocomplete="name">
         </div>
         <div class="pass-input-group">
@@ -374,62 +371,62 @@
 
       <div class="pass-grid-2">
         <div class="pass-input-group">
-          <label for="regPassword">Passcode</label>
-          <input type="password" id="regPassword" required minlength="8" placeholder="Minimum 8 characters" autocomplete="new-password">
+          <label for="regPassword">Password (min. 8 chars)</label>
+          <input type="password" id="regPassword" required minlength="8" placeholder="••••••••" autocomplete="new-password">
         </div>
         <div class="pass-input-group">
-          <label for="regRole">Platform Role</label>
+          <label for="regRole">Role</label>
           <select id="regRole">
-            <option value="builder" selected>Builder (Engineering, Hardware, AI, Design)</option>
-            <option value="problem_holder">Problem Holder (Field Org, NGO, Researcher)</option>
-            <option value="enabler">Enabler (Funder, Mentor, Technical Advisor)</option>
+            <option value="builder" selected>Builder (Engineering, Design, AI)</option>
+            <option value="problem_holder">Problem Holder (Org, Lab, Field)</option>
+            <option value="enabler">Enabler (Funder, Mentor)</option>
           </select>
         </div>
       </div>
 
       <!-- Part 2: Craft & Domain -->
-      <div class="pass-section-header">2. Craft &amp; Focus Area</div>
+      <div class="pass-section-header">2. Craft &amp; Domain</div>
       <div class="pass-grid-2">
         <div class="pass-input-group">
-          <label for="regCraft">Primary Craft / Headline</label>
-          <input type="text" id="regCraft" required placeholder="e.g. Firmware &amp; LoRa Telemetry Engineer">
+          <label for="regCraft">Headline / Craft</label>
+          <input type="text" id="regCraft" required placeholder="e.g. Firmware &amp; Telemetry Engineer">
         </div>
         <div class="pass-input-group">
-          <label for="regDomain">Primary Focus Domain</label>
+          <label for="regDomain">Domain Focus</label>
           <select id="regDomain">
-            <option value="climate" selected>Climate &amp; Ecological Monitoring</option>
-            <option value="hardware">Open Hardware &amp; Embedded Systems</option>
-            <option value="ai">AI, Computer Vision &amp; Earth Observation</option>
-            <option value="civic">Civic Tech &amp; Community Infrastructure</option>
-            <option value="design">Product Design &amp; Field Systems UX</option>
-            <option value="health">Rural Water &amp; Public Health Tools</option>
+            <option value="climate" selected>Climate &amp; Ecology</option>
+            <option value="hardware">Open Hardware &amp; IoT</option>
+            <option value="ai">AI &amp; Data</option>
+            <option value="civic">Civic Tech</option>
+            <option value="design">Product Design</option>
+            <option value="health">Public Health &amp; Water</option>
           </select>
         </div>
       </div>
 
       <div class="pass-input-group">
-        <label for="regTagline">What Are You Building or Exploring?</label>
-        <input type="text" id="regTagline" placeholder="e.g. Prototyping low-power LoRa telemetry nodes for drought-stressed aquifers">
+        <label for="regTagline">What are you building or exploring?</label>
+        <input type="text" id="regTagline" placeholder="e.g. Low-power LoRa telemetry nodes">
       </div>
 
       <div class="pass-grid-2">
         <div class="pass-input-group">
-          <label for="regSkills">Key Skills / Stack (comma-separated)</label>
-          <input type="text" id="regSkills" placeholder="e.g. Embedded C, LoRaWAN, KiCad, Python">
+          <label for="regSkills">Skills (comma-separated)</label>
+          <input type="text" id="regSkills" placeholder="e.g. Embedded C, LoRaWAN, Python">
         </div>
         <div class="pass-input-group">
           <label for="regHours">Weekly Availability</label>
           <select id="regHours">
-            <option value="10" selected>10 hours / week (Sprint Collaborator)</option>
-            <option value="5">5 hours / week (Weekend Contributor)</option>
-            <option value="15">15 hours / week (Active Builder)</option>
-            <option value="20">20+ hours / week (Lead Contributor)</option>
+            <option value="10" selected>10 hrs / week</option>
+            <option value="5">5 hrs / week</option>
+            <option value="15">15 hrs / week</option>
+            <option value="20">20+ hrs / week</option>
           </select>
         </div>
       </div>
 
       <!-- Part 3: Proof & Direct Links -->
-      <div class="pass-section-header">3. Direct Connect Links (Optional)</div>
+      <div class="pass-section-header">3. Links (Optional)</div>
       <div class="pass-grid-2">
         <div class="pass-input-group">
           <label for="regGithub">GitHub Profile</label>
@@ -442,11 +439,11 @@
       </div>
 
       <div class="pass-input-group">
-        <label for="regPortfolio">Personal Site / Portfolio / Lab</label>
+        <label for="regPortfolio">Website / Portfolio</label>
         <input type="url" id="regPortfolio" placeholder="https://yourdomain.org">
       </div>
 
-      <button type="submit" id="signUpSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;padding:12px;font-size:0.96rem;">Generate Pass &amp; Verify Email →</button>
+      <button type="submit" id="signUpSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;padding:12px;font-size:0.96rem;">Create Account →</button>
     </form>
 
     <!-- OTP Section (hidden by default) -->

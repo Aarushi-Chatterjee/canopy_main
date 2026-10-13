@@ -28,9 +28,12 @@
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
     </nav>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:4px;">Log In</a>
-      <a class="btn btn-stamp btn-sm" href="login.html?tab=signup">Sign Up</a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:6px;">Log In</a>
+        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;">Sign Up</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html">Post a Call</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>

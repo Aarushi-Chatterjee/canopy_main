@@ -103,9 +103,12 @@
       <a href="sprint.html">Sprint</a>
       <a href="notebook.html">Lab Notebook</a>
     </nav>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:4px;">Log In</a>
-      <a class="btn btn-stamp btn-sm" href="login.html?tab=signup">Sign Up</a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:6px;">Log In</a>
+        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;">Sign Up</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html">Post a Call</a>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -166,54 +169,52 @@
   <div class="stage-head reveal">
     <span class="kicker" style="font-size:1.15rem;">Organization Challenges · Grants &amp; Pilots</span>
     <h1 style="font-size:clamp(2rem,3.8vw,2.8rem);margin-top:4px;">Post a Sponsored Challenge</h1>
-    <p class="lede">Submit a scoped, grant-backed problem statement for multidisciplinary builder squads. Dedicated deployment stipends, experimental hardware access, and validated ground-truth briefs attract focused engineering teams.</p>
+    <p class="lede">Submit a scoped challenge or grant brief for builder squads.</p>
   </div>
 
   <!-- ============ ROLE GATE NOTICE BANNER ============ -->
   <div id="roleGateNotice" class="role-gate-banner role-gate-guest" role="status">
     <div style="font-size:1.4rem;line-height:1;">🔑</div>
     <div>
-      <strong>Account Authority Required:</strong> Posting a sponsored challenge requires signing in as a verified <strong>Problem Statement Owner</strong> or <strong>Enabler</strong>.
-      <br><span style="font-size:0.84rem;color:var(--ink-soft);">Builder accounts cannot post sponsored briefs, but are invited to take on open challenges on the Sprint board.</span>
+      <strong>Account Required:</strong> Posting a challenge requires a verified <strong>Problem Holder</strong> or <strong>Enabler</strong> account.
       <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
-        <a href="/login.html?redirect=/post-call.html" class="btn btn-stamp btn-sm">Sign In / Verify Account →</a>
+        <a href="/login.html?redirect=/post-call.html" class="btn btn-stamp btn-sm">Sign In →</a>
         <a href="/login.html?tab=signup&role=problem_holder" class="btn btn-outline btn-sm">Sign Up as Problem Holder</a>
       </div>
     </div>
   </div>
 
   <div class="elevated-card paper-card" style="padding:36px clamp(20px,5vw,40px);border-radius:14px;margin-top:18px;">
-    <form id="postCallForm" style="display:flex;flex-direction:column;gap:22px;">
+    <form id="postCallForm" style="display:flex;flex-direction:column;gap:20px;">
       
       <!-- Organization Name & Sponsoring Unit -->
       <div class="form-grid-2">
         <div class="field">
-          <label for="orgName">Sponsoring Organization *</label>
-          <input type="text" id="orgName" required placeholder="e.g. Cooling Singapore Lab / Stanford BioLab">
-          <div class="field-hint">Research institute, foundation, startup, or public agency</div>
+          <label for="orgName">Organization *</label>
+          <input type="text" id="orgName" required placeholder="e.g. Cooling Singapore Lab">
+          <div class="field-hint">Research institute, company, or lab</div>
         </div>
         <div class="field">
-          <label for="organizationSubtitle">Initiative or Sponsoring Unit</label>
-          <input type="text" id="organizationSubtitle" placeholder="e.g. Urban Climate Initiative / Watershed Stewardship">
-          <div class="field-hint">Program name, lab group, or specific grant consortium</div>
+          <label for="organizationSubtitle">Initiative / Unit</label>
+          <input type="text" id="organizationSubtitle" placeholder="e.g. Urban Climate Initiative">
+          <div class="field-hint">Program, team, or lab name</div>
         </div>
       </div>
 
       <!-- Contact Email & Timeline -->
       <div class="form-grid-2">
         <div class="field">
-          <label for="contactEmail">Direct Lead Contact Email *</label>
+          <label for="contactEmail">Lead Contact Email *</label>
           <input type="email" id="contactEmail" required placeholder="lead@organization.org">
-          <div class="field-hint">Used for curator review and squad handshake notifications</div>
+          <div class="field-hint">For notifications &amp; squad handshakes</div>
         </div>
         <div class="field">
-          <label for="timeline">Sprint Target Duration *</label>
+          <label for="timeline">Sprint Duration *</label>
           <select id="timeline" required>
-            <option value="2–4 weeks" selected>2–4 weeks (standard rapid sprint)</option>
-            <option value="4–6 weeks">4–6 weeks (field deployment cycle)</option>
-            <option value="6–8 weeks">6–8 weeks (deep research pilot)</option>
+            <option value="2–4 weeks" selected>2–4 weeks (rapid sprint)</option>
+            <option value="4–6 weeks">4–6 weeks (field deployment)</option>
+            <option value="6–8 weeks">6–8 weeks (pilot / research)</option>
           </select>
-          <div class="field-hint">Target timeframe for working prototype and evaluation</div>
         </div>
       </div>
 
@@ -235,61 +236,57 @@
       <!-- Challenge Headline -->
       <div class="field">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <label for="callTitle" style="margin-bottom:0;">Sponsored Challenge Title (Headline) *</label>
+          <label for="callTitle" style="margin-bottom:0;">Challenge Title *</label>
           <span id="callTitleCount" style="font-size:0.75rem;color:var(--ink-faint);">0 / 80</span>
         </div>
         <input type="text" id="callTitle" required maxlength="80" placeholder="e.g. Urban Heat Island Mitigation &amp; Thermal Sensor Mesh">
-        <div class="field-hint">Clear, actionable title that explains what squads will build</div>
       </div>
 
       <!-- Deployment Grant / Pilot Budget -->
       <div class="field">
-        <label for="pilotBudget">Deployment Grant or Pilot Budget *</label>
-        <input type="text" id="pilotBudget" required placeholder="e.g. $15,000 Deployment Grant + Lab Calibration (or $8,500 Pilot Stipend + Sensor Kit)">
-        <div class="field-hint">Specify grant amount, hardware access, test sites, or stipend provided</div>
+        <label for="pilotBudget">Grant / Pilot Budget *</label>
+        <input type="text" id="pilotBudget" required placeholder="e.g. $15,000 grant + sensor hardware access">
+        <div class="field-hint">Stipend, grant, or hardware access provided</div>
       </div>
 
       <!-- Problem Statement & Ground Truth Context -->
       <div class="field">
-        <label for="callDesc">Problem Statement &amp; Ground Reality *</label>
-        <textarea id="callDesc" required rows="4" placeholder="Explain the ground reality, what data or hardware is already available, why existing solutions fall short, and what squads will address..."></textarea>
-        <div class="field-hint">Ground-truth context helps builders propose exact architectural approaches</div>
+        <label for="callDesc">Problem Statement *</label>
+        <textarea id="callDesc" required rows="4" placeholder="Describe the problem, available data/hardware, and what needs to be solved."></textarea>
       </div>
 
       <!-- Target Deliverable -->
       <div class="field">
         <label for="targetDeliverable">Target Deliverable *</label>
-        <input type="text" id="targetDeliverable" required placeholder="e.g. Open hardware multi-point radiant temperature logger + live microclimate map pipeline">
-        <div class="field-hint">The tangible artifact expected (e.g. working prototype, firmware, dataset pipeline)</div>
+        <input type="text" id="targetDeliverable" required placeholder="e.g. Open hardware logger + live map pipeline">
       </div>
 
       <!-- Dataset or Research Reference URL -->
       <div class="field">
-        <label for="datasetAccessUrl">Research Reference or Dataset Link</label>
-        <input type="url" id="datasetAccessUrl" placeholder="https://www.cooling.sg/research/urban-heat-island">
-        <div class="field-hint">Link to whitepaper, study, GitHub repo, or public survey data (optional but recommended)</div>
+        <label for="datasetAccessUrl">Reference or Dataset Link</label>
+        <input type="url" id="datasetAccessUrl" placeholder="https://...">
       </div>
 
       <!-- Needed Skills / Tags -->
       <div class="field">
-        <label for="neededSkills">Needed Skills &amp; Crafts *</label>
-        <input type="text" id="neededSkills" required placeholder="Hardware, Thermal Modeling, IoT, Data Viz">
-        <div class="field-hint">Comma-separated tags for the multidisciplinary squad roles needed</div>
+        <label for="neededSkills">Skills Needed *</label>
+        <input type="text" id="neededSkills" required placeholder="e.g. Hardware, Thermal Modeling, IoT, Data Viz">
+        <div class="field-hint">Comma-separated tags</div>
       </div>
 
       <!-- Consent Checkbox -->
       <div class="field" style="display:flex;align-items:flex-start;gap:10px;margin-top:4px;">
         <input type="checkbox" id="callConsent" required style="margin-top:3px;width:auto;accent-color:var(--forest);">
         <label for="callConsent" style="font-size:0.82rem;color:var(--ink-soft);line-height:1.45;text-transform:none;letter-spacing:normal;font-weight:400;margin-bottom:0;">
-          I confirm that our organization has allocated the stated pilot resources/grants, and agree to the <a href="terms.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Terms</a> and <a href="privacy.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Privacy Covenant</a>.
+          I confirm our organization has allocated these resources and agree to the <a href="terms.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Terms</a>.
         </label>
       </div>
 
       <div id="postCallAlert" style="display:none;" role="alert"></div>
 
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap;gap:12px;">
-        <span style="font-size:0.8rem;color:var(--ink-faint);">Curator review queue: evaluated within 24–48 hours</span>
-        <button type="submit" id="postCallSubmitBtn" class="btn btn-stamp">Publish Sponsored Challenge →</button>
+        <span style="font-size:0.8rem;color:var(--ink-faint);">Review turnaround: 24–48 hours</span>
+        <button type="submit" id="postCallSubmitBtn" class="btn btn-stamp">Publish Challenge →</button>
       </div>
     </form>
   </div>
@@ -415,10 +412,9 @@
           roleGateNotice.innerHTML = `
             <div style="font-size:1.4rem;line-height:1;">🔑</div>
             <div>
-              <strong>Account Required:</strong> Posting a sponsored challenge requires signing in as a verified <strong>Problem Statement Owner</strong> or <strong>Enabler</strong>.
-              <br><span style="font-size:0.84rem;color:var(--ink-soft);">Builder accounts cannot post sponsored briefs, but are invited to take on open challenges on the Sprint board.</span>
+              <strong>Account Required:</strong> Posting a challenge requires a verified <strong>Problem Holder</strong> or <strong>Enabler</strong> account.
               <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
-                <a href="/login.html?redirect=/post-call.html" class="btn btn-stamp btn-sm">Sign In / Verify Account →</a>
+                <a href="/login.html?redirect=/post-call.html" class="btn btn-stamp btn-sm">Sign In →</a>
                 <a href="/login.html?tab=signup&role=problem_holder" class="btn btn-outline btn-sm">Sign Up as Problem Holder</a>
               </div>
             </div>
@@ -438,10 +434,9 @@
           roleGateNotice.innerHTML = `
             <div style="font-size:1.4rem;line-height:1;">⛔</div>
             <div>
-              <strong>Account Role Restricted:</strong> You are signed in as a <strong>Builder (${escapeHtml(user.email)})</strong>.
-              Posting sponsored problem briefs and grant-backed challenges is restricted to <strong>Problem Statement Owners</strong> (organizations, labs) and <strong>Enablers</strong> (foundations, sponsors).
+              <strong>Role Restricted:</strong> You are signed in as a <strong>Builder (${escapeHtml(user.email)})</strong>. Posting challenges is for Problem Holders and Enablers.
               <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-                <a href="sprint.html#sponsoredSection" class="btn btn-stamp btn-sm">Browse Active Sponsored Challenges →</a>
+                <a href="sprint.html#sponsoredSection" class="btn btn-stamp btn-sm">Browse Challenges →</a>
                 <a href="/login.html?redirect=/post-call.html" class="btn btn-outline btn-sm">Switch Account</a>
               </div>
             </div>

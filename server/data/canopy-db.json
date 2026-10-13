@@ -3,7 +3,7 @@
   "profiles": [],
   "build_calls": [
     {
-      "id": "call_1791732701379",
+      "id": "call_1791870315425",
       "creatorId": "usr_org_holder",
       "createdBy": "usr_org_holder",
       "title": "Automated Soil Microgrid Sensor Hub",
@@ -25,8 +25,8 @@
       "status": "open",
       "moderationStatus": "approved",
       "isIllustrative": false,
-      "createdAt": "2026-10-11T15:31:41.380Z",
-      "updatedAt": "2026-10-11T15:31:44.160Z"
+      "createdAt": "2026-10-13T05:45:15.426Z",
+      "updatedAt": "2026-10-13T05:45:18.222Z"
     },
     {
       "id": "call_groundwater",
@@ -50,7 +50,7 @@
   ],
   "matches": [
     {
-      "id": "mat_man_1791732752189",
+      "id": "mat_man_1791870368101",
       "requesterId": "usr_founder_aarushi",
       "recipientId": "usr_water_ngo",
       "userId": "usr_founder_aarushi",
@@ -76,16 +76,16 @@
       "requesterConsentAt": null,
       "contactReleasedAt": null,
       "contactReleasedBy": null,
-      "introductionSentAt": "2026-10-11T15:32:32.189Z",
+      "introductionSentAt": "2026-10-13T05:46:08.101Z",
       "expiresAt": null,
-      "createdAt": "2026-10-11T15:32:32.189Z",
-      "updatedAt": "2026-10-11T15:32:32.189Z"
+      "createdAt": "2026-10-13T05:46:08.101Z",
+      "updatedAt": "2026-10-13T05:46:08.101Z"
     },
     {
-      "id": "mtc_1791732707443",
-      "requesterId": "usr_1791732694756",
+      "id": "mtc_1791870321569",
+      "requesterId": "usr_1791870306264",
       "recipientId": "usr_water_ngo",
-      "userId": "usr_1791732694756",
+      "userId": "usr_1791870306264",
       "matchUserId": "usr_water_ngo",
       "buildCallId": null,
       "callId": null,
@@ -110,7 +110,7 @@
       "contactReleasedBy": null,
       "introductionSentAt": null,
       "expiresAt": null,
-      "createdAt": "2026-10-11T15:31:47.443Z",
+      "createdAt": "2026-10-13T05:45:21.569Z",
       "updatedAt": null
     }
   ],
@@ -129,13 +129,6 @@
           "squadRole": "Hardware Lead",
           "displayName": "Field Engineer (Sample)",
           "avatarSeed": "gw-1"
-        },
-        {
-          "userId": "usr_1791732694756",
-          "squadRole": "Sensors Lead",
-          "role": "Sensors Lead",
-          "displayName": "Elena Test",
-          "joinedAt": "2026-10-11T15:31:48.882Z"
         }
       ],
       "skillTags": [
@@ -148,60 +141,35 @@
       "daysLeft": 9,
       "progressPct": 33,
       "isIllustrative": true,
-      "statusHint": "2 of 3 spots filled",
-      "participants": [
+      "statusHint": "Illustrative demonstration cycle",
+      "applications": [
         {
-          "userId": "usr_illustrative_1",
-          "squadRole": "Hardware Lead",
-          "displayName": "Field Engineer (Sample)",
-          "avatarSeed": "gw-1"
-        },
-        {
-          "userId": "usr_1791732694756",
-          "squadRole": "Sensors Lead",
+          "id": "app_sp_1791870323178",
+          "sprintId": "sp_groundwater_sample",
+          "sprintTitle": "Groundwater optical probe calibration squad",
+          "applicantId": "usr_1791870306264",
+          "applicantName": "Elena Test",
+          "applicantEmail": "builder.1791870305682@canopy.test",
           "role": "Sensors Lead",
-          "displayName": "Elena Test",
-          "joinedAt": "2026-10-11T15:31:48.882Z"
+          "note": "",
+          "skills": [
+            "Sensors Lead"
+          ],
+          "availability": "Full sprint (2–4 weeks)",
+          "portfolioUrl": "",
+          "status": "pending_review",
+          "isLocalGuest": false,
+          "createdAt": "2026-10-13T05:45:23.178Z"
         }
       ],
-      "status": "planning",
-      "updatedAt": "2026-10-11T15:31:49.069Z"
+      "updatedAt": "2026-10-13T05:45:23.349Z"
     }
   ],
   "notebook_entries": [
     {
-      "id": "entry_1791746647802",
-      "authorId": "guest_1791746647802",
-      "userId": "guest_1791746647802",
-      "authorName": "Deshi Osei",
-      "sprintId": null,
-      "parentEntryId": null,
-      "grownFromLabel": "Independent Field Note",
-      "title": "Acoustic Monitoring of Micro-Canopy Avifauna",
-      "content": "### Method\nMicrophone arrays placed at 3-meter intervals.\n\n### Findings\nCaptured 98 species signatures with zero distortion.",
-      "bodyMarkdown": "### Method\nMicrophone arrays placed at 3-meter intervals.\n\n### Findings\nCaptured 98 species signatures with zero distortion.",
-      "summarySnippet": "Testing passive acoustic monitoring sensor arrays in dense mangrove stands.",
-      "teaser": "audio.rs:18 → snr > 24dB in rain",
-      "domain": "forestry",
-      "entryType": "field-report",
-      "tags": [],
-      "branches": [],
-      "moderationStatus": "approved",
-      "isPublic": true,
-      "isIllustrative": false,
-      "coverImageUrl": null,
-      "readingTimeMinutes": 1,
-      "viewCount": 1,
-      "isFeatured": false,
-      "isFounderPost": false,
-      "status": "published",
-      "createdAt": "2026-10-11T19:24:07.803Z",
-      "updatedAt": null
-    },
-    {
-      "id": "entry_1791732709685",
-      "authorId": "usr_1791732694756",
-      "userId": "usr_1791732694756",
+      "id": "entry_1791870323993",
+      "authorId": "usr_1791870306264",
+      "userId": "usr_1791870306264",
       "authorName": "Elena Test",
       "sprintId": null,
       "parentEntryId": null,
@@ -220,182 +188,37 @@
       "isIllustrative": false,
       "coverImageUrl": null,
       "readingTimeMinutes": 1,
-      "viewCount": 0,
+      "viewCount": 1,
       "isFeatured": false,
       "isFounderPost": false,
       "status": "published",
-      "createdAt": "2026-10-11T15:31:49.685Z",
+      "createdAt": "2026-10-13T05:45:23.993Z",
       "updatedAt": null
     },
     {
-      "id": "entry_offline_conflict",
-      "authorId": "usr_rohan",
-      "authorName": "Dr. Rohan Malhotra",
-      "sprintId": "sp_spirometer",
-      "grownFromLabel": "grown from Sprint: Pediatric Spirometer",
-      "title": "Post-mortem: our offline sync merge conflicts in rural clinics",
-      "domain": "health",
-      "entryType": "post-mortem",
-      "summarySnippet": "Two clinic nurses editing the same patient trial record offline with no network coordinator. Migrated to deterministic conflict-free replicated data types.",
-      "teaser": "sync.md → conflicts/day dropped from 40 to 0 after CRDT migration",
-      "bodyMarkdown": "### Incident Summary\nDuring field trials across three sub-district clinics without reliable cellular coverage, nurses recorded pediatric spirometry measurements on battery-powered field terminals. When clinics reconnected to the central server in the evening, last-write-wins timestamp replication silently overwrote afternoon inhalation flow curves.\n\n### Architectural Migration\nWe replaced timestamp-based REST sync with Automerge Conflict-Free Replicated Data Types (CRDTs). Every spirometry run is represented as an append-only delta event with cryptographic vector clocks.\n\n### Results\nMerge conflicts dropped from an average of 40 per day to zero. Even when two nurses enter patient vitals simultaneously while disconnected, both observations merge cleanly without data loss.",
-      "tags": [
-        "crdt",
-        "offline-first",
-        "health",
-        "sync"
-      ],
-      "readingTimeMinutes": 3,
-      "viewCount": 10,
-      "branches": [
-        {
-          "id": "branch_1791746634602",
-          "parentEntryId": "entry_offline_conflict",
-          "authorId": "guest_1791746634602",
-          "authorName": "Elena Rostova",
-          "queryType": "query",
-          "title": "Vector Clock Skew in Rural Clinics",
-          "summarySnippet": "Did you notice clock drift when clinics stayed disconnected over 72 hours?",
-          "teaser": "",
-          "bodyMarkdown": "Did you notice clock drift when clinics stayed disconnected over 72 hours?",
-          "createdAt": "2026-10-11T19:23:54.602Z"
-        }
-      ],
-      "status": "published",
-      "isPublic": true,
-      "createdAt": "2026-09-05T16:20:00Z",
-      "updatedAt": "2026-10-11T19:24:55.177Z"
-    },
-    {
-      "id": "entry_groundwater",
-      "authorId": "usr_priya",
-      "authorName": "Priya Nandan",
-      "sprintId": "sp_groundwater",
-      "grownFromLabel": "grown from Sprint: Groundwater Sensor",
-      "title": "Why my groundwater model kept overfitting on rainy days",
+      "id": "entry_groundwater_sample",
+      "authorId": "usr_illustrative_1",
+      "authorName": "Canopy Research Note (Sample)",
+      "sprintId": "sp_groundwater_sample",
+      "grownFromLabel": "grown from Sprint: Groundwater Sensor (Sample)",
+      "title": "Field calibration benchmarks under high turbidity (Illustrative)",
       "domain": "climate",
       "entryType": "post-mortem",
-      "summarySnippet": "Turns out three optical sensors were miscalibrated after heavy storms and I was training on noise. Here is how I caught and isolated the drift.",
-      "teaser": "rmse_by_weather.py:14 → std(residual | rain) >> std(residual | dry)",
-      "bodyMarkdown": "### The Problem\nWhen evaluating our groundwater aquifer prediction model across 14 monitoring boreholes, we noticed validation loss plummeted during dry weeks but spiked violently by +380% during heavy precipitation events.\n\n### The Root Cause\nInspection of raw sensor telemetry revealed that three optical turbidity probes had cracked rubber seals. Rainwater seepage caused micro-droplets on the lens, creating synthetic high-turbidity pulses that the gradient boosting model interpreted as dramatic aquifer recharge events.\n\n```python\n# Isolated drift script snippet\nimport pandas as pd\nimport numpy as np\n\ndef check_turbidity_residual(df):\n    rain_mask = df['precip_mm'] > 5.0\n    return df.loc[rain_mask, 'turbidity_ntu'].std() / df.loc[~rain_mask, 'turbidity_ntu'].std()\n```\n\n### Resolution & Takeaway\nWe replaced the optical seals with vulcanized nitrile O-rings and added an automated drift rejection filter that discards single-point spikes that violate physical flow dynamics. The model stabilized with RMSE < 0.08 m across all weather conditions.",
+      "summarySnippet": "Illustrative Sample: Baseline drift analysis during high sediment conditions with median window filtering.",
+      "teaser": "cal_curve.py → median_filter(raw_adc, window=5)",
+      "bodyMarkdown": "### Illustrative Demonstration Note\nThis note illustrates how Canopy teams publish candid teardowns and post-mortems after sprint cycles.\n\n### Finding\nSediment scattering produced analog drift; resolved with physical baffles and software filtering.",
       "tags": [
-        "optical-sensors",
-        "drift",
-        "groundwater",
-        "python"
+        "Climate",
+        "illustrative-sample"
       ],
-      "readingTimeMinutes": 3,
-      "viewCount": 142,
-      "branches": [],
-      "status": "published",
-      "isPublic": true,
-      "createdAt": "2026-09-18T14:30:00Z"
-    },
-    {
-      "id": "entry_thermal_vent",
-      "authorId": "usr_ines",
-      "authorName": "Ines Falk",
-      "sprintId": "sp_fault_detect",
-      "grownFromLabel": "grown from Sprint: Decentralized Fault Detection",
-      "title": "First failed prototype of the fault-detection board",
-      "domain": "hardware",
-      "entryType": "teardown",
-      "summarySnippet": "The 3D-printed enclosure trapped ambient heat and cooked the ADC sensor by hour six. Redesigned the vent pattern and swapped to an aluminum heat spreader.",
-      "teaser": "thermal_log.csv → 84°C at t+6h, spec max 65°C",
-      "bodyMarkdown": "### Prototype Teardown\nOur team field-tested Rev A of the grid fault detector in an unconditioned solar inverter bay in Phoenix. Ambient temperatures inside the metal junction box exceeded 48°C.\n\n### Failure Analysis\nBecause our rapid prototype housing was printed with solid PETG walls and no convection chimney, heat generated by the onboard 24V step-down buck converter had nowhere to dissipate. Junction temperatures on the ADS1115 analog-to-digital converter reached 84°C after six hours, triggering thermal shutdown.\n\n### Rev B Modifications\n1. Added staggered hexagonal vent chimneys at top and bottom of the housing.\n2. Coupled the regulator to an anodized aluminum spreader plate with thermal pad interface.\n3. Swapped to high-Tg polycarbonate-CF blend.\n\nTemperature plateaued safely at 54°C in torture chamber validation.",
-      "tags": [
-        "hardware",
-        "pcb",
-        "thermal",
-        "cad"
-      ],
-      "readingTimeMinutes": 4,
-      "viewCount": 98,
-      "branches": [],
-      "status": "published",
-      "isPublic": true,
-      "createdAt": "2026-09-22T09:15:00Z"
-    },
-    {
-      "id": "entry_budget_drift",
-      "authorId": "usr_tariq",
-      "authorName": "Tariq Vance",
-      "sprintId": "sp_city_budget",
-      "grownFromLabel": "grown from Sprint: City Budget Explorer",
-      "title": "A dataset that surprised me: the line-items don't sum to the total",
-      "domain": "civic",
-      "entryType": "field-report",
-      "summarySnippet": "The city's published budget PDF and its open data export disagree by 4%. Wrote an automated reconciliation script before touching any user interface.",
-      "teaser": "reconcile.js → drift: +$2.3M unattributed capital allocations",
-      "bodyMarkdown": "### The Anomaly\nWhile parsing open data extracts for the City Budget Explorer, our automated checksum pipeline threw continuous balance validation errors. The declared municipal total was $58.4M, but summing the departmental sub-tables produced only $56.1M.\n\n### The Investigation\nAfter auditing each capital allocation line item, we discovered that off-balance contingency fund expenditures were included in the summary headline figure but excluded from the department-level breakdown CSV.\n\n```javascript\n// Automated reconciliation validator\nconst subtotal = rows.reduce((acc, r) => acc + Number(r.amount), 0);\nconst discrepancy = Math.abs(subtotal - summaryTotal);\nif (discrepancy > 1000) {\n  reportDiscrepancy({ expected: summaryTotal, actual: subtotal, delta: discrepancy });\n}\n```\n\n### Public Impact\nWe published our automated reconciliation audit to the city comptroller's public comments desk. Two weeks later, the data portal released an amended export format documenting the capital reserve lines.",
-      "tags": [
-        "civic-data",
-        "open-data",
-        "budget",
-        "audit"
-      ],
-      "readingTimeMinutes": 3,
-      "viewCount": 165,
-      "branches": [],
-      "status": "published",
-      "isPublic": true,
-      "createdAt": "2026-09-25T11:45:00Z"
-    },
-    {
-      "id": "entry_screen_touch",
-      "authorId": "usr_marcus",
-      "authorName": "Marcus Webb",
-      "sprintId": "sp_adaptive_tutor",
-      "grownFromLabel": "grown from Sprint: Adaptive Reading Tutor",
-      "title": "The small fix that made the tutor usable on a cracked screen",
-      "domain": "education",
-      "entryType": "field-report",
-      "summarySnippet": "Touch targets were fine in the desktop simulator but unusable on donated classroom tablets with damaged digitizers. Expanding target hitboxes solved it.",
-      "teaser": "tutor.css:212 → min-height: 48px !important; margin: 8px;",
-      "bodyMarkdown": "### Field Testing Reality\nIn lab testing on iPads and Chrome simulated touch displays, our phonics exercise buttons passed all accessibility guidelines. But when we deployed to a public primary school in Nairobi with 20 donated 7-inch Android tablets, half had hairline cracks across the lower digitizer glass.\n\n### The Fix\nInstead of requiring users to hit exact visual bounding boxes, we implemented touch slop expansion using CSS pseudo-elements and an invisible 48px hit grid. Even with partial touch latency, tap targets register cleanly.\n\n```css\n.phonics-target {\n  position: relative;\n  min-height: 48px !important;\n}\n.phonics-target::after {\n  content: \"\";\n  position: absolute;\n  inset: -10px;\n}\n```\n\nLesson learned: Always test educational software on low-cost and refurbished hardware under actual classroom lighting.",
-      "tags": [
-        "accessibility",
-        "tablets",
-        "education",
-        "css"
-      ],
-      "readingTimeMinutes": 3,
-      "viewCount": 112,
-      "branches": [],
-      "status": "published",
-      "isPublic": true,
-      "createdAt": "2026-09-28T08:00:00Z"
-    },
-    {
-      "id": "entry_radar_speckle",
-      "authorId": "usr_deshi",
-      "authorName": "Deshi Osei",
-      "sprintId": "sp_radar",
-      "grownFromLabel": "grown from Sprint: SAR Canopy Change Detection",
-      "title": "Filtering speckle noise in Sentinel-1 dual-pol backscatter over flooded mangroves",
-      "domain": "forestry",
-      "entryType": "sprint-update",
-      "summarySnippet": "Water specular reflections caused false-positive canopy drop alerts in tidal zones. Implemented an enhanced Lee filter with adaptive spatial windowing.",
-      "teaser": "sar_filter.py → false alarm rate reduced by 72% in intertidal zones",
-      "bodyMarkdown": "### Technical Bottleneck\nSynthetic Aperture Radar (SAR) Sentinel-1 C-band backscatter penetrates cloud cover but suffers from severe speckle noise in intertidal mangrove forests. High tides create specular reflectance surfaces that simulate complete canopy clearance in automated threshold classifiers.\n\n### Implementation\nWe built an adaptive spatial Lee filter combined with a localized tidal elevation mask derived from the Copernicus digital elevation model. If the backscatter drop coincides with lunar peak high tide, the change detector dampens sensitivity.\n\n```python\n# Enhanced Lee speckle suppression\ndef lee_filter(img, win_size=5):\n    mean = uniform_filter(img, win_size)\n    var = uniform_filter(img**2, win_size) - mean**2\n    weight = var / (var + np.mean(var))\n    return mean + weight * (img - mean)\n```\n\nFalse-positive mangrove clearing alerts were reduced by 72% across the Niger Delta test corridor.",
-      "tags": [
-        "sar",
-        "radar",
-        "mangroves",
-        "gis",
-        "python"
-      ],
-      "readingTimeMinutes": 4,
-      "viewCount": 189,
-      "branches": [],
-      "status": "published",
-      "isPublic": true,
-      "createdAt": "2026-10-05T10:10:00Z"
+      "isIllustrative": true,
+      "createdAt": "2026-09-02T10:00:00Z",
+      "branches": []
     }
   ],
   "applications": [
     {
-      "id": "app_1791732709952",
+      "id": "app_1791870324197",
       "fullName": "Dr. Jane Vance",
       "email": "jane.vance@ecology.org",
       "role": "problem_holder",
@@ -409,61 +232,61 @@
       "reviewedAt": null,
       "callId": null,
       "builderId": null,
-      "appliedAt": "2026-10-11T15:31:49.952Z",
-      "submittedAt": "2026-10-11T15:31:49.952Z",
-      "createdAt": "2026-10-11T15:31:49.952Z",
+      "appliedAt": "2026-10-13T05:45:24.197Z",
+      "submittedAt": "2026-10-13T05:45:24.197Z",
+      "createdAt": "2026-10-13T05:45:24.197Z",
       "updatedAt": null
     }
   ],
   "moderation_queue": [
     {
-      "id": "mod_1791732710130",
+      "id": "mod_1791870324487",
       "entityType": "application",
-      "entityId": "app_1791732709952",
+      "entityId": "app_1791870324197",
       "status": "pending",
       "flaggedReason": "application_intake",
       "submittedBy": null,
       "reviewedBy": null,
       "decisionNote": null,
-      "createdAt": "2026-10-11T15:31:50.130Z",
+      "createdAt": "2026-10-13T05:45:24.487Z",
       "reviewedAt": null
     },
     {
-      "id": "mod_1791732701571",
+      "id": "mod_1791870315610",
       "entityType": "build_call",
-      "entityId": "call_1791732701379",
+      "entityId": "call_1791870315425",
       "status": "approved",
       "flaggedReason": "new_submission",
       "submittedBy": "usr_org_holder",
       "reviewedBy": "usr_mod",
       "decisionNote": "Verified problem holder identity and pilot budget allocation.",
-      "createdAt": "2026-10-11T15:31:41.571Z",
-      "reviewedAt": "2026-10-11T15:31:43.735Z",
-      "updatedAt": "2026-10-11T15:31:44.349Z"
+      "createdAt": "2026-10-13T05:45:15.610Z",
+      "reviewedAt": "2026-10-13T05:45:17.795Z",
+      "updatedAt": "2026-10-13T05:45:18.401Z"
     }
   ],
   "audit_events": [
     {
-      "id": "aud_1791732762926_86aas",
+      "id": "aud_1791870378462_n08b7",
       "eventType": "notebook.deleted_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "notebook_entry",
-      "targetEntityId": "entry_1791732754358",
+      "targetEntityId": "entry_1791870370487",
       "payload": {
         "title": "Decentralized Microgrid Frequency Drift Calibration",
         "entryType": "article"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:42.926Z"
+      "createdAt": "2026-10-13T05:46:18.462Z"
     },
     {
-      "id": "aud_1791732759336_z2hgu",
+      "id": "aud_1791870374941_pb96q",
       "eventType": "notebook.updated_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "notebook_entry",
-      "targetEntityId": "entry_1791732754358",
+      "targetEntityId": "entry_1791870370487",
       "payload": {
         "updates": [
           "readingTimeMinutes",
@@ -472,15 +295,15 @@
         ]
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:39.336Z"
+      "createdAt": "2026-10-13T05:46:14.941Z"
     },
     {
-      "id": "aud_1791732754550_thdky",
+      "id": "aud_1791870370653_r36np",
       "eventType": "notebook.created_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "notebook_entry",
-      "targetEntityId": "entry_1791732754358",
+      "targetEntityId": "entry_1791870370487",
       "payload": {
         "title": "Decentralized Microgrid Frequency Drift Calibration",
         "domain": "climate",
@@ -488,24 +311,24 @@
         "isFounderPost": true
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:34.550Z"
+      "createdAt": "2026-10-13T05:46:10.653Z"
     },
     {
-      "id": "aud_1791732752383_7opnd",
+      "id": "aud_1791870368291_rqqjf",
       "eventType": "match.manual_curated",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "match",
-      "targetEntityId": "mat_man_1791732752189",
+      "targetEntityId": "mat_man_1791870368101",
       "payload": {
         "initiatorId": "usr_founder_aarushi",
         "recipientId": "usr_water_ngo"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:32.383Z"
+      "createdAt": "2026-10-13T05:46:08.291Z"
     },
     {
-      "id": "aud_1791732749179_5iwvr",
+      "id": "aud_1791870364171_7wq7h",
       "eventType": "settings.updated",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
@@ -520,29 +343,29 @@
         }
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:29.179Z"
+      "createdAt": "2026-10-13T05:46:04.171Z"
     },
     {
-      "id": "aud_1791732744399_tmst1",
+      "id": "aud_1791870358817_hntmz",
       "eventType": "build_call.deleted_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "build_call",
-      "targetEntityId": "call_1791732736598",
+      "targetEntityId": "call_1791870351541",
       "payload": {
         "title": "Decentralized Grid Frequency Sensor",
         "domain": "energy"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:24.399Z"
+      "createdAt": "2026-10-13T05:45:58.817Z"
     },
     {
-      "id": "aud_1791732741678_1cltq",
+      "id": "aud_1791870356479_6bz1z",
       "eventType": "build_call.updated_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "build_call",
-      "targetEntityId": "call_1791732736598",
+      "targetEntityId": "call_1791870351541",
       "payload": {
         "updates": [
           "status",
@@ -551,95 +374,95 @@
         ]
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:21.678Z"
+      "createdAt": "2026-10-13T05:45:56.479Z"
     },
     {
-      "id": "aud_1791732736831_iuwbq",
+      "id": "aud_1791870351805_oxuar",
       "eventType": "build_call.created_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "build_call",
-      "targetEntityId": "call_1791732736598",
+      "targetEntityId": "call_1791870351541",
       "payload": {
         "title": "Decentralized Grid Frequency Sensor",
         "domain": "energy",
         "status": "open"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:16.831Z"
+      "createdAt": "2026-10-13T05:45:51.805Z"
     },
     {
-      "id": "aud_1791732734596_xra7q",
+      "id": "aud_1791870349530_dg1gv",
       "eventType": "content.deleted_by_staff",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "content_item",
-      "targetEntityId": "cnt_1791732728838",
+      "targetEntityId": "cnt_1791870342863",
       "payload": {
         "contentKey": "call_solar_microgrid",
         "title": "Decentralized Microgrid Telemetry"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:14.596Z"
+      "createdAt": "2026-10-13T05:45:49.530Z"
     },
     {
-      "id": "aud_1791732731833_q082k",
+      "id": "aud_1791870346140_86zgf",
       "eventType": "content.published",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "content_item",
-      "targetEntityId": "cnt_1791732728838",
+      "targetEntityId": "cnt_1791870342863",
       "payload": {
         "contentKey": "call_solar_microgrid",
         "version": 2
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:11.833Z"
+      "createdAt": "2026-10-13T05:45:46.140Z"
     },
     {
-      "id": "aud_1791732729056_utk87",
+      "id": "aud_1791870343071_r7bc9",
       "eventType": "content.draft_created",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "content_item",
-      "targetEntityId": "cnt_1791732728838",
+      "targetEntityId": "cnt_1791870342863",
       "payload": {
         "contentKey": "call_solar_microgrid"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:09.056Z"
+      "createdAt": "2026-10-13T05:45:43.071Z"
     },
     {
-      "id": "aud_1791732726295_4nihd",
+      "id": "aud_1791870340621_vh15u",
       "eventType": "content.media_uploaded",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "media",
-      "targetEntityId": "content/1791732726067_sensor-diagram.png",
+      "targetEntityId": "content/1791870340414_sensor-diagram.png",
       "payload": {
         "mimeType": "image/png",
         "sizeBytes": 70,
         "provider": "local"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:06.295Z"
+      "createdAt": "2026-10-13T05:45:40.621Z"
     },
     {
-      "id": "aud_1791732721583_eklhc",
+      "id": "aud_1791870335395_rth9f",
       "eventType": "role.grant",
       "actorId": "usr_founder_aarushi",
       "actorRole": "registered_user",
       "targetEntityType": "user",
-      "targetEntityId": "usr_1791732694756",
+      "targetEntityId": "usr_1791870306264",
       "payload": {
         "role": "approved_builder",
-        "targetEmail": "builder.1791732694530@canopy.test"
+        "targetEmail": "builder.1791870305682@canopy.test"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:32:01.584Z"
+      "createdAt": "2026-10-13T05:45:35.395Z"
     },
     {
-      "id": "aud_1791732711427_0jsfs",
+      "id": "aud_1791870325564_61l6i",
       "eventType": "founder.bootstrap_granted",
       "actorId": "usr_founder_aarushi",
       "actorRole": "owner",
@@ -650,44 +473,44 @@
         "email": "canopy.connect.collaborate@gmail.com"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:31:51.427Z"
+      "createdAt": "2026-10-13T05:45:25.564Z"
     },
     {
-      "id": "aud_1791732704351_gj3fi",
+      "id": "aud_1791870318404_zme6p",
       "eventType": "moderation.approve",
       "actorId": "usr_mod",
       "actorRole": "moderator",
       "targetEntityType": "build_call",
-      "targetEntityId": "call_1791732701379",
+      "targetEntityId": "call_1791870315425",
       "payload": {
         "note": "Verified problem holder identity and pilot budget allocation.",
         "action": "approve"
       },
       "ipAddress": "::1",
-      "createdAt": "2026-10-11T15:31:44.351Z"
+      "createdAt": "2026-10-13T05:45:18.404Z"
     },
     {
-      "id": "aud_1791732701815_uuvni",
+      "id": "aud_1791870315794_jogx2",
       "eventType": "build_call.submitted",
       "actorId": "usr_org_holder",
       "actorRole": "problem_holder",
       "targetEntityType": "build_call",
-      "targetEntityId": "call_1791732701379",
+      "targetEntityId": "call_1791870315425",
       "payload": {
         "title": "Automated Soil Microgrid Sensor Hub",
         "domain": "climate"
       },
       "ipAddress": null,
-      "createdAt": "2026-10-11T15:31:41.815Z"
+      "createdAt": "2026-10-13T05:45:15.794Z"
     }
   ],
   "user_roles": [
     {
-      "id": "rol_1791732711226_372h",
+      "id": "rol_1791870325387_k9fe",
       "userId": "usr_founder_aarushi",
       "role": "owner",
       "grantedBy": "system_founder_bootstrap",
-      "grantedAt": "2026-10-11T15:31:51.226Z"
+      "grantedAt": "2026-10-13T05:45:25.388Z"
     }
   ],
   "content_items": [
@@ -778,7 +601,7 @@
       "description": "Default card pagination and listing limits for public directories",
       "updatedBy": "canopy.connect.collaborate@gmail.com",
       "createdAt": "2026-08-01T00:00:00Z",
-      "updatedAt": "2026-10-11T15:32:29.178Z"
+      "updatedAt": "2026-10-13T05:46:04.169Z"
     },
     {
       "key": "feature_flags",
