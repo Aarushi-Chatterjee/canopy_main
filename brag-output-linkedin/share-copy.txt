@@ -1,0 +1,12 @@
+Most ambitious projects don't fail from lack of ambition—they stall because building alone in disconnected tabs is exhausting.
+
+We built Canopy: intent-driven team matching and structured 14-day execution sprints so builders, domain experts, and enablers can turn ideas into shipped reality.
+
+✓ Zero-swipe skill & availability matching
+✓ 14-day execution cadence with sprint poker consensus
+✓ Lab Notebook for open research and shipped proof
+
+Don't build alone. Join the Canopy Field Station:
+https://canopy-ten-lake.vercel.app/ 🌱🚀
+
+#BuildingInPublic #ProductHunt #TechStartup #OpenSource #CollaborativeTech #IndieHackers #Engineering

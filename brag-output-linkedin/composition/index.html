@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1080, initial-scale=1.0">
+    <title>Canopy — Build · Connect · Ship (LinkedIn Kinetic Editorial)</title>
+    
+    <!-- Modern Typography: Fraunces (Editorial High-Contrast Serif) + Plus Jakarta Sans (Kinetic Precision Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600..900;1,9..144,700..900&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP 3.12.5 -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+    <style>
+      /* ================= RESET & DESIGN TOKENS ================= */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background: #111A14;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        color: #0F2F20;
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ================= COMPOSITION ROOT (1080x1080 Square) ================= */
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1080px;
+        background-color: #FAF7F0;
+        overflow: hidden;
+      }
+
+      /* Editorial Dot Grid & Texture */
+      .bg-grid-layer {
+        position: absolute;
+        inset: 0;
+        background-image: 
+          radial-gradient(circle, rgba(15, 47, 32, 0.08) 1.5px, transparent 1.5px);
+        background-size: 32px 32px;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      /* Ambient Botanical Glows */
+      .glow-sprout {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        top: -150px;
+        right: -150px;
+        background: radial-gradient(circle, rgba(78, 155, 68, 0.16) 0%, transparent 70%);
+        border-radius: 50%;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .glow-warm {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        bottom: -120px;
+        left: -120px;
+        background: radial-gradient(circle, rgba(212, 136, 6, 0.14) 0%, transparent 70%);
+        border-radius: 50%;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      /* Botanical Illustrations */
+      .vine-top-right {
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 380px;
+        height: 380px;
+        object-fit: contain;
+        z-index: 3;
+        opacity: 0.85;
+        pointer-events: none;
+      }
+      .vine-bottom-left {
+        position: absolute;
+        bottom: -40px;
+        left: -40px;
+        width: 320px;
+        height: 320px;
+        object-fit: contain;
+        z-index: 3;
+        opacity: 0.85;
+        pointer-events: none;
+      }
+
+      /* Floating Kinetic Leaves */
+      .leaf-particle {
+        position: absolute;
+        z-index: 4;
+        pointer-events: none;
+        opacity: 0.75;
+      }
+
+      /* Modern High-Contrast Outer Border Frame */
+      .editorial-frame {
+        position: absolute;
+        inset: 24px;
+        border: 2px solid rgba(15, 47, 32, 0.18);
+        border-radius: 28px;
+        z-index: 8;
+        pointer-events: none;
+      }
+
+      /* ================= TOP PERSISTENT NAVBAR ================= */
+      .top-navbar {
+        position: absolute;
+        top: 40px;
+        left: 48px;
+        right: 48px;
+        height: 68px;
+        background: #FFFFFF;
+        border: 2px solid #0F2F20;
+        border-radius: 20px;
+        box-shadow: 4px 4px 0px #0F2F20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        z-index: 50;
+      }
+      .navbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .navbar-logo {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+      }
+      .navbar-title-wrap {
+        display: flex;
+        flex-direction: column;
+      }
+      .navbar-title {
+        font-family: 'Fraunces', serif;
+        font-size: 22px;
+        font-weight: 800;
+        color: #0F2F20;
+        line-height: 1.1;
+        letter-spacing: -0.5px;
+      }
+      .navbar-tagline {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.8px;
+        text-transform: uppercase;
+        color: #A9321A;
+      }
+      .navbar-center-tabs {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .nav-tab-pill {
+        padding: 6px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #4A5B4F;
+        border: 1px solid transparent;
+      }
+      .nav-tab-pill.active {
+        background: #0F2F20;
+        color: #FAF7F0;
+      }
+      .navbar-url-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: #FAF7F0;
+        border: 1.5px solid #0F2F20;
+        border-radius: 14px;
+        font-family: 'Space Grotesk', monospace;
+        font-size: 13px;
+        font-weight: 700;
+        color: #0F2F20;
+        box-shadow: 2px 2px 0px #0F2F20;
+      }
+      .navbar-url-dot {
+        width: 8px;
+        height: 8px;
+        background: #34A853;
+        border-radius: 50%;
+        box-shadow: 0 0 8px rgba(52, 168, 83, 0.8);
+      }
+
+      /* ================= SCENE CLIPS BASE ================= */
+      .scene-clip {
+        position: absolute;
+        inset: 0;
+        padding: 128px 48px 48px 48px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        z-index: 20;
+        pointer-events: none;
+      }
+
+      /* Common Kinetic Typography */
+      .kinetic-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 18px;
+        background: #FFFFFF;
+        border: 1.5px solid #0F2F20;
+        box-shadow: 3px 3px 0px #0F2F20;
+        border-radius: 16px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #0F2F20;
+        margin-bottom: 14px;
+      }
+      .kinetic-kicker .kicker-icon {
+        color: #1F7A48;
+      }
+      .kinetic-title {
+        font-family: 'Fraunces', serif;
+        font-size: 46px;
+        font-weight: 800;
+        line-height: 1.12;
+        color: #0F2F20;
+        text-align: center;
+        margin-bottom: 10px;
+        letter-spacing: -0.8px;
+      }
+      .kinetic-title em {
+        font-style: italic;
+        color: #A9321A;
+        text-decoration: underline;
+        text-decoration-color: #D48806;
+        text-decoration-thickness: 3px;
+        text-underline-offset: 4px;
+      }
+      .kinetic-subtitle {
+        font-size: 18px;
+        font-weight: 600;
+        color: #384E42;
+        text-align: center;
+        line-height: 1.4;
+        max-width: 820px;
+        margin-bottom: 22px;
+      }
+
+      /* High-Contrast Bold Editorial Statement Card */
+      .statement-card {
+        background: #FFFFFF;
+        border: 2px solid #0F2F20;
+        box-shadow: 8px 8px 0px #0F2F20;
+        border-radius: 24px;
+        width: 100%;
+        max-width: 960px;
+        overflow: hidden;
+      }
+
+      /* ================= SCENE 1: HOOK & MASCOTS ================= */
+      .mascot-feature-box {
+        position: relative;
+        width: 100%;
+        background: #FAF7F0;
+        border-bottom: 2px solid #0F2F20;
+        padding: 12px 16px 8px 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .mascot-banner-media {
+        width: 100%;
+        max-height: 250px;
+        object-fit: contain;
+        display: block;
+      }
+      .mascot-roster-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        background: #FFFFFF;
+        padding: 16px 20px;
+        gap: 14px;
+      }
+      .mascot-role-pill {
+        background: #FAF7F0;
+        border: 1.5px solid #0F2F20;
+        border-radius: 16px;
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 3px 3px 0px #0F2F20;
+      }
+      .mascot-role-emoji {
+        font-size: 24px;
+        line-height: 1;
+      }
+      .mascot-role-info h4 {
+        font-size: 14px;
+        font-weight: 800;
+        color: #0F2F20;
+        line-height: 1.2;
+      }
+      .mascot-role-info p {
+        font-size: 11px;
+        font-weight: 600;
+        color: #556B5D;
+      }
+
+      /* ================= SCENE 2: ZERO-SWIPE MATCH ================= */
+      .match-card-content {
+        padding: 24px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .match-meta-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 14px;
+        border-bottom: 1.5px dashed rgba(15, 47, 32, 0.25);
+      }
+      .match-source-tag {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Space Grotesk', monospace;
+        font-size: 13px;
+        font-weight: 700;
+        color: #0F2F20;
+      }
+      .match-pulse-badge {
+        background: #E8F5E9;
+        color: #175C34;
+        border: 1.5px solid #175C34;
+        border-radius: 10px;
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+      }
+      .match-profiles-split {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 16px;
+      }
+      .candidate-profile-box {
+        background: #FAF7F0;
+        border: 2px solid #0F2F20;
+        box-shadow: 4px 4px 0px #0F2F20;
+        border-radius: 18px;
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .candidate-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .candidate-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #0F2F20;
+        color: #FAF7F0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 18px;
+        border: 2px solid #34A853;
+      }
+      .candidate-name-group h4 {
+        font-size: 16px;
+        font-weight: 800;
+        color: #0F2F20;
+      }
+      .candidate-name-group span {
+        font-size: 12px;
+        font-weight: 600;
+        color: #175C34;
+      }
+      .candidate-tags-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .candidate-tag-chip {
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 47, 32, 0.2);
+        padding: 3px 8px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #0F2F20;
+      }
+      .match-connector-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+      .match-percentage-badge {
+        background: #0F2F20;
+        color: #FAF7F0;
+        border: 2px solid #34A853;
+        border-radius: 50px;
+        padding: 10px 18px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        box-shadow: 4px 4px 0px #34A853;
+        text-align: center;
+      }
+      .match-confirmed-stamp {
+        background: #A9321A;
+        color: #FFFFFF;
+        padding: 12px 24px;
+        border-radius: 14px;
+        border: 2px solid #0F2F20;
+        box-shadow: 4px 4px 0px #0F2F20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .stamp-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+      }
+      .stamp-right {
+        font-size: 12px;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 4px 10px;
+        border-radius: 8px;
+      }
+
+      /* ================= SCENE 3: 14-DAY SPRINT ================= */
+      .sprint-board-content {
+        padding: 24px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .sprint-headline-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .sprint-title-subgroup h4 {
+        font-family: 'Fraunces', serif;
+        font-size: 22px;
+        font-weight: 800;
+        color: #0F2F20;
+      }
+      .sprint-title-subgroup p {
+        font-size: 13px;
+        font-weight: 600;
+        color: #556B5D;
+      }
+      .sprint-cycle-pill {
+        background: #FAF7F0;
+        border: 2px solid #0F2F20;
+        border-radius: 12px;
+        padding: 6px 14px;
+        font-family: 'Space Grotesk', monospace;
+        font-size: 13px;
+        font-weight: 800;
+        color: #A9321A;
+        box-shadow: 2px 2px 0px #0F2F20;
+      }
+      .sprint-progress-track-box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .progress-label-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        font-weight: 800;
+        color: #0F2F20;
+      }
+      .editorial-progress-track {
+        height: 18px;
+        background: #FAF7F0;
+        border: 2px solid #0F2F20;
+        border-radius: 12px;
+        padding: 2px;
+        overflow: hidden;
+      }
+      .editorial-progress-fill {
+        height: 100%;
+        width: 15%;
+        background: linear-gradient(90deg, #1F7A48, #34A853);
+        border-radius: 8px;
+      }
+      .sprint-interactive-row {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 16px;
+      }
+      .poker-deck-card {
+        background: #FAF7F0;
+        border: 2px solid #0F2F20;
+        border-radius: 16px;
+        box-shadow: 3px 3px 0px #0F2F20;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .poker-header-text {
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #0F2F20;
+        display: flex;
+        justify-content: space-between;
+      }
+      .poker-cards-container {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+      .poker-playing-card {
+        width: 54px;
+        height: 72px;
+        background: #FFFFFF;
+        border: 2px solid #0F2F20;
+        border-radius: 10px;
+        box-shadow: 3px 3px 0px #0F2F20;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 26px;
+        font-weight: 800;
+        color: #0F2F20;
+      }
+      .poker-verdict-pill {
+        background: #FFFFFF;
+        border: 1.5px solid #175C34;
+        color: #175C34;
+        padding: 6px 12px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 800;
+        text-align: center;
+      }
+      .checklist-card {
+        background: #FAF7F0;
+        border: 2px solid #0F2F20;
+        border-radius: 16px;
+        box-shadow: 3px 3px 0px #0F2F20;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+      }
+      .checklist-item-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #0F2F20;
+      }
+      .checklist-icon-check {
+        width: 22px;
+        height: 22px;
+        background: #175C34;
+        color: #FFFFFF;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 900;
+        border: 1.5px solid #0F2F20;
+      }
+
+      /* ================= SCENE 4: CLIMAX & CTA ================= */
+      .climax-hero-box {
+        padding: 24px 36px 30px 36px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        text-align: center;
+      }
+      .climax-brand-hero {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .climax-logo-circle {
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
+        border: 2px solid #0F2F20;
+        background: #FAF7F0;
+        padding: 8px;
+        box-shadow: 3px 3px 0px #0F2F20;
+      }
+      .climax-logo-circle img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .climax-brand-copy {
+        text-align: left;
+      }
+      .climax-brand-copy h2 {
+        font-family: 'Fraunces', serif;
+        font-size: 38px;
+        font-weight: 900;
+        color: #0F2F20;
+        line-height: 1;
+        letter-spacing: -0.5px;
+      }
+      .climax-brand-copy span {
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 2.2px;
+        color: #A9321A;
+        text-transform: uppercase;
+      }
+      .climax-mascots-card {
+        width: 100%;
+        max-height: 185px;
+        border: 2px solid #0F2F20;
+        border-radius: 18px;
+        overflow: hidden;
+        background: #FAF7F0;
+        box-shadow: 4px 4px 0px #0F2F20;
+      }
+      .climax-mascots-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .climax-tagline-statement {
+        font-family: 'Fraunces', serif;
+        font-size: 32px;
+        font-weight: 800;
+        color: #0F2F20;
+        line-height: 1.2;
+      }
+      .climax-tagline-statement em {
+        font-style: italic;
+        color: #A9321A;
+        text-decoration: underline;
+        text-decoration-color: #D48806;
+      }
+      
+      /* Unmissable Large CTA Button */
+      .launch-cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 44px;
+        background: #0F2F20;
+        color: #FAF7F0;
+        border: 2px solid #0F2F20;
+        border-radius: 18px;
+        font-size: 19px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        box-shadow: 6px 6px 0px #D48806;
+        cursor: pointer;
+      }
+      .launch-cta-button .cta-arrow {
+        color: #34A853;
+        font-size: 22px;
+      }
+
+      /* Featured Verified Production URL Badge */
+      .featured-url-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #FAF7F0;
+        border: 2px solid #0F2F20;
+        box-shadow: 3px 3px 0px #0F2F20;
+        border-radius: 14px;
+        padding: 8px 20px;
+        margin-top: 4px;
+      }
+      .featured-url-badge {
+        font-family: 'Space Grotesk', monospace;
+        font-size: 16px;
+        font-weight: 800;
+        color: #0F2F20;
+        letter-spacing: 0.5px;
+      }
+      .featured-url-badge span {
+        color: #A9321A;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="canopy-linkedin-square" data-width="1080" data-height="1080" data-duration="18">
+      
+      <!-- Audio Track: 120 BPM Groove -->
+      <audio id="canopy-audio" src="assets/track.mp3" data-start="0" data-duration="18" preload="auto"></audio>
+
+      <!-- Background Dot Grid & Ambient botanical accents -->
+      <div class="bg-grid-layer"></div>
+      <div class="glow-sprout"></div>
+      <div class="glow-warm"></div>
+
+      <!-- Botanical Corner Vines -->
+      <img src="assets/vine-arch.png" alt="Vine Decoration" class="vine-top-right" data-layout-allow-overflow>
+      <img src="assets/vine-climbing.png" alt="Vine Climbing" class="vine-bottom-left" data-layout-allow-overflow>
+
+      <!-- Floating Leaf Particles -->
+      <svg class="leaf-particle lp-1" style="top:120px; left:60px; width:28px; height:28px;" viewBox="0 0 24 24" fill="#1F7A48">
+        <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+      </svg>
+      <svg class="leaf-particle lp-2" style="bottom:140px; right:70px; width:34px; height:34px;" viewBox="0 0 24 24" fill="#D48806">
+        <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+      </svg>
+      <svg class="leaf-particle lp-3" style="top:380px; right:50px; width:22px; height:22px;" viewBox="0 0 24 24" fill="#A9321A">
+        <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+      </svg>
+
+      <!-- Frame Corner Guide -->
+      <div class="editorial-frame"></div>
+
+      <!-- ================= TOP PERSISTENT NAVBAR WITH CORRECT URL ================= -->
+      <div class="top-navbar">
+        <div class="navbar-brand">
+          <img src="assets/canopy-logo.png" alt="Canopy Emblem" class="navbar-logo">
+          <div class="navbar-title-wrap">
+            <span class="navbar-title">CANOPY</span>
+            <span class="navbar-tagline">Build · Connect · Ship</span>
+          </div>
+        </div>
+        <div class="navbar-center-tabs">
+          <span class="nav-tab-pill active">Match</span>
+          <span class="nav-tab-pill">Sprint</span>
+          <span class="nav-tab-pill">Notebook</span>
+        </div>
+        <div class="navbar-url-pill">
+          <span class="navbar-url-dot"></span>
+          <span>canopy-ten-lake.vercel.app</span>
+        </div>
+      </div>
+
+      <!-- ================= SCENE 1: KINETIC HOOK & SQUAD (0.0s - 4.2s) ================= -->
+      <div class="clip scene-clip" id="scene-1" data-start="0.0" data-duration="4.2">
+        <div class="kinetic-kicker s1-el">
+          <span class="kicker-icon">✦</span>
+          The Collaborative Field Station
+        </div>
+        <h1 class="kinetic-title s1-el">
+          Great products die in <em>disconnected tabs</em>.
+        </h1>
+        <p class="kinetic-subtitle s1-el">
+          Meet the sprout squad built to connect builders, domain experts, and real execution.
+        </p>
+
+        <!-- Bold Statement Card: Mascot Roster -->
+        <div class="statement-card s1-el">
+          <div class="mascot-feature-box">
+            <img src="assets/mascots-banner.png" alt="Canopy Mascots" class="mascot-banner-media">
+          </div>
+          <div class="mascot-roster-grid">
+            <div class="mascot-role-pill">
+              <span class="mascot-role-emoji">💻</span>
+              <div class="mascot-role-info">
+                <h4>Builders</h4>
+                <p>Engineers &amp; Makers</p>
+              </div>
+            </div>
+            <div class="mascot-role-pill">
+              <span class="mascot-role-emoji">📐</span>
+              <div class="mascot-role-info">
+                <h4>Architects</h4>
+                <p>Systems &amp; Design</p>
+              </div>
+            </div>
+            <div class="mascot-role-pill">
+              <span class="mascot-role-emoji">🔍</span>
+              <div class="mascot-role-info">
+                <h4>Holders</h4>
+                <p>Real-World Problems</p>
+              </div>
+            </div>
+            <div class="mascot-role-pill">
+              <span class="mascot-role-emoji">📈</span>
+              <div class="mascot-role-info">
+                <h4>Enablers</h4>
+                <p>Catalysts &amp; Growth</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= SCENE 2: ZERO-SWIPE MATCH ENGINE (4.2s - 8.8s) ================= -->
+      <div class="clip scene-clip" id="scene-2" data-start="4.2" data-duration="4.6">
+        <div class="kinetic-kicker s2-el">
+          <span class="kicker-icon">⚡</span>
+          Stage 01 // Zero-Swipe Matchmaking
+        </div>
+        <h2 class="kinetic-title s2-el">
+          No swiping. <em>No endless chats</em>.
+        </h2>
+        <p class="kinetic-subtitle s2-el">
+          Matching based on verified skills, availability, and complementary execution goals.
+        </p>
+
+        <!-- Match Statement Card -->
+        <div class="statement-card s2-el">
+          <div class="match-card-content">
+            <div class="match-meta-bar">
+              <div class="match-source-tag">
+                <span>INTENT QUERY:</span>
+                <span style="color:#A9321A;">#048 AGRO-AI SENSOR MESH</span>
+              </div>
+              <div class="match-pulse-badge">
+                ● LIVE CALCULATION
+              </div>
+            </div>
+
+            <div class="match-profiles-split">
+              <!-- Left Candidate -->
+              <div class="candidate-profile-box prof-left">
+                <div class="candidate-header">
+                  <div class="candidate-avatar">AC</div>
+                  <div class="candidate-name-group">
+                    <h4>Aarushi C.</h4>
+                    <span>Founder &amp; System Architect</span>
+                  </div>
+                </div>
+                <div class="candidate-tags-row">
+                  <span class="candidate-tag-chip">Distributed Systems</span>
+                  <span class="candidate-tag-chip">Node.js</span>
+                  <span class="candidate-tag-chip">15 hrs/wk</span>
+                </div>
+              </div>
+
+              <!-- Center Compatibility Gauge -->
+              <div class="match-connector-column">
+                <div class="match-percentage-badge">
+                  <div id="match-percent-counter">98%</div>
+                  <div style="font-size:10px; font-weight:700; letter-spacing:1px; color:#A7E8BD;">COMPATIBLE</div>
+                </div>
+              </div>
+
+              <!-- Right Candidate -->
+              <div class="candidate-profile-box prof-right">
+                <div class="candidate-header">
+                  <div class="candidate-avatar" style="background:#175C34;">KP</div>
+                  <div class="candidate-name-group">
+                    <h4>Karan P.</h4>
+                    <span>Embedded Firmware Lead</span>
+                  </div>
+                </div>
+                <div class="candidate-tags-row">
+                  <span class="candidate-tag-chip">IoT Hardware</span>
+                  <span class="candidate-tag-chip">C++ / Rust</span>
+                  <span class="candidate-tag-chip">15 hrs/wk</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Confirmed Match Banner -->
+            <div class="match-confirmed-stamp">
+              <div class="stamp-left">
+                <span>✓ SPRINT POD FORMED</span>
+                <span style="font-size:12px; opacity:0.9;">Ready for 14-day execution</span>
+              </div>
+              <div class="stamp-right">INVITATION ACCEPTED</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= SCENE 3: 14-DAY SPRINT CYCLE (8.8s - 13.6s) ================= -->
+      <div class="clip scene-clip" id="scene-3" data-start="8.8" data-duration="4.8">
+        <div class="kinetic-kicker s3-el">
+          <span class="kicker-icon">⏳</span>
+          Stage 02 // 14-Day Sprint Cadence
+        </div>
+        <h2 class="kinetic-title s3-el">
+          14 Days. <em>Shipped proof</em>, not promises.
+        </h2>
+        <p class="kinetic-subtitle s3-el">
+          Locked cycles, real-time sprint poker estimation, and accountability milestones.
+        </p>
+
+        <!-- Sprint Statement Card -->
+        <div class="statement-card s3-el">
+          <div class="sprint-board-content">
+            <div class="sprint-headline-row">
+              <div class="sprint-title-subgroup">
+                <h4>Sprint Cycle 04: Agro-Pilot Hardware</h4>
+                <p>Active Cycle • 4 Pod Members Committed</p>
+              </div>
+              <div class="sprint-cycle-pill">
+                DAY 11 OF 14
+              </div>
+            </div>
+
+            <!-- Progress Meter -->
+            <div class="sprint-progress-track-box">
+              <div class="progress-label-row">
+                <span>MILESTONE VELOCITY</span>
+                <span id="sprint-percent-counter" style="color:#175C34;">85% COMPLETE</span>
+              </div>
+              <div class="editorial-progress-track">
+                <div class="editorial-progress-fill" id="sprint-progress-bar"></div>
+              </div>
+            </div>
+
+            <div class="sprint-interactive-row">
+              <!-- Poker Consensus Deck -->
+              <div class="poker-deck-card">
+                <div class="poker-header-text">
+                  <span>Sprint Poker</span>
+                  <span style="color:#175C34;">● Consensus Reached</span>
+                </div>
+                <div class="poker-cards-container">
+                  <div class="poker-playing-card pk-1">5</div>
+                  <div class="poker-playing-card pk-2">5</div>
+                  <div class="poker-playing-card pk-3">5</div>
+                </div>
+                <div class="poker-verdict-pill">
+                  ✓ Team Agreed: 5 Story Points
+                </div>
+              </div>
+
+              <!-- Shipped Deliverables Checklist -->
+              <div class="checklist-card">
+                <div class="checklist-item-row">
+                  <div class="checklist-icon-check">✓</div>
+                  <span>Sensor Mesh Architecture Finalized</span>
+                </div>
+                <div class="checklist-item-row">
+                  <div class="checklist-icon-check">✓</div>
+                  <span>Real-Time Telemetry Gateway Shipped</span>
+                </div>
+                <div class="checklist-item-row">
+                  <div class="checklist-icon-check">✓</div>
+                  <span>Pilot Dataset Documented in Notebook</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= SCENE 4: CLIMAX & VERIFIED CTA (13.6s - 18.0s) ================= -->
+      <div class="clip scene-clip" id="scene-4" data-start="13.6" data-duration="4.4">
+        <div class="kinetic-kicker s4-el">
+          <span class="kicker-icon">🚀</span>
+          Join The Field Station
+        </div>
+
+        <div class="statement-card s4-el">
+          <div class="climax-hero-box">
+            <!-- Brand Emblem & Tagline -->
+            <div class="climax-brand-hero">
+              <div class="climax-logo-circle">
+                <img src="assets/canopy-logo.png" alt="Canopy Emblem">
+              </div>
+              <div class="climax-brand-copy">
+                <h2>CANOPY</h2>
+                <span>Build · Connect · Ship</span>
+              </div>
+            </div>
+
+            <!-- Mascots Feature Card -->
+            <div class="climax-mascots-card">
+              <img src="assets/mascots-banner.png" alt="Canopy Mascots Squad" data-layout-allow-overflow>
+            </div>
+
+            <!-- Kinetic Statement -->
+            <h3 class="climax-tagline-statement">
+              Don't build alone. <em>Ship your next big project.</em>
+            </h3>
+
+            <!-- Grand Launch Button -->
+            <div class="launch-cta-button">
+              <span>Explore Canopy Platform</span>
+              <span class="cta-arrow">→</span>
+            </div>
+
+            <!-- Highlighted Verified URL Badge -->
+            <div class="featured-url-container">
+              <span style="color:#175C34; font-size:14px; font-weight:800;">LIVE AT:</span>
+              <span class="featured-url-badge">https://<span>canopy-ten-lake.vercel.app</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- GSAP Kinetic Timeline Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+        // Register window timeline for Hyperframes engine
+        window.__timelines = window.__timelines || {};
+        window.__timelines['canopy-linkedin-square'] = tl;
+
+        // Ambient Floating Leaves Animation
+        gsap.to('.lp-1, .lp-3', {
+          y: 20,
+          rotation: '+=12',
+          duration: 3.5,
+          repeat: 5,
+          yoyo: true,
+          ease: 'sine.inOut'
+        });
+        gsap.to('.lp-2', {
+          y: -18,
+          rotation: '-=15',
+          duration: 4.2,
+          repeat: 5,
+          yoyo: true,
+          ease: 'sine.inOut'
+        });
+
+        // ================= SCENE 1: HOOK (0.0s - 4.2s) =================
+        tl.from('#scene-1 .s1-el', {
+          y: 40,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: 'back.out(1.4)'
+        }, 0.2);
+
+        tl.from('.mascot-role-pill', {
+          scale: 0.85,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: 'back.out(1.7)'
+        }, 1.0);
+
+        // Exit Scene 1 elements
+        tl.to('#scene-1 .s1-el', {
+          opacity: 0,
+          y: -20,
+          duration: 0.35,
+          ease: 'power2.in'
+        }, 3.8);
+
+        // ================= SCENE 2: MATCH ENGINE (4.2s - 8.8s) =================
+        tl.from('#scene-2 .s2-el', {
+          y: 40,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: 'power3.out'
+        }, 4.3);
+
+        tl.from('.candidate-profile-box.prof-left', {
+          x: -60,
+          opacity: 0,
+          duration: 0.65,
+          ease: 'back.out(1.5)'
+        }, 4.8);
+
+        tl.from('.candidate-profile-box.prof-right', {
+          x: 60,
+          opacity: 0,
+          duration: 0.65,
+          ease: 'back.out(1.5)'
+        }, 5.1);
+
+        tl.from('.match-percentage-badge', {
+          scale: 0,
+          rotation: -20,
+          duration: 0.7,
+          ease: 'elastic.out(1, 0.6)'
+        }, 5.4);
+
+        // Animated Compatibility Counter
+        const matchCounter = { val: 0 };
+        tl.to(matchCounter, {
+          val: 98,
+          duration: 1.2,
+          ease: 'power2.out',
+          onUpdate: () => {
+            const el = document.getElementById('match-percent-counter');
+            if (el) el.innerText = Math.round(matchCounter.val) + '%';
+          }
+        }, 5.5);
+
+        tl.from('.match-confirmed-stamp', {
+          scale: 0.9,
+          opacity: 0,
+          y: 20,
+          duration: 0.5,
+          ease: 'back.out(1.8)'
+        }, 6.6);
+
+        // Exit Scene 2 elements
+        tl.to('#scene-2 .s2-el', {
+          opacity: 0,
+          y: -20,
+          duration: 0.35,
+          ease: 'power2.in'
+        }, 8.4);
+
+        // ================= SCENE 3: SPRINT (8.8s - 13.6s) =================
+        tl.from('#scene-3 .s3-el', {
+          y: 40,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: 'power3.out'
+        }, 8.9);
+
+        // Animate Sprint Progress Bar from 15% to 85%
+        tl.to('#sprint-progress-bar', {
+          width: '85%',
+          duration: 1.5,
+          ease: 'power2.inOut'
+        }, 9.4);
+
+        // Animate Poker Cards Staggered Flip
+        tl.from('.poker-playing-card', {
+          y: -30,
+          rotationY: 90,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: 'back.out(1.6)'
+        }, 9.6);
+
+        tl.from('.poker-verdict-pill', {
+          scale: 0.8,
+          opacity: 0,
+          duration: 0.4,
+          ease: 'back.out(2)'
+        }, 10.4);
+
+        tl.from('.checklist-item-row', {
+          x: 30,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.2,
+          ease: 'power2.out'
+        }, 10.6);
+
+        // Exit Scene 3 elements
+        tl.to('#scene-3 .s3-el', {
+          opacity: 0,
+          y: -20,
+          duration: 0.35,
+          ease: 'power2.in'
+        }, 13.2);
+
+        // ================= SCENE 4: CLIMAX & CTA (13.6s - 18.0s) =================
+        tl.from('#scene-4 .s4-el', {
+          y: 40,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.12,
+          ease: 'back.out(1.4)'
+        }, 13.7);
+
+        tl.from('.climax-mascots-card', {
+          scale: 0.92,
+          opacity: 0,
+          duration: 0.7,
+          ease: 'back.out(1.5)'
+        }, 14.1);
+
+        tl.from('.launch-cta-button', {
+          scale: 0.9,
+          boxShadow: '0px 0px 0px #D48806',
+          duration: 0.6,
+          ease: 'back.out(2)'
+        }, 14.6);
+
+        tl.from('.featured-url-container', {
+          y: 15,
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, 15.0);
+
+        // Gentle breathing animation on CTA arrow
+        tl.to('.cta-arrow', {
+          x: 6,
+          repeat: 5,
+          yoyo: true,
+          duration: 0.6,
+          ease: 'sine.inOut'
+        }, 15.2);
+      });
+    </script>
+  </body>
+</html>

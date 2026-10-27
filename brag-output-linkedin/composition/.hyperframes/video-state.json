@@ -1,0 +1,329 @@
+{
+  "version": 1,
+  "historyId": "a81e243b-a392-40d4-8a49-280fbec37c36",
+  "currentRevision": "3cf1a9b5-331a-4553-aa4c-1cfeaedf2694",
+  "pendingChanges": false,
+  "files": {
+    "assets/mascots-banner.png": {
+      "hash": "5abf5a7952785568176677a0b65f9edb6ca3865975867d63cc53108f7a3f1dbb",
+      "content": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\5a\\5abf5a7952785568176677a0b65f9edb6ca3865975867d63cc53108f7a3f1dbb"
+    },
+    "assets/vine-arch.png": {
+      "hash": "018758cf308b12c1773ef28699ffaabd02bf59786cd9265ffc0e5762aef9b148",
+      "content": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\01\\018758cf308b12c1773ef28699ffaabd02bf59786cd9265ffc0e5762aef9b148"
+    },
+    "assets/vine-climbing.png": {
+      "hash": "2ee5d50b718c8dd385d9d06f5193d293018c33ad1c18c70897cd08ef24f00260",
+      "content": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\2e\\2ee5d50b718c8dd385d9d06f5193d293018c33ad1c18c70897cd08ef24f00260"
+    },
+    "hyperframes.json": {
+      "hash": "53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50",
+      "content": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\53\\53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
+    },
+    "index.html": {
+      "hash": "ab39ffd5fe14fa3b4751c98dcce048ff1c2ab48fe21add7665c8b830c78f6b10",
+      "content": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\ab\\ab39ffd5fe14fa3b4751c98dcce048ff1c2ab48fe21add7665c8b830c78f6b10"
+    },
+    "meta.json": {
+      "hash": "63d21198da4c91b716b9298421adfdc4354537f9acec89db7b1732e9e0ad896b",
+      "content": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\63\\63d21198da4c91b716b9298421adfdc4354537f9acec89db7b1732e9e0ad896b"
+    },
+    "package.json": {
+      "hash": "e946a9f47c03125b2634ffeaadd6ed2990958c3b30cf01928103c53e10300fea",
+      "content": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\e9\\e946a9f47c03125b2634ffeaadd6ed2990958c3b30cf01928103c53e10300fea"
+    },
+    "assets/canopy-logo.png": {
+      "hash": "e25f742ff0df19c4c8c01ed8bc9eb5407d52d4c32a3486cc8e30f503956686f9",
+      "content": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\e2\\e25f742ff0df19c4c8c01ed8bc9eb5407d52d4c32a3486cc8e30f503956686f9"
+    },
+    "assets/track.mp3": {
+      "hash": "aa56ab1cdcbef6b05566c6a7c114323078580ccf6a740a9e6c6b6c4b40b4389f",
+      "content": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\aa\\aa56ab1cdcbef6b05566c6a7c114323078580ccf6a740a9e6c6b6c4b40b4389f"
+    }
+  },
+  "revisions": {
+    "b5cf516f-3f60-47d5-b476-12a9f951026c": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792004043163,
+      "endedAt": 1792004043176,
+      "files": {
+        "index.html": {
+          "before": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\a5\\a5c1207ba50593b289dd95c3ead3430dcda8b45c913f3f2996c6169f20db1aab",
+          "after": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\3d\\3da34aa5a8ff91061af6f4c5bb082106b23b2bf25267e723faeffb59419f96f5"
+        },
+        "meta.json": {
+          "before": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\b2\\b2c996d5c5b7407e4028aa8ca0cdce8ed1e1af85600cdd6f6b9d445db3fd0f75",
+          "after": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\63\\63d21198da4c91b716b9298421adfdc4354537f9acec89db7b1732e9e0ad896b"
+        }
+      }
+    },
+    "2f4402f5-d704-408b-8479-303150e5e157": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792004321045,
+      "endedAt": 1792004321050,
+      "files": {
+        "index.html": {
+          "before": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\3d\\3da34aa5a8ff91061af6f4c5bb082106b23b2bf25267e723faeffb59419f96f5",
+          "after": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\3a\\3ad978f52e64222ccb569301340d3bc81aba0b4e4ba040f23d207428701d8b9d"
+        }
+      }
+    },
+    "e6fffd10-04d8-485b-a329-f1216ed74f0c": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792008445711,
+      "endedAt": 1792008445720,
+      "files": {
+        "index.html": {
+          "before": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\3a\\3ad978f52e64222ccb569301340d3bc81aba0b4e4ba040f23d207428701d8b9d",
+          "after": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\a6\\a62efa50d600ec3c6e782438b2bdb2fe6af172596aacfef4244312389ab4b12f"
+        }
+      }
+    },
+    "fde150cf-1d65-45fd-83ab-0db3afe3f772": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792008722115,
+      "endedAt": 1792008722116,
+      "files": {
+        "index.html": {
+          "before": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\a6\\a62efa50d600ec3c6e782438b2bdb2fe6af172596aacfef4244312389ab4b12f",
+          "after": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\6a\\6a9ee87f208ba07d0ed6c07b7597e59ba983fc251921296b6324bc7c1b74a931"
+        }
+      }
+    },
+    "3cf1a9b5-331a-4553-aa4c-1cfeaedf2694": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792009316477,
+      "endedAt": 1792009316481,
+      "files": {
+        "index.html": {
+          "before": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\6a\\6a9ee87f208ba07d0ed6c07b7597e59ba983fc251921296b6324bc7c1b74a931",
+          "after": "C:\\Users\\HP\\.cache\\hyperframes\\history\\a81e243b-a392-40d4-8a49-280fbec37c36\\blobs\\ab\\ab39ffd5fe14fa3b4751c98dcce048ff1c2ab48fe21add7665c8b830c78f6b10"
+        }
+      }
+    }
+  },
+  "checks": {
+    "latest": {
+      "revision": "3cf1a9b5-331a-4553-aa4c-1cfeaedf2694",
+      "id": "c098369d-9a86-4934-bf15-c1b0bd8e55e0"
+    },
+    "revisions": {
+      "b5cf516f-3f60-47d5-b476-12a9f951026c": [
+        {
+          "id": "1c8c5f96-a491-4b39-aa65-cec875b3502e",
+          "scope": "project",
+          "metadata": {
+            "ok": false,
+            "browserSkipped": false,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 3000,
+              "contrast": true,
+              "strict": false,
+              "snapshots": false,
+              "browserGpuMode": "auto"
+            }
+          },
+          "createdAt": 1792004066024,
+          "contentHash": "df6577421906f561be86b70191efc99d587f739f72f59b800ccc217edb5b3978",
+          "revision": "b5cf516f-3f60-47d5-b476-12a9f951026c",
+          "inputFingerprint": "1156120f75b756c562ad912c40e74894d044597e0af79b22d0afe94065f9263a",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "5d79574e-ee4e-4837-8d10-c2a3a1b21884"
+        }
+      ],
+      "2f4402f5-d704-408b-8479-303150e5e157": [
+        {
+          "id": "ab68a862-3095-477f-9dd9-9f90a9fa322f",
+          "scope": "project",
+          "report": "C:\\Users\\HP\\Desktop\\canopy_animated\\brag-output-linkedin\\composition\\.hyperframes\\artifacts\\checks\\ab68a862-3095-477f-9dd9-9f90a9fa322f.json",
+          "metadata": {
+            "ok": true,
+            "browserSkipped": false,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 3000,
+              "contrast": true,
+              "strict": false,
+              "snapshots": false,
+              "browserGpuMode": "auto"
+            }
+          },
+          "createdAt": 1792004343934,
+          "contentHash": "44e1bf7e5c0005e2a1852f8405f630b3388438263a8b2985f5ccc7ce45198432",
+          "revision": "2f4402f5-d704-408b-8479-303150e5e157",
+          "inputFingerprint": "ea2dd40ace0977ae90a71e09defc9f9d2b01e8104719658db17db49573ba3a33",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        }
+      ],
+      "e6fffd10-04d8-485b-a329-f1216ed74f0c": [
+        {
+          "id": "0f9f5986-d203-48da-a4fd-b38ccee8a50b",
+          "scope": "project",
+          "metadata": {
+            "ok": true,
+            "browserSkipped": false,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 3000,
+              "contrast": true,
+              "strict": false,
+              "snapshots": false,
+              "browserGpuMode": "auto"
+            }
+          },
+          "createdAt": 1792008470606,
+          "contentHash": "2c47a26a4450bca9eb210144d59d339013346dce331c3be1315a5f3b4cf3beb1",
+          "revision": "e6fffd10-04d8-485b-a329-f1216ed74f0c",
+          "inputFingerprint": "c0ef93e150ce8aa247c7973521e46e62356da41127ea093cdd4c2d32f7f2ccd6",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "bb8589e8-0635-46d2-ba0d-8b0a58ef719b"
+        }
+      ],
+      "fde150cf-1d65-45fd-83ab-0db3afe3f772": [
+        {
+          "id": "2b5d89b5-6fe7-4cdf-a7c2-516611e6c31d",
+          "scope": "project",
+          "metadata": {
+            "ok": false,
+            "browserSkipped": true,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 3000,
+              "contrast": true,
+              "strict": false,
+              "snapshots": false,
+              "browserGpuMode": "auto"
+            }
+          },
+          "createdAt": 1792008723764,
+          "contentHash": "ea99744a456bab304dffefa6e79b65b7206c307fac312bffcd5ca747af039bb0",
+          "revision": "fde150cf-1d65-45fd-83ab-0db3afe3f772",
+          "inputFingerprint": "111e4eb571e1e03b48c7d5ff38351614c8067c9c564d0ea5ed6fe4b171f692b7",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision",
+          "status": "cleaned",
+          "cleanedAfterRender": "bb8589e8-0635-46d2-ba0d-8b0a58ef719b"
+        }
+      ],
+      "3cf1a9b5-331a-4553-aa4c-1cfeaedf2694": [
+        {
+          "id": "c098369d-9a86-4934-bf15-c1b0bd8e55e0",
+          "scope": "project",
+          "report": "C:\\Users\\HP\\Desktop\\canopy_animated\\brag-output-linkedin\\composition\\.hyperframes\\artifacts\\checks\\c098369d-9a86-4934-bf15-c1b0bd8e55e0.json",
+          "metadata": {
+            "ok": true,
+            "browserSkipped": false,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 3000,
+              "contrast": true,
+              "strict": false,
+              "snapshots": false,
+              "browserGpuMode": "auto"
+            }
+          },
+          "createdAt": 1792009335010,
+          "contentHash": "f8ee6ed43021e177f2cb5a473a63452ec59d0eefa88f70795203a101acaa185a",
+          "revision": "3cf1a9b5-331a-4553-aa4c-1cfeaedf2694",
+          "inputFingerprint": "44372a9db7c6805b7782b6a6355af884ec008c0d79983b35718e4512812c7eb1",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        }
+      ]
+    },
+    "unversioned": [
+      {
+        "id": "583d2e0a-4a6d-431a-87f9-a56222279107",
+        "scope": "project",
+        "report": "C:\\Users\\HP\\Desktop\\canopy_animated\\brag-output-linkedin\\composition\\.hyperframes\\artifacts\\checks\\583d2e0a-4a6d-431a-87f9-a56222279107.json",
+        "metadata": {
+          "ok": false,
+          "browserSkipped": true,
+          "options": {
+            "samples": 9,
+            "atTransitions": false,
+            "maxIssues": 80,
+            "collapseStatic": true,
+            "tolerance": 2,
+            "timeout": 3000,
+            "contrast": true,
+            "strict": false,
+            "snapshots": false,
+            "browserGpuMode": "auto"
+          }
+        },
+        "createdAt": 1792003459193,
+        "contentHash": "386d6c5a94389518bbf517fcf1c1e4f78470adb73c09a1d43c92b43d871194a5",
+        "revision": null,
+        "inputFingerprint": "2cd2e93b69138939fa458bfc4faa33ba42cdc879d92822e5ef197abf22df6bed",
+        "inputScope": "local-project-files",
+        "attribution": "unversioned"
+      }
+    ]
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "bb8589e8-0635-46d2-ba0d-8b0a58ef719b",
+      "completedAt": 1792010573926,
+      "output": "C:\\Users\\HP\\Desktop\\canopy_animated\\brag-output-linkedin\\brag.mp4",
+      "status": "completed",
+      "revision": "3cf1a9b5-331a-4553-aa4c-1cfeaedf2694"
+    },
+    "retainedRevisions": [
+      "3cf1a9b5-331a-4553-aa4c-1cfeaedf2694",
+      "2f4402f5-d704-408b-8479-303150e5e157"
+    ]
+  },
+  "pendingArtifactCleanup": []
+}
