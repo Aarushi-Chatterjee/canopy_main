@@ -23,6 +23,265 @@
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
+
+<style>
+  /* ==========================================================
+     SPRINT COUNTDOWN HERO (Above-the-fold Urgency Mechanism)
+     ========================================================== */
+  .sprint-countdown-hero {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--forest) 12%, var(--card)) 0%, var(--card) 100%);
+    border-bottom: 1px solid var(--card-edge);
+    padding: clamp(24px, 4vw, 40px) 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .sprint-countdown-hero::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--forest), var(--leaf), var(--sun));
+  }
+  .sprint-countdown-inner {
+    display: grid;
+    grid-template-columns: 1.25fr auto 1fr;
+    gap: clamp(20px, 3.5vw, 48px);
+    align-items: center;
+  }
+  .scd-left {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .scd-eyebrow {
+    font-family: 'Jost Var', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--forest);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .scd-eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--leaf);
+    display: inline-block;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--leaf) 30%, transparent);
+    animation: scdPulse 2s infinite ease-in-out;
+  }
+  @keyframes scdPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.25); opacity: 0.7; }
+  }
+  .scd-headline {
+    font-family: 'Fraunces Var', serif;
+    font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .scd-sub {
+    font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin: 2px 0 10px;
+    max-width: 44ch;
+  }
+  .scd-ctas {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .scd-btn-primary {
+    padding: 10px 18px;
+    font-size: 0.88rem;
+  }
+  .scd-btn-ghost {
+    padding: 9px 16px;
+    font-size: 0.88rem;
+  }
+
+  /* Center Clock Card */
+  .scd-clock-block {
+    background: var(--paper);
+    border: 1px solid var(--card-edge);
+    border-radius: 16px;
+    padding: 20px 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 12px 32px -12px var(--shadow), 0 1px 0 rgba(255,255,255,0.4) inset;
+    min-width: 210px;
+  }
+  .scd-ring-wrap {
+    position: relative;
+    width: 104px;
+    height: 104px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .scd-ring-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  .scd-ring-track {
+    fill: none;
+    stroke: color-mix(in srgb, var(--ink) 8%, transparent);
+    stroke-width: 8;
+  }
+  .scd-ring-fill {
+    fill: none;
+    stroke: var(--forest);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 326.72; /* 2 * PI * 52 */
+    stroke-dashoffset: 80;
+    transition: stroke-dashoffset 0.6s ease;
+  }
+  .scd-ring-inner {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .scd-days-num {
+    font-family: 'Fraunces Var', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .scd-days-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    margin-top: 3px;
+  }
+  .scd-units-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Jost Var', monospace;
+    margin-bottom: 8px;
+  }
+  .scd-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 32px;
+  }
+  .scd-unit-num {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--forest);
+    line-height: 1.1;
+  }
+  .scd-unit-label {
+    font-size: 0.58rem;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .scd-unit-sep {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    margin-top: -8px;
+  }
+  .scd-cycle-label {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    margin: 0;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  /* Right Proof Metrics */
+  .scd-proof-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .scd-proof-card {
+    background: var(--paper);
+    border: 1px solid var(--card-edge);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 12px -4px var(--shadow);
+  }
+  .scd-proof-num {
+    font-family: 'Fraunces Var', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--forest);
+    line-height: 1;
+    min-width: 28px;
+  }
+  .scd-proof-desc {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 980px) {
+    .sprint-countdown-inner {
+      grid-template-columns: 1fr auto;
+    }
+    .scd-proof-cards {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .scd-proof-card {
+      flex: 1;
+      min-width: 140px;
+    }
+  }
+  @media (max-width: 680px) {
+    .sprint-countdown-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .scd-left {
+      align-items: center;
+    }
+    .scd-sub {
+      max-width: none;
+    }
+    .scd-ctas {
+      justify-content: center;
+    }
+    .scd-clock-block {
+      max-width: 260px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .scd-proof-cards {
+      flex-direction: column;
+    }
+    .scd-br { display: none; }
+  }
+</style>
+
 </head>
 <body class="interior-page sprint-page">
 
@@ -83,7 +342,7 @@
       <img src="/canopy-logo.png" alt="Canopy Logo" style="width:24px;height:24px;object-fit:contain;">
       <span class="nav-drawer-logo">Canopy</span>
     </div>
-    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
+    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
   </div>
 
   <div class="nav-drawer-section">
@@ -122,6 +381,56 @@
 </aside>
 
 <main id="top">
+
+<!-- ============ SPRINT COUNTDOWN HERO BANNER ============ -->
+<div class="sprint-countdown-hero" id="sprintCountdownHero" aria-label="Live sprint cycle countdown">
+  <div class="sprint-countdown-inner wrap">
+    <div class="scd-left">
+      <span class="scd-eyebrow">Active Cycle Running</span>
+      <h2 class="scd-headline">The clock is already ticking.</h2>
+      <p class="scd-sub">A real team. A visible deadline. A shipped prototype at the end.<br class="scd-br"> No month-long email chains.</p>
+      <div class="scd-ctas">
+        <a href="#squadsSection" class="btn btn-stamp scd-btn-primary">See Active Sprints &#8595;</a>
+        <a href="match.html" class="btn btn-ghost scd-btn-ghost">Browse Build Calls</a>
+      </div>
+    </div>
+    <div class="scd-clock-block" aria-live="polite" aria-atomic="true">
+      <div class="scd-ring-wrap">
+        <svg class="scd-ring-svg" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="scd-ring-track" cx="60" cy="60" r="52"/>
+          <circle class="scd-ring-fill" id="scdRingFill" cx="60" cy="60" r="52"/>
+        </svg>
+        <div class="scd-ring-inner">
+          <span class="scd-days-num" id="scdDaysNum">12</span>
+          <span class="scd-days-label">days left</span>
+        </div>
+      </div>
+      <div class="scd-units-row">
+        <div class="scd-unit"><span class="scd-unit-num" id="scdHH">--</span><span class="scd-unit-label">hrs</span></div>
+        <div class="scd-unit-sep">:</div>
+        <div class="scd-unit"><span class="scd-unit-num" id="scdMM">--</span><span class="scd-unit-label">min</span></div>
+        <div class="scd-unit-sep">:</div>
+        <div class="scd-unit"><span class="scd-unit-num" id="scdSS">--</span><span class="scd-unit-label">sec</span></div>
+      </div>
+      <p class="scd-cycle-label">Groundwater Sensor Sprint &bull; Cycle 3</p>
+    </div>
+    <div class="scd-proof-cards">
+      <div class="scd-proof-card">
+        <span class="scd-proof-num">5</span>
+        <span class="scd-proof-desc">active squads shipping</span>
+      </div>
+      <div class="scd-proof-card">
+        <span class="scd-proof-num">21</span>
+        <span class="scd-proof-desc">day sprint window</span>
+      </div>
+      <div class="scd-proof-card">
+        <span class="scd-proof-num">3</span>
+        <span class="scd-proof-desc">days to join a forming squad</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="stage">
   <div class="stage-head-flex reveal">
     <div class="stage-head" style="margin-bottom:0;">
@@ -674,7 +983,7 @@
   </div>
   <div class="foot-bottom">
     <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
-    <span>© 2026 Canopy. All rights reserved.</span>
+    <span>&copy; 2026 Canopy. All rights reserved.</span>
   </div>
 </footer>
 
@@ -1131,5 +1440,69 @@
   restorePendingDraftIfAny();
   loadLiveSprintsAndCalls();
 </script>
+
+<script>
+  /* ==========================================================
+     LIVE SPRINT COUNTDOWN CONTROLLER
+     ========================================================== */
+  (function initSprintLiveCountdown() {
+    // 21-day recurring sprint cycle reference (groundwater cycle ends in 12 days)
+    // We anchor to a future deadline stored in localStorage or set to 12 days 14 hours ahead
+    var STORAGE_KEY = 'canopy_sprint_cycle_target';
+    var targetTime = null;
+
+    try {
+      var stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        var parsed = parseInt(stored, 10);
+        if (parsed > Date.now()) {
+          targetTime = parsed;
+        }
+      }
+    } catch(e) {}
+
+    if (!targetTime) {
+      // 12 days, 14 hours, 32 minutes from now
+      targetTime = Date.now() + (12 * 86400 + 14 * 3600 + 32 * 60) * 1000;
+      try { localStorage.setItem(STORAGE_KEY, targetTime.toString()); } catch(e) {}
+    }
+
+    var totalCycleMs = 21 * 86400 * 1000;
+    var radius = 52;
+    var circumference = 2 * Math.PI * radius; // ~326.72
+
+    function update() {
+      var now = Date.now();
+      var remaining = Math.max(0, targetTime - now);
+
+      var days = Math.floor(remaining / (86400 * 1000));
+      var hrs = Math.floor((remaining % (86400 * 1000)) / (3600 * 1000));
+      var mins = Math.floor((remaining % (3600 * 1000)) / (60 * 1000));
+      var secs = Math.floor((remaining % (60 * 1000)) / 1000);
+
+      var daysEl = document.getElementById('scdDaysNum');
+      var hhEl = document.getElementById('scdHH');
+      var mmEl = document.getElementById('scdMM');
+      var ssEl = document.getElementById('scdSS');
+      var fillEl = document.getElementById('scdRingFill');
+
+      if (daysEl) daysEl.textContent = days;
+      if (hhEl) hhEl.textContent = String(hrs).padStart(2, '0');
+      if (mmEl) mmEl.textContent = String(mins).padStart(2, '0');
+      if (ssEl) ssEl.textContent = String(secs).padStart(2, '0');
+
+      if (fillEl) {
+        var pctCompleted = 1 - (remaining / totalCycleMs);
+        pctCompleted = Math.max(0, Math.min(1, pctCompleted));
+        var offset = circumference * (1 - pctCompleted);
+        fillEl.style.strokeDashoffset = offset.toFixed(2);
+      }
+    }
+
+    update();
+    setInterval(update, 1000);
+  })();
+</script>
+
 </body>
 </html>

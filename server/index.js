@@ -70,7 +70,8 @@ const ALLOWED_ORIGINS = [
 app.use(cors({
   origin: (origin, callback) => {
     // Allow non-browser requests (curl, server-to-server, tests) or authorized origins
-    if (!origin || ALLOWED_ORIGINS.includes(origin) || origin.endsWith('.vercel.app')) {
+    const isCanopyVercel = origin === 'https://canopy-ten-lake.vercel.app' || /^https:\/\/canopy-[a-z0-9-]+\.vercel\.app$/.test(origin);
+    if (!origin || ALLOWED_ORIGINS.includes(origin) || isCanopyVercel) {
       return callback(null, true);
     }
     return callback(new Error('CORS policy does not allow access from origin: ' + origin), false);

@@ -10,6 +10,22 @@
 <link rel="apple-touch-icon" href="/favicon.png">
 <link rel="stylesheet" href="/src/style.css">
 <style>
+  :root {
+    --border: var(--line, rgba(38,36,26,.16));
+    --forest-wash: color-mix(in srgb, var(--forest, #1f5c40) 12%, transparent);
+    --border-moss: color-mix(in srgb, var(--forest, #1f5c40) 30%, transparent);
+    --moss: var(--leaf, #5f9a4c);
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  @media (max-width: 768px) {
+    .charter-grid {
+      grid-template-columns: 1fr !important;
+      gap: 24px !important;
+    }
+    .charter-sidebar {
+      position: static !important;
+    }
+  }
   .charter-page {
     padding-top: 40px;
     padding-bottom: 90px;
@@ -232,7 +248,7 @@
       <img src="/canopy-logo.png" alt="Canopy Logo" style="width:24px;height:24px;object-fit:contain;">
       <span class="nav-drawer-logo">Canopy</span>
     </div>
-    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">✕</button>
+    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
   </div>
 
   <div class="nav-drawer-section">
@@ -484,7 +500,7 @@
   </div>
   <div class="foot-bottom">
     <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
-    <span>© 2026 Canopy. All rights reserved.</span>
+    <span>&copy; 2026 Canopy. All rights reserved.</span>
   </div>
 </footer>
 
