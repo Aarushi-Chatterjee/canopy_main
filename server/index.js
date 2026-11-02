@@ -146,15 +146,18 @@ function founderGate(req, res, next) {
   const isOwner = req.user && req.user.roles && req.user.roles.includes('owner');
   const requiredFounderKey = process.env.FOUNDER_CONSOLE_KEY;
   // SEC-02 HARDENING: Strictly reject keys in query parameters (CWE-598) to prevent leakage in URLs, browser history, and referer headers.
-  const providedKey = req.headers['x-founder-key'] || req.cookies?.canopy_founder_key;
+  const isProd = process.env.NODE_ENV === 'production';
+  const founderCookieName = isProd ? '__Host-canopy_founder_key' : 'canopy_founder_key';
+  const providedKey = req.headers['x-founder-key'] || req.cookies?.[founderCookieName] || req.cookies?.canopy_founder_key;
 
   // 1. If a valid secondary founder console key is explicitly provided via header or cookie, allow access
   if (requiredFounderKey && timingSafeKeyMatch(providedKey, requiredFounderKey)) {
-    if (providedKey && !req.cookies?.canopy_founder_key) {
-      res.cookie('canopy_founder_key', providedKey, {
+    if (providedKey && !(req.cookies?.[founderCookieName] || req.cookies?.canopy_founder_key)) {
+      res.cookie(founderCookieName, providedKey, {
         httpOnly: true,
-        sameSite: 'Lax',
-        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Strict',
+        secure: isProd,
+        path: '/',
         maxAge: 8 * 3600 * 1000
       });
     }
@@ -211,10 +214,13 @@ app.post('/admin/unlock', (req, res) => {
   const candidateKey = req.body?.key;
 
   if (requiredFounderKey && timingSafeKeyMatch(candidateKey, requiredFounderKey)) {
-    res.cookie('canopy_founder_key', candidateKey, {
+    const isProd = process.env.NODE_ENV === 'production';
+    const founderCookieName = isProd ? '__Host-canopy_founder_key' : 'canopy_founder_key';
+    res.cookie(founderCookieName, candidateKey, {
       httpOnly: true,
-      sameSite: 'Lax',
-      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      secure: isProd,
+      path: '/',
       maxAge: 8 * 3600 * 1000 // 8 hours
     });
     return res.redirect('/admin');
@@ -240,7 +246,9 @@ app.post('/admin/unlock', (req, res) => {
 });
 
 app.post('/admin/lock', (req, res) => {
-  res.clearCookie('canopy_founder_key');
+  const isProd = process.env.NODE_ENV === 'production';
+  res.clearCookie(isProd ? '__Host-canopy_founder_key' : 'canopy_founder_key', { path: '/' });
+  res.clearCookie('canopy_founder_key', { path: '/' });
   res.redirect('/login.html');
 });
 

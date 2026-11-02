@@ -124,12 +124,15 @@ function parseCookies(cookieHeader) {
 
 // Extract session token from cookie first, then Authorization header
 function extractToken(req) {
-  // 1. Check req.cookies or raw Cookie header for canopy_session
-  if (req.cookies && req.cookies.canopy_session) {
-    return req.cookies.canopy_session;
+  // 1. Check req.cookies or raw Cookie header for canopy_session or __Host-canopy_session
+  const hostCookie = '__Host-canopy_session';
+  if (req.cookies) {
+    if (req.cookies[hostCookie]) return req.cookies[hostCookie];
+    if (req.cookies.canopy_session) return req.cookies.canopy_session;
   }
   if (req.headers.cookie) {
     const parsed = parseCookies(req.headers.cookie);
+    if (parsed[hostCookie]) return parsed[hostCookie];
     if (parsed.canopy_session) return parsed.canopy_session;
   }
   // 2. Fallback to Authorization: Bearer <token>
@@ -143,8 +146,9 @@ function extractToken(req) {
 // Set HttpOnly, Secure session cookie on response
 function setSessionCookie(res, token, maxAgeSec = 7 * 24 * 3600) {
   const isProd = process.env.NODE_ENV === 'production';
+  const cookieName = isProd ? '__Host-canopy_session' : 'canopy_session';
   const cookieParts = [
-    `canopy_session=${encodeURIComponent(token)}`,
+    `${cookieName}=${encodeURIComponent(token)}`,
     'Path=/',
     'HttpOnly',
     'SameSite=Lax',
@@ -159,8 +163,9 @@ function setSessionCookie(res, token, maxAgeSec = 7 * 24 * 3600) {
 // Clear session cookie on logout
 function clearSessionCookie(res) {
   const isProd = process.env.NODE_ENV === 'production';
+  const cookieName = isProd ? '__Host-canopy_session' : 'canopy_session';
   const cookieParts = [
-    'canopy_session=',
+    `${cookieName}=`,
     'Path=/',
     'HttpOnly',
     'SameSite=Lax',
@@ -169,7 +174,11 @@ function clearSessionCookie(res) {
   if (isProd) {
     cookieParts.push('Secure');
   }
-  res.setHeader('Set-Cookie', cookieParts.join('; '));
+  const cookiesToSet = [cookieParts.join('; ')];
+  if (isProd) {
+    cookiesToSet.push('canopy_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0; Secure');
+  }
+  res.setHeader('Set-Cookie', cookiesToSet);
 }
 
 // Middleware: CSRF protection for cookie-authenticated mutating requests
