@@ -1009,53 +1009,6 @@ import { initNotificationCorner, notificationCenter } from './notifications.js';
     window.location.href = 'index.html';
   }
 
-  /* ---------- Mythos Launch Token & Session Lifecycle (Phase 3) ---------- */
-  (async function initMythosLaunch() {
-    if (typeof window === 'undefined') return;
-    const urlParams = new URLSearchParams(window.location.search);
-    const lt = urlParams.get('lt');
-    if (!lt) return;
-
-    try {
-      const res = await fetch(`/api/mythos/session?lt=${encodeURIComponent(lt)}`, {
-        credentials: 'same-origin'
-      });
-      if (res.ok) {
-        const payload = await res.json();
-        const session = payload?.data?.session || payload?.session;
-        if (session) {
-          sessionStorage.setItem('mythos_session_jti', session.sessionJti);
-          sessionStorage.setItem('mythos_user', JSON.stringify(session));
-          window.dispatchEvent(new CustomEvent('mythos:session-ready', { detail: session }));
-        }
-        if (window !== window.parent) {
-          window.parent.postMessage({ type: 'mythos:handshake' }, '*');
-        }
-      }
-    } catch (err) {
-      console.warn('[Canopy] Mythos session exchange failed:', err);
-    } finally {
-      // Strip ?lt= from URL without reloading (skills/mythos_plan.md Phase 3)
-      urlParams.delete('lt');
-      const newSearch = urlParams.toString();
-      const newUrl = window.location.pathname + (newSearch ? `?${newSearch}` : '') + window.location.hash;
-      window.history.replaceState({}, document.title, newUrl);
-    }
-  })();
-
-  window.canopyReportMythosUsage = async function(reason = 'build-call', credits = 1) {
-    const jti = sessionStorage.getItem('mythos_session_jti');
-    if (!jti) return;
-    try {
-      await fetch('/api/mythos/report-usage', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionJti: jti, credits: Math.round(Number(credits) || 1), reason })
-      });
-    } catch (e) {
-      console.warn('[Canopy] Mythos usage reporting failed:', e);
-    }
-  };
 
   document.addEventListener('DOMContentLoaded', renderAuthState);
   window.addEventListener('canopy:auth-changed', renderAuthState);

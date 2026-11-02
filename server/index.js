@@ -25,15 +25,13 @@
 /* ============================================================================
    SECTION 1: DEPENDENCY IMPORTS & CORE MODULES
    ============================================================================ */
-// Express does not load .env automatically; load it before any config (incl. Mythos) is read.
+// Express does not load .env automatically; load it before any config is read.
 require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const crypto = require('crypto');
-const { createMythos } = require('@mythos-work/sdk');
-const { mythosExpress } = require('@mythos-work/sdk/express');
 
 const authRouter = require('./routes/auth');
 const matchesRouter = require('./routes/matches');
@@ -130,49 +128,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Mythos SDK routes (/api/mythos/:action, /.well-known/mythos-*).
-// Mounted before CSRF + DB readiness gates: the SDK owns its own transport and auth.
-const { reportUsage, MythosError } = require('@mythos-work/sdk');
-const configuredListingIds = (process.env.MYTHOS_LISTING_IDS || process.env.MYTHOS_LISTING_ID || '')
-  .split(',')
-  .map(id => id.trim())
-  .filter(Boolean);
-const listingIdStore = new Set(configuredListingIds);
 
-if (!process.env.MYTHOS_SESSION_SECRET) {
-  process.env.MYTHOS_SESSION_SECRET = process.env.NODE_ENV === 'production'
-    ? crypto.randomBytes(32).toString('base64')
-    : 'alWos/oHDcV2AkRyEt9gzvsVMg9vOeNZ1Z5Zkm+j1ls=';
-}
-
-const mythos = createMythos({
-  resolveListingIds: async () => Array.from(listingIdStore),
-  onListingRegistered: async (listingId) => {
-    if (listingId) {
-      listingIdStore.add(listingId);
-      console.log(`[Mythos] Dynamically registered listing ID: ${listingId}`);
-    }
-  }
-});
-// Explicit usage reporting route for consumer billing actions (skills/mythos_plan.md Phase 2)
-// Mounted BEFORE mythosExpress to prevent /api/mythos/:action wildcard from swallowing it
-app.post('/api/mythos/report-usage', async (req, res) => {
-  const { sessionJti, credits = 1, reason = 'sprint-action' } = req.body || {};
-  if (!sessionJti) {
-    return res.status(400).json({ error: 'Missing sessionJti' });
-  }
-  try {
-    await reportUsage(sessionJti, { credits: Math.round(Number(credits) || 1), reason });
-    res.json({ ok: true, success: true });
-  } catch (err) {
-    if (err instanceof MythosError) {
-      return res.status(err.httpStatus || 402).json({ error: err.message, code: err.code });
-    }
-    res.status(503).json({ error: 'Failed to report usage', details: err.message });
-  }
-});
-
-app.use(mythosExpress(mythos));
 
 // CSRF validation for cookie-authenticated mutating requests
 app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin', '/settings'], validateCsrf);
@@ -366,4 +322,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, server, mythos };
+module.exports = { app, server };

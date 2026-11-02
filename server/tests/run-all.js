@@ -19,7 +19,6 @@ async function runSuite(suite) {
       env: {
         ...process.env,
         NODE_ENV: 'test',
-        MYTHOS_SESSION_SECRET: process.env.MYTHOS_SESSION_SECRET || 'alWos/oHDcV2AkRyEt9gzvsVMg9vOeNZ1Z5Zkm+j1ls=',
         EMAIL_PROVIDER: process.env.EMAIL_PROVIDER || 'test',
         CANOPY_ISOLATE_STORE: 'true',
         JWT_SECRET: process.env.JWT_SECRET || 'canopy_test_jwt_secret_minimum_32_characters_for_security_spec',
