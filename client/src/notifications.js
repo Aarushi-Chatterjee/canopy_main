@@ -168,6 +168,30 @@ export const notificationCenter = {
         });
       }
 
+      // 3. Process Platform Broadcasts & Founder Dispatches
+      try {
+        const ancRes = await fetch('/api/announcements');
+        if (ancRes.ok) {
+          const ancData = await ancRes.json();
+          if (Array.isArray(ancData?.announcements)) {
+            ancData.announcements.forEach(a => {
+              received.push({
+                id: a.id || 'anc_' + Math.random().toString(36).slice(2, 8),
+                type: 'announcement',
+                title: `📢 ${a.title}`,
+                subtext: a.message,
+                status: 'accepted',
+                isBroadcast: true,
+                url: a.url || 'sprint.html',
+                createdAt: a.createdAt || new Date().toISOString()
+              });
+            });
+          }
+        }
+      } catch (err) {
+        // Non-blocking fallback
+      }
+
       // Deduplicate and sort newest first
       const cleanSent = dedupe(sent).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       const cleanRec = dedupe(received).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

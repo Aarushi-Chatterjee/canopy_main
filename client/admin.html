@@ -358,6 +358,7 @@
         <div class="admin-nav-item" data-tab="calls"><span class="admin-nav-icon">🌱</span> Build Calls</div>
         <div class="admin-nav-item" data-tab="content"><span class="admin-nav-icon">🎨</span> Content Studio</div>
         <div class="admin-nav-item" data-tab="notebook"><span class="admin-nav-icon">📖</span> Lab Notebook &amp; Blog</div>
+        <div class="admin-nav-item" data-tab="broadcast"><span class="admin-nav-icon">📢</span> Platform Broadcasts</div>
         <div class="admin-nav-item" data-tab="settings"><span class="admin-nav-icon">⚙️</span> Settings &amp; Quotas</div>
         <div class="admin-nav-item" data-tab="audit"><span class="admin-nav-icon">📜</span> Audit Log</div>
       </nav>
@@ -410,6 +411,7 @@
             <button class="btn btn-primary" onclick="switchTab('applications')">Review Applications →</button>
             <button class="btn btn-secondary" onclick="switchTab('matching')">Facilitate Matches →</button>
             <button class="btn btn-secondary" onclick="switchTab('content')">Edit Content Cards →</button>
+            <button class="btn btn-secondary" onclick="switchTab('broadcast')">📢 Send Broadcast →</button>
           </div>
         </div>
       </section>
@@ -972,6 +974,7 @@
         loadContent();
         loadNotebookPosts();
         loadSettings();
+        loadBroadcasts();
         loadAudit();
       } catch (err) {
         gateTitle.textContent = 'Verification Error';
@@ -1575,6 +1578,7 @@
       if (res.ok) {
         alert('Listing quotas saved successfully!');
         loadSettings();
+        loadBroadcasts();
         loadAudit();
       } else {
         alert(res.message || 'Failed to save listing limits.');
@@ -1602,6 +1606,7 @@
       if (res.ok) {
         alert('Feature flags updated successfully!');
         loadSettings();
+        loadBroadcasts();
         loadAudit();
       } else {
         alert(res.message || 'Failed to update feature flags.');
@@ -1630,6 +1635,81 @@
     }
 
     checkAuth();
+  
+    // Broadcast Dispatches Logic
+    async function loadBroadcasts() {
+      const tbody = document.getElementById('broadcastsTableBody');
+      if (!tbody) return;
+      const res = await apiRequest('/admin/announcements');
+      if (!res.ok || !res.data?.announcements) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #ef4444; padding: 16px;">Failed to load broadcasts.</td></tr>';
+        return;
+      }
+      const list = res.data.announcements;
+      if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #64748b; padding: 16px;">No broadcast dispatches sent yet.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = list.map(b => {
+        const timeStr = new Date(b.createdAt).toLocaleDateString() + ' ' + new Date(b.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return `
+          <tr style="border-bottom: 1px solid #1c2e1f;">
+            <td style="padding: 10px 8px; font-size: 12px; color: #94a3b8; white-space: nowrap;">${timeStr}</td>
+            <td style="padding: 10px 8px;">
+              <div style="font-weight: 600; color: #f1f5f9; font-size: 13px;">${escapeHtml(b.title)}</div>
+              <div style="color: #94a3b8; font-size: 12px; margin-top: 2px;">${escapeHtml(b.message)}</div>
+            </td>
+            <td style="padding: 10px 8px; font-size: 12px; color: #4ade80;">${escapeHtml(b.targetAudience || 'all')}</td>
+            <td style="padding: 10px 8px; font-size: 12px; color: #64748b;">${b.url ? `<a href="${escapeHtml(b.url)}" target="_blank" style="color:#4ade80;text-decoration:none;">${escapeHtml(b.url)} ↗</a>` : '—'}</td>
+            <td style="padding: 10px 8px; text-align: right;">
+              <button onclick="retractBroadcast('${b.id}')" style="background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">
+                Retract
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.handleSendBroadcast = async function() {
+      const title = document.getElementById('bcTitle').value.trim();
+      const message = document.getElementById('bcMessage').value.trim();
+      const targetAudience = document.getElementById('bcAudience').value;
+      const type = document.getElementById('bcType').value;
+      const url = document.getElementById('bcUrl').value.trim();
+      const btn = document.getElementById('bcSubmitBtn');
+
+      if (!title || !message) return;
+      btn.disabled = true;
+      btn.textContent = 'Dispatching...';
+
+      const res = await apiRequest('/admin/announcements', {
+        method: 'POST',
+        body: JSON.stringify({ title, message, targetAudience, type, url })
+      });
+
+      btn.disabled = false;
+      btn.textContent = '📢 Dispatch Platform Broadcast';
+
+      if (res.ok) {
+        document.getElementById('broadcastForm').reset();
+        loadBroadcasts();
+        alert('Platform broadcast successfully dispatched to all active users!');
+      } else {
+        alert('Error: ' + (res.message || 'Failed to dispatch broadcast.'));
+      }
+    };
+
+    window.retractBroadcast = async function(id) {
+      if (!confirm('Are you sure you want to retract and delete this broadcast?')) return;
+      const res = await apiRequest(`/admin/announcements/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        loadBroadcasts();
+      } else {
+        alert('Error: ' + (res.message || 'Failed to retract broadcast.'));
+      }
+    };
+
   </script>
 </body>
 </html>

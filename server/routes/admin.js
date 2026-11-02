@@ -12,7 +12,8 @@ const {
   auditEvents: auditRepo,
   contentItems: contentRepo,
   userRoles: userRolesRepo,
-  platformSettings: settingsRepo
+  platformSettings: settingsRepo,
+  announcements: announcementsRepo
 } = require('../repositories');
 const { requireRole, requireAnyRole } = require('../middleware/auth');
 const emailService = require('../services/email');
@@ -953,4 +954,79 @@ router.delete('/notebook/:id', requireAnyRole(['admin', 'owner']), async (req, r
   }
 });
 
+
+// -------------------------------------------------------------
+// 10. Platform Announcements & Broadcast Dispatches
+// -------------------------------------------------------------
+router.get('/announcements', requireAnyRole(['admin', 'owner', 'moderator']), async (req, res) => {
+  try {
+    const list = await announcementsRepo.find();
+    const sorted = [...list].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.json({ announcements: sorted });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Failed to fetch announcements.' });
+  }
+});
+
+router.post('/announcements', requireAnyRole(['admin', 'owner']), async (req, res) => {
+  try {
+    const { title, message, type = 'announcement', targetAudience = 'all', url = '' } = req.body;
+    if (!title || !message) {
+      return res.status(400).json({ error: 'Title and message are required for broadcast.' });
+    }
+
+    const newRecord = {
+      id: `anc_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
+      title: title.trim(),
+      message: message.trim(),
+      type: type || 'announcement',
+      targetAudience: targetAudience || 'all',
+      url: url ? url.trim() : '',
+      status: 'published',
+      author: req.user?.email || 'founder@canopy',
+      createdAt: new Date().toISOString()
+    };
+
+    const created = await announcementsRepo.create(newRecord);
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'announcement.broadcast_dispatched',
+      targetType: 'announcement',
+      targetId: created.id,
+      payload: { title: created.title, targetAudience: created.targetAudience }
+    });
+
+    res.status(201).json({ announcement: created, message: 'Platform broadcast dispatched successfully.' });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Failed to dispatch broadcast.' });
+  }
+});
+
+router.delete('/announcements/:id', requireAnyRole(['admin', 'owner']), async (req, res) => {
+  try {
+    const existing = await announcementsRepo.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Announcement not found.' });
+    }
+
+    await announcementsRepo.delete(a => a.id === req.params.id, { eq: { id: req.params.id } });
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'announcement.retracted',
+      targetType: 'announcement',
+      targetId: req.params.id,
+      payload: { title: existing.title }
+    });
+
+    res.json({ success: true, message: `Broadcast "${existing.title}" retracted.` });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Failed to delete announcement.' });
+  }
+});
+
 module.exports = router;
+

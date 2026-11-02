@@ -268,7 +268,9 @@ export async function initIvyGrowth() {
     if (Math.abs(diff) > 0.0002) {
       currentProgress += diff * 0.20;
       leftUnit.update(currentProgress);
-      rightUnit.update(currentProgress);
+      if (window.innerWidth > 980) {
+        rightUnit.update(currentProgress);
+      }
     }
 
     if (isRunning) {

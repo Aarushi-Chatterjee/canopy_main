@@ -174,14 +174,7 @@
   .grow-branch-card:hover {
     border-color: var(--forest);
   }
-  .card-views-badge {
-    font-size: 0.76rem;
-    color: var(--ink-faint);
-    margin-left: 4px;
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-  }
+  
   .drawer-form .form-grid-2col {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -389,8 +382,7 @@
         <div class="teaser"><span>rmse_by_weather.py:14 → std(residual | rain) &gt;&gt; std(residual | dry)</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="climate">Climate</span>
-          <span class="tag-chip skill">post-mortem</span>
-          <span class="card-views-badge">👁️ <span class="view-num">142</span></span>
+          <span class="tag-chip skill">post-mortem</span></span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -412,8 +404,7 @@
         <div class="teaser"><span>thermal_log.csv → 84°C at t+6h, spec max 65°C</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="hardware">Hardware</span>
-          <span class="tag-chip skill">teardown</span>
-          <span class="card-views-badge">👁️ <span class="view-num">98</span></span>
+          <span class="tag-chip skill">teardown</span></span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -435,8 +426,7 @@
         <div class="teaser"><span>reconcile.js → drift: +$2.3M unattributed capital allocations</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="civic">Civic Tech</span>
-          <span class="tag-chip skill">field-report</span>
-          <span class="card-views-badge">👁️ <span class="view-num">165</span></span>
+          <span class="tag-chip skill">field-report</span></span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -458,8 +448,7 @@
         <div class="teaser"><span>tutor.css:212 → min-height: 48px !important; margin: 8px;</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="education">Education</span>
-          <span class="tag-chip skill">field-report</span>
-          <span class="card-views-badge">👁️ <span class="view-num">112</span></span>
+          <span class="tag-chip skill">field-report</span></span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -481,8 +470,7 @@
         <div class="teaser"><span>sync.md → conflicts/day dropped from 40 to 0 after CRDT migration</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="health">Health</span>
-          <span class="tag-chip skill">post-mortem</span>
-          <span class="card-views-badge">👁️ <span class="view-num">6</span></span>
+          <span class="tag-chip skill">post-mortem</span></span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -504,8 +492,7 @@
         <div class="teaser"><span>sar_filter.py → false alarm rate reduced by 72% in intertidal zones</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="forestry">Forestry</span>
-          <span class="tag-chip skill">sprint-update</span>
-          <span class="card-views-badge">👁️ <span class="view-num">189</span></span>
+          <span class="tag-chip skill">sprint-update</span></span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -1185,8 +1172,7 @@
       ${teaser}
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
-        <span class="tag-chip skill">${typeLabel}</span>
-        <span class="card-views-badge">👁️ <span class="view-num">${views}</span> views</span>
+        <span class="tag-chip skill">${typeLabel}</span> views</span>
         <button type="button" class="grow-btn compose-trigger">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           Grow entry
@@ -1314,7 +1300,7 @@
     const readMins = entry.readingTimeMinutes || Math.max(1, Math.ceil((entry.bodyMarkdown || entry.content || '').split(/\s+/).length / 180));
     let views = entry.viewCount || 1;
     const dateStr = formatEntryDate(entry.createdAt);
-    readerMeta.textContent = `${dateStr} · 📖 ${readMins} min read · 👁️ ${views} views`;
+    readerMeta.textContent = `${dateStr} · 📖 ${readMins} min read`;
 
     // Badges
     const domain = (entry.domain || 'climate').toLowerCase();
@@ -1361,28 +1347,17 @@
       window.history.replaceState(null, '', `#entry=${encodeURIComponent(entryId)}`);
     }
 
-    // Call server to increment viewCount in storage and fetch live branch updates
+    // Call server to fetch live branch updates
     if (entryId) {
       try {
         const fresh = await notebook.getEntry(entryId);
         if (fresh) {
           entry = { ...entry, ...fresh };
           liveEntriesMap.set(entryId, entry);
-          // Update reader meta with verified incremented count
-          if (fresh.viewCount) {
-            views = fresh.viewCount;
-            readerMeta.textContent = `${dateStr} · 📖 ${readMins} min read · 👁️ ${views} views`;
-            // Update the card's view-num badge in the grid immediately
-            const cardEl = document.querySelector(`[data-id="${entryId}"]`);
-            if (cardEl) {
-              const viewNumEl = cardEl.querySelector('.view-num');
-              if (viewNumEl) viewNumEl.textContent = views;
-            }
-          }
           renderBranches(entry.branches || []);
         }
       } catch (err) {
-        console.warn('[Canopy] Remote entry fetch/increment note:', err.message);
+        console.warn('[Canopy] Remote entry fetch error:', err.message);
       }
     }
   }
@@ -1725,11 +1700,7 @@
             entryGrid.prepend(card);
           } else {
             // Update live view badge if element exists in static HTML
-            const existingCard = entryGrid.querySelector(`[data-id="${entry.id}"]`);
-            if (existingCard && entry.viewCount) {
-              const numEl = existingCard.querySelector('.view-num');
-              if (numEl) numEl.textContent = entry.viewCount;
-            }
+
           }
         });
       }

@@ -22,5 +22,6 @@ module.exports = {
   auditEvents,
   contentItems,
   platformSettings,
+  announcements: require('./announcements'),
   userRoles: require('./user-roles')
 };

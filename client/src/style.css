@@ -313,8 +313,8 @@ body.notebook-page {
 
 :root[data-theme="dark"] .ivy-unit {
   mix-blend-mode: normal;
-  opacity: 0.85;
-  filter: none;
+  opacity: 0.88;
+  filter: brightness(1.22) contrast(1.10) saturate(1.35) drop-shadow(0 0 1px rgba(74, 222, 128, 0.18));
 }
 
 #ivyRight {
@@ -327,8 +327,8 @@ body.notebook-page {
   height: auto;
   aspect-ratio: 564 / 1024;
   pointer-events: none;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
+  /* smooth anti-aliased rendering */
+  image-rendering: auto;
 }
 
 .ivy-leaves-container {
@@ -351,8 +351,8 @@ body.notebook-page {
   opacity: 0;
   will-change: transform, opacity;
   pointer-events: none;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
+  /* smooth anti-aliased rendering */
+  image-rendering: auto;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -365,11 +365,11 @@ body.notebook-page {
 @media (max-width: 980px) {
   #ivyRight { display: none !important; }
   .ivy-unit {
-    opacity: 0.58;
+    opacity: 0.65;
   }
   #ivyLeft {
     position: absolute;
-    left: clamp(-80px, -8vw, -20px);
+    left: clamp(-50px, -6vw, -10px);
     top: 0;
   }
 }
@@ -377,11 +377,11 @@ body.notebook-page {
 @media (max-width: 640px) {
   #ivyRight { display: none !important; }
   .ivy-unit {
-    opacity: 0.42;
+    opacity: 0.60;
   }
   #ivyLeft {
     position: absolute;
-    left: clamp(-130px, -18vw, -50px);
+    left: clamp(-30px, -4vw, 0px);
     top: 0;
   }
 }

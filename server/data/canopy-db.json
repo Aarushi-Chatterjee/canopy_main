@@ -15,7 +15,7 @@
       "targetOutcomes": [],
       "pilotBudget": "$15,000 Deployment Grant",
       "rewardPool": "$15,000 Deployment Grant",
-      "timeline": "2–4 weeks",
+      "timeline": "2\u20134 weeks",
       "contactChannel": "org@agritech.org",
       "datasetAccessUrl": "https://data.example.org/soil-grid",
       "neededSkills": [
@@ -155,7 +155,7 @@
           "skills": [
             "Sensors Lead"
           ],
-          "availability": "Full sprint (2–4 weeks)",
+          "availability": "Full sprint (2\u20134 weeks)",
           "portfolioUrl": "",
           "status": "pending_review",
           "isLocalGuest": false,
@@ -205,7 +205,7 @@
       "domain": "climate",
       "entryType": "post-mortem",
       "summarySnippet": "Illustrative Sample: Baseline drift analysis during high sediment conditions with median window filtering.",
-      "teaser": "cal_curve.py → median_filter(raw_adc, window=5)",
+      "teaser": "cal_curve.py \u2192 median_filter(raw_adc, window=5)",
       "bodyMarkdown": "### Illustrative Demonstration Note\nThis note illustrates how Canopy teams publish candid teardowns and post-mortems after sprint cycles.\n\n### Finding\nSediment scattering produced analog drift; resolved with physical baffles and software filtering.",
       "tags": [
         "Climate",
@@ -549,7 +549,7 @@
       "contentKey": "home.private_beta_banner",
       "contentType": "announcement",
       "title": "Private Beta Announcement Banner",
-      "body": "🌱 Private Beta Open: Cohort 1 submissions are being reviewed on a rolling basis.",
+      "body": "\ud83c\udf31 Private Beta Open: Cohort 1 submissions are being reviewed on a rolling basis.",
       "summary": "Banner appearing across all marketing headers",
       "status": "published",
       "visibility": "public",
@@ -579,7 +579,7 @@
       "contentKey": "match.illustrative_example",
       "contentType": "example_notice",
       "title": "Illustrative Example Notice",
-      "body": "Illustrative Example — This workspace demonstrates how Canopy works. It is not a live opportunity and is not accepting applications.",
+      "body": "Illustrative Example \u2014 This workspace demonstrates how Canopy works. It is not a live opportunity and is not accepting applications.",
       "summary": "Disclaimer badge on illustrative product loop demo",
       "status": "published",
       "visibility": "public",
@@ -614,6 +614,19 @@
       "updatedBy": "system_bootstrap",
       "createdAt": "2026-08-01T00:00:00Z",
       "updatedAt": "2026-08-01T00:00:00Z"
+    }
+  ],
+  "announcements": [
+    {
+      "id": "anc_welcome",
+      "title": "Welcome to Canopy Private Beta",
+      "message": "Applications for Spring 2026 Sprint Cycles in Climate, Grid, and Sensing are actively being reviewed.",
+      "type": "announcement",
+      "targetAudience": "all",
+      "url": "sprint.html",
+      "status": "published",
+      "createdAt": "2026-10-15T00:00:00.000Z",
+      "author": "founder@canopy"
     }
   ]
 }

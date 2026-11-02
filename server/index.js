@@ -303,6 +303,17 @@ app.use(['/api/content', '/content'], contentRouter);
 app.use(['/api/settings', '/settings'], settingsRouter);
 app.use(['/api/admin', '/admin'], optionalAuth, founderGate, adminRouter);
 
+// Public announcements / notifications sync endpoint
+const { announcements: publicAnnouncementsRepo } = require('./repositories');
+app.get(['/api/announcements', '/announcements'], async (req, res) => {
+  try {
+    const list = await publicAnnouncementsRepo.getActive();
+    res.json({ announcements: list });
+  } catch (err) {
+    res.json({ announcements: [] });
+  }
+});
+
 // 404 handler for API routes
 app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin', '/settings'], (req, res) => {
   res.status(404).json({ error: 'Endpoint not found on Canopy API' });
