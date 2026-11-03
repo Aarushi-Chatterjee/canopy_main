@@ -374,14 +374,17 @@
     <section class="hero">
       <div class="wrap hero-grid">
         <div class="reveal in-view">
-          <span class="eyebrow">For builders, engineers &amp; makers</span>
-          <h1>Find the problem worth building.<br>Find the team to build it with.</h1>
-          <p class="hero-sub">Canopy is where skilled builders match with real problems and sprint to ship &mdash; not just prototype.</p>
+          <span class="eyebrow">✎ a field application sandbox</span>
+          <h1>If we can find love online,<br>why not <em>teammates?</em></h1>
+          <p class="hero-sub">Canopy is where builders, problem holders, and enablers come together and turn ideas into
+            things that actually ship.</p>
+          <p class="hero-sub" style="margin-top:10px;font-size:1.02rem;">Across AI, hardware, design, research, and
+            everything between.</p>
           <div class="hero-hook">The right teammate changes everything: not just what gets built, but whether it gets
             built at all. Canopy is where that match happens.</div>
           <div class="hero-ctas">
-            <a class="btn btn-stamp" href="match.html">Find a Build Call</a>
-            <a class="btn btn-ghost" href="sprint.html">See active sprints</a>
+            <a class="btn btn-stamp" href="apply.html">Join the Canopy</a>
+            <a class="btn btn-ghost" href="#solution">See how it grows ↓</a>
           </div>
         </div>
 
@@ -750,11 +753,11 @@
           cta2: 'Explore the Notebook', cta2href: 'notebook.html'
         },
         'exploring': {
-          eyebrow: 'For builders, engineers & makers',
-          h1: 'Find the problem worth building. Find the team to build it with.',
-          sub: 'Canopy is where skilled builders match with real problems and sprint to ship — not just prototype.',
-          cta1: 'Find a Build Call', cta1href: 'match.html',
-          cta2: 'See active sprints', cta2href: 'sprint.html'
+          eyebrow: 'a field application sandbox',
+          h1: 'If we can find love online, why not teammates?',
+          sub: 'Canopy is where builders, problem holders, and enablers come together and turn ideas into things that actually ship.',
+          cta1: 'Join the Canopy', cta1href: 'apply.html',
+          cta2: 'See how it grows →', cta2href: '#solution'
         }
       };
 
@@ -782,7 +785,7 @@
           if (h1) {
             // Builder/problem/enabler h1 — no italic needed, just text
             if (role === 'exploring') {
-              h1.innerHTML = 'Find the problem worth building.<br>Find the team to build it with.';
+              h1.innerHTML = 'If we can find love online,<br>why not <em>teammates?</em>';
             } else {
               h1.textContent = copy.h1;
             }
