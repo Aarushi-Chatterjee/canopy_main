@@ -533,7 +533,24 @@ export const settings = {
 };
 
 /* ============================================================
-   8. BACKWARDS-COMPATIBLE DB EXPORT
+   8. PUBLIC CONTENT STUDIO & COPY DICTIONARY
+   ============================================================ */
+export const content = {
+  async getPageContent(page) {
+    const remote = await apiRequest(`/content/${encodeURIComponent(page)}`);
+    if (remote.ok && remote.data) return remote.data;
+    return { page, items: [], dictionary: {} };
+  },
+
+  async getAllContent() {
+    const remote = await apiRequest('/content');
+    if (remote.ok && remote.data?.items) return remote.data.items;
+    return [];
+  }
+};
+
+/* ============================================================
+   9. BACKWARDS-COMPATIBLE DB EXPORT
    ============================================================ */
 export const db = {
   submitApplication: (app) => applications.submitApplication(app),
@@ -554,5 +571,6 @@ export default {
   notebook,
   applications,
   settings,
+  content,
   db
 };

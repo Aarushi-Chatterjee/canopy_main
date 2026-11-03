@@ -2016,17 +2016,83 @@ form.apply-form{ padding:24px 26px 26px; display:flex; flex-direction:column; ga
   }
 }
 
-@media (max-width:600px){
-  footer .wrap{ grid-template-columns: repeat(2, 1fr); gap: 26px 18px; }
-  footer .wrap > div:first-child{ grid-column: 1 / -1; margin-bottom: 6px; }
-  .founder-quote{ font-size: 0.92rem; line-height: 1.55; }
-  .foot-bottom{
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    padding-top: 18px;
-    margin-top: 28px;
+@media (max-width:680px){
+  footer {
+    padding: 38px 0 24px !important;
   }
+  footer .wrap {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 28px 20px !important;
+  }
+  /* Brand + quote column spans full width with clean bottom divider */
+  footer .wrap > div:first-child {
+    grid-column: 1 / -1 !important;
+    margin-bottom: 8px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--footer-border);
+  }
+  /* Charter & Legal spans across bottom with balanced 2-column links */
+  footer .wrap > div:nth-child(4) {
+    grid-column: 1 / -1 !important;
+    margin-top: 4px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--footer-border);
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 18px;
+  }
+  footer .wrap > div:nth-child(4) h5 {
+    grid-column: 1 / -1;
+    margin-bottom: 10px;
+  }
+  footer a {
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    font-size: 0.88rem !important;
+    margin-bottom: 10px;
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.4;
+  }
+  .founder-quote {
+    font-size: 0.92rem !important;
+    line-height: 1.6 !important;
+    max-width: 100% !important;
+    padding-left: 14px;
+    border-left: 2.5px solid var(--footer-heading);
+    margin-top: 14px !important;
+  }
+  .footer-logo {
+    margin-bottom: 12px !important;
+  }
+  .foot-bottom {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 10px !important;
+    padding-top: 20px !important;
+    margin-top: 32px !important;
+    font-size: 0.78rem !important;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width:440px){
+  footer .wrap {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  footer .wrap > div:nth-child(4) {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  .founder-quote {
+    font-size: 0.88rem !important;
+  }
+}
+
+@media (max-width:600px){
   .vine-note{ max-width:100%; }
 
   .header-inner {
@@ -3343,5 +3409,205 @@ body.page-entering {
   }
   .filter-pill-row {
     justify-content: flex-start;
+  }
+}
+
+
+/* ============================================================
+   SPRINT PAGE MOBILE ADAPTABILITY & BOX GAP FIXES
+   ============================================================ */
+.sprint-card {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.sprint-card .card-foot {
+  margin-top: auto !important;
+  padding-top: 14px !important;
+  border-top: 1px solid var(--card-edge) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+.sprint-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  /* Eliminate multi-column squeezing and box gap jank on mobile */
+  .squads-grid,
+  .sponsored-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .sprint-section-wrap {
+    margin-top: 12px !important;
+    margin-bottom: 22px !important;
+  }
+
+  .sprint-section-head {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    margin-bottom: 16px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .sprint-section-head h2 {
+    font-size: 1.35rem !important;
+  }
+
+  .sprint-section-head-title p {
+    font-size: 0.88rem !important;
+  }
+
+  .sprint-section-head > div:last-child {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  /* Filter Toolbar Spacing */
+  .match-filter-bar {
+    padding: 12px 14px !important;
+    gap: 10px !important;
+    margin: 18px 0 24px 0 !important;
+    border-radius: 12px !important;
+  }
+
+  .sprint-search-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+
+  .filter-pill-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .filter-pill {
+    padding: 5px 10px !important;
+    font-size: 0.78rem !important;
+  }
+
+  #btnResetSprintFilters {
+    margin-left: auto !important;
+    padding: 5px 10px !important;
+    font-size: 0.76rem !important;
+  }
+
+  /* Sprint Card internals on mobile */
+  .sprint-card {
+    padding: 18px 16px !important;
+    gap: 11px !important;
+    border-radius: 12px !important;
+  }
+
+  .sprint-card h4 {
+    font-size: 1.05rem !important;
+    line-height: 1.35 !important;
+    margin: 2px 0 0 !important;
+  }
+
+  .sprint-card .sub {
+    font-size: 0.78rem !important;
+    margin-top: -2px !important;
+  }
+
+  .sprint-card p.line {
+    font-size: 0.88rem !important;
+    line-height: 1.45 !important;
+    margin: 0 !important;
+  }
+
+  .deliverables-box {
+    font-size: 0.81rem !important;
+    padding: 7px 10px !important;
+    margin: 2px 0 !important;
+    line-height: 1.4 !important;
+  }
+
+  .research-ref-link {
+    font-size: 0.76rem !important;
+    padding: 3px 7px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+  }
+
+  .grant-badge {
+    font-size: 0.72rem !important;
+    padding: 3px 8px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Parallel Callout & Closing CTA */
+  .parallel-squad-callout {
+    padding: 18px 16px !important;
+    gap: 14px !important;
+    margin: 18px 0 !important;
+  }
+
+  .parallel-squad-callout > div:last-child {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .parallel-squad-callout > div:last-child .btn {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  .stage-cta {
+    padding: 24px 16px !important;
+    margin-top: 24px !important;
+  }
+
+  .stage-cta .connect-row {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .stage-cta .connect-row .btn {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .sprint-card .card-foot {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .sprint-card .card-foot .hint-small {
+    text-align: center !important;
+  }
+
+  .sprint-card .card-foot .shovel-btn {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }

@@ -1138,7 +1138,7 @@
     const cardMode = isBlog ? 'blog' : 'logs';
 
     const card = document.createElement('article');
-    card.className = `elevated-card interactive entry-card reveal ${isBlog ? 'is-blog-card' : ''}`;
+    card.className = `elevated-card interactive entry-card in-view ${isBlog ? 'is-blog-card' : ''}`;
     card.setAttribute('data-domain', domain);
     card.setAttribute('data-type', typeLabel);
     card.setAttribute('data-mode', cardMode);
@@ -1172,7 +1172,7 @@
       ${teaser}
       <div class="entry-bottom">
         <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
-        <span class="tag-chip skill">${typeLabel}</span> views</span>
+        <span class="tag-chip skill">${typeLabel}</span>
         <button type="button" class="grow-btn compose-trigger">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           Grow entry
@@ -1199,7 +1199,7 @@
     const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
 
     const card = document.createElement('article');
-    card.className = 'shipped-card reveal';
+    card.className = 'shipped-card in-view';
     card.setAttribute('data-domain', domain);
     card.setAttribute('data-id', sprint.id || '');
     card.innerHTML = `

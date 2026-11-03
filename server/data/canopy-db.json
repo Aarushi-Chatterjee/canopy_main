@@ -163,6 +163,166 @@
         }
       ],
       "updatedAt": "2026-10-13T19:29:52.893Z"
+    },
+    {
+      "id": "sprint_groundwater_sensor",
+      "title": "Groundwater Optical Probe Telemetry Squad",
+      "description": "Low-cost telemetry node for measuring groundwater optical density in high-salinity rural aquifers.",
+      "problemStatement": "Low-cost telemetry node for measuring groundwater optical density in high-salinity rural aquifers.",
+      "domain": "climate",
+      "stage": "building",
+      "teamCapacity": 3,
+      "currentMembersCount": 3,
+      "members": [
+        {
+          "userId": "usr_field_1",
+          "squadRole": "Hardware Lead",
+          "displayName": "Maya S."
+        },
+        {
+          "userId": "usr_field_2",
+          "squadRole": "Firmware Lead",
+          "displayName": "Dev P."
+        },
+        {
+          "userId": "usr_field_3",
+          "squadRole": "Calibration Spec",
+          "displayName": "Liam K."
+        }
+      ],
+      "targetDeliverable": "Field-ready optical probe board design, firmware, and calibration documentation.",
+      "skillTags": [
+        "Sensors",
+        "Embedded C",
+        "Hydrology"
+      ],
+      "daysLeft": 12,
+      "progressPct": 57
+    },
+    {
+      "id": "sprint_city_budget",
+      "title": "City Budget Explorer & Visual Ledger",
+      "description": "Interactive browser tool turning raw municipality line-item PDF budgets into searchable Sankey diagrams.",
+      "problemStatement": "Interactive browser tool turning raw municipality line-item PDF budgets into searchable Sankey diagrams.",
+      "domain": "civic",
+      "stage": "forming",
+      "teamCapacity": 3,
+      "currentMembersCount": 2,
+      "members": [
+        {
+          "userId": "usr_civic_1",
+          "squadRole": "Frontend / D3 Lead",
+          "displayName": "Aiden T."
+        },
+        {
+          "userId": "usr_civic_2",
+          "squadRole": "Data Pipeline",
+          "displayName": "Priya R."
+        }
+      ],
+      "targetDeliverable": "Client-side parser, schema validator, and interactive canvas visualizer.",
+      "skillTags": [
+        "D3.js",
+        "Python",
+        "Civic Tech"
+      ],
+      "daysLeft": 18,
+      "progressPct": 20
+    },
+    {
+      "id": "sprint_offline_reading",
+      "title": "Offline Reading Tutor for Low-Connectivity Tablets",
+      "description": "Phonics and vocabulary speech-recognition assistant capable of running 100% on device without cellular data.",
+      "problemStatement": "Phonics and vocabulary speech-recognition assistant capable of running 100% on device without cellular data.",
+      "domain": "education",
+      "stage": "forming",
+      "teamCapacity": 3,
+      "currentMembersCount": 1,
+      "members": [
+        {
+          "userId": "usr_edu_1",
+          "squadRole": "Speech / ML Lead",
+          "displayName": "Sarah C."
+        }
+      ],
+      "targetDeliverable": "Quantized on-device acoustic model and gamified lesson interface.",
+      "skillTags": [
+        "ONNX",
+        "Flutter",
+        "Pedagogy"
+      ],
+      "daysLeft": 19,
+      "progressPct": 10
+    },
+    {
+      "id": "sprint_sar_radar",
+      "title": "SAR Radar Canopy Height & Biomass Estimation",
+      "description": "Automated processing pipeline using Sentinel-1 C-band synthetic aperture radar to map canopy height.",
+      "problemStatement": "Automated processing pipeline using Sentinel-1 C-band synthetic aperture radar to map canopy height.",
+      "domain": "forestry",
+      "stage": "building",
+      "teamCapacity": 3,
+      "currentMembersCount": 3,
+      "members": [
+        {
+          "userId": "usr_for_1",
+          "squadRole": "GIS Specialist",
+          "displayName": "Carlos M."
+        },
+        {
+          "userId": "usr_for_2",
+          "squadRole": "ML Engineer",
+          "displayName": "Nadia H."
+        },
+        {
+          "userId": "usr_for_3",
+          "squadRole": "Validation Lead",
+          "displayName": "Tariq A."
+        }
+      ],
+      "targetDeliverable": "Validated PyTorch training checkpoint and open GeoTIFF export script.",
+      "skillTags": [
+        "PyTorch",
+        "GIS / GDAL",
+        "Satellite Ops"
+      ],
+      "daysLeft": 8,
+      "progressPct": 65
+    },
+    {
+      "id": "sprint_microgrid_fault",
+      "title": "Solar Microgrid Arc-Fault & Islanding Detector",
+      "description": "High-frequency voltage harmonic sensor detecting micro-arcs in community solar arrays before fire hazard.",
+      "problemStatement": "High-frequency voltage harmonic sensor detecting micro-arcs in community solar arrays before fire hazard.",
+      "domain": "grid",
+      "stage": "building",
+      "teamCapacity": 3,
+      "currentMembersCount": 3,
+      "members": [
+        {
+          "userId": "usr_grid_1",
+          "squadRole": "DSP Engineer",
+          "displayName": "Kenji W."
+        },
+        {
+          "userId": "usr_grid_2",
+          "squadRole": "Power Systems",
+          "displayName": "Fatima Z."
+        },
+        {
+          "userId": "usr_grid_3",
+          "squadRole": "Edge Firmware",
+          "displayName": "Eric B."
+        }
+      ],
+      "targetDeliverable": "Edge DSP firmware and physical bench test protocol.",
+      "skillTags": [
+        "DSP",
+        "Embedded C",
+        "Solar Grid"
+      ],
+      "daysLeft": 11,
+      "progressPct": 50
     }
   ],
   "notebook_entries": [
@@ -670,12 +830,117 @@
       "contentKey": "home.founder_quote",
       "contentType": "statement",
       "title": "Founder Perspective Quote",
-      "body": "The talent is there. The problems are there. What is missing is the scaffold that turns good intentions into shipped reality.",
+      "body": "I kept hearing the same frustration from brilliant people: they wanted to work on things that genuinely mattered, but the machinery of grants, committee approvals, and credentialism kept them waiting. So I started Canopy to close that gap — one Build Call, one sprint, one shipped project at a time.",
       "summary": "Quote attributed to founder Aarushi Chatterjee",
       "status": "published",
       "visibility": "public",
       "isIllustrative": false,
       "sortOrder": 4,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_sprint_headline",
+      "contentKey": "sprint.hero.headline",
+      "contentType": "statement",
+      "title": "Sprint Hero Headline",
+      "body": "The clock is already ticking.",
+      "summary": "Primary headline for Sprint countdown hero",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 5,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_sprint_subheadline",
+      "contentKey": "sprint.hero.subheadline",
+      "contentType": "statement",
+      "title": "Sprint Hero Subheadline",
+      "body": "A real team. A visible deadline. A shipped prototype at the end. No month-long email chains.",
+      "summary": "Secondary lede beneath sprint clock",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 6,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_sprint_lede",
+      "contentKey": "sprint.lede",
+      "contentType": "statement",
+      "title": "Sprint Lede Statement",
+      "body": "Two to four weeks, a visible clock, and a real squad.",
+      "summary": "Sprint section narrative lede",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 7,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_notebook_headline",
+      "contentKey": "notebook.hero.headline",
+      "contentType": "statement",
+      "title": "Lab Notebook Hero Headline",
+      "body": "The Lab Notebook",
+      "summary": "Notebook hero title",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 8,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_notebook_lede",
+      "contentKey": "notebook.lede",
+      "contentType": "statement",
+      "title": "Lab Notebook Lede",
+      "body": "Every sprint ships something. The Notebook is where it lives — teardowns, field notes, and open schematics.",
+      "summary": "Notebook narrative lede",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 9,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_match_headline",
+      "contentKey": "match.hero.headline",
+      "contentType": "statement",
+      "title": "Match Directory Hero Headline",
+      "body": "Find your squad. Build what matters.",
+      "summary": "Match sandbox hero title",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 10,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_match_lede",
+      "contentKey": "match.lede",
+      "contentType": "statement",
+      "title": "Match Directory Lede",
+      "body": "Match with intent, sprint with a team, and ship prototypes that matter.",
+      "summary": "Match directory overview lede",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 11,
       "version": 1,
       "publishedAt": "2026-08-01T00:00:00Z",
       "createdAt": "2026-08-01T00:00:00Z"
@@ -690,10 +955,55 @@
       "status": "published",
       "visibility": "public",
       "isIllustrative": true,
-      "sortOrder": 5,
+      "sortOrder": 12,
       "version": 1,
       "publishedAt": "2026-08-20T00:00:00Z",
       "createdAt": "2026-08-20T00:00:00Z"
+    },
+    {
+      "id": "cnt_apply_headline",
+      "contentKey": "apply.hero.headline",
+      "contentType": "statement",
+      "title": "Application Hero Headline",
+      "body": "Join the Canopy Fellowship",
+      "summary": "Application page hero title",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 13,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_footer_motto",
+      "contentKey": "footer.motto",
+      "contentType": "statement",
+      "title": "Footer Motto",
+      "body": "Canopy: Connect. Collaborate. Ship things that matter.",
+      "summary": "Site-wide footer mission motto",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 14,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_footer_charter",
+      "contentKey": "footer.charter",
+      "contentType": "statement",
+      "title": "Footer Charter Statement",
+      "body": "We believe public problems deserve modern engineering velocity.",
+      "summary": "Site-wide footer charter statement",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 15,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
     }
   ],
   "platform_settings": [

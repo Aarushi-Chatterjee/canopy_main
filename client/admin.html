@@ -120,8 +120,39 @@
     .admin-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       margin-bottom: 28px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .admin-scope-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+      text-align: right;
+    }
+    .admin-scope-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: rgba(74, 222, 128, 0.12);
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      border-radius: 9999px;
+      color: #4ade80;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(74, 222, 128, 0.1);
+      white-space: nowrap;
+    }
+    .admin-scope-desc {
+      font-size: 11px;
+      color: #94a3b8;
+      max-width: 380px;
+      line-height: 1.35;
     }
     .admin-title {
       font-size: 24px;
@@ -179,59 +210,87 @@
     }
     .data-table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       font-size: 13.5px;
+      background: #0a110b;
+      border: 1px solid var(--admin-border-bright);
+      border-radius: 8px;
+      overflow: hidden;
     }
     .data-table th {
       text-align: left;
-      padding: 12px 14px;
-      color: #64748b;
+      padding: 12px 16px;
+      color: #94a3b8;
+      background: rgba(0, 0, 0, 0.4);
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      border-bottom: 1px solid var(--admin-border);
+      border-bottom: 1px solid var(--admin-border-bright);
     }
     .data-table td {
-      padding: 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      color: #cbd5e1;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      color: #f1f5f9;
       vertical-align: middle;
+      font-size: 13px;
+    }
+    .data-table tr:last-child td {
+      border-bottom: none;
     }
     .data-table tr:hover td {
-      background: rgba(255, 255, 255, 0.02);
+      background: rgba(74, 222, 128, 0.04);
+    }
+    .code-chip {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(74, 222, 128, 0.12);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.28);
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
     }
     .badge {
       display: inline-block;
-      padding: 3px 8px;
-      border-radius: 4px;
+      padding: 4px 9px;
+      border-radius: 5px;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      border: 1px solid transparent;
+      white-space: nowrap;
     }
-    .badge-green { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
-    .badge-amber { background: rgba(236, 201, 75, 0.15); color: #ecc94b; }
-    .badge-blue { background: rgba(96, 165, 250, 0.15); color: #60a5fa; }
-    .badge-rose { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+    .badge-green { background: rgba(74, 222, 128, 0.16); color: #4ade80; border-color: rgba(74, 222, 128, 0.35); }
+    .badge-amber { background: rgba(236, 201, 75, 0.16); color: #facc15; border-color: rgba(236, 201, 75, 0.35); }
+    .badge-blue { background: rgba(96, 165, 250, 0.16); color: #60a5fa; border-color: rgba(96, 165, 250, 0.35); }
+    .badge-rose { background: rgba(248, 113, 113, 0.16); color: #f87171; border-color: rgba(248, 113, 113, 0.35); }
+    .badge-purple { background: rgba(168, 85, 247, 0.16); color: #c084fc; border-color: rgba(168, 85, 247, 0.35); }
     .btn {
       padding: 7px 14px;
       border-radius: 6px;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 12.5px;
+      font-weight: 600;
       cursor: pointer;
-      border: none;
+      border: 1px solid transparent;
       transition: all 0.15s ease;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      white-space: nowrap;
     }
-    .btn-primary { background: #22543d; color: #68d391; }
-    .btn-primary:hover { background: #276749; color: #ffffff; }
-    .btn-secondary { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; }
-    .btn-secondary:hover { background: #334155; color: #ffffff; }
-    .btn-danger { background: rgba(248, 113, 113, 0.15); color: #f87171; }
-    .btn-danger:hover { background: rgba(248, 113, 113, 0.25); }
+    .btn-primary { background: #166534; color: #86efac; border-color: #22c55e; }
+    .btn-primary:hover { background: #22c55e; color: #052e16; }
+    .btn-secondary { background: #1e293b; color: #f1f5f9; border: 1px solid #475569; }
+    .btn-secondary:hover { background: #334155; color: #ffffff; border-color: #64748b; }
+    .btn-danger { background: rgba(248, 113, 113, 0.15); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.35); }
+    .btn-danger:hover { background: rgba(248, 113, 113, 0.3); color: #ffffff; }
     .form-group {
       margin-bottom: 16px;
     }
@@ -382,6 +441,10 @@
             <h1 class="admin-title">Station Overview</h1>
             <p class="admin-subtitle">Live health, review queues, and cohort intake telemetry.</p>
           </div>
+          <div class="admin-scope-box">
+            <span class="admin-scope-pill">🧭 Station Pulse · Site-Wide Control</span>
+            <span class="admin-scope-desc">Telemetry across all member pipelines, review queues &amp; active sprint cycles</span>
+          </div>
         </div>
 
         <div class="admin-grid">
@@ -424,6 +487,10 @@
             <h1 class="admin-title">Cohort Applications</h1>
             <p class="admin-subtitle">Evaluate builder, problem holder, and enabler intake submissions.</p>
           </div>
+          <div class="admin-scope-box">
+            <span class="admin-scope-pill">📋 Scope: /apply.html</span>
+            <span class="admin-scope-desc">Controls builder, problem holder &amp; enabler intake, review statuses, and onboarding decisions</span>
+          </div>
         </div>
         <div class="admin-card">
           <table class="data-table">
@@ -449,6 +516,10 @@
           <div>
             <h1 class="admin-title">User Access &amp; Permissions</h1>
             <p class="admin-subtitle">Manage verified credentials and discrete operational roles.</p>
+          </div>
+          <div class="admin-scope-box">
+            <span class="admin-scope-pill">👥 Scope: Site-Wide Access &amp; Roles</span>
+            <span class="admin-scope-desc">Grants operational permissions (approved_builder, curator, moderator, admin) &amp; feature gates</span>
           </div>
         </div>
         <div class="admin-card">
@@ -513,6 +584,10 @@
             <h1 class="admin-title">Manual Matching Console</h1>
             <p class="admin-subtitle">Personally review and introduce peer collaboration inquiries.</p>
           </div>
+          <div class="admin-scope-box">
+            <span class="admin-scope-pill">🤝 Scope: /match.html</span>
+            <span class="admin-scope-desc">Curates builder-to-problem matching, introductions, and 1-on-1 team connections</span>
+          </div>
         </div>
         <div class="admin-card">
           <table class="data-table">
@@ -539,7 +614,13 @@
             <h1 class="admin-title">Build Calls Management</h1>
             <p class="admin-subtitle">Directly author, edit, approve, or retire live challenges in the open directory.</p>
           </div>
-          <button id="openCreateCallBtn" class="btn btn-primary" onclick="openCreateCallModal()">+ Create Build Call</button>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <div class="admin-scope-box">
+              <span class="admin-scope-pill">🌱 Scope: /post-call.html &amp; /match.html</span>
+              <span class="admin-scope-desc">Publishes, approves, and edits sponsored challenges, milestone grants, and domain RFPs</span>
+            </div>
+            <button id="openCreateCallBtn" class="btn btn-primary" onclick="openCreateCallModal()">+ Create Build Call</button>
+          </div>
         </div>
         <div class="admin-card">
           <table class="data-table">
@@ -644,7 +725,13 @@
             <h1 class="admin-title">Sprints &amp; Cycles Control Room</h1>
             <p class="admin-subtitle">Directly manage recurring cycle deadlines, synchronized countdown clocks, and active squads across the platform.</p>
           </div>
-          <button class="btn btn-primary" onclick="openCreateSquadModal()">+ Create New Squad</button>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <div class="admin-scope-box">
+              <span class="admin-scope-pill">⏱️ Scope: /sprint.html</span>
+              <span class="admin-scope-desc">Drives 21-day synchronized countdown clock, squad vacancies, and prototype milestones</span>
+            </div>
+            <button class="btn btn-primary" onclick="openCreateSquadModal()">+ Create New Squad</button>
+          </div>
         </div>
 
         <!-- Live Cycle Countdown Controller -->
@@ -729,16 +816,54 @@
       <section id="tab-content" class="admin-tab-pane" style="display: none;">
         <div class="admin-header">
           <div>
-            <h1 class="admin-title">Content Studio &amp; Direct Uploads</h1>
-            <p class="admin-subtitle">Publish dynamic card copy, active statements, and illustrative badges.</p>
+            <h1 class="admin-title">Content Studio &amp; Direct Copy</h1>
+            <p class="admin-subtitle">Centrally control and edit public website headlines, ledes, quotes, and illustrative notices without touching code.</p>
+          </div>
+          <div class="admin-scope-box">
+            <span class="admin-scope-pill">🎨 Scope: /index.html &amp; Site-Wide Copy</span>
+            <span class="admin-scope-desc">Updates public headlines, hero statements, founder quotes, ledes &amp; footers in real time</span>
           </div>
         </div>
 
-        <div class="admin-card">
-          <div class="admin-card-title">Compose / Edit Content Item</div>
+        <div class="admin-card" style="border: 1px solid var(--admin-border-bright);">
+          <div class="admin-card-title" id="contentFormTitle">Compose / Edit Content Item</div>
+          <input type="hidden" id="contentEditId">
+          
+          <div style="margin-bottom: 14px;">
+            <label class="form-label" style="color: #4ade80;">Quick Select Site Copy Preset</label>
+            <select id="contentKeyPreset" class="form-select" onchange="applyKeyPreset(this.value)">
+              <option value="">-- Choose existing website copy key to edit --</option>
+              <optgroup label="Homepage (/index.html)">
+                <option value="home.hero.headline">Home Hero Headline (home.hero.headline)</option>
+                <option value="home.hero.subheadline">Home Hero Subheadline (home.hero.subheadline)</option>
+                <option value="home.private_beta_banner">Private Beta Announcement Banner (home.private_beta_banner)</option>
+                <option value="home.founder_quote">Founder Perspective Quote (home.founder_quote)</option>
+              </optgroup>
+              <optgroup label="Sprint Page (/sprint.html)">
+                <option value="sprint.hero.headline">Sprint Hero Headline (sprint.hero.headline)</option>
+                <option value="sprint.hero.subheadline">Sprint Hero Subheadline (sprint.hero.subheadline)</option>
+                <option value="sprint.lede">Sprint Lede Statement (sprint.lede)</option>
+              </optgroup>
+              <optgroup label="Lab Notebook (/notebook.html)">
+                <option value="notebook.hero.headline">Notebook Hero Headline (notebook.hero.headline)</option>
+                <option value="notebook.lede">Notebook Lede Statement (notebook.lede)</option>
+              </optgroup>
+              <optgroup label="Match Directory (/match.html)">
+                <option value="match.hero.headline">Match Directory Hero Headline (match.hero.headline)</option>
+                <option value="match.lede">Match Directory Lede Statement (match.lede)</option>
+                <option value="match.illustrative_example">Illustrative Example Notice (match.illustrative_example)</option>
+              </optgroup>
+              <optgroup label="Site-Wide Footer">
+                <option value="footer.motto">Footer Mission Motto (footer.motto)</option>
+                <option value="footer.charter">Footer Charter Statement (footer.charter)</option>
+              </optgroup>
+              <option value="custom">-- Custom / Other Key --</option>
+            </select>
+          </div>
+
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
             <div class="form-group">
-              <label class="form-label">Content Key</label>
+              <label class="form-label">Content Key *</label>
               <input type="text" id="contentKeyInput" class="form-input" placeholder="e.g. home.private_beta_banner">
             </div>
             <div class="form-group">
@@ -752,11 +877,11 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Title / Heading</label>
+            <label class="form-label">Title / Heading *</label>
             <input type="text" id="contentTitleInput" class="form-input" placeholder="Display title">
           </div>
           <div class="form-group">
-            <label class="form-label">Body Copy</label>
+            <label class="form-label">Body Copy *</label>
             <textarea id="contentBodyInput" class="form-textarea" rows="3" placeholder="Card or banner body text..."></textarea>
           </div>
           <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
@@ -765,27 +890,33 @@
               Mark as Illustrative Example (Renders explicit non-deceptive demo disclaimer)
             </label>
           </div>
-          <button id="saveContentBtn" class="btn btn-primary">Save Content Draft</button>
+          <div style="display: flex; gap: 10px;">
+            <button id="saveContentBtn" class="btn btn-primary">Save Content Item</button>
+            <button type="button" id="cancelEditContentBtn" class="btn btn-secondary" style="display: none;" onclick="cancelEditContent()">Cancel Edit</button>
+          </div>
         </div>
 
         <div class="admin-card">
-          <div class="admin-card-title">Published &amp; Draft Items</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div class="admin-card-title" style="margin-bottom: 0;">Published &amp; Draft Items (<span id="contentItemsCount">0</span>)</div>
+            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="loadContent()">↻ Refresh Copy</button>
+          </div>
           <table class="data-table">
             <thead>
               <tr>
-                <th>Key</th>
-                <th>Type</th>
-                <th>Title / Preview</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th style="min-width: 190px;">Content Key &amp; Scope</th>
+                <th style="width: 140px;">Type</th>
+                <th>Title &amp; Live Copy Preview</th>
+                <th style="width: 110px;">Status</th>
+                <th style="min-width: 170px;">Actions</th>
               </tr>
             </thead>
             <tbody id="contentTableBody">
-              <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading content items...</td></tr>
+              <tr><td colspan="5" style="text-align: center; color: #64748b; padding: 20px;">Loading content items...</td></tr>
             </tbody>
           </table>
         </div>
-      </section>
+      </section></section>
 
       <!-- 7. LAB NOTEBOOK & BLOG STUDIO TAB -->
       <section id="tab-notebook" class="admin-tab-pane" style="display: none;">
@@ -794,7 +925,13 @@
             <h1 class="admin-title">Lab Notebook &amp; Blog Studio</h1>
             <p class="admin-subtitle">Publish, edit, feature, and curate technical dev logs, teardowns, and founder field notes.</p>
           </div>
-          <button id="openCreatePostBtn" class="btn btn-primary" onclick="openCreatePostModal()">+ Write New Post / Note</button>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <div class="admin-scope-box">
+              <span class="admin-scope-pill">📖 Scope: /notebook.html</span>
+              <span class="admin-scope-desc">Publishes, features, and edits technical teardowns, field notes, and founder essays</span>
+            </div>
+            <button id="openCreatePostBtn" class="btn btn-primary" onclick="openCreatePostModal()">+ Write New Post / Note</button>
+          </div>
         </div>
 
         <div class="admin-card">
@@ -919,6 +1056,10 @@
             <h1 class="admin-title">Platform Broadcast &amp; Push Notifications</h1>
             <p class="admin-subtitle">Directly dispatch announcements, sprint alerts, and updates to connected collaborators in real-time.</p>
           </div>
+          <div class="admin-scope-box">
+            <span class="admin-scope-pill">📢 Scope: Notification Bell &amp; Alerts</span>
+            <span class="admin-scope-desc">Directly pushes live popover announcements to connected members across all pages</span>
+          </div>
         </div>
 
         <div class="admin-card" style="margin-bottom: 24px;">
@@ -996,6 +1137,10 @@
             <h1 class="admin-title">Platform Settings &amp; Quotas</h1>
             <p class="admin-subtitle">Configure directory card pagination limits and operational feature flags.</p>
           </div>
+          <div class="admin-scope-box">
+            <span class="admin-scope-pill">⚙️ Scope: Backend Config &amp; Quotas</span>
+            <span class="admin-scope-desc">Configures directory card limits, public submission locks, and illustrative badges</span>
+          </div>
         </div>
 
         <div class="admin-card">
@@ -1045,6 +1190,10 @@
           <div>
             <h1 class="admin-title">System Audit Log</h1>
             <p class="admin-subtitle">Chronological ledger of operational interventions, role changes, and decisions.</p>
+          </div>
+          <div class="admin-scope-box">
+            <span class="admin-scope-pill">📜 Scope: Immutable System Ledger</span>
+            <span class="admin-scope-desc">Chronological cryptographic record of every administrative action, edit, and role grant</span>
           </div>
         </div>
         <div class="admin-card">
@@ -1980,28 +2129,143 @@
 
 
     // 6. Content Studio Loader & Actions
+    window.__contentList = [];
+
+    function getScopeLabel(key) {
+      if (key.startsWith('home.')) return '📍 Scope: /index.html';
+      if (key.startsWith('sprint.')) return '📍 Scope: /sprint.html';
+      if (key.startsWith('notebook.')) return '📍 Scope: /notebook.html';
+      if (key.startsWith('match.')) return '📍 Scope: /match.html';
+      if (key.startsWith('apply.')) return '📍 Scope: /apply.html';
+      if (key.startsWith('footer.')) return '📍 Scope: Global Footer';
+      return '📍 Scope: Dynamic Page';
+    }
+
     async function loadContent() {
       const res = await apiRequest('/admin/content');
       const tbody = document.getElementById('contentTableBody');
+      const countEl = document.getElementById('contentItemsCount');
+      if (!tbody) return;
       if (res.ok && res.data?.contentItems) {
-        tbody.innerHTML = res.data.contentItems.map(c => `
+        window.__contentList = res.data.contentItems;
+        if (countEl) countEl.textContent = window.__contentList.length;
+
+        if (window.__contentList.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;padding:20px;">No content items found.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = window.__contentList.map(c => `
           <tr>
-            <td><code style="color:#68d391;">${escapeHtml(c.contentKey)}</code></td>
-            <td><span class="badge badge-blue">${escapeHtml(c.contentType)}</span></td>
-            <td><strong>${escapeHtml(c.title)}</strong><br><small style="color:#64748b;">${escapeHtml(c.body?.slice(0, 50))}...</small></td>
-            <td><span class="badge ${c.status === 'published' ? 'badge-green' : 'badge-amber'}">${escapeHtml(c.status)}</span></td>
+            <td style="min-width: 190px;">
+              <span class="code-chip">${escapeHtml(c.contentKey)}</span>
+              <div style="font-size: 11px; color: #94a3b8; margin-top: 5px; font-weight: 600;">
+                ${getScopeLabel(c.contentKey)}
+              </div>
+            </td>
             <td>
-              <div style="display:flex;gap:4px;align-items:center;">
-                ${c.status !== 'published' ? `<button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="publishContent('${c.id}')">Publish</button>` : '<span style="color:#4ade80;font-size:12px;margin-right:6px;">Live</span>'}
-                <button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteContentItem('${c.id}', '${escapeHtml(c.contentKey)}')">Delete</button>
+              <span class="badge badge-blue">${escapeHtml(c.contentType || 'statement')}</span>
+              ${c.isIllustrative ? '<br><span class="badge badge-amber" style="font-size:10px;margin-top:4px;">Demo Notice</span>' : ''}
+            </td>
+            <td style="min-width: 260px;">
+              <strong style="color: #ffffff; font-size: 13.5px;">${escapeHtml(c.title)}</strong>
+              <div style="font-size: 12.5px; color: #cbd5e1; margin-top: 4px; line-height: 1.45;">
+                ${escapeHtml(c.body)}
+              </div>
+            </td>
+            <td>
+              <span class="badge ${c.status === 'published' ? 'badge-green' : 'badge-amber'}">
+                ${escapeHtml(c.status || 'draft')}
+              </span>
+            </td>
+            <td>
+              <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 11.5px;" onclick="openEditContent('${c.id}')">✏️ Edit</button>
+                ${c.status !== 'published'
+                  ? `<button class="btn btn-primary" style="padding: 5px 10px; font-size: 11.5px;" onclick="publishContent('${c.id}')">Publish</button>`
+                  : '<span class="badge badge-green" style="font-size: 11px;">● Live</span>'
+                }
+                <button class="btn btn-danger" style="padding: 5px 10px; font-size: 11.5px;" onclick="deleteContentItem('${c.id}', '${escapeHtml(c.contentKey)}')">Delete</button>
               </div>
             </td>
           </tr>
         `).join('');
+      } else {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#f87171;padding:20px;">Failed to load content items.</td></tr>';
       }
     }
 
+    window.openEditContent = function(id) {
+      const item = (window.__contentList || []).find(c => c.id === id);
+      if (!item) return;
+
+      document.getElementById('contentEditId').value = item.id;
+      document.getElementById('contentKeyInput').value = item.contentKey || '';
+      document.getElementById('contentKeyInput').readOnly = true;
+      document.getElementById('contentTypeSelect').value = item.contentType || 'statement';
+      document.getElementById('contentTitleInput').value = item.title || '';
+      document.getElementById('contentBodyInput').value = item.body || '';
+      document.getElementById('contentIllustrativeCheck').checked = Boolean(item.isIllustrative);
+
+      const formTitle = document.getElementById('contentFormTitle');
+      if (formTitle) formTitle.textContent = `✏️ Edit Content: ${item.contentKey}`;
+
+      const saveBtn = document.getElementById('saveContentBtn');
+      if (saveBtn) {
+        saveBtn.textContent = 'Save Changes & Update Copy';
+        saveBtn.className = 'btn btn-primary';
+      }
+
+      const cancelBtn = document.getElementById('cancelEditContentBtn');
+      if (cancelBtn) cancelBtn.style.display = 'inline-flex';
+
+      const presetSelect = document.getElementById('contentKeyPreset');
+      if (presetSelect) presetSelect.value = item.contentKey || '';
+
+      document.getElementById('tab-content').querySelector('.admin-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    window.cancelEditContent = function() {
+      document.getElementById('contentEditId').value = '';
+      document.getElementById('contentKeyInput').value = '';
+      document.getElementById('contentKeyInput').readOnly = false;
+      document.getElementById('contentTypeSelect').value = 'statement';
+      document.getElementById('contentTitleInput').value = '';
+      document.getElementById('contentBodyInput').value = '';
+      document.getElementById('contentIllustrativeCheck').checked = false;
+
+      const formTitle = document.getElementById('contentFormTitle');
+      if (formTitle) formTitle.textContent = 'Compose / Edit Content Item';
+
+      const saveBtn = document.getElementById('saveContentBtn');
+      if (saveBtn) saveBtn.textContent = 'Save Content Item';
+
+      const cancelBtn = document.getElementById('cancelEditContentBtn');
+      if (cancelBtn) cancelBtn.style.display = 'none';
+
+      const presetSelect = document.getElementById('contentKeyPreset');
+      if (presetSelect) presetSelect.value = '';
+    };
+
+    window.applyKeyPreset = function(val) {
+      if (!val) return;
+      if (val === 'custom') {
+        cancelEditContent();
+        document.getElementById('contentKeyInput').focus();
+        return;
+      }
+      const existing = (window.__contentList || []).find(c => c.contentKey === val);
+      if (existing) {
+        openEditContent(existing.id);
+      } else {
+        cancelEditContent();
+        document.getElementById('contentKeyInput').value = val;
+        document.getElementById('contentTitleInput').focus();
+      }
+    };
+
     document.getElementById('saveContentBtn').addEventListener('click', async () => {
+      const editId = document.getElementById('contentEditId').value;
       const contentKey = document.getElementById('contentKeyInput').value.trim();
       const contentType = document.getElementById('contentTypeSelect').value;
       const title = document.getElementById('contentTitleInput').value.trim();
@@ -2013,28 +2277,52 @@
         return;
       }
 
-      const res = await apiRequest('/admin/content', {
-        method: 'POST',
-        body: JSON.stringify({ contentKey, contentType, title, body, isIllustrative })
-      });
+      const btn = document.getElementById('saveContentBtn');
+      btn.disabled = true;
 
-      if (res.ok) {
-        alert('Draft saved successfully!');
-        document.getElementById('contentKeyInput').value = '';
-        document.getElementById('contentTitleInput').value = '';
-        document.getElementById('contentBodyInput').value = '';
-        loadContent();
-      } else {
-        alert(res.message || 'Save failed.');
+      try {
+        if (editId) {
+          const res = await apiRequest(`/admin/content/${editId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ contentType, title, body, isIllustrative })
+          });
+          if (res.ok) {
+            showAdminToast('Content updated successfully!', 'success');
+            cancelEditContent();
+            loadContent();
+            loadAudit();
+          } else {
+            showAdminToast(res.message || 'Update failed.', 'error');
+          }
+        } else {
+          const res = await apiRequest('/admin/content', {
+            method: 'POST',
+            body: JSON.stringify({ contentKey, contentType, title, body, isIllustrative })
+          });
+          if (res.ok) {
+            showAdminToast('Content draft created successfully!', 'success');
+            cancelEditContent();
+            loadContent();
+            loadAudit();
+          } else {
+            showAdminToast(res.message || 'Creation failed.', 'error');
+          }
+        }
+      } catch (err) {
+        showAdminToast(err.message || 'Network error saving content.', 'error');
+      } finally {
+        btn.disabled = false;
       }
     });
 
     window.publishContent = async function(id) {
       const res = await apiRequest(`/admin/content/${id}/publish`, { method: 'POST' });
       if (res.ok) {
+        showAdminToast('Content item published live!', 'success');
         loadContent();
+        loadAudit();
       } else {
-        alert(res.message || 'Publish failed.');
+        showAdminToast(res.message || 'Publish failed.', 'error');
       }
     };
 
@@ -2044,11 +2332,13 @@
       }
       const res = await apiRequest(`/admin/content/${id}`, { method: 'DELETE' });
       if (res.ok) {
+        showAdminToast(`Content item "${key}" removed.`, 'success');
+        cancelEditContent();
         loadContent();
         loadOverview();
         loadAudit();
       } else {
-        alert(res.message || 'Content deletion failed.');
+        showAdminToast(res.message || 'Content deletion failed.', 'error');
       }
     };
 

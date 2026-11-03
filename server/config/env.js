@@ -14,11 +14,11 @@ const env = {
 
   // Security & Authentication
   JWT_SECRET: process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? '' : 'canopy_dev_ephemeral_jwt_secret_32chars!'),
-  FOUNDER_EMAILS: (process.env.FOUNDER_EMAILS || 'aarushichatterjee27@gmail.com,achatterjee_be24@thapar.edu,canopy.connect.collaborate@gmail.com')
+  FOUNDER_EMAILS: (process.env.INTERNAL_OPERATOR_EMAILS || process.env.FOUNDER_EMAILS || 'aarushichatterjee27@gmail.com,achatterjee_be24@thapar.edu,canopy.connect.collaborate@gmail.com')
     .split(',')
     .map(e => e.trim().toLowerCase())
     .filter(Boolean),
-  FOUNDER_CONSOLE_KEY: process.env.FOUNDER_CONSOLE_KEY || '',
+  FOUNDER_CONSOLE_KEY: process.env.INTERNAL_OPS_KEY || process.env.FOUNDER_CONSOLE_KEY || '',
 
   // Supabase
   SUPABASE_URL: process.env.SUPABASE_URL || '',

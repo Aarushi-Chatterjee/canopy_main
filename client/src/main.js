@@ -22,7 +22,7 @@
 import { animate, utils } from 'animejs';
 import { initAmbientPlate } from './ambient-plate.js';
 import { initIvyGrowth } from './ivy-growth.js';
-import { sprints, matches, notebook, auth } from './db.js';
+import { sprints, matches, notebook, auth, content } from './db.js';
 import { initNotificationCorner, notificationCenter } from './notifications.js';
 
 (function(){
@@ -976,6 +976,38 @@ import { initNotificationCorner, notificationCenter } from './notifications.js';
     });
   }
 
+  /* ==========================================================================
+     SECTION 14: DYNAMIC CONTENT STUDIO LIVE SYNCHRONIZER
+     ========================================================================== */
+  async function syncDynamicContent() {
+    try {
+      const items = await content.getAllContent();
+      if (!Array.isArray(items) || items.length === 0) return;
+      const dict = {};
+      items.forEach(item => {
+        if (item.status === 'published' && item.contentKey) {
+          dict[item.contentKey] = item.body || item.title;
+        }
+      });
+
+      // Hydrate elements decorated with data-content-key
+      document.querySelectorAll('[data-content-key]').forEach(el => {
+        const key = el.getAttribute('data-content-key');
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+
+      // Hydrate site-wide footer motto if present
+      if (dict['footer.motto']) {
+        const footSpan = document.querySelector('.foot-bottom span:first-child');
+        if (footSpan) footSpan.textContent = dict['footer.motto'];
+      }
+    } catch (e) {
+      // Graceful offline fallback
+    }
+  }
+
   async function renderAuthState() {
     // Stale-While-Revalidate: Step 1 - Hydrate immediately from cache (0ms delay)
     let user = auth.getUser?.();
@@ -1010,7 +1042,7 @@ import { initNotificationCorner, notificationCenter } from './notifications.js';
   }
 
 
-  document.addEventListener('DOMContentLoaded', renderAuthState);
+  document.addEventListener('DOMContentLoaded', () => { renderAuthState(); syncDynamicContent(); });
   window.addEventListener('canopy:auth-changed', renderAuthState);
   renderAuthState();
 })();
