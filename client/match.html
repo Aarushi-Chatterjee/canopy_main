@@ -121,61 +121,6 @@
     <p class="lede">It should feel like meeting someone at a workshop, realizing you both care about the same problem, and deciding to build together: high-context, not high-volume. A written note, read by a real person, who chooses.</p>
   </div>
 
-  <!-- ============ LARGE-SCALE INTERACTIVE MATCH DECK & MATCHMAKER STUDIO ============ -->
-  <section class="elevated-card reveal" style="border:1.5px solid var(--forest);background:var(--paper);border-radius:14px;padding:24px 28px;margin-bottom:28px;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:18px;">
-      <div>
-        <span class="tag-chip" style="background:rgba(34,197,94,0.15);color:var(--forest);font-weight:700;">Curated 1-on-1 Matching Studio</span>
-        <h2 style="font-family:'Fraunces Var',serif;font-size:1.6rem;margin:8px 0 4px;color:var(--ink);">Match With Intent. Not a Swipe.</h2>
-        <p style="margin:0;font-size:0.92rem;color:var(--ink-soft);max-width:620px;">
-          The founder personally reviews applications, scores compatibility, and curates 1-on-1 introductions between engineers and problem owners.
-        </p>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-        <button type="button" class="btn btn-stamp" onclick="openSquadIntakeModal()">
-          <svg class="icon" aria-hidden="true" style="width:14px;height:14px;"><use href="#icon-sprout"/></svg>
-          Request a Squad Match →
-        </button>
-      </div>
-    </div>
-
-    <!-- Interactive Carousel Deck -->
-    <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:10px;padding:20px;position:relative;" id="interactiveMatchDeck">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <span id="deckCounter" style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--forest);">Collaborator Spotlight 1 of 6</span>
-        <div style="display:flex;gap:6px;">
-          <button type="button" class="btn btn-ghost btn-sm" id="btnDeckPrev" style="padding:4px 10px;">← Prev</button>
-          <button type="button" class="btn btn-ghost btn-sm" id="btnDeckNext" style="padding:4px 10px;">Next →</button>
-        </div>
-      </div>
-
-      <div id="deckCardSpotlight" style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
-        <img id="deckAvatar" src="/avatars/avatar-builders.png" alt="Collaborator Avatar" style="width:68px;height:68px;border-radius:12px;object-fit:contain;background:rgba(31,92,64,0.08);padding:6px;">
-        <div>
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <h3 id="deckName" style="margin:0;font-size:1.25rem;font-family:'Fraunces Var',serif;color:var(--ink);">Elena R.</h3>
-            <span id="deckDomainBadge" class="tag-chip" data-domain="hardware">Hardware</span>
-            <span id="deckHours" class="hint-small" style="font-size:0.78rem;color:var(--forest);font-weight:600;">15 hrs/wk · Open to pair</span>
-          </div>
-          <div id="deckTitle" style="font-size:0.85rem;color:var(--ink-faint);margin:2px 0 6px;">Hardware &amp; Embedded Systems Engineer</div>
-          <div id="deckLookingToBuild" style="font-size:0.92rem;color:var(--ink);line-height:1.4;margin-bottom:8px;">
-            <strong>Looking to build:</strong> Building low-power LoRa telemetry nodes for agrarian aquifer monitoring.
-          </div>
-          <div id="deckChips" class="chip-row">
-            <span class="tag-chip skill">Embedded C</span>
-            <span class="tag-chip skill">LoRaWAN</span>
-            <span class="tag-chip skill">PCB Design</span>
-          </div>
-        </div>
-        <div>
-          <button type="button" class="btn btn-stamp" id="btnDeckConnect" onclick="handleDeckConnect()">
-            Request 1-on-1 Intro →
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ---- Profile Builder with Verified Connections Network ---- -->
   <div class="profile-builder elevated-card reveal" id="profileBuilderModule" data-domain="design">
     <div class="profile-builder-header" style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
@@ -281,7 +226,62 @@
     </div>
   </div>
 
-  <!-- ---- Builders Directory ---- -->
+  <!-- ============ LARGE-SCALE INTERACTIVE MATCH DECK & MATCHMAKER STUDIO ============ -->
+  <section class="elevated-card reveal" style="border:1.5px solid var(--forest);background:var(--paper);border-radius:14px;padding:24px 28px;margin-bottom:28px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:18px;">
+      <div>
+        <span class="tag-chip" style="background:rgba(34,197,94,0.15);color:var(--forest);font-weight:700;">Curated 1-on-1 Matching Studio</span>
+        <h2 style="font-family:'Fraunces Var',serif;font-size:1.6rem;margin:8px 0 4px;color:var(--ink);">Match With Intent. Not a Swipe.</h2>
+        <p style="margin:0;font-size:0.92rem;color:var(--ink-soft);max-width:620px;">
+          The founder personally reviews applications, scores compatibility, and curates 1-on-1 introductions between engineers and problem owners.
+        </p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button type="button" class="btn btn-stamp" onclick="openSquadIntakeModal()">
+          <svg class="icon" aria-hidden="true" style="width:14px;height:14px;"><use href="#icon-sprout"/></svg>
+          Request a Squad Match →
+        </button>
+      </div>
+    </div>
+
+    <!-- Interactive Carousel Deck -->
+    <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:10px;padding:20px;position:relative;" id="interactiveMatchDeck">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span id="deckCounter" style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--forest);">Collaborator Spotlight 1 of 6</span>
+        <div style="display:flex;gap:6px;">
+          <button type="button" class="btn btn-ghost btn-sm" id="btnDeckPrev" style="padding:4px 10px;">← Prev</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btnDeckNext" style="padding:4px 10px;">Next →</button>
+        </div>
+      </div>
+
+      <div id="deckCardSpotlight" style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
+        <img id="deckAvatar" src="/avatars/avatar-builders.png" alt="Collaborator Avatar" style="width:68px;height:68px;border-radius:12px;object-fit:contain;background:rgba(31,92,64,0.08);padding:6px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <h3 id="deckName" style="margin:0;font-size:1.25rem;font-family:'Fraunces Var',serif;color:var(--ink);">Elena R.</h3>
+            <span id="deckDomainBadge" class="tag-chip" data-domain="hardware">Hardware</span>
+            <span id="deckHours" class="hint-small" style="font-size:0.78rem;color:var(--forest);font-weight:600;">15 hrs/wk · Open to pair</span>
+          </div>
+          <div id="deckTitle" style="font-size:0.85rem;color:var(--ink-faint);margin:2px 0 6px;">Hardware &amp; Embedded Systems Engineer</div>
+          <div id="deckLookingToBuild" style="font-size:0.92rem;color:var(--ink);line-height:1.4;margin-bottom:8px;">
+            <strong>Looking to build:</strong> Building low-power LoRa telemetry nodes for agrarian aquifer monitoring.
+          </div>
+          <div id="deckChips" class="chip-row">
+            <span class="tag-chip skill">Embedded C</span>
+            <span class="tag-chip skill">LoRaWAN</span>
+            <span class="tag-chip skill">PCB Design</span>
+          </div>
+        </div>
+        <div>
+          <button type="button" class="btn btn-stamp" id="btnDeckConnect" onclick="handleDeckConnect()">
+            Request 1-on-1 Intro →
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- ---- Builders Directory ---- -->
   <div class="stage-section">
     <div class="stage-section-head">
       <div>
