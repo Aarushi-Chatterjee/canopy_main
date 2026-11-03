@@ -730,35 +730,19 @@
         'enabler':      'rp-view-enabler',
         'exploring':    ''
       };
+      var UNIFIED_COPY = {
+        eyebrow: '✎ a field application sandbox',
+        h1: 'If we can find love online,<br>why not <em>teammates?</em>',
+        sub: 'Canopy is where builders, problem holders, and enablers come together and turn ideas into things that actually ship.',
+        sub2: 'Across AI, hardware, design, research, and everything between.',
+        cta1: 'Join the Canopy', cta1href: 'apply.html',
+        cta2: 'See how it grows ↓', cta2href: '#solution'
+      };
       var HERO_COPY = {
-        'builder': {
-          eyebrow: 'For builders, engineers & makers',
-          h1: 'If we can find love online, why not teammates?',
-          sub: 'Canopy is where skilled builders match with real problems and sprint to ship — not just prototype.',
-          cta1: 'Find a Build Call',  cta1href: 'match.html',
-          cta2: 'See active sprints', cta2href: 'sprint.html'
-        },
-        'problem-holder': {
-          eyebrow: 'For problem holders & domain experts',
-          h1: 'Post the challenge. A sprint team forms around it in days.',
-          sub: 'Canopy connects your real-world problem with the engineers, designers, and researchers ready to crack it.',
-          cta1: 'Post a Build Call', cta1href: 'post-call.html',
-          cta2: 'See how it works',  cta2href: '#solution'
-        },
-        'enabler': {
-          eyebrow: 'For sponsors, mentors & institutions',
-          h1: 'Scout the teams building things that actually matter.',
-          sub: 'Canopy surfaces the highest-signal sprint teams working on real problems with visible progress and shipped outcomes.',
-          cta1: 'Browse Active Sprints', cta1href: 'sprint.html',
-          cta2: 'Explore the Notebook', cta2href: 'notebook.html'
-        },
-        'exploring': {
-          eyebrow: 'a field application sandbox',
-          h1: 'If we can find love online, why not teammates?',
-          sub: 'Canopy is where builders, problem holders, and enablers come together and turn ideas into things that actually ship.',
-          cta1: 'Join the Canopy', cta1href: 'apply.html',
-          cta2: 'See how it grows →', cta2href: '#solution'
-        }
+        'builder': UNIFIED_COPY,
+        'problem-holder': UNIFIED_COPY,
+        'enabler': UNIFIED_COPY,
+        'exploring': UNIFIED_COPY
       };
 
       function applyRole(role, animate) {
@@ -781,15 +765,17 @@
         }
 
         function setContent() {
-          if (eyebrow) eyebrow.textContent = copy.eyebrow;
+          if (eyebrow) eyebrow.textContent = '✎ a field application sandbox';
           if (h1) {
-            // Builder/problem/enabler h1 — no italic needed, just text
             h1.innerHTML = 'If we can find love online,<br>why not <em>teammates?</em>';
           }
-          if (sub[0]) sub[0].textContent = copy.sub;
-          if (sub[1]) sub[1].style.display = (role === 'exploring') ? '' : 'none';
-          if (cta1) { cta1.textContent = copy.cta1; cta1.href = copy.cta1href; }
-          if (cta2) { cta2.textContent = copy.cta2; cta2.href = copy.cta2href; }
+          if (sub[0]) sub[0].textContent = 'Canopy is where builders, problem holders, and enablers come together and turn ideas into things that actually ship.';
+          if (sub[1]) {
+            sub[1].textContent = 'Across AI, hardware, design, research, and everything between.';
+            sub[1].style.display = '';
+          }
+          if (cta1) { cta1.textContent = 'Join the Canopy'; cta1.href = 'apply.html'; }
+          if (cta2) { cta2.textContent = 'See how it grows ↓'; cta2.href = '#solution'; }
         }
 
         if (animate) {
