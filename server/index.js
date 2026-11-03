@@ -135,22 +135,50 @@ app.use((req, res, next) => {
 app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin', '/settings'], validateCsrf);
 
 // Production database readiness gate (P0-1)
-app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/admin', '/settings'], requireDatabaseReady);
+app.use(['/api', '/auth', '/matches', '/sprints', '/calls', '/notebook', '/applications', '/moderation', '/content', '/api/admin', '/settings'], requireDatabaseReady);
 
 const { timingSafeMatch: timingSafeKeyMatch } = require('./utils/crypto');
 
-// Unified Founder Console & API Security Gate (SEC-02, SEC-04, SEC-05)
+// Helper to render genuine 404 page for unauthorized visitors (Stealth Mode)
+function renderNotFoundPage(res) {
+  const fs = require('fs');
+  const path = require('path');
+  const possiblePaths = [
+    path.join(__dirname, '../dist/404.html'),
+    path.join(__dirname, '../client/404.html'),
+    path.join(__dirname, '../404.html')
+  ];
+
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      return res.status(404).sendFile(p);
+    }
+  }
+
+  return res.status(404).send(`
+    <!doctype html>
+    <html lang="en">
+    <head><meta charset="UTF-8"><title>Page not found - Canopy</title></head>
+    <body style="font-family:sans-serif;background:#F5F2EB;color:#1B2E20;padding:40px;text-align:center;">
+      <h1>Nothing is growing at this address.</h1>
+      <p>The page you are looking for does not exist.</p>
+      <a href="/" style="color:#2C5F2D;font-weight:bold;">Back to Canopy</a>
+    </body>
+    </html>
+  `);
+}
+
+// Unified Stealth Founder Console & API Security Gate (SEC-02, SEC-04, SEC-05)
 function founderGate(req, res, next) {
   const staffRoles = ['owner', 'admin', 'moderator', 'match_curator', 'content_editor'];
   const hasStaffRole = req.user && req.user.roles && req.user.roles.some(r => staffRoles.includes(r));
   const isOwner = req.user && req.user.roles && req.user.roles.includes('owner');
   const requiredFounderKey = process.env.FOUNDER_CONSOLE_KEY;
-  // SEC-02 HARDENING: Strictly reject keys in query parameters (CWE-598) to prevent leakage in URLs, browser history, and referer headers.
   const isProd = process.env.NODE_ENV === 'production';
   const founderCookieName = isProd ? '__Host-canopy_founder_key' : 'canopy_founder_key';
   const providedKey = req.headers['x-founder-key'] || req.cookies?.[founderCookieName] || req.cookies?.canopy_founder_key;
 
-  // 1. If a valid secondary founder console key is explicitly provided via header or cookie, allow access
+  // 1. If valid secondary founder key is explicitly provided via header or cookie, allow access
   if (requiredFounderKey && timingSafeKeyMatch(providedKey, requiredFounderKey)) {
     if (providedKey && !(req.cookies?.[founderCookieName] || req.cookies?.canopy_founder_key)) {
       res.cookie(founderCookieName, providedKey, {
@@ -164,48 +192,25 @@ function founderGate(req, res, next) {
     return next();
   }
 
-  // 2. If user is authenticated as verified Owner (platform founder), grant direct access
+  // 2. Verified Owner / Founder authenticated session
   if (isOwner) {
     return next();
   }
 
-  // 3. If user has operational staff roles, permit API access
+  // 3. Operational staff role (permits API access for matching, moderation, content)
   if (hasStaffRole) {
-    if (req.originalUrl.startsWith('/api/admin')) {
-      return next();
-    }
+    return next();
   }
 
-  // 4. If requesting API without owner/staff/founder key -> 403 Forbidden
-  if (req.originalUrl.startsWith('/api/admin')) {
-    return res.status(403).json({ error: 'Forbidden. Founder or Platform Administrator credentials required.' });
+  // 4. STEALTH DEFENSE: For any outside visitor, showcase that NO SUCH PAGE EXISTS.
+  // API endpoints return the standard API 404 JSON
+  const urlPath = req.originalUrl || req.path || '';
+  if (urlPath.startsWith('/api/') || req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'Endpoint not found on Canopy API' });
   }
 
-  // 5. For /admin UI: If secondary key is configured, prompt for it via secure POST form challenge; otherwise redirect to login
-  if (requiredFounderKey) {
-    return res.status(403).send(`
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Canopy // Console Authentication Gate</title>
-        <meta name="robots" content="noindex, nofollow">
-        <style>body{background:#090e09;color:#e2e8f0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;}form{background:#0f1710;padding:32px;border-radius:8px;border:1px solid #1c2e1f;max-width:360px;width:100%;}input{width:100%;padding:10px;margin:12px 0 16px;background:#090e09;border:1px solid #2d4a32;border-radius:4px;color:#fff;box-sizing:border-box;}button{width:100%;padding:10px;background:#4ade80;border:none;border-radius:4px;color:#090e09;font-weight:bold;cursor:pointer;}</style>
-      </head>
-      <body>
-        <form method="POST" action="/admin/unlock">
-          <h3 style="margin-top:0;color:#4ade80;">Founder Station Gate</h3>
-          <p style="font-size:13px;color:#94a3b8;">Enter your secondary founder key to unlock operations:</p>
-          <input type="password" name="key" placeholder="Founder Access Key" required autofocus />
-          <button type="submit">Unlock Console →</button>
-        </form>
-      </body>
-      </html>
-    `);
-  }
-
-  return res.redirect('/login.html?redirect=/admin');
+  // Web page endpoints (/admin, /admin.html) return genuine 404 Not Found page
+  return renderNotFoundPage(res);
 }
 
 // Secure POST unlock endpoint for founder console (SEC-02)
@@ -226,23 +231,12 @@ app.post('/admin/unlock', (req, res) => {
     return res.redirect('/admin');
   }
 
-  return res.status(403).send(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8"><title>Canopy // Access Denied</title>
-      <meta name="robots" content="noindex, nofollow">
-      <style>body{background:#090e09;color:#e2e8f0;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;}div{background:#0f1710;padding:32px;border-radius:8px;border:1px solid #7f1d1d;max-width:360px;text-align:center;}a{color:#4ade80;text-decoration:none;display:inline-block;margin-top:16px;}</style>
-    </head>
-    <body>
-      <div>
-        <h3 style="color:#f87171;margin-top:0;">Access Denied</h3>
-        <p style="font-size:13px;color:#94a3b8;">Invalid founder station access key provided.</p>
-        <a href="/admin">← Try Again</a>
-      </div>
-    </body>
-    </html>
-  `);
+  // Stealth: Return genuine 404 on invalid key attempts
+  return renderNotFoundPage(res);
+});
+
+app.get('/admin/unlock', (req, res) => {
+  return renderNotFoundPage(res);
 });
 
 app.post('/admin/lock', (req, res) => {

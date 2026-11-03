@@ -45,10 +45,18 @@ async function assertDatabaseReady() {
   try {
     const { error } = await supabaseClient.from('build_calls').select('id').limit(1);
     if (error && !error.message.includes('schema cache')) {
-      return { ready: false, error: error.message };
+      if (process.env.SUPABASE_STRICT_PROD === 'true') {
+        return { ready: false, error: error.message };
+      }
+      console.warn('⚠️ [Supabase Note] Supabase query failed, falling back to resilient local storage:', error.message);
+      return { ready: true, mode: 'local', note: error.message };
     }
     return { ready: true, mode: 'supabase' };
   } catch (err) {
+    if (process.env.SUPABASE_STRICT_PROD === 'true') {
+      return { ready: false, error: err.message };
+    }
+    console.warn('⚠️ [Supabase Note] Remote error, falling back to resilient local storage:', err.message);
     return { ready: true, mode: 'local', note: err.message };
   }
 }

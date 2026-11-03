@@ -5,7 +5,7 @@
   "cleanUrls": true,
   "functions": {
     "api/**/*.js": {
-      "includeFiles": "{client/admin.html,server/data/canopy-db.json}"
+      "includeFiles": "{client/admin.html,client/404.html,dist/404.html,server/data/canopy-db.json}"
     }
   },
   "rewrites": [

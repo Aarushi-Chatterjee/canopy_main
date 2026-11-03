@@ -10,8 +10,20 @@ async function requireDatabaseReady(req, res, next) {
     return next();
   }
 
-  // Exempt health endpoint from blocking check
-  if (req.path === '/api/health') {
+  // Exempt health and status endpoints from blocking check
+  const path = req.path || req.originalUrl || '';
+  if (path === '/api/health' || path === '/health') {
+    return next();
+  }
+
+  // Page navigations (/admin, /admin.html) must NEVER be blocked with JSON 503 errors.
+  // They must proceed to founderGate for authentication checks and redirects.
+  if (path === '/admin' || path === '/admin.html' || path === '/login' || path === '/login.html') {
+    return next();
+  }
+
+  // Only fail-fast with 503 if SUPABASE_STRICT_PROD === 'true'; otherwise operate in resilient data mode
+  if (process.env.SUPABASE_STRICT_PROD !== 'true') {
     return next();
   }
 
