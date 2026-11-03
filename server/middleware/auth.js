@@ -348,6 +348,25 @@ function requireRole(role) {
 // Middleware factory: Enforce any of the specified roles (Owner always inherits full access)
 function requireAnyRole(allowedRoles = []) {
   return (req, res, next) => {
+    // 1. Direct pass for verified owner/founder session
+    if (req.user && (req.user.roles?.includes('owner') || req.user.role === 'owner')) {
+      return next();
+    }
+
+    // 2. Direct pass for verified Founder Station Key
+    const isProd = process.env.NODE_ENV === 'production';
+    const founderCookieName = isProd ? '__Host-canopy_founder_key' : 'canopy_founder_key';
+    const requiredKey = process.env.FOUNDER_CONSOLE_KEY;
+    const providedKey = req.headers['x-founder-key'] || req.cookies?.[founderCookieName] || req.cookies?.canopy_founder_key;
+    const { timingSafeMatch } = require('../utils/crypto');
+    if (requiredKey && timingSafeMatch(providedKey, requiredKey)) {
+      if (!req.user) {
+        req.user = { id: 'usr_founder_key', email: 'founder@canopy.earth', role: 'owner', roles: ['owner', 'admin'] };
+      }
+      return next();
+    }
+
+    // 3. Standard session authentication validation
     requireAuth(req, res, (err) => {
       if (err) return next(err);
       const roles = req.user?.roles || (req.user?.role ? [req.user.role] : []);

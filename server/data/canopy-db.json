@@ -15,7 +15,7 @@
       "targetOutcomes": [],
       "pilotBudget": "$15,000 Deployment Grant",
       "rewardPool": "$15,000 Deployment Grant",
-      "timeline": "2\u20134 weeks",
+      "timeline": "2–4 weeks",
       "contactChannel": "org@agritech.org",
       "datasetAccessUrl": "https://data.example.org/soil-grid",
       "neededSkills": [
@@ -155,7 +155,7 @@
           "skills": [
             "Sensors Lead"
           ],
-          "availability": "Full sprint (2\u20134 weeks)",
+          "availability": "Full sprint (2–4 weeks)",
           "portfolioUrl": "",
           "status": "pending_review",
           "isLocalGuest": false,
@@ -205,7 +205,7 @@
       "domain": "climate",
       "entryType": "post-mortem",
       "summarySnippet": "Illustrative Sample: Baseline drift analysis during high sediment conditions with median window filtering.",
-      "teaser": "cal_curve.py \u2192 median_filter(raw_adc, window=5)",
+      "teaser": "cal_curve.py → median_filter(raw_adc, window=5)",
       "bodyMarkdown": "### Illustrative Demonstration Note\nThis note illustrates how Canopy teams publish candid teardowns and post-mortems after sprint cycles.\n\n### Finding\nSediment scattering produced analog drift; resolved with physical baffles and software filtering.",
       "tags": [
         "Climate",
@@ -226,16 +226,16 @@
       "proofOfWorkLink": "",
       "motivationNote": "Field testing coastal salinity data.",
       "coverNote": "Field testing coastal salinity data.",
-      "status": "pending_review",
-      "reviewerNotes": "",
-      "reviewedBy": null,
-      "reviewedAt": null,
+      "status": "approved",
+      "reviewerNotes": "Welcome to the cohort!",
+      "reviewedBy": "usr_founder_key",
+      "reviewedAt": "2026-11-03T04:47:09.211Z",
       "callId": null,
       "builderId": null,
       "appliedAt": "2026-10-13T19:29:53.763Z",
       "submittedAt": "2026-10-13T19:29:53.763Z",
       "createdAt": "2026-10-13T19:29:53.763Z",
-      "updatedAt": null
+      "updatedAt": "2026-11-03T04:47:09.212Z"
     }
   ],
   "moderation_queue": [
@@ -266,6 +266,51 @@
     }
   ],
   "audit_events": [
+    {
+      "id": "aud_1793681229768_j9z9k",
+      "eventType": "application.approved",
+      "actorId": "usr_founder_key",
+      "actorRole": "owner",
+      "targetEntityType": "application",
+      "targetEntityId": "app_1791919793763",
+      "payload": {
+        "status": "approved",
+        "note": "Welcome to the cohort!",
+        "applicantEmail": "jane.vance@ecology.org"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-11-03T04:47:09.768Z"
+    },
+    {
+      "id": "aud_1793680954341_n9sz2",
+      "eventType": "application.approved",
+      "actorId": "usr_founder_key",
+      "actorRole": "owner",
+      "targetEntityType": "application",
+      "targetEntityId": "app_1791919793763",
+      "payload": {
+        "status": "approved",
+        "note": "Welcome to the cohort!",
+        "applicantEmail": "jane.vance@ecology.org"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-11-03T04:42:34.341Z"
+    },
+    {
+      "id": "aud_1793680853719_1gcky",
+      "eventType": "application.approved",
+      "actorId": "usr_founder_key",
+      "actorRole": "owner",
+      "targetEntityType": "application",
+      "targetEntityId": "app_1791919793763",
+      "payload": {
+        "status": "approved",
+        "note": "Welcome to the cohort!",
+        "applicantEmail": "jane.vance@ecology.org"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-11-03T04:40:53.719Z"
+    },
     {
       "id": "aud_1791919859576_wmvv0",
       "eventType": "notebook.deleted_by_staff",
@@ -549,7 +594,7 @@
       "contentKey": "home.private_beta_banner",
       "contentType": "announcement",
       "title": "Private Beta Announcement Banner",
-      "body": "\ud83c\udf31 Private Beta Open: Cohort 1 submissions are being reviewed on a rolling basis.",
+      "body": "🌱 Private Beta Open: Cohort 1 submissions are being reviewed on a rolling basis.",
       "summary": "Banner appearing across all marketing headers",
       "status": "published",
       "visibility": "public",
@@ -579,7 +624,7 @@
       "contentKey": "match.illustrative_example",
       "contentType": "example_notice",
       "title": "Illustrative Example Notice",
-      "body": "Illustrative Example \u2014 This workspace demonstrates how Canopy works. It is not a live opportunity and is not accepting applications.",
+      "body": "Illustrative Example — This workspace demonstrates how Canopy works. It is not a live opportunity and is not accepting applications.",
       "summary": "Disclaimer badge on illustrative product loop demo",
       "status": "published",
       "visibility": "public",

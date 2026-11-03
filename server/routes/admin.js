@@ -120,30 +120,31 @@ router.patch('/applications/:id/status', requireAnyRole(['moderator', 'admin', '
       }
     }
 
-    // Dispatch branded decision email (safely awaited to prevent serverless promise termination)
+    // Dispatch branded decision email (safely non-blocking for instant real-time response)
     if (app.email) {
-      try {
-        await emailService.sendApplicationDecision({
-          email: app.email,
-          applicantName: app.fullName,
-          role: app.role || 'Collaborator',
-          status,
-          note
-        });
-      } catch (e) {
-        console.error('[EMAIL:ERROR] Failed to dispatch decision email:', e.message);
-      }
+      emailService.sendApplicationDecision({
+        email: app.email,
+        applicantName: app.fullName,
+        role: app.role || 'Collaborator',
+        status,
+        note
+      }).catch(e => console.error('[EMAIL:ERROR] Decision email notice:', e.message));
     }
 
-    // Record audit event
-    await auditRepo.logEvent({
-      actorId: req.user.id,
-      actorRole: req.user.roles[0],
-      action: `application.${status}`,
-      targetType: 'application',
-      targetId: req.params.id,
-      payload: { status, note, applicantEmail: app.email }
-    });
+    // Record audit event safely
+    try {
+      const actorRole = (req.user?.roles && req.user.roles[0]) || req.user?.role || 'owner';
+      await auditRepo.logEvent({
+        actorId: req.user?.id || 'usr_founder',
+        actorRole,
+        action: `application.${status}`,
+        targetType: 'application',
+        targetId: req.params.id,
+        payload: { status, note, applicantEmail: app.email }
+      });
+    } catch (auditErr) {
+      console.warn('[Audit:Warning] Audit event notice:', auditErr.message);
+    }
 
     res.json({ application: updated, message: `Application updated to ${status}.` });
   } catch (err) {

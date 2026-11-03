@@ -821,6 +821,83 @@
         </div>
       </section>
 
+      <!-- 7. PLATFORM BROADCASTS & PUSH NOTIFICATIONS TAB -->
+      <section id="tab-broadcast" class="admin-tab-pane" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">Platform Broadcast &amp; Push Notifications</h1>
+            <p class="admin-subtitle">Directly dispatch announcements, sprint alerts, and updates to connected collaborators in real-time.</p>
+          </div>
+        </div>
+
+        <div class="admin-card" style="margin-bottom: 24px;">
+          <div class="admin-card-title">🚀 Direct Push Notification Dispatcher</div>
+          <p style="color: #94a3b8; font-size: 13px; margin: 0 0 16px 0;">
+            Dispatches appear instantly in the notification corner for connected collaborators across all pages.
+          </p>
+
+          <form id="broadcastForm" onsubmit="event.preventDefault(); handleSendBroadcast();">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Notification Title *</label>
+                <input type="text" id="bcTitle" class="form-input" placeholder="e.g. Sprint Cycle 3 Selection Announced" required style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
+              </div>
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Target Audience</label>
+                <select id="bcAudience" style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
+                  <option value="all">📢 All Collaborators</option>
+                  <option value="builders">⚡ Builders (Technical Contributors)</option>
+                  <option value="enablers">🤝 Enablers &amp; Mentors</option>
+                  <option value="problem_holders">🎯 Problem Statement Holders</option>
+                </select>
+              </div>
+              <div>
+                <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Category Tag</label>
+                <select id="bcType" style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
+                  <option value="announcement">📢 Announcement</option>
+                  <option value="sprint_update">🌱 Sprint Milestone</option>
+                  <option value="dispatch">⚡ System Dispatch</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 14px;">
+              <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Action / Destination Link (Optional)</label>
+              <input type="text" id="bcUrl" placeholder="e.g. sprint.html#sp_salinity_telemetry" style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Push Notification Message *</label>
+              <textarea id="bcMessage" rows="3" placeholder="Enter clear, concise notification update for collaborators..." required style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px; font-family: inherit; resize: vertical;"></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 12px;">
+              <button type="submit" class="btn btn-primary" id="bcSubmitBtn" style="background: #4ade80; color: #090e09; font-weight: 700; padding: 10px 22px; border: none; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+                <span>🚀</span> Push Notification Now
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-title">Live Dispatched Notifications</div>
+          <table class="data-table" style="width: 100%; border-collapse: collapse; margin-top: 12px;">
+            <thead>
+              <tr style="border-bottom: 1px solid #1c2e1f; text-align: left;">
+                <th style="padding: 10px 8px; color: #64748b; font-size: 12px;">Dispatched At</th>
+                <th style="padding: 10px 8px; color: #64748b; font-size: 12px;">Notification Details</th>
+                <th style="padding: 10px 8px; color: #64748b; font-size: 12px;">Target</th>
+                <th style="padding: 10px 8px; color: #64748b; font-size: 12px;">Destination</th>
+                <th style="padding: 10px 8px; color: #64748b; font-size: 12px; text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="broadcastsTableBody">
+              <tr><td colspan="5" style="text-align: center; color: #64748b; padding: 20px;">Loading live dispatches...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- 8. SETTINGS & QUOTAS TAB -->
       <section id="tab-settings" class="admin-tab-pane" style="display: none;">
         <div class="admin-header">
@@ -895,6 +972,48 @@
           </table>
         </div>
       </section>
+    <!-- In-Page Application Review Modal (Replaces browser prompt) -->
+    <div id="appReviewModal" class="admin-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
+      <div style="background: #0f1710; border: 1px solid #1c2e1f; border-radius: 12px; max-width: 500px; width: 100%; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+          <div>
+            <h3 id="appReviewTitle" style="margin: 0; color: #f1f5f9; font-size: 1.2rem;">Review Application</h3>
+            <p id="appReviewSubtitle" style="margin: 4px 0 0; color: #94a3b8; font-size: 13px;">Applicant Details</p>
+          </div>
+          <button onclick="closeAppReviewModal()" style="background: transparent; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; padding: 0 4px;">&times;</button>
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 8px;">Decision Action</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+            <button type="button" class="btn app-decision-btn" id="btnDecisionApproved" onclick="selectAppDecision('approved')" style="padding: 10px; font-size: 12px; font-weight: 700; border-radius: 6px; border: 1px solid #22c55e; background: rgba(34,197,94,0.15); color: #4ade80; cursor: pointer;">
+              ✓ Approve
+            </button>
+            <button type="button" class="btn app-decision-btn" id="btnDecisionWaitlisted" onclick="selectAppDecision('waitlisted')" style="padding: 10px; font-size: 12px; font-weight: 600; border-radius: 6px; border: 1px solid #64748b; background: transparent; color: #94a3b8; cursor: pointer;">
+              ⏳ Waitlist
+            </button>
+            <button type="button" class="btn app-decision-btn" id="btnDecisionDeclined" onclick="selectAppDecision('declined')" style="padding: 10px; font-size: 12px; font-weight: 600; border-radius: 6px; border: 1px solid #64748b; background: transparent; color: #94a3b8; cursor: pointer;">
+              ✕ Decline
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Curator Note / Feedback to Applicant (Optional)</label>
+          <textarea id="appReviewNote" rows="3" placeholder="e.g. Welcome to Sprint Cycle 3! Your optical probe proposal has been accepted..." style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px; font-family: inherit; font-size: 13px; resize: vertical;"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button class="btn btn-secondary" onclick="closeAppReviewModal()" style="padding: 10px 18px; border-radius: 6px;">Cancel</button>
+          <button class="btn btn-primary" id="btnConfirmAppReview" onclick="confirmAppReview()" style="background: #4ade80; color: #090e09; font-weight: 700; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+            Confirm Decision →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-time In-Page Toast Container -->
+    <div id="adminToastContainer" style="position: fixed; bottom: 24px; right: 24px; z-index: 99999; display: flex; flex-direction: column; gap: 8px; pointer-events: none;"></div>
     </main>
   </div>
 
@@ -991,6 +1110,8 @@
       document.querySelectorAll('.admin-tab-pane').forEach(el => {
         el.style.display = el.id === `tab-${tabName}` ? 'block' : 'none';
       });
+      if (tabName === 'broadcast') loadBroadcasts();
+      if (tabName === 'applications') loadApplications();
     };
 
     document.querySelectorAll('.admin-nav-item').forEach(btn => {
@@ -1031,27 +1152,97 @@
             <td><span class="badge ${app.status === 'approved' ? 'badge-green' : app.status === 'declined' ? 'badge-rose' : 'badge-amber'}">${escapeHtml(app.status)}</span></td>
             <td style="font-size:12px;color:#64748b;">${new Date(app.appliedAt || app.createdAt).toLocaleDateString()}</td>
             <td>
-              <button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="updateAppStatus('${app.id}', 'approved')">Approve</button>
-              <button class="btn btn-secondary" style="padding:4px 8px;font-size:11px;" onclick="updateAppStatus('${app.id}', 'waitlisted')">Waitlist</button>
-              <button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="updateAppStatus('${app.id}', 'declined')">Decline</button>
+              <button class="btn btn-primary" style="padding:4px 10px;font-size:11px;font-weight:600;" onclick="openAppReviewModal('${app.id}', 'approved', '${escapeHtml(app.fullName || 'Applicant')}', '${escapeHtml(app.role || '')}')">Approve</button>
+              <button class="btn btn-secondary" style="padding:4px 10px;font-size:11px;" onclick="openAppReviewModal('${app.id}', 'waitlisted', '${escapeHtml(app.fullName || 'Applicant')}', '${escapeHtml(app.role || '')}')">Waitlist</button>
+              <button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="openAppReviewModal('${app.id}', 'declined', '${escapeHtml(app.fullName || 'Applicant')}', '${escapeHtml(app.role || '')}')">Decline</button>
             </td>
           </tr>
         `).join('');
       }
     }
 
-    window.updateAppStatus = async function(id, status) {
-      const note = prompt(`Optional feedback or curator note for applicant (${status}):`) || '';
-      const res = await apiRequest(`/admin/applications/${id}/status`, {
-        method: 'PATCH',
-        body: JSON.stringify({ status, note })
+    // Modern In-Page Application Review Workflow
+    let currentReviewAppId = null;
+    let currentReviewDecision = 'approved';
+
+    window.openAppReviewModal = function(id, defaultStatus = 'approved', applicantName = '', role = '') {
+      currentReviewAppId = id;
+      currentReviewDecision = defaultStatus;
+      document.getElementById('appReviewTitle').textContent = `Review: ${applicantName || 'Applicant'}`;
+      document.getElementById('appReviewSubtitle').textContent = role ? `Evaluating ${role}` : 'Intake evaluation';
+      document.getElementById('appReviewNote').value = '';
+      selectAppDecision(defaultStatus);
+      const modal = document.getElementById('appReviewModal');
+      modal.style.display = 'flex';
+    };
+
+    window.closeAppReviewModal = function() {
+      const modal = document.getElementById('appReviewModal');
+      if (modal) modal.style.display = 'none';
+      currentReviewAppId = null;
+    };
+
+    window.selectAppDecision = function(status) {
+      currentReviewDecision = status;
+      const btnApp = document.getElementById('btnDecisionApproved');
+      const btnWait = document.getElementById('btnDecisionWaitlisted');
+      const btnDec = document.getElementById('btnDecisionDeclined');
+      const btnConfirm = document.getElementById('btnConfirmAppReview');
+
+      [btnApp, btnWait, btnDec].forEach(b => {
+        if (!b) return;
+        b.style.background = 'transparent';
+        b.style.borderColor = '#64748b';
+        b.style.color = '#94a3b8';
       });
+
+      if (status === 'approved' && btnApp) {
+        btnApp.style.background = 'rgba(34,197,94,0.18)';
+        btnApp.style.borderColor = '#22c55e';
+        btnApp.style.color = '#4ade80';
+        btnConfirm.textContent = 'Confirm Approval →';
+        btnConfirm.style.background = '#4ade80';
+      } else if (status === 'waitlisted' && btnWait) {
+        btnWait.style.background = 'rgba(234,179,8,0.18)';
+        btnWait.style.borderColor = '#eab308';
+        btnWait.style.color = '#fde047';
+        btnConfirm.textContent = 'Confirm Waitlist →';
+        btnConfirm.style.background = '#eab308';
+      } else if (status === 'declined' && btnDec) {
+        btnDec.style.background = 'rgba(239,68,68,0.18)';
+        btnDec.style.borderColor = '#ef4444';
+        btnDec.style.color = '#fca5a5';
+        btnConfirm.textContent = 'Confirm Decline →';
+        btnConfirm.style.background = '#ef4444';
+      }
+    };
+
+    window.confirmAppReview = async function() {
+      if (!currentReviewAppId) return;
+      const btn = document.getElementById('btnConfirmAppReview');
+      const note = document.getElementById('appReviewNote').value.trim();
+      btn.disabled = true;
+      btn.textContent = 'Updating...';
+
+      const res = await apiRequest(`/admin/applications/${currentReviewAppId}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: currentReviewDecision, note })
+      });
+
+      btn.disabled = false;
+      closeAppReviewModal();
+
       if (res.ok) {
+        showAdminToast(`Application marked as ${currentReviewDecision}!`, 'success');
         loadApplications();
         loadOverview();
       } else {
-        alert(res.message || 'Status update failed.');
+        showAdminToast(res.message || 'Failed to update application.', 'error');
       }
+    };
+
+    window.updateAppStatus = function(id, status, applicantName, role) {
+      openAppReviewModal(id, status, applicantName, role);
     };
 
     // 3. Users Loader
@@ -1671,6 +1862,40 @@
       }).join('');
     }
 
+    
+    // Non-blocking Toast Alerts
+    window.showAdminToast = function(msg, type = 'success') {
+      const container = document.getElementById('adminToastContainer');
+      if (!container) return;
+      const toast = document.createElement('div');
+      const isErr = type === 'error';
+      toast.style.cssText = `
+        padding: 12px 20px;
+        background: ${isErr ? '#7f1d1d' : '#143823'};
+        color: #fff;
+        border-radius: 8px;
+        font-size: 13.5px;
+        font-weight: 600;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        border: 1px solid ${isErr ? '#ef4444' : '#22c55e'};
+        pointer-events: auto;
+        transition: all 0.25s ease;
+        opacity: 0;
+        transform: translateY(12px);
+      `;
+      toast.innerHTML = (isErr ? '⚠️ ' : '✓ ') + escapeHtml(msg);
+      container.appendChild(toast);
+      requestAnimationFrame(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+      });
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(12px)';
+        setTimeout(() => toast.remove(), 250);
+      }, 4000);
+    };
+
     window.handleSendBroadcast = async function() {
       const title = document.getElementById('bcTitle').value.trim();
       const message = document.getElementById('bcMessage').value.trim();
@@ -1694,9 +1919,9 @@
       if (res.ok) {
         document.getElementById('broadcastForm').reset();
         loadBroadcasts();
-        alert('Platform broadcast successfully dispatched to all active users!');
+        showAdminToast('🚀 Platform notification pushed live to all collaborators!', 'success');
       } else {
-        alert('Error: ' + (res.message || 'Failed to dispatch broadcast.'));
+        showAdminToast(res.message || 'Failed to dispatch broadcast.', 'error');
       }
     };
 
@@ -1705,8 +1930,9 @@
       const res = await apiRequest(`/admin/announcements/${id}`, { method: 'DELETE' });
       if (res.ok) {
         loadBroadcasts();
+        showAdminToast('Broadcast retracted.', 'success');
       } else {
-        alert('Error: ' + (res.message || 'Failed to retract broadcast.'));
+        showAdminToast(res.message || 'Failed to retract broadcast.', 'error');
       }
     };
 

@@ -15,6 +15,7 @@ class BaseRepository {
   }
 
   get client() {
+    if (this.remoteDisabled) return null;
     return isConfigured() ? supabase : null;
   }
 
@@ -42,6 +43,9 @@ class BaseRepository {
       error.statusCode = 503;
       error.operational = true;
       throw error;
+    }
+    if (err.message && (err.message.includes('schema cache') || err.message.includes('relation') || err.message.includes('does not exist'))) {
+      this.remoteDisabled = true;
     }
     if (!this.hasWarned) {
       console.warn(`[Repository:${this.tableName}] Remote ${operation} deferred to resilient store:`, err.message);
