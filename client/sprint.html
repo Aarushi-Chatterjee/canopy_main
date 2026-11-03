@@ -1106,30 +1106,47 @@
   function createSquadCard(sprint) {
     const card = document.createElement('article');
     const domain = escapeHtml(sprint.domain || 'climate').toLowerCase();
-    card.className = 'elevated-card sprint-card reveal';
+    const stage = escapeHtml(sprint.stage || 'forming').toLowerCase();
+    card.className = 'elevated-card sprint-card in-view reveal';
     card.setAttribute('data-domain', domain);
+    card.setAttribute('data-stage', stage);
     card.setAttribute('data-id', sprint.id || '');
 
     const title = escapeHtml(sprint.title || 'Untitled Working Squad');
-    const desc = escapeHtml(sprint.objective || sprint.problemStatement || '');
-    const neededRoles = Array.isArray(sprint.neededRoles) ? sprint.neededRoles : ['Technical Contributor'];
-    const roleChips = neededRoles.map(r => `<span class="tag-chip skill" style="border-style:dashed;">Needs: ${escapeHtml(r)}</span>`).join('');
+    const desc = escapeHtml(sprint.problemStatement || sprint.description || sprint.objective || '');
+    const neededSkills = Array.isArray(sprint.skillTags) ? sprint.skillTags : (Array.isArray(sprint.neededRoles) ? sprint.neededRoles : ['Technical Contributor']);
+    const skillChips = neededSkills.map(r => `<span class="tag-chip skill">${escapeHtml(r)}</span>`).join('');
     const cycle = sprint.cycleDuration ? `${sprint.cycleDuration}d cycle` : '21-day cycle';
     const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
     const capacity = parseInt(sprint.teamCapacity || 3, 10);
-    const currentMembers = Array.isArray(sprint.members) ? sprint.members.length : 1;
+    const currentMembers = Array.isArray(sprint.members) ? sprint.members.length : (parseInt(sprint.currentMembersCount, 10) || 1);
     const seatsOpen = Math.max(0, capacity - currentMembers);
-    const seatsLabel = seatsOpen > 0 ? `${seatsOpen} of ${capacity} seats open` : 'Squad capacity full';
+
+    let stageBadge = '';
+    let seatsLabel = '';
+    if (stage === 'building' || stage === 'in_sprint') {
+      stageBadge = '<span class="growth-badge" data-stage="in_sprint">Building · Cycle Active</span>';
+      seatsLabel = seatsOpen === 0 ? 'Team Locked (3/3)' : `${seatsOpen} of ${capacity} spots open`;
+    } else if (stage === 'shipped' || stage === 'completed') {
+      stageBadge = '<span class="growth-badge" data-stage="shipped" style="background:rgba(59,130,246,0.18);color:#60a5fa;border:1px solid rgba(59,130,246,0.35);">Shipped Prototype</span>';
+      seatsLabel = 'Milestone Shipped';
+    } else {
+      stageBadge = '<span class="growth-badge" data-stage="sprouting">Forming · Recruiting</span>';
+      seatsLabel = `${seatsOpen} of ${capacity} spots open`;
+    }
 
     card.innerHTML = `
-      <div class="squad-status-row">
-        <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
-        <span class="growth-badge" data-stage="forming">${seatsOpen > 0 ? 'Recruiting Teammates' : 'Squad Active'}</span>
+      <div class="sprint-card-header">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
+          ${stageBadge}
+        </div>
+        <span class="hint-small" style="font-size:0.75rem;color:var(--forest);font-weight:700;">${seatsLabel}</span>
       </div>
-      <h4>${title}</h4>
+      <h4 style="margin:6px 0 2px;">${title}</h4>
       ${sprint.leadAuthor ? `
-        <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-top:-6px;margin-bottom:6px;">
-          Lead: <strong>${escapeHtml(sprint.leadAuthor)}</strong>${sprint.contactChannel ? ` · <code>${escapeHtml(sprint.contactChannel)}</code>` : ''}
+        <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:6px;">
+          Lead: <strong>${escapeHtml(sprint.leadAuthor)}</strong>
         </div>` : ''}
       ${desc ? `<p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">${desc}</p>` : ''}
       ${sprint.targetDeliverable ? `
@@ -1146,15 +1163,14 @@
             <span>Reference Spec / Repo ↗</span>
           </a>
         </div>` : ''}
-      <div style="margin-top:4px;font-size:0.8rem;color:var(--ink-faint);">
-        Active working squad · Cycle: ${escapeHtml(cycle)} · Capacity: ${capacity} seats
-      </div>
       <div class="chip-row">
-        ${roleChips}
+        ${skillChips}
       </div>
       <div class="card-foot">
-        <span class="hint-small">${seatsLabel}</span>
-        <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Join Squad</button>
+        <span class="hint-small">${sprint.daysLeft !== undefined ? `${sprint.daysLeft} days remaining in cycle` : 'Active Sprint Cycle'}</span>
+        <button type="button" class="shovel-btn">
+          <svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> ${stage === 'shipped' ? 'Inspect Shipped Code' : (seatsOpen > 0 ? 'Join This Squad' : 'View Squad Work')}
+        </button>
       </div>
     `;
     return card;
@@ -1163,17 +1179,17 @@
   function createSponsoredCard(call) {
     const card = document.createElement('article');
     const domain = escapeHtml(call.domain || 'climate').toLowerCase();
-    card.className = 'elevated-card sprint-card reveal';
+    card.className = 'elevated-card sprint-card in-view reveal';
     card.setAttribute('data-domain', domain);
     card.setAttribute('data-id', call.id || '');
 
     const title = escapeHtml(call.title || 'Untitled Challenge');
-    const sponsor = escapeHtml(call.sponsorOrg || 'Partner Organization');
-    const desc = escapeHtml(call.summary || call.problemStatement || '');
-    const tier = escapeHtml(call.supportTier || 'Sponsored Challenge');
-    const target = escapeHtml(call.targetDeliverable || '');
+    const sponsor = escapeHtml(call.organization || call.sponsorOrg || call.orgName || 'Canopy Foundation');
+    const desc = escapeHtml(call.problemStatement || call.summary || '');
+    const tier = escapeHtml(call.pilotBudget || call.rewardPool || call.supportTier || 'Sponsored Challenge');
+    const target = escapeHtml(call.targetDeliverable || (call.targetOutcomes?.[0] || ''));
     const ref = call.researchReference;
-    const skills = Array.isArray(call.skillChips) ? call.skillChips : [];
+    const skills = Array.isArray(call.neededSkills) ? call.neededSkills : (Array.isArray(call.skillChips) ? call.skillChips : []);
     const skillChips = skills.map(s => `<span class="tag-chip skill">${escapeHtml(s)}</span>`).join('');
     const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
 
@@ -1185,12 +1201,12 @@
           ${tier}
         </span>
       </div>
-      <h4>${title}</h4>
-      <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-top:-6px;">
+      <h4 style="margin:6px 0 2px;">${title}</h4>
+      <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:6px;">
         Sponsored by <strong>${sponsor}</strong>
       </div>
       ${desc ? `<p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">${desc}</p>` : ''}
-      ${target ? `<div class="deliverables-box"><strong>Target Deliverable:</strong> ${target}</div>` : ''}
+      ${target ? `<div class="deliverables-box" style="margin:8px 0;padding:8px 10px;border-left:3px solid var(--forest);background:var(--paper);border-radius:4px;font-size:0.82rem;"><strong>Target Deliverable:</strong> ${target}</div>` : ''}
       ${ref && ref.url ? `
         <div style="margin-top:2px;">
           <a href="${escapeHtml(ref.url)}" target="_blank" rel="noopener noreferrer" class="research-ref-link">
@@ -1210,31 +1226,35 @@
 
   async function loadLiveSprintsAndCalls() {
     try {
-      // 1. Load Active Squads
+      // 1. Load All Active Squads (Forming, Building, and Shipped directly from centralized database)
       const board = await sprints.getBoard();
       const squadsGrid = document.getElementById('activeSquadsGrid');
       if (squadsGrid && board) {
-        const allSprints = [...(board.forming || []), ...(board.building || [])];
-        allSprints.forEach(sprint => {
-          if (!squadsGrid.querySelector(`[data-id="${sprint.id}"]`)) {
+        const allSprints = [
+          ...(board.forming || []),
+          ...(board.building || []),
+          ...(board.shipped || [])
+        ];
+        if (allSprints.length > 0) {
+          squadsGrid.innerHTML = '';
+          allSprints.forEach(sprint => {
             const card = createSquadCard(sprint);
             squadsGrid.appendChild(card);
-          }
-        });
+          });
+        }
         const squadCountEl = document.getElementById('squadCount');
         const count = squadsGrid.querySelectorAll('.sprint-card').length;
         if (squadCountEl) squadCountEl.textContent = `${count} active squad${count === 1 ? '' : 's'}`;
       }
 
-      // 2. Load Sponsored Challenges
+      // 2. Load Sponsored Challenges directly from centralized database
       const callData = await calls.getCalls();
       const sponsoredGrid = document.getElementById('sponsoredGrid');
-      if (sponsoredGrid && Array.isArray(callData)) {
+      if (sponsoredGrid && Array.isArray(callData) && callData.length > 0) {
+        sponsoredGrid.innerHTML = '';
         callData.forEach(call => {
-          if (!sponsoredGrid.querySelector(`[data-id="${call.id}"]`)) {
-            const card = createSponsoredCard(call);
-            sponsoredGrid.appendChild(card);
-          }
+          const card = createSponsoredCard(call);
+          sponsoredGrid.appendChild(card);
         });
         const sponsoredCountEl = document.getElementById('sponsoredCount');
         const sCount = sponsoredGrid.querySelectorAll('.sprint-card').length;
@@ -1246,7 +1266,7 @@
     }
   }
 
-  // Drawer handling for posting working squads
+    // Drawer handling for posting working squads
   const postSquadDrawer = document.getElementById('postSquadDrawer');
   const postSquadBackdrop = document.getElementById('postSquadBackdrop');
   const closePostSquadBtn = document.getElementById('closePostSquadDrawer');

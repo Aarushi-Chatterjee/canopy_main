@@ -382,7 +382,7 @@
         <div class="teaser"><span>rmse_by_weather.py:14 → std(residual | rain) &gt;&gt; std(residual | dry)</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="climate">Climate</span>
-          <span class="tag-chip skill">post-mortem</span></span>
+          <span class="tag-chip skill">post-mortem</span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -404,7 +404,7 @@
         <div class="teaser"><span>thermal_log.csv → 84°C at t+6h, spec max 65°C</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="hardware">Hardware</span>
-          <span class="tag-chip skill">teardown</span></span>
+          <span class="tag-chip skill">teardown</span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -426,7 +426,7 @@
         <div class="teaser"><span>reconcile.js → drift: +$2.3M unattributed capital allocations</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="civic">Civic Tech</span>
-          <span class="tag-chip skill">field-report</span></span>
+          <span class="tag-chip skill">field-report</span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -448,7 +448,7 @@
         <div class="teaser"><span>tutor.css:212 → min-height: 48px !important; margin: 8px;</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="education">Education</span>
-          <span class="tag-chip skill">field-report</span></span>
+          <span class="tag-chip skill">field-report</span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -470,7 +470,7 @@
         <div class="teaser"><span>sync.md → conflicts/day dropped from 40 to 0 after CRDT migration</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="health">Health</span>
-          <span class="tag-chip skill">post-mortem</span></span>
+          <span class="tag-chip skill">post-mortem</span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -492,7 +492,7 @@
         <div class="teaser"><span>sar_filter.py → false alarm rate reduced by 72% in intertidal zones</span></div>
         <div class="entry-bottom">
           <span class="tag-chip" data-domain="forestry">Forestry</span>
-          <span class="tag-chip skill">sprint-update</span></span>
+          <span class="tag-chip skill">sprint-update</span>
           <button type="button" class="grow-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             Grow entry
@@ -1122,6 +1122,29 @@
     return body;
   }
 
+  function styleAvatarElement(el, seed) {
+    if (!el || !seed) return;
+    let h = 0;
+    for (let i = 0; i < seed.length; i++) { h = (h << 5) - h + seed.charCodeAt(i); h |= 0; }
+    h = Math.abs(h);
+    const palettes = [
+      ['var(--leaf)','var(--forest-deep)'],
+      ['var(--coral)','var(--twine)'],
+      ['var(--sun)','var(--forest)'],
+      ['var(--leaf-bright)','var(--forest-deep)'],
+      ['var(--forest)','var(--sun)'],
+      ['var(--twine)','var(--leaf)'],
+      ['var(--teal)','var(--forest-deep)'],
+      ['var(--amber)','var(--forest)']
+    ];
+    const blob = (h % 6) + 1;
+    const pal = palettes[Math.floor(h / 6) % palettes.length];
+    el.classList.add('blob-' + blob);
+    el.style.setProperty('--a1', pal[0]);
+    el.style.setProperty('--a2', pal[1]);
+    el.style.setProperty('--a-angle', (h % 360) + 'deg');
+  }
+
   function renderNoteCard(item) {
     const domain = escapeHtml(item.domain || 'climate').toLowerCase();
     const author = escapeHtml(item.authorName || item.displayName || 'Field Contributor');
@@ -1143,6 +1166,8 @@
     card.setAttribute('data-type', typeLabel);
     card.setAttribute('data-mode', cardMode);
     card.setAttribute('data-id', item.id || '');
+    card.style.opacity = '1';
+    card.style.transform = 'none';
     card.tabIndex = 0;
 
     let coverHtml = '';
@@ -1180,6 +1205,9 @@
         </button>
       </div>
     `;
+
+    const av = card.querySelector('.avatar');
+    if (av) styleAvatarElement(av, author);
 
     return card;
   }
@@ -1699,8 +1727,12 @@
             const card = renderNoteCard(entry);
             entryGrid.prepend(card);
           } else {
-            // Update live view badge if element exists in static HTML
-
+            const existingEl = entryGrid.querySelector(`[data-id="${entry.id}"]`);
+            if (existingEl) {
+              existingEl.style.opacity = '1';
+              existingEl.style.transform = 'none';
+              existingEl.classList.add('in-view');
+            }
           }
         });
       }

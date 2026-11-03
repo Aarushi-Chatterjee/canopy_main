@@ -413,6 +413,179 @@ router.post('/matches/manual', requireAnyRole(['match_curator', 'moderator', 'ad
   }
 });
 
+
+// POST /api/admin/matches/run-algorithm — Heuristic Pairwise Matching Engine
+router.post('/matches/run-algorithm', requireAnyRole(['match_curator', 'moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const [profiles, users, applications, matches, calls] = await Promise.all([
+      profilesRepo.find(),
+      usersRepo.find(),
+      applicationsRepo.find(a => a.status === 'approved' || a.status === 'pending_review'),
+      matchesRepo.find(),
+      callsRepo.find(c => c.status === 'open')
+    ]);
+
+    // Build unified candidate pool
+    const candidates = [];
+    const seenEmails = new Set();
+
+    // 1. From verified user profiles
+    for (const p of profiles) {
+      const u = users.find(x => x.id === p.userId);
+      const email = (u?.email || p.contactEmail || '').toLowerCase();
+      if (!email || seenEmails.has(email)) continue;
+      seenEmails.add(email);
+      candidates.push({
+        id: u?.id || p.userId || p.id,
+        name: p.displayName || u?.displayName || email.split('@')[0],
+        email: email,
+        role: u?.role || p.role || 'builder',
+        domain: (p.primaryDomain || 'climate').toLowerCase(),
+        skills: Array.isArray(p.skills) ? p.skills : [],
+        tagline: p.headline || p.tagline || '',
+        source: 'user_profile'
+      });
+    }
+
+    // 2. From approved/pending applications
+    for (const a of applications) {
+      const email = (a.email || '').toLowerCase();
+      if (!email || seenEmails.has(email)) continue;
+      seenEmails.add(email);
+      candidates.push({
+        id: a.id || 'app_' + Math.random().toString(36).slice(2, 8),
+        name: a.fullName || email.split('@')[0],
+        email: email,
+        role: a.role || 'builder',
+        domain: (a.domain || 'climate').toLowerCase(),
+        skills: Array.isArray(a.skills) ? a.skills : (a.skills ? a.skills.split(',').map(s => s.trim()) : []),
+        tagline: a.problemStatement || a.projectDescription || a.background || '',
+        source: 'application'
+      });
+    }
+
+    // 3. From guest squad match intakes
+    for (const m of matches) {
+      if (m.matchMetadata?.isGuestIntake && m.matchMetadata.email) {
+        const email = m.matchMetadata.email.toLowerCase();
+        if (seenEmails.has(email)) continue;
+        seenEmails.add(email);
+        candidates.push({
+          id: m.id,
+          name: m.matchMetadata.fullName || email.split('@')[0],
+          email: email,
+          role: m.matchMetadata.role || 'builder',
+          domain: (m.matchMetadata.domain || 'climate').toLowerCase(),
+          skills: Array.isArray(m.matchMetadata.skillsWanted) ? m.matchMetadata.skillsWanted : [],
+          tagline: m.matchMetadata.projectDescription || '',
+          source: 'squad_intake'
+        });
+      }
+    }
+
+    // Generate pairwise matching heuristic scores
+    const pairs = [];
+    for (let i = 0; i < candidates.length; i++) {
+      for (let j = i + 1; j < candidates.length; j++) {
+        const A = candidates[i];
+        const B = candidates[j];
+
+        let score = 20; // baseline
+        const reasons = [];
+
+        // Domain similarity
+        if (A.domain === B.domain) {
+          score += 35;
+          reasons.push(`Direct domain synergy in ${A.domain.toUpperCase()}`);
+        } else {
+          const related = [
+            ['climate', 'forestry'],
+            ['climate', 'grid'],
+            ['civic', 'data'],
+            ['hardware', 'grid']
+          ];
+          const isRelated = related.some(r => r.includes(A.domain) && r.includes(B.domain));
+          if (isRelated) {
+            score += 20;
+            reasons.push(`Interdisciplinary domain cross-over (${A.domain} + ${B.domain})`);
+          }
+        }
+
+        // Role complementarity
+        const roleA = A.role.toLowerCase();
+        const roleB = B.role.toLowerCase();
+        if ((roleA.includes('builder') && roleB.includes('problem')) || (roleB.includes('builder') && roleA.includes('problem'))) {
+          score += 30;
+          reasons.push('High-affinity pairing: Builder + Problem Statement Holder');
+        } else if ((roleA.includes('hardware') && roleB.includes('software')) || (roleB.includes('hardware') && roleA.includes('software'))) {
+          score += 25;
+          reasons.push('Full-stack pairing: Hardware Lead + Software/Firmware Engineer');
+        } else if (roleA === roleB && roleA.includes('builder')) {
+          score += 20;
+          reasons.push('Complementary builder sprint co-leads');
+        }
+
+        // Skills intersection
+        const skillsA = new Set(A.skills.map(s => s.toLowerCase()));
+        const skillsB = new Set(B.skills.map(s => s.toLowerCase()));
+        let commonSkills = 0;
+        for (const s of skillsA) {
+          if (skillsB.has(s)) commonSkills++;
+        }
+        if (commonSkills > 0) {
+          score += Math.min(15, commonSkills * 8);
+          reasons.push(`Shared technical language (${commonSkills} shared skill tags)`);
+        }
+
+        // Determine recommended sprint topic
+        let topic = `${A.domain.charAt(0).toUpperCase() + A.domain.slice(1)} Rapid Prototype Sprint`;
+        const matchedCall = calls.find(c => c.domain?.toLowerCase() === A.domain || c.domain?.toLowerCase() === B.domain);
+        if (matchedCall) {
+          topic = matchedCall.title;
+        }
+
+        score = Math.min(98, score);
+
+        if (score >= 60) {
+          pairs.push({
+            pairId: `sug_${A.id}_${B.id}`,
+            score,
+            personA: {
+              id: A.id,
+              name: A.name,
+              email: A.email,
+              role: A.role,
+              domain: A.domain,
+              tagline: A.tagline
+            },
+            personB: {
+              id: B.id,
+              name: B.name,
+              email: B.email,
+              role: B.role,
+              domain: B.domain,
+              tagline: B.tagline
+            },
+            topic,
+            reasons
+          });
+        }
+      }
+    }
+
+    pairs.sort((a, b) => b.score - a.score);
+
+    res.json({
+      success: true,
+      totalCandidates: candidates.length,
+      suggestedPairs: pairs.slice(0, 10),
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Matching algorithm failed.' });
+  }
+});
+
 // -------------------------------------------------------------
 // 5. Content Studio
 // -------------------------------------------------------------

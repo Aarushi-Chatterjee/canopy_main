@@ -581,27 +581,65 @@
       <section id="tab-matching" class="admin-tab-pane" style="display: none;">
         <div class="admin-header">
           <div>
-            <h1 class="admin-title">Manual Matching Console</h1>
-            <p class="admin-subtitle">Personally review and introduce peer collaboration inquiries.</p>
+            <h1 class="admin-title">Manual Matching &amp; Algorithmic Engine</h1>
+            <p class="admin-subtitle">Run heuristic pairing across the cohort, curate custom 1-on-1 matches, and personally introduce collaborators.</p>
           </div>
-          <div class="admin-scope-box">
-            <span class="admin-scope-pill">🤝 Scope: /match.html</span>
-            <span class="admin-scope-desc">Curates builder-to-problem matching, introductions, and 1-on-1 team connections</span>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <div class="admin-scope-box">
+              <span class="admin-scope-pill">🤝 Scope: /match.html · Curated Matchmaker</span>
+              <span class="admin-scope-desc">Pairwise algorithm, custom 1-on-1 overrides, and personalized founder introductions</span>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-primary" id="btnRunAlgorithm" onclick="runMatchingAlgorithm()">
+                <span>⚡</span> Run Matching Algorithm
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="openManualPairModal()">
+                <span>+</span> Create Custom 1-on-1 Pair
+              </button>
+            </div>
           </div>
         </div>
+
+        <!-- Heuristic Algorithm Output Studio (Expands on run) -->
+        <div class="admin-card" id="algorithmResultsCard" style="display: none; border: 1px solid #22c55e; background: #0c160e; margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3 style="margin: 0; color: #4ade80; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                <span>⚡</span> Heuristic Algorithmic Pairings (<span id="algoResultsCount">0</span> Candidates Evaluated)
+              </h3>
+              <p style="margin: 4px 0 0; font-size: 13px; color: #94a3b8;">Ranked based on domain synergy, role complementarity (builder + problem holder), and technical skills.</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="document.getElementById('algorithmResultsCard').style.display='none'">Hide Results</button>
+              <button type="button" class="btn btn-primary" style="padding: 4px 10px; font-size: 11px;" onclick="runMatchingAlgorithm()">↻ Re-run Engine</button>
+            </div>
+          </div>
+          <div id="algoPairsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Pending Inquiries & Intakes Table -->
         <div class="admin-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <div class="admin-card-title" style="margin-bottom: 0;">
+              Collaboration Inquiries &amp; Match Intakes (<span id="matchesTotalCount">0</span>)
+            </div>
+            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="loadMatches()">↻ Refresh Queue</button>
+          </div>
           <table class="data-table">
             <thead>
               <tr>
-                <th>Requester</th>
-                <th>Recipient</th>
-                <th>Intent Note</th>
-                <th>Status</th>
-                <th>Curator Actions</th>
+                <th style="min-width: 180px;">Requester / Contact</th>
+                <th style="width: 140px;">Type &amp; Domain</th>
+                <th>Target / Project Brief</th>
+                <th style="min-width: 200px;">Intent Note</th>
+                <th style="width: 110px;">Status</th>
+                <th style="min-width: 180px;">Curator Actions</th>
               </tr>
             </thead>
             <tbody id="matchesTableBody">
-              <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading matches...</td></tr>
+              <tr><td colspan="6" style="text-align: center; color: #64748b; padding: 20px;">Loading matches &amp; intakes...</td></tr>
             </tbody>
           </table>
         </div>
@@ -1352,6 +1390,74 @@
       </div>
     </div>
 
+
+    <!-- Custom 1-on-1 Manual Pair Modal -->
+    <div id="manualPairModal" class="modal-overlay" style="display: none;">
+      <div class="modal-card" style="max-width: 580px;">
+        <div class="modal-header">
+          <h3 class="modal-title">Create Custom 1-on-1 Match</h3>
+          <button class="modal-close" onclick="closeManualPairModal()">&times;</button>
+        </div>
+        <form onsubmit="submitManualPair(event)">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Person A (Initiator / Builder) *</label>
+              <select id="pairPersonASelect" class="form-select" required>
+                <option value="">-- Choose Collaborator A --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Person B (Partner / Problem) *</label>
+              <select id="pairPersonBSelect" class="form-select" required>
+                <option value="">-- Choose Collaborator B --</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Shared Sprint Topic / Challenge Focus *</label>
+            <input type="text" id="pairTopicInput" class="form-input" placeholder="e.g. Low-Cost Optical Groundwater Sensor Telemetry" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Curator Scoping Note (Included in Introduction Email) *</label>
+            <textarea id="pairCuratorNoteInput" class="form-textarea" rows="4" placeholder="e.g. Hi Maya &amp; Dev — I am introducing you both because Maya is prototyping the optical probe hardware and Dev has deep embedded DSP firmware experience..." required></textarea>
+          </div>
+          <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="pairDispatchEmailCheck" checked>
+            <label for="pairDispatchEmailCheck" style="font-size: 13px; color: #cbd5e1; cursor: pointer;">
+              Dispatch verified curator introduction email to both parties immediately
+            </label>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button type="button" class="btn btn-secondary" onclick="closeManualPairModal()">Cancel</button>
+            <button type="submit" id="btnSubmitManualPair" class="btn btn-primary">Dispatch 1-on-1 Introduction →</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Curator Scoping Intro Note Modal -->
+    <div id="curatorIntroModal" class="modal-overlay" style="display: none;">
+      <div class="modal-card" style="max-width: 500px;">
+        <div class="modal-header">
+          <h3 class="modal-title" id="curatorIntroTitle">Dispatch Curator Introduction</h3>
+          <button class="modal-close" onclick="closeCuratorIntroModal()">&times;</button>
+        </div>
+        <input type="hidden" id="curatorIntroMatchId">
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--admin-border); border-radius: 6px; padding: 12px; margin-bottom: 14px;">
+          <div id="curatorIntroParties" style="font-size: 13.5px; color: #ffffff; font-weight: 600;"></div>
+          <div id="curatorIntroTopic" style="font-size: 12px; color: #94a3b8; margin-top: 3px;"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Personal Curator Scoping Note *</label>
+          <textarea id="curatorIntroNoteInput" class="form-textarea" rows="4" placeholder="Personal note explaining why you are connecting these two builders..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="closeCuratorIntroModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" id="btnConfirmCuratorIntro" onclick="confirmCuratorIntro()">Dispatch Introduction Email →</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Real-time In-Page Toast Container -->
     <div id="adminToastContainer" style="position: fixed; bottom: 24px; right: 24px; z-index: 99999; display: flex; flex-direction: column; gap: 8px; pointer-events: none;"></div>
     </main>
@@ -1651,45 +1757,361 @@
       }
     };
 
-    // 4. Matches Loader
+    // 4. Manual Matching & Heuristic Algorithm Engine
+    window.__matchesList = [];
+    window.__algoSuggestedPairs = [];
+
     async function loadMatches() {
       const res = await apiRequest('/admin/matches');
       const tbody = document.getElementById('matchesTableBody');
+      const countEl = document.getElementById('matchesTotalCount');
+      if (!tbody) return;
+
       if (res.ok && res.data?.matches) {
-        if (res.data.matches.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#64748b;">No active match requests.</td></tr>';
+        window.__matchesList = res.data.matches;
+        if (countEl) countEl.textContent = window.__matchesList.length;
+
+        if (window.__matchesList.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b;padding:24px;">No match requests or squad intakes in queue. Click "Run Matching Algorithm" to discover candidate pairings.</td></tr>';
           return;
         }
-        tbody.innerHTML = res.data.matches.map(m => `
-          <tr>
-            <td><strong>${escapeHtml(m.requester?.displayName)}</strong><br><small style="color:#64748b;">${escapeHtml(m.requester?.email)}</small></td>
-            <td><strong>${escapeHtml(m.recipient?.displayName)}</strong><br><small style="color:#64748b;">${escapeHtml(m.recipient?.email)}</small></td>
-            <td style="max-width:240px;font-size:12px;color:#94a3b8;">${escapeHtml(m.matchMetadata?.intentNote || m.intentNote || 'No note')}</td>
-            <td><span class="badge ${m.status === 'introduced' ? 'badge-green' : 'badge-amber'}">${escapeHtml(m.status)}</span></td>
-            <td>
-              <button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="introduceMatch('${m.id}')">Send Intro</button>
-            </td>
-          </tr>
-        `).join('');
+
+        tbody.innerHTML = window.__matchesList.map(m => {
+          const isGuestIntake = Boolean(m.matchMetadata?.isGuestIntake);
+          const reqName = isGuestIntake ? (m.matchMetadata.fullName || 'Guest Builder') : (m.requester?.displayName || 'Collaborator');
+          const reqEmail = isGuestIntake ? (m.matchMetadata.email || '') : (m.requester?.email || '');
+          const domain = (isGuestIntake ? m.matchMetadata.domain : (m.requester?.primaryDomain || m.buildCall?.domain || 'climate')).toLowerCase();
+          const target = isGuestIntake
+            ? `<strong>${escapeHtml(m.matchMetadata.coBuilderNeeded || 'Technical Co-Builder')}</strong><br><small style="color:#94a3b8;">${escapeHtml((m.matchMetadata.projectDescription || '').slice(0, 70))}...</small>`
+            : (m.recipient?.displayName ? `<strong>${escapeHtml(m.recipient.displayName)}</strong><br><small style="color:#64748b;">${escapeHtml(m.recipient.email)}</small>` : (m.buildCall ? `<strong>Challenge:</strong> ${escapeHtml(m.buildCall.title)}` : 'Open Sprint Pairing'));
+
+          const note = m.matchMetadata?.intentNote || m.intentNote || m.curatorNotes || 'No specific note provided.';
+          const isIntroduced = m.status === 'introduced' || m.status === 'connected';
+
+          return `
+            <tr>
+              <td>
+                <strong style="color: #ffffff;">${escapeHtml(reqName)}</strong><br>
+                <span class="code-chip" style="font-size: 11px; margin-top: 3px;">${escapeHtml(reqEmail)}</span>
+              </td>
+              <td>
+                <span class="badge ${isGuestIntake ? 'badge-amber' : 'badge-blue'}">${isGuestIntake ? 'Squad Intake' : 'Handshake'}</span><br>
+                <span class="badge badge-green" style="font-size: 10px; margin-top: 4px;">${escapeHtml(domain)}</span>
+              </td>
+              <td>${target}</td>
+              <td style="max-width: 220px; font-size: 12.5px; color: #cbd5e1; line-height: 1.4;">
+                ${escapeHtml(note)}
+              </td>
+              <td>
+                <span class="badge ${isIntroduced ? 'badge-green' : 'badge-amber'}">
+                  ${escapeHtml(m.status || 'pending')}
+                </span>
+              </td>
+              <td>
+                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                  ${!isIntroduced ? `
+                    <button class="btn btn-primary" style="padding: 5px 10px; font-size: 11.5px;" onclick="openCuratorIntroModal('${m.id}', '${escapeHtml(reqName)}', '${escapeHtml(reqEmail)}')">
+                      ✓ Introduce
+                    </button>
+                  ` : '<span class="badge badge-green" style="font-size: 11px;">● Introduced</span>'}
+                  <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 11.5px;" onclick="prefillPairModal('${m.id}', '${escapeHtml(reqName)}', '${escapeHtml(reqEmail)}', '${escapeHtml(domain)}')">
+                    Pair With...
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;padding:24px;">Failed to load matches queue.</td></tr>';
       }
     }
 
-    window.introduceMatch = async function(id) {
-      const notes = prompt('Curator scoping note to include in email:') || '';
-      const res = await apiRequest(`/admin/matches/${id}/introduce`, {
-        method: 'POST',
-        body: JSON.stringify({ contextNotes: notes })
-      });
-      if (res.ok) {
-        alert('Manual introduction dispatched to both collaborators!');
-        loadMatches();
-        loadOverview();
-      } else {
-        alert(res.message || 'Introduction dispatch failed.');
+    // 4.2 Heuristic Algorithm Execution
+    window.runMatchingAlgorithm = async function() {
+      const btn = document.getElementById('btnRunAlgorithm');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⚡</span> Running Engine...';
+      }
+
+      showAdminToast('Running heuristic matching algorithm across verified members and cohort intakes...', 'success');
+
+      try {
+        const res = await apiRequest('/admin/matches/run-algorithm', { method: 'POST' });
+        if (res.ok && res.data?.suggestedPairs) {
+          window.__algoSuggestedPairs = res.data.suggestedPairs;
+          renderAlgorithmResults(res.data.suggestedPairs, res.data.totalCandidates);
+          showAdminToast(`Algorithm found ${res.data.suggestedPairs.length} high-affinity candidate pairings!`, 'success');
+        } else {
+          showAdminToast(res.message || 'Algorithm execution failed.', 'error');
+        }
+      } catch (err) {
+        showAdminToast(err.message || 'Network error running algorithm.', 'error');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span>⚡</span> Run Matching Algorithm';
+        }
       }
     };
 
-    // 5. Build Calls Management
+    function renderAlgorithmResults(pairs, totalCount) {
+      const card = document.getElementById('algorithmResultsCard');
+      const grid = document.getElementById('algoPairsGrid');
+      const countEl = document.getElementById('algoResultsCount');
+      if (!card || !grid) return;
+
+      if (countEl) countEl.textContent = `${pairs.length} Suggested Pairs (${totalCount} Analyzed)`;
+      card.style.display = 'block';
+
+      if (pairs.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; padding: 20px; text-align: center; color: #94a3b8;">No pairings above the 60% threshold found. As more applicants submit intakes, they will appear here.</div>';
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      grid.innerHTML = pairs.map((p, idx) => `
+        <div style="background: #090e09; border: 1px solid #1c2e1f; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <span class="badge badge-green" style="font-size: 12px; font-weight: 800;">⚡ ${p.score}% Match Affinity</span>
+              <span class="badge badge-blue" style="font-size: 11px;">${escapeHtml(p.personA.domain.toUpperCase())}</span>
+            </div>
+
+            <!-- Person A & Person B Cards -->
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid #1c2e1f; border-radius: 6px; padding: 10px; margin-bottom: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <strong style="color: #ffffff; font-size: 13.5px;">${escapeHtml(p.personA.name)}</strong>
+                <span style="font-size: 11px; color: #4ade80;">${escapeHtml(p.personA.role)}</span>
+              </div>
+              <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">${escapeHtml(p.personA.email)}</div>
+              ${p.personA.tagline ? `<div style="font-size: 11.5px; color: #cbd5e1; margin-top: 4px; font-style: italic;">"${escapeHtml(p.personA.tagline.slice(0, 75))}..."</div>` : ''}
+            </div>
+
+            <div style="text-align: center; font-size: 11px; color: #64748b; font-weight: 700; margin: 4px 0;">
+              ⇄ COMPLEMENTARY PAIRING ⇄
+            </div>
+
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid #1c2e1f; border-radius: 6px; padding: 10px; margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <strong style="color: #ffffff; font-size: 13.5px;">${escapeHtml(p.personB.name)}</strong>
+                <span style="font-size: 11px; color: #4ade80;">${escapeHtml(p.personB.role)}</span>
+              </div>
+              <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">${escapeHtml(p.personB.email)}</div>
+              ${p.personB.tagline ? `<div style="font-size: 11.5px; color: #cbd5e1; margin-top: 4px; font-style: italic;">"${escapeHtml(p.personB.tagline.slice(0, 75))}..."</div>` : ''}
+            </div>
+
+            <!-- Rationale -->
+            <div style="font-size: 12px; color: #94a3b8; margin-bottom: 14px; line-height: 1.4;">
+              <strong style="color: #cbd5e1;">Match Rationale:</strong>
+              <ul style="margin: 4px 0 0 16px; padding: 0;">
+                ${p.reasons.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+              </ul>
+              <div style="margin-top: 6px; font-size: 11.5px; color: #4ade80;">
+                <strong>Recommended Topic:</strong> ${escapeHtml(p.topic)}
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 8px; margin-top: 8px;">
+            <button type="button" class="btn btn-primary" style="flex: 1; justify-content: center;" onclick="openAlgoIntroModal(${idx})">
+              ✓ Introduce This Pair
+            </button>
+            <button type="button" class="btn btn-secondary" style="padding: 6px 10px;" onclick="dismissAlgoPair(${idx})">
+              ✕
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    window.dismissAlgoPair = function(idx) {
+      window.__algoSuggestedPairs.splice(idx, 1);
+      renderAlgorithmResults(window.__algoSuggestedPairs, window.__algoSuggestedPairs.length);
+    };
+
+    window.openAlgoIntroModal = function(idx) {
+      const p = window.__algoSuggestedPairs[idx];
+      if (!p) return;
+      openManualPairModal();
+      document.getElementById('pairTopicInput').value = p.topic || '';
+      document.getElementById('pairCuratorNoteInput').value = `Hi ${p.personA.name} and ${p.personB.name} —
+
+I am personally introducing you both for Canopy Sprint Cycle 3. You both have deep domain synergy in ${p.personA.domain.toUpperCase()}, with complementary skillsets spanning ${p.personA.role} and ${p.personB.role}.
+
+We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introductory exchange!`;
+
+      // Select matching options in dropdowns if available
+      const selA = document.getElementById('pairPersonASelect');
+      const selB = document.getElementById('pairPersonBSelect');
+      if (selA) {
+        for (let i = 0; i < selA.options.length; i++) {
+          if (selA.options[i].text.includes(p.personA.email) || selA.options[i].value === p.personA.id) {
+            selA.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      if (selB) {
+        for (let i = 0; i < selB.options.length; i++) {
+          if (selB.options[i].text.includes(p.personB.email) || selB.options[i].value === p.personB.id) {
+            selB.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    };
+
+    // 4.3 Custom Pair Creation Modal
+    window.openManualPairModal = function() {
+      populatePairSelectors();
+      document.getElementById('manualPairModal').style.display = 'flex';
+    };
+
+    window.closeManualPairModal = function() {
+      document.getElementById('manualPairModal').style.display = 'none';
+    };
+
+    function populatePairSelectors() {
+      const selA = document.getElementById('pairPersonASelect');
+      const selB = document.getElementById('pairPersonBSelect');
+      if (!selA || !selB) return;
+
+      // Extract candidates from users list and applications list
+      const optionsHtml = ['<option value="">-- Choose Collaborator --</option>'];
+
+      (window.__usersList || []).forEach(u => {
+        optionsHtml.push(`<option value="${u.id}">${escapeHtml(u.displayName)} (${escapeHtml(u.email)}) [User]</option>`);
+      });
+
+      (window.__matchesList || []).forEach(m => {
+        if (m.matchMetadata?.isGuestIntake) {
+          optionsHtml.push(`<option value="${m.id}">${escapeHtml(m.matchMetadata.fullName)} (${escapeHtml(m.matchMetadata.email)}) [Intake]</option>`);
+        }
+      });
+
+      selA.innerHTML = optionsHtml.join('');
+      selB.innerHTML = optionsHtml.join('');
+    }
+
+    window.prefillPairModal = function(id, name, email, domain) {
+      openManualPairModal();
+      const selA = document.getElementById('pairPersonASelect');
+      if (selA) {
+        let found = false;
+        for (let i = 0; i < selA.options.length; i++) {
+          if (selA.options[i].value === id || selA.options[i].text.includes(email)) {
+            selA.selectedIndex = i;
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          const opt = document.createElement('option');
+          opt.value = id;
+          opt.text = `${name} (${email}) [Intake]`;
+          opt.selected = true;
+          selA.appendChild(opt);
+        }
+      }
+      document.getElementById('pairTopicInput').value = `${domain.charAt(0).toUpperCase() + domain.slice(1)} Rapid Prototype Collaboration`;
+      document.getElementById('pairCuratorNoteInput').value = `Hi ${name} — Connecting you with a complementary co-builder for your project proposal.`;
+    };
+
+    window.submitManualPair = async function(e) {
+      e.preventDefault();
+      const initiatorId = document.getElementById('pairPersonASelect').value;
+      const recipientId = document.getElementById('pairPersonBSelect').value;
+      const topic = document.getElementById('pairTopicInput').value.trim();
+      const curatorNotes = document.getElementById('pairCuratorNoteInput').value.trim();
+      const dispatchIntroEmail = document.getElementById('pairDispatchEmailCheck').checked;
+      const btn = document.getElementById('btnSubmitManualPair');
+
+      if (!initiatorId || !recipientId) {
+        alert('Please choose two distinct collaborators to pair.');
+        return;
+      }
+      if (initiatorId === recipientId) {
+        alert('Person A and Person B cannot be the same person.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Dispatching Match...';
+
+      try {
+        const res = await apiRequest('/admin/matches/manual', {
+          method: 'POST',
+          body: JSON.stringify({ initiatorId, recipientId, curatorNotes, dispatchIntroEmail, topic })
+        });
+
+        if (res.ok) {
+          showAdminToast('Custom 1-on-1 match curated and introduction dispatched!', 'success');
+          closeManualPairModal();
+          loadMatches();
+          loadOverview();
+          loadAudit();
+        } else {
+          showAdminToast(res.message || 'Failed to curate match.', 'error');
+        }
+      } catch (err) {
+        showAdminToast(err.message || 'Network error creating match.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Dispatch 1-on-1 Introduction →';
+      }
+    };
+
+    // 4.4 Curator Single-Inquiry Introduction Modal
+    window.openCuratorIntroModal = function(matchId, reqName, reqEmail) {
+      document.getElementById('curatorIntroMatchId').value = matchId;
+      document.getElementById('curatorIntroTitle').textContent = `Introduce: ${reqName}`;
+      document.getElementById('curatorIntroParties').textContent = `Candidate: ${reqName} (${reqEmail})`;
+      document.getElementById('curatorIntroTopic').textContent = 'Curated 1-on-1 Introduction Dispatch';
+      document.getElementById('curatorIntroNoteInput').value = `Hi ${reqName} —\n\nI am following up on your collaboration submission on Canopy. I would love to connect you directly with a verified co-builder in your domain.\n\nLet's schedule a kickoff!`;
+      document.getElementById('curatorIntroModal').style.display = 'flex';
+    };
+
+    window.closeCuratorIntroModal = function() {
+      document.getElementById('curatorIntroModal').style.display = 'none';
+    };
+
+    window.confirmCuratorIntro = async function() {
+      const matchId = document.getElementById('curatorIntroMatchId').value;
+      const notes = document.getElementById('curatorIntroNoteInput').value.trim();
+      const btn = document.getElementById('btnConfirmCuratorIntro');
+
+      if (!matchId) return;
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+
+      try {
+        const res = await apiRequest(`/admin/matches/${matchId}/introduce`, {
+          method: 'POST',
+          body: JSON.stringify({ contextNotes: notes })
+        });
+
+        if (res.ok) {
+          showAdminToast('Manual introduction dispatched to collaborators!', 'success');
+          closeCuratorIntroModal();
+          loadMatches();
+          loadOverview();
+          loadAudit();
+        } else {
+          showAdminToast(res.message || 'Introduction dispatch failed.', 'error');
+        }
+      } catch (err) {
+        showAdminToast(err.message || 'Error sending introduction.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Dispatch Introduction Email →';
+      }
+    };
+
+    // 5. Build Calls Management    // 5. Build Calls Management
     window.__currentCalls = [];
 
     async function loadCalls() {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { matches: matchesRepo, profiles: profilesRepo, buildCalls: callsRepo, users: usersRepo } = require('../repositories');
+const { matches: matchesRepo, profiles: profilesRepo, buildCalls: callsRepo, users: usersRepo, auditEvents: auditRepo } = require('../repositories');
 const { requireAuth, optionalAuth } = require('../middleware/auth');
 const emailService = require('../services/email');
 
@@ -267,4 +267,68 @@ router.patch('/:id/decline', requireAuth, async (req, res) => {
   }
 });
 
+
+// POST /api/matches/intake — Guest "Request a Squad Match" Intake
+router.post('/intake', async (req, res) => {
+  try {
+    const { fullName, email, domain, role, projectDescription, coBuilderNeeded, skillsWanted } = req.body;
+    if (!fullName || !email || !projectDescription) {
+      return res.status(400).json({ error: 'Name, email, and project description are required.' });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Please provide a valid email address.' });
+    }
+
+    const intakeId = 'intake_' + Date.now();
+    const skillsList = Array.isArray(skillsWanted)
+      ? skillsWanted
+      : (typeof skillsWanted === 'string' ? skillsWanted.split(',').map(s => s.trim()).filter(Boolean) : []);
+
+    const matchRecord = {
+      id: intakeId,
+      userId: 'guest_' + email.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 24),
+      matchUserId: null,
+      status: 'pending_curation',
+      source: 'guest_squad_intake',
+      score: 82,
+      matchMetadata: {
+        isGuestIntake: true,
+        fullName: fullName.trim(),
+        email: email.trim().toLowerCase(),
+        domain: (domain || 'climate').toLowerCase(),
+        role: role || 'builder',
+        projectDescription: projectDescription.trim(),
+        coBuilderNeeded: (coBuilderNeeded || 'Technical Co-Builder').trim(),
+        skillsWanted: skillsList,
+        intentNote: `[Squad Match Intake] Seeking: ${coBuilderNeeded || 'Co-Builder'}. Building: ${projectDescription.trim()}`
+      },
+      createdAt: new Date().toISOString()
+    };
+
+    const saved = await matchesRepo.create(matchRecord);
+
+    if (auditRepo) {
+      await auditRepo.logEvent({
+        actorId: 'guest:' + email.trim().toLowerCase(),
+        actorRole: 'guest',
+        action: 'match.guest_intake_submitted',
+        targetType: 'match',
+        targetId: intakeId,
+        payload: { fullName, email, domain, coBuilderNeeded }
+      });
+    }
+
+    res.status(201).json({
+      success: true,
+      intake: saved,
+      message: 'Squad match request received! The Canopy curator will review your project and introduce matching co-builders.'
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to submit squad match intake.' });
+  }
+});
+
 module.exports = router;
+
