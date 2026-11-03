@@ -1,0 +1,677 @@
+{
+  "users": [],
+  "profiles": [],
+  "build_calls": [
+    {
+      "id": "call_1791919782765",
+      "creatorId": "usr_org_holder",
+      "createdBy": "usr_org_holder",
+      "title": "Automated Soil Microgrid Sensor Hub",
+      "orgName": "Canopy Agritech",
+      "organization": "Canopy Agritech",
+      "problemStatement": "Scope low-power telemetry for drought forecasting.",
+      "domain": "climate",
+      "targetDeliverable": "Open hardware soil moisture probe and live telemetry pipeline",
+      "targetOutcomes": [],
+      "pilotBudget": "$15,000 Deployment Grant",
+      "rewardPool": "$15,000 Deployment Grant",
+      "timeline": "2–4 weeks",
+      "contactChannel": "org@agritech.org",
+      "datasetAccessUrl": "https://data.example.org/soil-grid",
+      "neededSkills": [
+        "Firmware",
+        "Rust"
+      ],
+      "status": "open",
+      "moderationStatus": "approved",
+      "isIllustrative": false,
+      "createdAt": "2026-10-13T19:29:42.765Z",
+      "updatedAt": "2026-10-13T19:29:46.565Z"
+    },
+    {
+      "id": "call_groundwater",
+      "creatorId": "usr_canopy_illustrative",
+      "title": "Groundwater contamination sensor optical probe",
+      "orgName": "Community Hydrology Initiative (Illustrative)",
+      "problemStatement": "Illustrative Example: Build an optical sensor that flags chemical contamination in real time. This is a reference demonstration of a Canopy Build Call.",
+      "domain": "climate",
+      "targetDeliverable": "Open-source spectrophotometric probe schematic and telemetry firmware.",
+      "pilotBudget": "Sample deployment budget (demonstration only)",
+      "datasetAccessUrl": "https://data.canopy.internal/sets/gw-sensor-sample",
+      "neededSkills": [
+        "Hardware",
+        "Embedded C",
+        "Spectroscopy"
+      ],
+      "status": "illustrative_sample",
+      "isIllustrative": true,
+      "createdAt": "2026-08-20T10:00:00Z"
+    }
+  ],
+  "matches": [
+    {
+      "id": "mat_man_1791919845079",
+      "requesterId": "usr_founder_aarushi",
+      "recipientId": "usr_water_ngo",
+      "userId": "usr_founder_aarushi",
+      "matchUserId": "usr_water_ngo",
+      "buildCallId": null,
+      "callId": null,
+      "intentNote": "",
+      "proposedRole": "Collaborator",
+      "status": "connected",
+      "stage": "introduced",
+      "assignedCuratorId": "usr_founder_aarushi",
+      "curatorNotes": "Verified technical overlap in embedded telemetry. Introducing for 48-hr trial sprint.",
+      "internalFitScore": 85,
+      "score": 85,
+      "mutualConsent": true,
+      "revealedContact": null,
+      "matchMetadata": {
+        "intentNote": "",
+        "proposedRole": "Collaborator",
+        "revealedContact": null
+      },
+      "recipientConsentAt": null,
+      "requesterConsentAt": null,
+      "contactReleasedAt": null,
+      "contactReleasedBy": null,
+      "introductionSentAt": "2026-10-13T19:30:45.079Z",
+      "expiresAt": null,
+      "createdAt": "2026-10-13T19:30:45.079Z",
+      "updatedAt": "2026-10-13T19:30:45.079Z"
+    },
+    {
+      "id": "mtc_1791919790579",
+      "requesterId": "usr_1791919775469",
+      "recipientId": "usr_water_ngo",
+      "userId": "usr_1791919775469",
+      "matchUserId": "usr_water_ngo",
+      "buildCallId": null,
+      "callId": null,
+      "intentNote": "",
+      "proposedRole": "Collaborator",
+      "status": "pending",
+      "stage": "proposed",
+      "assignedCuratorId": null,
+      "curatorNotes": "",
+      "internalFitScore": 85,
+      "score": 85,
+      "mutualConsent": false,
+      "revealedContact": null,
+      "matchMetadata": {
+        "intentNote": "Excited to collaborate on the sensor pipeline.",
+        "proposedRole": "Collaborator",
+        "revealedContact": null
+      },
+      "recipientConsentAt": null,
+      "requesterConsentAt": null,
+      "contactReleasedAt": null,
+      "contactReleasedBy": null,
+      "introductionSentAt": null,
+      "expiresAt": null,
+      "createdAt": "2026-10-13T19:29:50.579Z",
+      "updatedAt": null
+    }
+  ],
+  "sprints": [
+    {
+      "id": "sp_groundwater_sample",
+      "buildCallId": "call_groundwater",
+      "title": "Groundwater optical probe calibration squad",
+      "description": "Illustrative Demonstration: Assembling optical probe enclosure, testing ADC response curves, and validating telemetry.",
+      "domain": "climate",
+      "stage": "forming",
+      "teamCapacity": 3,
+      "members": [
+        {
+          "userId": "usr_illustrative_1",
+          "squadRole": "Hardware Lead",
+          "displayName": "Field Engineer (Sample)",
+          "avatarSeed": "gw-1"
+        }
+      ],
+      "skillTags": [
+        "Climate",
+        "Hardware"
+      ],
+      "startDate": "2026-08-25",
+      "endDate": "2026-09-08",
+      "daysTotal": 14,
+      "daysLeft": 9,
+      "progressPct": 33,
+      "isIllustrative": true,
+      "statusHint": "Illustrative demonstration cycle",
+      "applications": [
+        {
+          "id": "app_sp_1791919792710",
+          "sprintId": "sp_groundwater_sample",
+          "sprintTitle": "Groundwater optical probe calibration squad",
+          "applicantId": "usr_1791919775469",
+          "applicantName": "Elena Test",
+          "applicantEmail": "builder.1791919774613@canopy.test",
+          "role": "Sensors Lead",
+          "note": "",
+          "skills": [
+            "Sensors Lead"
+          ],
+          "availability": "Full sprint (2–4 weeks)",
+          "portfolioUrl": "",
+          "status": "pending_review",
+          "isLocalGuest": false,
+          "createdAt": "2026-10-13T19:29:52.710Z"
+        }
+      ],
+      "updatedAt": "2026-10-13T19:29:52.893Z"
+    }
+  ],
+  "notebook_entries": [
+    {
+      "id": "entry_1791919793574",
+      "authorId": "usr_1791919775469",
+      "userId": "usr_1791919775469",
+      "authorName": "Elena Test",
+      "sprintId": null,
+      "parentEntryId": null,
+      "grownFromLabel": "Independent Field Note",
+      "title": "Sensor calibration under turbidity",
+      "content": "Validation passed cleanly.",
+      "bodyMarkdown": "Validation passed cleanly.",
+      "summarySnippet": "Validation passed cleanly.",
+      "teaser": "",
+      "domain": "climate",
+      "entryType": "post-mortem",
+      "tags": [],
+      "branches": [],
+      "moderationStatus": "approved",
+      "isPublic": true,
+      "isIllustrative": false,
+      "coverImageUrl": null,
+      "readingTimeMinutes": 1,
+      "viewCount": 1,
+      "isFeatured": false,
+      "isFounderPost": false,
+      "status": "published",
+      "createdAt": "2026-10-13T19:29:53.574Z",
+      "updatedAt": null
+    },
+    {
+      "id": "entry_groundwater_sample",
+      "authorId": "usr_illustrative_1",
+      "authorName": "Canopy Research Note (Sample)",
+      "sprintId": "sp_groundwater_sample",
+      "grownFromLabel": "grown from Sprint: Groundwater Sensor (Sample)",
+      "title": "Field calibration benchmarks under high turbidity (Illustrative)",
+      "domain": "climate",
+      "entryType": "post-mortem",
+      "summarySnippet": "Illustrative Sample: Baseline drift analysis during high sediment conditions with median window filtering.",
+      "teaser": "cal_curve.py → median_filter(raw_adc, window=5)",
+      "bodyMarkdown": "### Illustrative Demonstration Note\nThis note illustrates how Canopy teams publish candid teardowns and post-mortems after sprint cycles.\n\n### Finding\nSediment scattering produced analog drift; resolved with physical baffles and software filtering.",
+      "tags": [
+        "Climate",
+        "illustrative-sample"
+      ],
+      "isIllustrative": true,
+      "createdAt": "2026-09-02T10:00:00Z",
+      "branches": []
+    }
+  ],
+  "applications": [
+    {
+      "id": "app_1791919793763",
+      "fullName": "Dr. Jane Vance",
+      "email": "jane.vance@ecology.org",
+      "role": "problem_holder",
+      "domain": "climate",
+      "proofOfWorkLink": "",
+      "motivationNote": "Field testing coastal salinity data.",
+      "coverNote": "Field testing coastal salinity data.",
+      "status": "approved",
+      "reviewerNotes": "Welcome to the cohort!",
+      "reviewedBy": "usr_founder_key",
+      "reviewedAt": "2026-11-03T04:47:09.211Z",
+      "callId": null,
+      "builderId": null,
+      "appliedAt": "2026-10-13T19:29:53.763Z",
+      "submittedAt": "2026-10-13T19:29:53.763Z",
+      "createdAt": "2026-10-13T19:29:53.763Z",
+      "updatedAt": "2026-11-03T04:47:09.212Z"
+    }
+  ],
+  "moderation_queue": [
+    {
+      "id": "mod_1791919793943",
+      "entityType": "application",
+      "entityId": "app_1791919793763",
+      "status": "pending",
+      "flaggedReason": "application_intake",
+      "submittedBy": null,
+      "reviewedBy": null,
+      "decisionNote": null,
+      "createdAt": "2026-10-13T19:29:53.943Z",
+      "reviewedAt": null
+    },
+    {
+      "id": "mod_1791919782961",
+      "entityType": "build_call",
+      "entityId": "call_1791919782765",
+      "status": "approved",
+      "flaggedReason": "new_submission",
+      "submittedBy": "usr_org_holder",
+      "reviewedBy": "usr_mod",
+      "decisionNote": "Verified problem holder identity and pilot budget allocation.",
+      "createdAt": "2026-10-13T19:29:42.961Z",
+      "reviewedAt": "2026-10-13T19:29:46.060Z",
+      "updatedAt": "2026-10-13T19:29:46.748Z"
+    }
+  ],
+  "audit_events": [
+    {
+      "id": "aud_1793681229768_j9z9k",
+      "eventType": "application.approved",
+      "actorId": "usr_founder_key",
+      "actorRole": "owner",
+      "targetEntityType": "application",
+      "targetEntityId": "app_1791919793763",
+      "payload": {
+        "status": "approved",
+        "note": "Welcome to the cohort!",
+        "applicantEmail": "jane.vance@ecology.org"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-11-03T04:47:09.768Z"
+    },
+    {
+      "id": "aud_1793680954341_n9sz2",
+      "eventType": "application.approved",
+      "actorId": "usr_founder_key",
+      "actorRole": "owner",
+      "targetEntityType": "application",
+      "targetEntityId": "app_1791919793763",
+      "payload": {
+        "status": "approved",
+        "note": "Welcome to the cohort!",
+        "applicantEmail": "jane.vance@ecology.org"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-11-03T04:42:34.341Z"
+    },
+    {
+      "id": "aud_1793680853719_1gcky",
+      "eventType": "application.approved",
+      "actorId": "usr_founder_key",
+      "actorRole": "owner",
+      "targetEntityType": "application",
+      "targetEntityId": "app_1791919793763",
+      "payload": {
+        "status": "approved",
+        "note": "Welcome to the cohort!",
+        "applicantEmail": "jane.vance@ecology.org"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-11-03T04:40:53.719Z"
+    },
+    {
+      "id": "aud_1791919859576_wmvv0",
+      "eventType": "notebook.deleted_by_staff",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "notebook_entry",
+      "targetEntityId": "entry_1791919848655",
+      "payload": {
+        "title": "Decentralized Microgrid Frequency Drift Calibration",
+        "entryType": "article"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:59.576Z"
+    },
+    {
+      "id": "aud_1791919854803_ieg9k",
+      "eventType": "notebook.updated_by_staff",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "notebook_entry",
+      "targetEntityId": "entry_1791919848655",
+      "payload": {
+        "updates": [
+          "readingTimeMinutes",
+          "summarySnippet",
+          "updatedAt"
+        ]
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:54.803Z"
+    },
+    {
+      "id": "aud_1791919848873_bkho4",
+      "eventType": "notebook.created_by_staff",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "notebook_entry",
+      "targetEntityId": "entry_1791919848655",
+      "payload": {
+        "title": "Decentralized Microgrid Frequency Drift Calibration",
+        "domain": "climate",
+        "entryType": "article",
+        "isFounderPost": true
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:48.873Z"
+    },
+    {
+      "id": "aud_1791919845811_zc74k",
+      "eventType": "match.manual_curated",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "match",
+      "targetEntityId": "mat_man_1791919845079",
+      "payload": {
+        "initiatorId": "usr_founder_aarushi",
+        "recipientId": "usr_water_ngo"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:45.811Z"
+    },
+    {
+      "id": "aud_1791919841053_g4v66",
+      "eventType": "settings.updated",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "platform_setting",
+      "targetEntityId": "listing_limits",
+      "payload": {
+        "key": "listing_limits",
+        "value": {
+          "calls": 25,
+          "sprints": 15,
+          "notebook": 30
+        }
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:41.054Z"
+    },
+    {
+      "id": "aud_1791919835291_t24p2",
+      "eventType": "build_call.deleted_by_staff",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "build_call",
+      "targetEntityId": "call_1791919826242",
+      "payload": {
+        "title": "Decentralized Grid Frequency Sensor",
+        "domain": "energy"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:35.291Z"
+    },
+    {
+      "id": "aud_1791919832111_5niqs",
+      "eventType": "build_call.updated_by_staff",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "build_call",
+      "targetEntityId": "call_1791919826242",
+      "payload": {
+        "updates": [
+          "status",
+          "timeline",
+          "updatedAt"
+        ]
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:32.111Z"
+    },
+    {
+      "id": "aud_1791919826528_fmx1r",
+      "eventType": "build_call.created_by_staff",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "build_call",
+      "targetEntityId": "call_1791919826242",
+      "payload": {
+        "title": "Decentralized Grid Frequency Sensor",
+        "domain": "energy",
+        "status": "open"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:26.528Z"
+    },
+    {
+      "id": "aud_1791919823392_5t50b",
+      "eventType": "content.deleted_by_staff",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "content_item",
+      "targetEntityId": "cnt_1791919816199",
+      "payload": {
+        "contentKey": "call_solar_microgrid",
+        "title": "Decentralized Microgrid Telemetry"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:23.392Z"
+    },
+    {
+      "id": "aud_1791919819804_xlelq",
+      "eventType": "content.published",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "content_item",
+      "targetEntityId": "cnt_1791919816199",
+      "payload": {
+        "contentKey": "call_solar_microgrid",
+        "version": 2
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:19.804Z"
+    },
+    {
+      "id": "aud_1791919816421_vhyno",
+      "eventType": "content.draft_created",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "content_item",
+      "targetEntityId": "cnt_1791919816199",
+      "payload": {
+        "contentKey": "call_solar_microgrid"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:16.421Z"
+    },
+    {
+      "id": "aud_1791919813813_p6jym",
+      "eventType": "content.media_uploaded",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "media",
+      "targetEntityId": "content/1791919813612_sensor-diagram.png",
+      "payload": {
+        "mimeType": "image/png",
+        "sizeBytes": 70,
+        "provider": "local"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:13.813Z"
+    },
+    {
+      "id": "aud_1791919809014_ris2t",
+      "eventType": "role.grant",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "registered_user",
+      "targetEntityType": "user",
+      "targetEntityId": "usr_1791919775469",
+      "payload": {
+        "role": "approved_builder",
+        "targetEmail": "builder.1791919774613@canopy.test"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:30:09.014Z"
+    },
+    {
+      "id": "aud_1791919794949_1yzxo",
+      "eventType": "founder.bootstrap_granted",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "owner",
+      "targetEntityType": "user_roles",
+      "targetEntityId": "usr_founder_aarushi",
+      "payload": {
+        "role": "owner",
+        "email": "canopy.connect.collaborate@gmail.com"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:29:54.949Z"
+    },
+    {
+      "id": "aud_1791919786750_fvrtw",
+      "eventType": "moderation.approve",
+      "actorId": "usr_mod",
+      "actorRole": "moderator",
+      "targetEntityType": "build_call",
+      "targetEntityId": "call_1791919782765",
+      "payload": {
+        "note": "Verified problem holder identity and pilot budget allocation.",
+        "action": "approve"
+      },
+      "ipAddress": "::1",
+      "createdAt": "2026-10-13T19:29:46.751Z"
+    },
+    {
+      "id": "aud_1791919783518_6qf41",
+      "eventType": "build_call.submitted",
+      "actorId": "usr_org_holder",
+      "actorRole": "problem_holder",
+      "targetEntityType": "build_call",
+      "targetEntityId": "call_1791919782765",
+      "payload": {
+        "title": "Automated Soil Microgrid Sensor Hub",
+        "domain": "climate"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-10-13T19:29:43.518Z"
+    }
+  ],
+  "user_roles": [
+    {
+      "id": "rol_1791919794752_19r7",
+      "userId": "usr_founder_aarushi",
+      "role": "owner",
+      "grantedBy": "system_founder_bootstrap",
+      "grantedAt": "2026-10-13T19:29:54.752Z"
+    }
+  ],
+  "content_items": [
+    {
+      "id": "cnt_hero_headline",
+      "contentKey": "home.hero.headline",
+      "contentType": "statement",
+      "title": "Home Hero Headline",
+      "body": "Where Capable People Build What Matters.",
+      "summary": "Main landing page bold mission headline",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 1,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_hero_subheadline",
+      "contentKey": "home.hero.subheadline",
+      "contentType": "statement",
+      "title": "Home Hero Subheadline",
+      "body": "Canopy connects engineers, researchers, and field specialists to scope, staff, and ship open climate & civic hardware and software.",
+      "summary": "Landing page secondary explanation copy",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 2,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_beta_announcement",
+      "contentKey": "home.private_beta_banner",
+      "contentType": "announcement",
+      "title": "Private Beta Announcement Banner",
+      "body": "🌱 Private Beta Open: Cohort 1 submissions are being reviewed on a rolling basis.",
+      "summary": "Banner appearing across all marketing headers",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 3,
+      "version": 1,
+      "publishedAt": "2026-08-15T00:00:00Z",
+      "createdAt": "2026-08-15T00:00:00Z"
+    },
+    {
+      "id": "cnt_founder_quote",
+      "contentKey": "home.founder_quote",
+      "contentType": "statement",
+      "title": "Founder Perspective Quote",
+      "body": "The talent is there. The problems are there. What is missing is the scaffold that turns good intentions into shipped reality.",
+      "summary": "Quote attributed to founder Aarushi Chatterjee",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": false,
+      "sortOrder": 4,
+      "version": 1,
+      "publishedAt": "2026-08-01T00:00:00Z",
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "cnt_gw_notice",
+      "contentKey": "match.illustrative_example",
+      "contentType": "example_notice",
+      "title": "Illustrative Example Notice",
+      "body": "Illustrative Example — This workspace demonstrates how Canopy works. It is not a live opportunity and is not accepting applications.",
+      "summary": "Disclaimer badge on illustrative product loop demo",
+      "status": "published",
+      "visibility": "public",
+      "isIllustrative": true,
+      "sortOrder": 5,
+      "version": 1,
+      "publishedAt": "2026-08-20T00:00:00Z",
+      "createdAt": "2026-08-20T00:00:00Z"
+    }
+  ],
+  "platform_settings": [
+    {
+      "key": "listing_limits",
+      "value": {
+        "calls": 25,
+        "sprints": 15,
+        "notebook": 30
+      },
+      "description": "Default card pagination and listing limits for public directories",
+      "updatedBy": "canopy.connect.collaborate@gmail.com",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "updatedAt": "2026-10-13T19:30:41.045Z"
+    },
+    {
+      "key": "feature_flags",
+      "value": {
+        "allowPublicNotebookPublishing": true,
+        "showIllustrativeItems": true,
+        "requireModerationForCalls": true
+      },
+      "description": "Platform operational feature flags and moderation controls",
+      "updatedBy": "system_bootstrap",
+      "createdAt": "2026-08-01T00:00:00Z",
+      "updatedAt": "2026-08-01T00:00:00Z"
+    }
+  ],
+  "announcements": [
+    {
+      "id": "anc_welcome",
+      "title": "Welcome to Canopy Private Beta",
+      "message": "Applications for Spring 2026 Sprint Cycles in Climate, Grid, and Sensing are actively being reviewed.",
+      "type": "announcement",
+      "targetAudience": "all",
+      "url": "sprint.html",
+      "status": "published",
+      "createdAt": "2026-10-15T00:00:00.000Z",
+      "author": "founder@canopy"
+    }
+  ]
+}

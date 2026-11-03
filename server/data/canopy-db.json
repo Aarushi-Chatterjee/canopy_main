@@ -267,6 +267,67 @@
   ],
   "audit_events": [
     {
+      "id": "aud_1793683675814_0mb2z",
+      "eventType": "sprint.deleted",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "owner",
+      "targetEntityType": "sprint",
+      "targetEntityId": "sprint_mw08y5xd",
+      "payload": {
+        "title": "Aquifer Salinity Spectral Map Squad"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-11-03T05:27:55.814Z"
+    },
+    {
+      "id": "aud_1793683675794_ehtmi",
+      "eventType": "sprint.updated",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "owner",
+      "targetEntityType": "sprint",
+      "targetEntityId": "sprint_mw08y5xd",
+      "payload": {
+        "stage": "building",
+        "updatedAt": "2026-11-03T05:27:55.792Z"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-11-03T05:27:55.794Z"
+    },
+    {
+      "id": "aud_1793683675780_kkbzt",
+      "eventType": "sprint.created",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "owner",
+      "targetEntityType": "sprint",
+      "targetEntityId": "sprint_mw08y5xd",
+      "payload": {
+        "title": "Aquifer Salinity Spectral Map Squad",
+        "domain": "climate",
+        "stage": "forming"
+      },
+      "ipAddress": null,
+      "createdAt": "2026-11-03T05:27:55.780Z"
+    },
+    {
+      "id": "aud_1793683675016_ayk42",
+      "eventType": "sprint.cycle_updated",
+      "actorId": "usr_founder_aarushi",
+      "actorRole": "owner",
+      "targetEntityType": "sprint_cycle",
+      "targetEntityId": "sprint_cycle",
+      "payload": {
+        "cycleName": "Decentralized Sensing Sprint - Cycle 4",
+        "cycleTag": "Cycle 4 • Advanced Sensing",
+        "targetDeadline": "2026-11-18T05:27:54.936Z",
+        "totalDurationDays": 21,
+        "status": "active",
+        "activeSquadsCount": 5,
+        "daysToJoinForming": 3
+      },
+      "ipAddress": null,
+      "createdAt": "2026-11-03T05:27:55.016Z"
+    },
+    {
       "id": "aud_1793681229768_j9z9k",
       "eventType": "application.approved",
       "actorId": "usr_founder_key",
@@ -636,6 +697,22 @@
     }
   ],
   "platform_settings": [
+    {
+      "key": "sprint_cycle",
+      "value": {
+        "cycleName": "Decentralized Sensing Sprint - Cycle 4",
+        "cycleTag": "Cycle 4 • Advanced Sensing",
+        "targetDeadline": "2026-11-18T05:27:54.936Z",
+        "totalDurationDays": 21,
+        "status": "active",
+        "activeSquadsCount": 5,
+        "daysToJoinForming": 3
+      },
+      "description": "Live sprint cycle countdown parameters and display configuration",
+      "updatedBy": "aarushichatterjee27@gmail.com",
+      "createdAt": "2026-11-03T05:27:55.011Z",
+      "updatedAt": "2026-11-03T05:27:55.011Z"
+    },
     {
       "key": "listing_limits",
       "value": {

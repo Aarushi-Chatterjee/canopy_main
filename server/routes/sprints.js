@@ -1,7 +1,44 @@
 const express = require('express');
 const router = express.Router();
-const { sprints: sprintsRepo, buildCalls: callsRepo } = require('../repositories');
+const { sprints: sprintsRepo, buildCalls: callsRepo, platformSettings: settingsRepo, auditEvents: auditRepo } = require('../repositories');
 const { requireAuth, optionalAuth } = require('../middleware/auth');
+
+// GET /api/sprints/cycle - Live Sprint Cycle Settings & Countdown Sync
+router.get('/cycle', async (req, res) => {
+  try {
+    const cycleSetting = await settingsRepo.findById('sprint_cycle');
+    const cycle = cycleSetting?.value || {
+      cycleName: 'Groundwater Sensor Sprint - Cycle 3',
+      cycleTag: 'Cycle 3 • Groundwater Sensor',
+      status: 'active',
+      targetDeadline: new Date(Date.now() + (12 * 86400 + 14 * 3600 + 16 * 60) * 1000).toISOString(),
+      totalDurationDays: 21,
+      activeSquadsCount: 5,
+      daysToJoinForming: 3
+    };
+
+    const targetTime = new Date(cycle.targetDeadline).getTime();
+    const now = Date.now();
+    const remainingMs = Math.max(0, targetTime - now);
+    const daysLeft = Math.floor(remainingMs / (86400 * 1000));
+    const hoursLeft = Math.floor((remainingMs % (86400 * 1000)) / (3600 * 1000));
+    const minutesLeft = Math.floor((remainingMs % (3600 * 1000)) / (60 * 1000));
+    const secondsLeft = Math.floor((remainingMs % (60 * 1000)) / 1000);
+
+    res.json({
+      success: true,
+      cycle,
+      targetTime,
+      remainingMs,
+      daysLeft,
+      hoursLeft,
+      minutesLeft,
+      secondsLeft
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'Failed to get sprint cycle.' });
+  }
+});
 
 // GET /api/sprints
 router.get('/', async (req, res) => {
@@ -251,6 +288,16 @@ router.post('/:id/join', optionalAuth, async (req, res) => {
       { applications: updatedApps },
       { eq: { id: req.params.id } }
     );
+
+    await auditRepo.logEvent({
+      actorId: userId,
+      actorRole: req.user?.role || 'builder',
+      action: 'sprint.application_submitted',
+      targetType: 'sprint',
+      targetId: sprint.id,
+      payload: { squadTitle: sprint.title, applicantName: displayName, role: squadRole },
+      ip: req.ip || req.connection?.remoteAddress
+    }).catch(e => console.warn('[AUDIT:WARN]', e.message));
 
     res.status(201).json({
       application: newApplication,

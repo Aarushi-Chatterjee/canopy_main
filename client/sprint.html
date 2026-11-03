@@ -1520,6 +1520,36 @@
     var radius = 52;
     var circumference = 2 * Math.PI * radius; // ~326.72
 
+    // Real-time synchronization with Founder Console cycle settings
+    try {
+      fetch('/api/sprints/cycle')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data && data.success && data.cycle) {
+            if (data.cycle.targetDeadline) {
+              var sTarget = new Date(data.cycle.targetDeadline).getTime();
+              if (!isNaN(sTarget)) {
+                targetTime = sTarget;
+                try { localStorage.setItem(STORAGE_KEY, targetTime.toString()); } catch(e) {}
+              }
+            }
+            if (data.cycle.totalDurationDays) {
+              totalCycleMs = data.cycle.totalDurationDays * 86400 * 1000;
+            }
+            var cycleTagEl = document.querySelector('.shw-cycle-tag');
+            if (cycleTagEl && data.cycle.cycleTag) {
+              cycleTagEl.textContent = data.cycle.cycleTag;
+            }
+            var cycleBadgeEl = document.querySelector('.shw-badge');
+            if (cycleBadgeEl && data.cycle.status) {
+              cycleBadgeEl.textContent = data.cycle.status === 'active' ? 'Active Cycle Running' : (data.cycle.status === 'forming' ? 'Forming Stage' : 'Cycle Complete');
+            }
+            update();
+          }
+        })
+        .catch(function() {});
+    } catch(err) {}
+
     function update() {
       var now = Date.now();
       var remaining = Math.max(0, targetTime - now);

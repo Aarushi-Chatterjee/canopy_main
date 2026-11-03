@@ -356,6 +356,7 @@
         <div class="admin-nav-item" data-tab="users"><span class="admin-nav-icon">👥</span> User Access &amp; Roles</div>
         <div class="admin-nav-item" data-tab="matching"><span class="admin-nav-icon">🤝</span> Manual Matching</div>
         <div class="admin-nav-item" data-tab="calls"><span class="admin-nav-icon">🌱</span> Build Calls</div>
+        <div class="admin-nav-item" data-tab="sprints"><span class="admin-nav-icon">⏱️</span> Sprints &amp; Cycles</div>
         <div class="admin-nav-item" data-tab="content"><span class="admin-nav-icon">🎨</span> Content Studio</div>
         <div class="admin-nav-item" data-tab="notebook"><span class="admin-nav-icon">📖</span> Lab Notebook &amp; Blog</div>
         <div class="admin-nav-item" data-tab="broadcast"><span class="admin-nav-icon">📢</span> Platform Broadcasts</div>
@@ -635,6 +636,96 @@
       </section>
 
       <!-- 6. CONTENT STUDIO TAB -->
+      
+      <!-- 5b. SPRINTS & CYCLES CONTROL ROOM -->
+      <section id="tab-sprints" class="admin-tab-pane" style="display: none;">
+        <div class="admin-header">
+          <div>
+            <h1 class="admin-title">Sprints &amp; Cycles Control Room</h1>
+            <p class="admin-subtitle">Directly manage recurring cycle deadlines, synchronized countdown clocks, and active squads across the platform.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openCreateSquadModal()">+ Create New Squad</button>
+        </div>
+
+        <!-- Live Cycle Countdown Controller -->
+        <div class="admin-card" style="margin-bottom: 24px; border: 1px solid #1e3a24; background: #0c160e;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+              <h3 style="margin: 0; color: #4ade80; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                <span>⏱️</span> Live Sprint Cycle &amp; Countdown Target
+              </h3>
+              <p style="margin: 4px 0 0; font-size: 13px; color: #94a3b8;">Drives the live countdown widget, cycle badge, and active progress on the Sprint page without touching code.</p>
+            </div>
+            <span id="cycleLiveStatusBadge" class="badge badge-green">ACTIVE CYCLE RUNNING</span>
+          </div>
+
+          <form id="cycleConfigForm" onsubmit="saveSprintCycle(event)">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 16px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Active Cycle Name</label>
+                <input type="text" id="cycleNameInput" class="form-input" placeholder="e.g. Groundwater Sensor Sprint - Cycle 3" required>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Cycle Display Tag</label>
+                <input type="text" id="cycleTagInput" class="form-input" placeholder="e.g. Cycle 3 • Groundwater Sensor" required>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Countdown Target Deadline</label>
+                <input type="datetime-local" id="cycleDeadlineInput" class="form-input" required>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Total Duration (Days)</label>
+                <input type="number" id="cycleDurationInput" class="form-input" min="1" max="90" value="21" required>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Cycle Status</label>
+                <select id="cycleStatusSelect" class="form-select">
+                  <option value="active">Active Cycle Running</option>
+                  <option value="forming">Forming Stage</option>
+                  <option value="completed">Cycle Completed</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Days to Join Forming Squad</label>
+                <input type="number" id="cycleDaysToJoinInput" class="form-input" min="1" max="30" value="3" required>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 12px; align-items: center;">
+              <span id="cycleCalculatedHint" style="font-size: 12px; color: #64748b; font-family: monospace;"></span>
+              <button type="submit" id="saveCycleBtn" class="btn btn-primary">Save Cycle &amp; Sync Clocks</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Active Squads Table -->
+        <div class="admin-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <div class="admin-card-title" style="margin-bottom: 0;">Community Working Squads</div>
+            <div id="squadFilterBar" style="display: flex; gap: 8px;">
+              <button type="button" class="btn btn-secondary active-filter" style="padding: 4px 10px; font-size: 11px;" onclick="filterSquads('all')">All (<span id="countSquadsAll">0</span>)</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterSquads('building')">Building (<span id="countSquadsBuilding">0</span>)</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterSquads('forming')">Forming (<span id="countSquadsForming">0</span>)</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterSquads('shipped')">Shipped (<span id="countSquadsShipped">0</span>)</button>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Squad Name &amp; Problem</th>
+                <th>Domain</th>
+                <th>Stage</th>
+                <th>Capacity &amp; Builders</th>
+                <th>Deliverable</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="squadsTableBody">
+              <tr><td colspan="6" style="text-align: center; color: #64748b;">Loading squads...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section id="tab-content" class="admin-tab-pane" style="display: none;">
         <div class="admin-header">
           <div>
@@ -957,21 +1048,121 @@
           </div>
         </div>
         <div class="admin-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <div id="auditFilterBar" style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-secondary active-filter" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('all')">All Events</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('application')">Applications</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('call')">Build Calls</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('sprint')">Sprints &amp; Clocks</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('broadcast')">Broadcasts</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('notebook')">Notebook</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('role')">Roles</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('settings')">Settings</button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span id="auditCountTotal" style="font-size: 12px; color: #94a3b8; font-family: monospace;">0 total events</span>
+              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="loadAudit()">↻ Refresh</button>
+            </div>
+          </div>
           <table class="data-table">
             <thead>
               <tr>
-                <th>Timestamp</th>
-                <th>Action</th>
-                <th>Actor</th>
-                <th>Target</th>
+                <th style="width: 160px;">Date &amp; Time</th>
+                <th style="width: 170px;">Event Action</th>
+                <th style="width: 160px;">Actor Identity</th>
+                <th style="width: 210px;">Target Resource</th>
+                <th>Details &amp; Metadata</th>
               </tr>
             </thead>
             <tbody id="auditTableBody">
-              <tr><td colspan="4" style="text-align: center; color: #64748b;">Loading audit events...</td></tr>
+              <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading audit events...</td></tr>
             </tbody>
           </table>
         </div>
       </section>
+    
+    <!-- Squad Create / Edit Modal -->
+    <div id="squadModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
+      <div style="background: #0f1710; border: 1px solid #1c2e1f; border-radius: 12px; max-width: 580px; width: 100%; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+          <h3 id="squadModalTitle" style="margin: 0; color: #f1f5f9; font-size: 1.2rem;">Create Sprint Squad</h3>
+          <button class="modal-close" onclick="closeSquadModal()" style="background: none; border: none; color: #64748b; font-size: 20px; cursor: pointer;">&times;</button>
+        </div>
+        <form onsubmit="saveSquad(event)">
+          <input type="hidden" id="squadEditId">
+          <div class="form-group">
+            <label class="form-label">Squad Title</label>
+            <input type="text" id="squadTitleInput" class="form-input" placeholder="e.g. Groundwater Optical Probe Telemetry Squad" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Domain</label>
+              <select id="squadDomainSelect" class="form-select">
+                <option value="climate">Climate</option>
+                <option value="civic">Civic Tech</option>
+                <option value="education">Education</option>
+                <option value="forestry">Forestry</option>
+                <option value="grid">Grid / Energy</option>
+                <option value="ai">AI &amp; Sensing</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Stage</label>
+              <select id="squadStageSelect" class="form-select">
+                <option value="forming">Forming Squad</option>
+                <option value="building">Building • Cycle Active</option>
+                <option value="shipped">Shipped Prototype</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Problem Statement</label>
+            <textarea id="squadProblemInput" class="form-textarea" rows="2" placeholder="Brief technical summary of the challenge..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Target Deliverable</label>
+            <input type="text" id="squadDeliverableInput" class="form-input" placeholder="e.g. Field-ready board design, firmware, and calibration documentation" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Team Capacity (Max Builders)</label>
+              <input type="number" id="squadCapacityInput" class="form-input" min="1" max="10" value="3" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Skill Tags (comma-separated)</label>
+              <input type="text" id="squadSkillsInput" class="form-input" placeholder="e.g. Embedded C, DSP, Hydrology">
+            </div>
+          </div>
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+            <button type="button" class="btn btn-secondary" onclick="closeSquadModal()">Cancel</button>
+            <button type="submit" id="saveSquadBtn" class="btn btn-primary">Save Squad</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Build Call Reject Modal -->
+    <div id="callReviewModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
+      <div style="background: #0f1710; border: 1px solid #1c2e1f; border-radius: 12px; max-width: 500px; width: 100%; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+          <div>
+            <h3 id="callReviewModalTitle" style="margin: 0; color: #f1f5f9; font-size: 1.2rem;">Decline Build Call</h3>
+            <p style="margin: 4px 0 0; font-size: 13px; color: #94a3b8;">Provide optional curator feedback for the submission author.</p>
+          </div>
+          <button class="modal-close" onclick="closeCallReviewModal()" style="background: none; border: none; color: #64748b; font-size: 20px; cursor: pointer;">&times;</button>
+        </div>
+        <input type="hidden" id="callReviewTargetId">
+        <div class="form-group">
+          <label class="form-label">Curator Reason / Note</label>
+          <textarea id="callReviewNoteInput" class="form-textarea" rows="3" placeholder="e.g. Does not meet technical deliverable clarity requirements..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="closeCallReviewModal()">Cancel</button>
+          <button type="button" class="btn btn-danger" onclick="submitCallReview('reject')">Confirm Decline</button>
+        </div>
+      </div>
+    </div>
+
     <!-- In-Page Application Review Modal (Replaces browser prompt) -->
     <div id="appReviewModal" class="admin-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
       <div style="background: #0f1710; border: 1px solid #1c2e1f; border-radius: 12px; max-width: 500px; width: 100%; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box;">
@@ -1094,6 +1285,7 @@
         loadNotebookPosts();
         loadSettings();
         loadBroadcasts();
+        loadSprints();
         loadAudit();
       } catch (err) {
         gateTitle.textContent = 'Verification Error';
@@ -1378,7 +1570,10 @@
           <td>
             <div style="display:flex;gap:4px;flex-wrap:wrap;">
               <button class="btn btn-secondary" style="padding:4px 8px;font-size:11px;" onclick="openEditCallModal('${c.id}')">Edit</button>
-              ${c.status !== 'open' ? `<button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="approveCall('${c.id}')">Approve</button>` : ''}
+              ${c.status !== 'open' ? `
+                <button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="approveCall('${c.id}')">Approve</button>
+                <button class="btn btn-danger" style="padding:4px 8px;font-size:11px;background:rgba(239,68,68,0.2);color:#ef4444;border-color:rgba(239,68,68,0.4);" onclick="openRejectCallModal('${c.id}')">Decline</button>
+              ` : ''}
               <button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteCall('${c.id}', '${escapeHtml(c.title)}')">Delete</button>
             </div>
           </td>
@@ -1461,11 +1656,13 @@
         : await apiRequest('/admin/calls', { method: 'POST', body: JSON.stringify(payload) });
 
       if (res.ok) {
+        showAdminToast('Build Call saved successfully!', 'success');
         closeCallModal();
         loadCalls();
         loadOverview();
+        loadAudit();
       } else {
-        alert(res.message || 'Saving Build Call failed.');
+        showAdminToast(res.message || 'Saving Build Call failed.', 'error');
       }
     };
 
@@ -1475,26 +1672,312 @@
       }
       const res = await apiRequest(`/admin/calls/${id}`, { method: 'DELETE' });
       if (res.ok) {
+        showAdminToast(`Build Call "${title}" deleted.`, 'success');
         loadCalls();
         loadOverview();
         loadAudit();
       } else {
-        alert(res.message || 'Deletion failed.');
+        showAdminToast(res.message || 'Deletion failed.', 'error');
       }
     };
 
+
     window.approveCall = async function(id) {
-      const res = await apiRequest('/moderation/review', {
+      const res = await apiRequest(`/admin/calls/${id}/review`, {
         method: 'POST',
-        body: JSON.stringify({ entityType: 'build_call', entityId: id, action: 'approve' })
+        body: JSON.stringify({ action: 'approve' })
       });
       if (res.ok) {
+        showAdminToast(res.message || 'Build Call approved and published live!', 'success');
         loadCalls();
         loadOverview();
+        loadAudit();
       } else {
-        alert(res.message || 'Moderation action failed.');
+        showAdminToast(res.message || 'Moderation action failed.', 'error');
       }
     };
+
+    window.openRejectCallModal = function(id) {
+      document.getElementById('callReviewTargetId').value = id;
+      document.getElementById('callReviewNoteInput').value = '';
+      document.getElementById('callReviewModal').style.display = 'flex';
+    };
+
+    window.closeCallReviewModal = function() {
+      document.getElementById('callReviewModal').style.display = 'none';
+      document.getElementById('callReviewTargetId').value = '';
+    };
+
+    window.submitCallReview = async function(action) {
+      const id = document.getElementById('callReviewTargetId').value;
+      const note = document.getElementById('callReviewNoteInput').value.trim();
+      closeCallReviewModal();
+
+      const res = await apiRequest(`/admin/calls/${id}/review`, {
+        method: 'POST',
+        body: JSON.stringify({ action, note })
+      });
+
+      if (res.ok) {
+        showAdminToast(res.message || `Build Call ${action}ed!`, 'success');
+        loadCalls();
+        loadOverview();
+        loadAudit();
+      } else {
+        showAdminToast(res.message || 'Action failed.', 'error');
+      }
+    };
+
+
+    // ==============================================================
+    // 5b. Sprints & Cycles Control Room
+    // ==============================================================
+    window.__sprintsList = [];
+    window.__sprintCycle = null;
+    window.__currentSquadFilter = 'all';
+
+    async function loadSprints() {
+      const res = await apiRequest('/admin/sprints');
+      if (!res.ok) return;
+      const { sprints, cycle } = res.data || {};
+      window.__sprintsList = sprints || [];
+      window.__sprintCycle = cycle || null;
+
+      const metricEl = document.getElementById('metricSprints');
+      if (metricEl) metricEl.textContent = (sprints || []).length;
+
+      if (cycle) {
+        const nameEl = document.getElementById('cycleNameInput');
+        if (nameEl) nameEl.value = cycle.cycleName || '';
+        const tagEl = document.getElementById('cycleTagInput');
+        if (tagEl) tagEl.value = cycle.cycleTag || '';
+        if (cycle.targetDeadline) {
+          try {
+            const d = new Date(cycle.targetDeadline);
+            const pad = n => String(n).padStart(2, '0');
+            const localIso = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+            const deadEl = document.getElementById('cycleDeadlineInput');
+            if (deadEl) deadEl.value = localIso;
+          } catch(e) {}
+        }
+        const durEl = document.getElementById('cycleDurationInput');
+        if (durEl) durEl.value = cycle.totalDurationDays || 21;
+        const statEl = document.getElementById('cycleStatusSelect');
+        if (statEl) statEl.value = cycle.status || 'active';
+        const daysEl = document.getElementById('cycleDaysToJoinInput');
+        if (daysEl) daysEl.value = cycle.daysToJoinForming || 3;
+
+        const badge = document.getElementById('cycleLiveStatusBadge');
+        if (badge) {
+          badge.textContent = cycle.status === 'active' ? 'ACTIVE CYCLE RUNNING' : (cycle.status === 'forming' ? 'FORMING STAGE' : 'CYCLE COMPLETED');
+          badge.className = `badge ${cycle.status === 'active' ? 'badge-green' : (cycle.status === 'forming' ? 'badge-amber' : 'badge-blue')}`;
+        }
+
+        if (cycle.targetDeadline) {
+          const rem = Math.max(0, new Date(cycle.targetDeadline).getTime() - Date.now());
+          const dLeft = Math.floor(rem / 86400000);
+          const hLeft = Math.floor((rem % 86400000) / 3600000);
+          const hint = document.getElementById('cycleCalculatedHint');
+          if (hint) hint.textContent = `${dLeft}d ${hLeft}h remaining until cycle deadline`;
+        }
+      }
+
+      renderSquadsTable();
+    }
+
+    function renderSquadsTable() {
+      const tbody = document.getElementById('squadsTableBody');
+      if (!tbody) return;
+      const list = window.__sprintsList || [];
+
+      const countAll = document.getElementById('countSquadsAll');
+      const countBuilding = document.getElementById('countSquadsBuilding');
+      const countForming = document.getElementById('countSquadsForming');
+      const countShipped = document.getElementById('countSquadsShipped');
+      if (countAll) countAll.textContent = list.length;
+      if (countBuilding) countBuilding.textContent = list.filter(s => s.stage === 'building' || s.stage === 'in_sprint').length;
+      if (countForming) countForming.textContent = list.filter(s => s.stage === 'forming').length;
+      if (countShipped) countShipped.textContent = list.filter(s => s.stage === 'shipped' || s.stage === 'completed').length;
+
+      const f = window.__currentSquadFilter;
+      const filtered = list.filter(s => {
+        if (f === 'all') return true;
+        if (f === 'building') return s.stage === 'building' || s.stage === 'in_sprint';
+        if (f === 'forming') return s.stage === 'forming';
+        if (f === 'shipped') return s.stage === 'shipped' || s.stage === 'completed';
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b;padding:24px;">No working squads in this stage.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(s => {
+        const memCount = s.currentMembersCount || s.members?.length || 1;
+        const cap = s.teamCapacity || 3;
+        const stageBadge = s.stage === 'building' || s.stage === 'in_sprint'
+          ? '<span class="badge badge-green">Building • Active</span>'
+          : (s.stage === 'forming'
+              ? '<span class="badge badge-amber">Forming</span>'
+              : '<span class="badge badge-blue">Shipped</span>');
+        return `
+          <tr>
+            <td>
+              <strong>${escapeHtml(s.title)}</strong><br>
+              <small style="color:#94a3b8;">${escapeHtml((s.problemStatement || s.description || '').slice(0, 75))}...</small>
+            </td>
+            <td><span class="badge badge-blue">${escapeHtml(s.domain || 'climate')}</span></td>
+            <td>
+              ${stageBadge}
+              <select style="background:#090e09;color:#94a3b8;border:1px solid #1c2e1f;font-size:10px;border-radius:4px;margin-top:4px;display:block;" onchange="changeSquadStage('${s.id}', this.value)">
+                <option value="forming" ${s.stage === 'forming' ? 'selected' : ''}>Forming</option>
+                <option value="building" ${s.stage === 'building' || s.stage === 'in_sprint' ? 'selected' : ''}>Building</option>
+                <option value="shipped" ${s.stage === 'shipped' || s.stage === 'completed' ? 'selected' : ''}>Shipped</option>
+              </select>
+            </td>
+            <td>
+              <span style="font-family:monospace;font-size:12px;color:#4ade80;">${memCount} / ${cap}</span> builders
+            </td>
+            <td style="font-size:12px;color:#cbd5e1;">${escapeHtml(s.targetDeliverable || 'Working prototype')}</td>
+            <td>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                <button class="btn btn-secondary" style="padding:4px 8px;font-size:11px;" onclick="openEditSquadModal('${s.id}')">Edit</button>
+                <button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteSquad('${s.id}', '${escapeHtml(s.title)}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.filterSquads = function(stage) {
+      window.__currentSquadFilter = stage;
+      renderSquadsTable();
+    };
+
+    window.saveSprintCycle = async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('saveCycleBtn');
+      btn.disabled = true;
+      btn.textContent = 'Syncing...';
+
+      const payload = {
+        cycleName: document.getElementById('cycleNameInput').value.trim(),
+        cycleTag: document.getElementById('cycleTagInput').value.trim(),
+        targetDeadline: new Date(document.getElementById('cycleDeadlineInput').value).toISOString(),
+        totalDurationDays: parseInt(document.getElementById('cycleDurationInput').value, 10),
+        status: document.getElementById('cycleStatusSelect').value,
+        daysToJoinForming: parseInt(document.getElementById('cycleDaysToJoinInput').value, 10)
+      };
+
+      const res = await apiRequest('/admin/sprints/cycle', {
+        method: 'PUT',
+        body: JSON.stringify(payload)
+      });
+
+      btn.disabled = false;
+      btn.textContent = 'Save Cycle & Sync Clocks';
+
+      if (res.ok) {
+        showAdminToast('Sprint cycle clock updated and synced live across all pages!', 'success');
+        loadSprints();
+        loadAudit();
+      } else {
+        showAdminToast(res.message || 'Failed to update sprint cycle.', 'error');
+      }
+    };
+
+    window.openCreateSquadModal = function() {
+      document.getElementById('squadModalTitle').textContent = 'Create Sprint Squad';
+      document.getElementById('squadEditId').value = '';
+      document.getElementById('squadTitleInput').value = '';
+      document.getElementById('squadDomainSelect').value = 'climate';
+      document.getElementById('squadStageSelect').value = 'forming';
+      document.getElementById('squadProblemInput').value = '';
+      document.getElementById('squadDeliverableInput').value = '';
+      document.getElementById('squadCapacityInput').value = 3;
+      document.getElementById('squadSkillsInput').value = '';
+      document.getElementById('squadModal').style.display = 'flex';
+    };
+
+    window.openEditSquadModal = function(id) {
+      const squad = (window.__sprintsList || []).find(s => s.id === id);
+      if (!squad) return;
+      document.getElementById('squadModalTitle').textContent = 'Edit Sprint Squad';
+      document.getElementById('squadEditId').value = squad.id;
+      document.getElementById('squadTitleInput').value = squad.title || '';
+      document.getElementById('squadDomainSelect').value = squad.domain || 'climate';
+      document.getElementById('squadStageSelect').value = (squad.stage === 'in_sprint') ? 'building' : (squad.stage || 'forming');
+      document.getElementById('squadProblemInput').value = squad.problemStatement || squad.description || '';
+      document.getElementById('squadDeliverableInput').value = squad.targetDeliverable || '';
+      document.getElementById('squadCapacityInput').value = squad.teamCapacity || 3;
+      document.getElementById('squadSkillsInput').value = Array.isArray(squad.skillTags) ? squad.skillTags.join(', ') : '';
+      document.getElementById('squadModal').style.display = 'flex';
+    };
+
+    window.closeSquadModal = function() {
+      document.getElementById('squadModal').style.display = 'none';
+    };
+
+    window.saveSquad = async function(e) {
+      e.preventDefault();
+      const editId = document.getElementById('squadEditId').value;
+      const btn = document.getElementById('saveSquadBtn');
+      btn.disabled = true;
+
+      const payload = {
+        title: document.getElementById('squadTitleInput').value.trim(),
+        domain: document.getElementById('squadDomainSelect').value,
+        stage: document.getElementById('squadStageSelect').value,
+        problemStatement: document.getElementById('squadProblemInput').value.trim(),
+        targetDeliverable: document.getElementById('squadDeliverableInput').value.trim(),
+        teamCapacity: parseInt(document.getElementById('squadCapacityInput').value, 10),
+        skillTags: document.getElementById('squadSkillsInput').value.split(',').map(s => s.trim()).filter(Boolean)
+      };
+
+      const res = editId
+        ? await apiRequest(`/admin/sprints/${editId}`, { method: 'PATCH', body: JSON.stringify(payload) })
+        : await apiRequest('/admin/sprints', { method: 'POST', body: JSON.stringify(payload) });
+
+      btn.disabled = false;
+      closeSquadModal();
+
+      if (res.ok) {
+        showAdminToast(res.message || 'Squad saved successfully!', 'success');
+        loadSprints();
+        loadAudit();
+      } else {
+        showAdminToast(res.message || 'Saving squad failed.', 'error');
+      }
+    };
+
+    window.changeSquadStage = async function(id, stage) {
+      const res = await apiRequest(`/admin/sprints/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ stage })
+      });
+      if (res.ok) {
+        showAdminToast(`Squad stage changed to ${stage}!`, 'success');
+        loadSprints();
+        loadAudit();
+      } else {
+        showAdminToast(res.message || 'Failed to update squad stage.', 'error');
+      }
+    };
+
+    window.deleteSquad = async function(id, title) {
+      if (!confirm(`Permanently remove squad "${title}"? This action is logged in audit history.`)) return;
+      const res = await apiRequest(`/admin/sprints/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        showAdminToast(`Squad "${title}" removed.`, 'success');
+        loadSprints();
+        loadAudit();
+      } else {
+        showAdminToast(res.message || 'Deletion failed.', 'error');
+      }
+    };
+
 
     // 6. Content Studio Loader & Actions
     async function loadContent() {
@@ -1804,21 +2287,111 @@
       }
     };
 
-    // 8. Audit Log Loader
-    async function loadAudit() {
+
+    // ==============================================================
+    // 8. Audit Log Loader & Rich Categorization
+    // ==============================================================
+    window.__auditEvents = [];
+    window.__currentAuditFilter = 'all';
+
+    function getActionBadge(action) {
+      const act = (action || '').toLowerCase();
+      if (act.includes('approved') || act.includes('created') || act.includes('published') || act.includes('dispatched') || act.includes('accept')) {
+        return `<span class="badge badge-green">${escapeHtml(action)}</span>`;
+      }
+      if (act.includes('waitlist') || act.includes('updated') || act.includes('draft') || act.includes('star')) {
+        return `<span class="badge badge-amber">${escapeHtml(action)}</span>`;
+      }
+      if (act.includes('declined') || act.includes('deleted') || act.includes('rejected') || act.includes('retract')) {
+        return `<span class="badge badge-danger">${escapeHtml(action)}</span>`;
+      }
+      return `<span class="badge badge-blue">${escapeHtml(action)}</span>`;
+    }
+
+    function formatTime(iso) {
+      if (!iso) return '—';
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    async function loadAudit(filter) {
+      if (filter) window.__currentAuditFilter = filter;
       const res = await apiRequest('/admin/audit');
       const tbody = document.getElementById('auditTableBody');
-      if (res.ok && res.data?.auditEvents) {
-        tbody.innerHTML = res.data.auditEvents.slice(0, 30).map(a => `
-          <tr>
-            <td style="font-size:12px;color:#64748b;">${new Date(a.createdAt).toLocaleTimeString()}</td>
-            <td><code style="color:#ecc94b;">${escapeHtml(a.eventType || a.action)}</code></td>
-            <td style="font-size:12px;color:#94a3b8;">${escapeHtml(a.actorId || 'System')}</td>
-            <td style="font-size:12px;color:#cbd5e1;">${escapeHtml(a.targetEntityType || a.targetType || '')} #${escapeHtml(a.targetEntityId || a.targetId || '')}</td>
-          </tr>
-        `).join('');
+      const countEl = document.getElementById('auditCountTotal');
+      if (!tbody) return;
+
+      const events = (res.ok && res.data?.auditEvents) ? res.data.auditEvents : [];
+      window.__auditEvents = events;
+
+      if (countEl) countEl.textContent = `${events.length} total events`;
+
+      const curFilter = window.__currentAuditFilter;
+      const filtered = events.filter(e => {
+        if (curFilter === 'all') return true;
+        const act = (e.eventType || e.action || '').toLowerCase();
+        const tgt = (e.targetEntityType || e.targetType || '').toLowerCase();
+        if (curFilter === 'application') return act.includes('application') || tgt.includes('application');
+        if (curFilter === 'call') return act.includes('call') || tgt.includes('build_call') || tgt.includes('call');
+        if (curFilter === 'sprint') return act.includes('sprint') || tgt.includes('sprint');
+        if (curFilter === 'broadcast') return act.includes('broadcast') || act.includes('announcement') || tgt.includes('announcement');
+        if (curFilter === 'notebook') return act.includes('notebook') || tgt.includes('notebook');
+        if (curFilter === 'role') return act.includes('role') || tgt.includes('user_role');
+        if (curFilter === 'settings') return act.includes('settings') || tgt.includes('setting');
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #64748b; padding: 24px;">No matching operational events recorded yet.</td></tr>';
+        return;
       }
+
+      tbody.innerHTML = filtered.map(a => {
+        const actionStr = a.eventType || a.action || 'system.event';
+        const actor = a.actorId || 'System';
+        const actorRole = a.actorRole ? `<br><small style="color:#64748b;font-size:10px;">${escapeHtml(a.actorRole)}</small>` : '';
+        const target = (a.targetEntityType || a.targetType || '') + (a.targetEntityId ? ` #${a.targetEntityId}` : '');
+        let details = '—';
+        if (a.payload && typeof a.payload === 'object') {
+          const parts = [];
+          if (a.payload.title) parts.push(`<strong>${escapeHtml(a.payload.title)}</strong>`);
+          if (a.payload.cycleName) parts.push(`<strong>${escapeHtml(a.payload.cycleName)}</strong>`);
+          if (a.payload.note) parts.push(`<em>"${escapeHtml(a.payload.note)}"</em>`);
+          if (a.payload.status) parts.push(`status: <code style="color:#ecc94b;">${escapeHtml(a.payload.status)}</code>`);
+          if (a.payload.applicantEmail) parts.push(`email: ${escapeHtml(a.payload.applicantEmail)}`);
+          if (a.payload.squadTitle) parts.push(`squad: ${escapeHtml(a.payload.squadTitle)}`);
+          details = parts.length ? parts.join(' • ') : `<span style="font-size:11px;color:#64748b;">${escapeHtml(JSON.stringify(a.payload))}</span>`;
+        }
+        return `
+          <tr>
+            <td style="font-size: 11px; color: #94a3b8; font-family: monospace; white-space: nowrap;">${formatTime(a.createdAt)}</td>
+            <td>${getActionBadge(actionStr)}</td>
+            <td style="font-size: 12px; color: #cbd5e1;">${escapeHtml(actor)}${actorRole}</td>
+            <td style="font-size: 12px; color: #94a3b8; font-family: monospace;">${escapeHtml(target)}</td>
+            <td style="font-size: 12px; color: #cbd5e1;">${details}</td>
+          </tr>
+        `;
+      }).join('');
     }
+
+    window.filterAudit = function(cat) {
+      window.__currentAuditFilter = cat;
+      const bar = document.getElementById('auditFilterBar');
+      if (bar) {
+        bar.querySelectorAll('button').forEach(btn => {
+          btn.classList.remove('active-filter');
+          btn.style.borderColor = '#2d4a32';
+        });
+        const activeBtn = event?.currentTarget;
+        if (activeBtn) {
+          activeBtn.classList.add('active-filter');
+          activeBtn.style.borderColor = '#4ade80';
+        }
+      }
+      loadAudit(cat);
+    };
+
 
     function escapeHtml(str) {
       if (!str) return '';

@@ -762,6 +762,235 @@ router.delete('/calls/:id', requireAnyRole(['admin', 'owner']), async (req, res)
   }
 });
 
+
+// Moderation review for build calls
+router.post('/calls/:id/review', requireAnyRole(['moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const { action = 'approve', note = '' } = req.body;
+    const isApprove = action === 'approve';
+    const now = new Date().toISOString();
+
+    const existing = await callsRepo.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Build Call not found.' });
+    }
+
+    const updated = await callsRepo.update(
+      c => c.id === req.params.id,
+      {
+        status: isApprove ? 'open' : 'rejected',
+        moderationStatus: isApprove ? 'approved' : 'rejected',
+        moderationNote: note,
+        reviewedAt: now,
+        reviewedBy: req.user.email || req.user.id,
+        updatedAt: now
+      },
+      { eq: { id: req.params.id } }
+    );
+
+    await modRepo.update(
+      item => (item.entityType === 'build_call' && item.entityId === req.params.id) || item.id === req.params.id,
+      {
+        status: isApprove ? 'approved' : 'rejected',
+        reviewedBy: req.user.id,
+        reviewedAt: now,
+        decisionNote: note
+      },
+      { eq: { entity_type: 'build_call', entity_id: req.params.id } }
+    ).catch(() => {});
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: `moderation.call_${action}`,
+      targetType: 'build_call',
+      targetId: req.params.id,
+      payload: { title: existing.title, action, note }
+    });
+
+    res.json({
+      success: true,
+      call: updated,
+      message: `Build Call "${existing.title}" ${isApprove ? 'approved and published live' : 'rejected'}.`
+    });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to review build call.' });
+  }
+});
+
+// -------------------------------------------------------------
+// 7b. Sprints & Cycles Control Room
+// -------------------------------------------------------------
+router.get('/sprints', requireAnyRole(['moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const sprints = await sprintsRepo.find();
+    const cycleSetting = await settingsRepo.findById('sprint_cycle');
+    const cycle = cycleSetting?.value || {
+      cycleName: 'Groundwater Sensor Sprint - Cycle 3',
+      cycleTag: 'Cycle 3 • Groundwater Sensor',
+      status: 'active',
+      targetDeadline: new Date(Date.now() + 12 * 86400000).toISOString(),
+      totalDurationDays: 21,
+      activeSquadsCount: 5,
+      daysToJoinForming: 3
+    };
+    res.json({ sprints, cycle, total: sprints.length });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to list sprints.' });
+  }
+});
+
+router.put('/sprints/cycle', requireAnyRole(['admin', 'owner']), async (req, res) => {
+  try {
+    const { cycleName, cycleTag, targetDeadline, totalDurationDays, status, activeSquadsCount, daysToJoinForming } = req.body;
+    
+    const existing = await settingsRepo.findById('sprint_cycle');
+    const updatedValue = {
+      ...(existing?.value || {}),
+      cycleName: cycleName || existing?.value?.cycleName || 'Groundwater Sensor Sprint - Cycle 3',
+      cycleTag: cycleTag || existing?.value?.cycleTag || 'Cycle 3 • Groundwater Sensor',
+      targetDeadline: targetDeadline || existing?.value?.targetDeadline || new Date().toISOString(),
+      totalDurationDays: parseInt(totalDurationDays || existing?.value?.totalDurationDays || 21, 10),
+      status: status || existing?.value?.status || 'active',
+      activeSquadsCount: parseInt(activeSquadsCount || existing?.value?.activeSquadsCount || 5, 10),
+      daysToJoinForming: parseInt(daysToJoinForming || existing?.value?.daysToJoinForming || 3, 10)
+    };
+
+    const saved = await settingsRepo.setSetting(
+      'sprint_cycle',
+      updatedValue,
+      'Live sprint cycle countdown parameters and display configuration',
+      req.user.email || req.user.id
+    );
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'sprint.cycle_updated',
+      targetType: 'sprint_cycle',
+      targetId: 'sprint_cycle',
+      payload: updatedValue
+    });
+
+    res.json({ success: true, cycle: updatedValue, message: 'Sprint cycle clock updated and synced across all pages.' });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to update sprint cycle.' });
+  }
+});
+
+router.post('/sprints', requireAnyRole(['moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const {
+      title,
+      description,
+      problemStatement,
+      targetDeliverable,
+      domain = 'climate',
+      stage = 'forming',
+      teamCapacity = 3,
+      neededRoles = [],
+      skillTags = []
+    } = req.body;
+
+    if (!title || !title.trim()) {
+      return res.status(400).json({ error: 'Squad title is required.' });
+    }
+
+    const newSquad = {
+      id: 'sprint_' + Date.now().toString(36),
+      title: title.trim(),
+      description: (problemStatement || description || 'Active working squad shipping prototype code.').trim(),
+      problemStatement: (problemStatement || description || '').trim(),
+      targetDeliverable: (targetDeliverable || 'Working prototype and architecture spec').trim(),
+      domain: domain.toLowerCase(),
+      stage: stage || 'forming',
+      teamCapacity: parseInt(teamCapacity, 10) || 3,
+      currentMembersCount: 1,
+      members: [{
+        userId: req.user.id,
+        squadRole: 'Sprint Lead',
+        displayName: req.user.email || 'Sprint Lead'
+      }],
+      skillTags: Array.isArray(skillTags) ? skillTags : (typeof skillTags === 'string' ? skillTags.split(',').map(s => s.trim()).filter(Boolean) : [domain]),
+      daysLeft: 14,
+      progressPct: stage === 'building' ? 33 : (stage === 'shipped' ? 100 : 0),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    const saved = await sprintsRepo.create(newSquad);
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'sprint.created',
+      targetType: 'sprint',
+      targetId: saved.id,
+      payload: { title: saved.title, domain: saved.domain, stage: saved.stage }
+    });
+
+    res.status(201).json({ success: true, squad: saved, message: `Sprint squad "${saved.title}" created successfully.` });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to create squad.' });
+  }
+});
+
+router.patch('/sprints/:id', requireAnyRole(['moderator', 'admin', 'owner']), async (req, res) => {
+  try {
+    const existing = await sprintsRepo.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Sprint squad not found.' });
+    }
+
+    const updates = { ...req.body, updatedAt: new Date().toISOString() };
+    if (updates.teamCapacity) updates.teamCapacity = parseInt(updates.teamCapacity, 10);
+    if (updates.currentMembersCount) updates.currentMembersCount = parseInt(updates.currentMembersCount, 10);
+
+    const updated = await sprintsRepo.update(
+      s => s.id === req.params.id,
+      updates,
+      { eq: { id: req.params.id } }
+    );
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'sprint.updated',
+      targetType: 'sprint',
+      targetId: req.params.id,
+      payload: updates
+    });
+
+    res.json({ success: true, squad: updated, message: `Squad "${existing.title}" updated successfully.` });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to update squad.' });
+  }
+});
+
+router.delete('/sprints/:id', requireAnyRole(['admin', 'owner']), async (req, res) => {
+  try {
+    const existing = await sprintsRepo.findById(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Sprint squad not found.' });
+    }
+
+    await sprintsRepo.delete(s => s.id === req.params.id, { eq: { id: req.params.id } });
+
+    await auditRepo.logEvent({
+      actorId: req.user.id,
+      actorRole: req.user.roles[0],
+      action: 'sprint.deleted',
+      targetType: 'sprint',
+      targetId: req.params.id,
+      payload: { title: existing.title }
+    });
+
+    res.json({ success: true, message: `Sprint squad "${existing.title}" removed.` });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ error: err.message || 'Failed to delete squad.' });
+  }
+});
+
 // -------------------------------------------------------------
 // 8. Platform Settings & Listing Quotas
 // -------------------------------------------------------------

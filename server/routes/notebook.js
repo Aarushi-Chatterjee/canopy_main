@@ -182,6 +182,15 @@ router.post('/', optionalAuth, async (req, res) => {
     };
 
     const saved = await notebookRepo.create(newEntry);
+    await auditRepo.logEvent({
+      actorId: authorId,
+      actorRole: req.user?.role || 'builder',
+      action: 'notebook.created',
+      targetType: 'notebook_entry',
+      targetId: saved.id,
+      payload: { title: saved.title, domain: saved.domain, entryType: saved.entryType },
+      ip: req.ip || req.connection?.remoteAddress
+    }).catch(e => console.warn('[AUDIT:WARN]', e.message));
 
     res.status(201).json({
       entry: saved,
