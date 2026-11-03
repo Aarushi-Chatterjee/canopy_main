@@ -733,7 +733,7 @@
       var HERO_COPY = {
         'builder': {
           eyebrow: 'For builders, engineers & makers',
-          h1: 'Find the problem worth building. Find the team to build it with.',
+          h1: 'If we can find love online, why not teammates?',
           sub: 'Canopy is where skilled builders match with real problems and sprint to ship — not just prototype.',
           cta1: 'Find a Build Call',  cta1href: 'match.html',
           cta2: 'See active sprints', cta2href: 'sprint.html'
@@ -784,11 +784,7 @@
           if (eyebrow) eyebrow.textContent = copy.eyebrow;
           if (h1) {
             // Builder/problem/enabler h1 — no italic needed, just text
-            if (role === 'exploring') {
-              h1.innerHTML = 'If we can find love online,<br>why not <em>teammates?</em>';
-            } else {
-              h1.textContent = copy.h1;
-            }
+            h1.innerHTML = 'If we can find love online,<br>why not <em>teammates?</em>';
           }
           if (sub[0]) sub[0].textContent = copy.sub;
           if (sub[1]) sub[1].style.display = (role === 'exploring') ? '' : 'none';
