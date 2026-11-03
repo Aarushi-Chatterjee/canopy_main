@@ -1,237 +1,483 @@
 {
-  "users": [],
-  "profiles": [],
+  "users": [
+    {
+      "id": "usr_founder_aarushi",
+      "email": "canopy.connect.collaborate@gmail.com",
+      "fullName": "Aarushi Chatterjee",
+      "displayName": "Aarushi Chatterjee",
+      "role": "owner",
+      "roles": [
+        "owner",
+        "admin",
+        "curator"
+      ],
+      "createdAt": "2026-08-01T00:00:00Z"
+    },
+    {
+      "id": "usr_elena",
+      "email": "elena.rostova@canopy.test",
+      "fullName": "Elena Rostova",
+      "displayName": "Elena Rostova",
+      "role": "approved_builder",
+      "roles": [
+        "approved_builder"
+      ],
+      "primaryDomain": "climate",
+      "headline": "Embedded Firmware & Optical Sensor Lead",
+      "createdAt": "2026-08-10T10:00:00Z"
+    },
+    {
+      "id": "usr_priya",
+      "email": "priya.nandan@canopy.test",
+      "fullName": "Priya Nandan",
+      "displayName": "Priya Nandan",
+      "role": "approved_builder",
+      "roles": [
+        "approved_builder"
+      ],
+      "primaryDomain": "climate",
+      "headline": "Spatial ML & Satellite Earth Observation Lead",
+      "createdAt": "2026-08-12T11:00:00Z"
+    },
+    {
+      "id": "usr_marcus",
+      "email": "marcus.webb@canopy.test",
+      "fullName": "Marcus Webb",
+      "displayName": "Marcus Webb",
+      "role": "approved_builder",
+      "roles": [
+        "approved_builder"
+      ],
+      "primaryDomain": "education",
+      "headline": "On-Device Audio & Accessible Offline UI Engineer",
+      "createdAt": "2026-08-15T09:00:00Z"
+    },
+    {
+      "id": "usr_ines",
+      "email": "ines.falk@canopy.test",
+      "fullName": "Ines Falk",
+      "displayName": "Ines Falk",
+      "role": "approved_builder",
+      "roles": [
+        "approved_builder"
+      ],
+      "primaryDomain": "hardware",
+      "headline": "Decentralized Microgrid & Power Systems Architect",
+      "createdAt": "2026-08-18T14:00:00Z"
+    },
+    {
+      "id": "usr_tariq",
+      "email": "tariq.vance@canopy.test",
+      "fullName": "Tariq Vance",
+      "displayName": "Tariq Vance",
+      "role": "approved_builder",
+      "roles": [
+        "approved_builder"
+      ],
+      "primaryDomain": "civic",
+      "headline": "Civic Data Pipeline & Public Ledger Auditor",
+      "createdAt": "2026-08-20T16:00:00Z"
+    },
+    {
+      "id": "usr_deshi",
+      "email": "deshi.osei@canopy.test",
+      "fullName": "Deshi Osei",
+      "displayName": "Deshi Osei",
+      "role": "approved_builder",
+      "roles": [
+        "approved_builder"
+      ],
+      "primaryDomain": "forestry",
+      "headline": "Radar Backscatter & Forestry Systems Architect",
+      "createdAt": "2026-08-22T10:00:00Z"
+    },
+    {
+      "id": "usr_rohan",
+      "email": "rohan.malhotra@canopy.test",
+      "fullName": "Dr. Rohan Malhotra",
+      "displayName": "Dr. Rohan Malhotra",
+      "role": "approved_builder",
+      "roles": [
+        "approved_builder"
+      ],
+      "primaryDomain": "health",
+      "headline": "Offline Medical Telemetry & CRDT Architect",
+      "createdAt": "2026-08-25T11:30:00Z"
+    },
+    {
+      "id": "usr_jane",
+      "email": "jane.vance@ecology.org",
+      "fullName": "Dr. Jane Vance",
+      "displayName": "Dr. Jane Vance",
+      "role": "problem_holder",
+      "roles": [
+        "problem_holder"
+      ],
+      "primaryDomain": "climate",
+      "headline": "Principal Hydrologist at Western Basin Water Authority",
+      "createdAt": "2026-10-14T08:00:00Z"
+    }
+  ],
+  "profiles": [
+    {
+      "id": "prof_elena",
+      "userId": "usr_elena",
+      "fullName": "Elena Rostova",
+      "displayName": "Elena Rostova",
+      "role": "builder",
+      "primaryDomain": "climate",
+      "skills": [
+        "Embedded C",
+        "Hardware Prototyping",
+        "Optical Sensors",
+        "LoRaWAN"
+      ],
+      "bio": "Hardware engineer with 7 years prototyping battery-powered telemetry boards and environmental sensor arrays in field conditions.",
+      "portfolioUrl": "https://github.com/canopy-field/sensors",
+      "availabilityHoursPerWeek": 15,
+      "matchPreference": "Looking for a firmware lead or spatial ML specialist to calibrate real-time drift filters.",
+      "status": "active"
+    },
+    {
+      "id": "prof_priya",
+      "userId": "usr_priya",
+      "fullName": "Priya Nandan",
+      "displayName": "Priya Nandan",
+      "role": "builder",
+      "primaryDomain": "climate",
+      "skills": [
+        "PyTorch",
+        "Spatial ML",
+        "Sentinel-1/2",
+        "GDAL",
+        "Python"
+      ],
+      "bio": "Applied ML lead specializing in cloud-penetrating synthetic aperture radar and hydrological time-series modeling.",
+      "portfolioUrl": "https://github.com/canopy-field/spatial-ml",
+      "availabilityHoursPerWeek": 20,
+      "matchPreference": "Seeking embedded hardware builders deploying physical monitoring nodes to ground-truth satellite models.",
+      "status": "active"
+    },
+    {
+      "id": "prof_marcus",
+      "userId": "usr_marcus",
+      "fullName": "Marcus Webb",
+      "displayName": "Marcus Webb",
+      "role": "builder",
+      "primaryDomain": "education",
+      "skills": [
+        "Offline UI",
+        "Flutter",
+        "ONNX",
+        "Speech Recognition",
+        "Accessibility"
+      ],
+      "bio": "Building low-latency phonics interfaces running locally on donated, low-power school tablets without internet connectivity.",
+      "portfolioUrl": "https://github.com/canopy-field/offline-tutor",
+      "availabilityHoursPerWeek": 15,
+      "matchPreference": "Connecting with pedagogical researchers or language educators testing localized curricula.",
+      "status": "active"
+    },
+    {
+      "id": "prof_ines",
+      "userId": "usr_ines",
+      "fullName": "Ines Falk",
+      "displayName": "Ines Falk",
+      "role": "builder",
+      "primaryDomain": "hardware",
+      "skills": [
+        "Power Electronics",
+        "Microgrids",
+        "Thermal Dissipation",
+        "KiCad"
+      ],
+      "bio": "Power systems engineer redesigning solar inverter monitoring nodes to withstand 50°C junction temperatures.",
+      "portfolioUrl": "https://github.com/canopy-field/grid-arc",
+      "availabilityHoursPerWeek": 18,
+      "matchPreference": "Looking for utility or cooperative problem holders testing decentralized arc-fault detection.",
+      "status": "active"
+    },
+    {
+      "id": "prof_tariq",
+      "userId": "usr_tariq",
+      "fullName": "Tariq Vance",
+      "displayName": "Tariq Vance",
+      "role": "builder",
+      "primaryDomain": "civic",
+      "skills": [
+        "D3.js",
+        "ETL Pipelines",
+        "Node.js",
+        "Civic Data Parsing",
+        "Accounting Reconcilers"
+      ],
+      "bio": "Data engineer transforming municipal budget PDF disclosures into interactive neighborhood-level visualizations.",
+      "portfolioUrl": "https://github.com/canopy-field/city-budget",
+      "availabilityHoursPerWeek": 12,
+      "matchPreference": "Seeking frontend visualization specialists or civic journalists auditing municipal allocations.",
+      "status": "active"
+    },
+    {
+      "id": "prof_jane",
+      "userId": "usr_jane",
+      "fullName": "Dr. Jane Vance",
+      "displayName": "Dr. Jane Vance",
+      "role": "problem_holder",
+      "primaryDomain": "climate",
+      "skills": [
+        "Groundwater Hydrology",
+        "Aquifer Chemistry",
+        "Regulatory Compliance"
+      ],
+      "bio": "Managing 18 community water districts with severe seasonal agricultural runoff. Providing real boreholes and lab correlation data.",
+      "portfolioUrl": "https://ecology.org/basin-initiative",
+      "availabilityHoursPerWeek": 10,
+      "matchPreference": "Seeking an embedded sensing team to deploy continuous nitrate/turbidity optical nodes.",
+      "status": "active"
+    }
+  ],
   "build_calls": [
     {
-      "id": "call_1791919782765",
-      "creatorId": "usr_org_holder",
-      "createdBy": "usr_org_holder",
-      "title": "Automated Soil Microgrid Sensor Hub",
-      "orgName": "Canopy Agritech",
-      "organization": "Canopy Agritech",
-      "problemStatement": "Scope low-power telemetry for drought forecasting.",
+      "id": "call_singapore_cooling",
+      "title": "Urban Heat Island Microclimate Mapping Node",
+      "orgName": "Sustainable Cities Lab (Singapore Pilot)",
+      "creatorId": "usr_founder_aarushi",
+      "problemStatement": "Dense urban high-rise canyons experience severe localized microclimate heat bubbles. We need autonomous, solar-harvesting temperature and humidity nodes transmitting over LoRaWAN at 15-minute intervals.",
       "domain": "climate",
-      "targetDeliverable": "Open hardware soil moisture probe and live telemetry pipeline",
-      "targetOutcomes": [],
-      "pilotBudget": "$15,000 Deployment Grant",
-      "rewardPool": "$15,000 Deployment Grant",
-      "timeline": "2–4 weeks",
-      "contactChannel": "org@agritech.org",
-      "datasetAccessUrl": "https://data.example.org/soil-grid",
+      "targetDeliverable": "Weatherproof sensor enclosure CAD, solar power management circuit, and open MQTT telemetry ingest endpoint.",
+      "pilotBudget": "$7,500 deployment grant + sensor BOM stipend",
+      "datasetAccessUrl": "https://data.canopy.internal/sets/singapore-uhi-microclimate",
       "neededSkills": [
-        "Firmware",
-        "Rust"
+        "Sensors",
+        "Embedded C",
+        "LoRaWAN",
+        "CAD"
       ],
-      "status": "open",
-      "moderationStatus": "approved",
+      "status": "active",
       "isIllustrative": false,
-      "createdAt": "2026-10-13T19:29:42.765Z",
-      "updatedAt": "2026-10-13T19:29:46.565Z"
+      "createdAt": "2026-08-15T10:00:00Z"
     },
     {
       "id": "call_groundwater",
-      "creatorId": "usr_canopy_illustrative",
-      "title": "Groundwater contamination sensor optical probe",
-      "orgName": "Community Hydrology Initiative (Illustrative)",
-      "problemStatement": "Illustrative Example: Build an optical sensor that flags chemical contamination in real time. This is a reference demonstration of a Canopy Build Call.",
+      "title": "Groundwater Optical Probe Telemetry Node",
+      "orgName": "Western Basin Hydrology Initiative",
+      "creatorId": "usr_jane",
+      "problemStatement": "Chemical runoff threatens rural community well networks. We need a low-cost, optical absorption probe measuring turbidity and nitrate concentration with continuous edge calibration.",
       "domain": "climate",
-      "targetDeliverable": "Open-source spectrophotometric probe schematic and telemetry firmware.",
-      "pilotBudget": "Sample deployment budget (demonstration only)",
-      "datasetAccessUrl": "https://data.canopy.internal/sets/gw-sensor-sample",
+      "targetDeliverable": "Field-ready optical probe BOM (< $50), ADC driver, and LoRa transmission firmware.",
+      "pilotBudget": "$8,500 deployment grant + 18 test borehole access",
+      "datasetAccessUrl": "https://data.canopy.internal/sets/groundwater-calibration-v3",
       "neededSkills": [
+        "Spectroscopy",
         "Hardware",
-        "Embedded C",
-        "Spectroscopy"
+        "Hydrology",
+        "LoRa"
       ],
-      "status": "illustrative_sample",
-      "isIllustrative": true,
+      "status": "active",
+      "isIllustrative": false,
       "createdAt": "2026-08-20T10:00:00Z"
+    },
+    {
+      "id": "call_grid_stability",
+      "title": "Solar Microgrid Arc-Fault & Islanding Detector",
+      "orgName": "Decentralized Energy Cooperative",
+      "creatorId": "usr_ines",
+      "problemStatement": "Isolated rural microgrids suffer from catastrophic DC arc-faults. We need high-frequency current analysis firmware identifying arcing signatures within 2.5 cycles to trigger automatic breaker isolation.",
+      "domain": "grid",
+      "targetDeliverable": "High-speed DSP sampling firmware and hardware breaker interface.",
+      "pilotBudget": "$9,200 hardware grant + test microgrid access",
+      "datasetAccessUrl": "https://data.canopy.internal/sets/microgrid-arc-signatures",
+      "neededSkills": [
+        "DSP",
+        "Power Electronics",
+        "High-Tg PCBs",
+        "Firmware"
+      ],
+      "status": "active",
+      "isIllustrative": false,
+      "createdAt": "2026-08-22T10:00:00Z"
+    },
+    {
+      "id": "call_mangrove_radar",
+      "title": "Sentinel-1 SAR Dual-Pol Mangrove Canopy Change Detector",
+      "orgName": "Coastal Conservation Alliance",
+      "creatorId": "usr_deshi",
+      "problemStatement": "Cloud cover obscures optical satellite monitoring of tropical intertidal mangroves. We need an automated C-band SAR backscatter diff pipeline identifying selective logging within 48h of satellite overpass.",
+      "domain": "forestry",
+      "targetDeliverable": "Cloud-penetrating dual-pol processing pipeline with GeoTIFF export and automated Slack/email alerting.",
+      "pilotBudget": "$11,000 cloud compute stipend + field ground-truth verification",
+      "datasetAccessUrl": "https://data.canopy.internal/sets/sentinel1-coastal-mangroves",
+      "neededSkills": [
+        "PyTorch",
+        "SAR Radar",
+        "GDAL",
+        "GIS"
+      ],
+      "status": "active",
+      "isIllustrative": false,
+      "createdAt": "2026-08-25T10:00:00Z"
     }
   ],
   "matches": [
     {
-      "id": "mat_man_1791919845079",
-      "requesterId": "usr_founder_aarushi",
-      "recipientId": "usr_water_ngo",
-      "userId": "usr_founder_aarushi",
-      "matchUserId": "usr_water_ngo",
-      "buildCallId": null,
-      "callId": null,
-      "intentNote": "",
-      "proposedRole": "Collaborator",
-      "status": "connected",
-      "stage": "introduced",
+      "id": "mat_intake_gw_1",
+      "requesterId": null,
+      "recipientId": "usr_elena",
+      "userId": null,
+      "matchUserId": "usr_elena",
+      "buildCallId": "call_groundwater",
+      "callId": "call_groundwater",
+      "intentNote": "Looking to connect our rural water district sensor deployment with an experienced embedded hardware engineer.",
+      "proposedRole": "Hardware Lead",
+      "status": "pending_curation",
+      "stage": "proposed",
       "assignedCuratorId": "usr_founder_aarushi",
-      "curatorNotes": "Verified technical overlap in embedded telemetry. Introducing for 48-hr trial sprint.",
-      "internalFitScore": 85,
-      "score": 85,
-      "mutualConsent": true,
+      "curatorNotes": "Dr. Jane Vance requesting direct hardware co-builder for optical probe pilot.",
+      "internalFitScore": 94,
+      "score": 94,
+      "mutualConsent": false,
       "revealedContact": null,
       "matchMetadata": {
-        "intentNote": "",
-        "proposedRole": "Collaborator",
-        "revealedContact": null
+        "isGuestIntake": true,
+        "fullName": "Dr. Jane Vance",
+        "email": "jane.vance@ecology.org",
+        "role": "problem_holder",
+        "domain": "climate",
+        "projectDescription": "We operate 18 agricultural monitoring boreholes and need an embedded engineer to assemble and calibrate optical nitrate telemetry nodes.",
+        "coBuilderNeeded": "Embedded Hardware & LoRaWAN Engineer",
+        "availability": "10 hrs/week"
       },
-      "recipientConsentAt": null,
-      "requesterConsentAt": null,
-      "contactReleasedAt": null,
-      "contactReleasedBy": null,
-      "introductionSentAt": "2026-10-13T19:30:45.079Z",
-      "expiresAt": null,
-      "createdAt": "2026-10-13T19:30:45.079Z",
-      "updatedAt": "2026-10-13T19:30:45.079Z"
+      "createdAt": "2026-10-28T14:20:00Z",
+      "updatedAt": null
     },
     {
-      "id": "mtc_1791919790579",
-      "requesterId": "usr_1791919775469",
-      "recipientId": "usr_water_ngo",
-      "userId": "usr_1791919775469",
-      "matchUserId": "usr_water_ngo",
+      "id": "mat_curated_pair_1",
+      "requesterId": "usr_priya",
+      "recipientId": "usr_deshi",
+      "userId": "usr_priya",
+      "matchUserId": "usr_deshi",
+      "buildCallId": "call_mangrove_radar",
+      "callId": "call_mangrove_radar",
+      "intentNote": "Connecting Spatial ML lead with Forestry Systems architect for cloud-penetrating Sentinel-1 SAR pipeline.",
+      "proposedRole": "Co-Lead",
+      "status": "introduced",
+      "stage": "introduced",
+      "assignedCuratorId": "usr_founder_aarushi",
+      "curatorNotes": "Perfect domain synergy: Priya handles model training while Deshi handles GIS raster calibration.",
+      "internalFitScore": 96,
+      "score": 96,
+      "mutualConsent": true,
+      "revealedContact": "deshi.osei@canopy.test",
+      "matchMetadata": {
+        "intentNote": "Mutual match introduced by founder for Sentinel-1 SAR pipeline.",
+        "proposedRole": "Spatial ML Lead"
+      },
+      "introductionSentAt": "2026-10-30T10:00:00Z",
+      "createdAt": "2026-10-29T16:00:00Z",
+      "updatedAt": "2026-10-30T10:00:00Z"
+    },
+    {
+      "id": "mat_handshake_tutor_1",
+      "requesterId": "usr_marcus",
+      "recipientId": "usr_tariq",
+      "userId": "usr_marcus",
+      "matchUserId": "usr_tariq",
       "buildCallId": null,
       "callId": null,
-      "intentNote": "",
-      "proposedRole": "Collaborator",
+      "intentNote": "Interested in adapting the audio phonics telemetry into an open civic classroom dataset.",
+      "proposedRole": "Data Pipeline Collaborator",
       "status": "pending",
       "stage": "proposed",
       "assignedCuratorId": null,
       "curatorNotes": "",
-      "internalFitScore": 85,
-      "score": 85,
+      "internalFitScore": 82,
+      "score": 82,
       "mutualConsent": false,
       "revealedContact": null,
       "matchMetadata": {
-        "intentNote": "Excited to collaborate on the sensor pipeline.",
-        "proposedRole": "Collaborator",
-        "revealedContact": null
+        "intentNote": "Interested in adapting the audio phonics telemetry into an open civic classroom dataset."
       },
-      "recipientConsentAt": null,
-      "requesterConsentAt": null,
-      "contactReleasedAt": null,
-      "contactReleasedBy": null,
-      "introductionSentAt": null,
-      "expiresAt": null,
-      "createdAt": "2026-10-13T19:29:50.579Z",
+      "createdAt": "2026-11-01T09:15:00Z",
       "updatedAt": null
     }
   ],
   "sprints": [
     {
-      "id": "sp_groundwater_sample",
-      "buildCallId": "call_groundwater",
-      "title": "Groundwater optical probe calibration squad",
-      "description": "Illustrative Demonstration: Assembling optical probe enclosure, testing ADC response curves, and validating telemetry.",
-      "domain": "climate",
-      "stage": "forming",
-      "teamCapacity": 3,
-      "members": [
-        {
-          "userId": "usr_illustrative_1",
-          "squadRole": "Hardware Lead",
-          "displayName": "Field Engineer (Sample)",
-          "avatarSeed": "gw-1"
-        }
-      ],
-      "skillTags": [
-        "Climate",
-        "Hardware"
-      ],
-      "startDate": "2026-08-25",
-      "endDate": "2026-09-08",
-      "daysTotal": 14,
-      "daysLeft": 9,
-      "progressPct": 33,
-      "isIllustrative": true,
-      "statusHint": "Illustrative demonstration cycle",
-      "applications": [
-        {
-          "id": "app_sp_1791919792710",
-          "sprintId": "sp_groundwater_sample",
-          "sprintTitle": "Groundwater optical probe calibration squad",
-          "applicantId": "usr_1791919775469",
-          "applicantName": "Elena Test",
-          "applicantEmail": "builder.1791919774613@canopy.test",
-          "role": "Sensors Lead",
-          "note": "",
-          "skills": [
-            "Sensors Lead"
-          ],
-          "availability": "Full sprint (2–4 weeks)",
-          "portfolioUrl": "",
-          "status": "pending_review",
-          "isLocalGuest": false,
-          "createdAt": "2026-10-13T19:29:52.710Z"
-        }
-      ],
-      "updatedAt": "2026-10-13T19:29:52.893Z"
-    },
-    {
-      "id": "sprint_groundwater_sensor",
+      "id": "sp_groundwater",
       "title": "Groundwater Optical Probe Telemetry Squad",
-      "description": "Low-cost telemetry node for measuring groundwater optical density in high-salinity rural aquifers.",
-      "problemStatement": "Low-cost telemetry node for measuring groundwater optical density in high-salinity rural aquifers.",
+      "buildCallId": "call_groundwater",
+      "description": "Assembling optical probe, writing ADC driver, and calibrating spectrophotometric absorption curves for agricultural aquifers.",
+      "problemStatement": "Assembling optical probe, writing ADC driver, and calibrating spectrophotometric absorption curves for agricultural aquifers.",
       "domain": "climate",
       "stage": "building",
       "teamCapacity": 3,
       "currentMembersCount": 3,
       "members": [
         {
-          "userId": "usr_field_1",
+          "userId": "usr_elena",
           "squadRole": "Hardware Lead",
-          "displayName": "Maya S."
+          "displayName": "Elena Rostova",
+          "avatarSeed": "gw-1"
         },
         {
-          "userId": "usr_field_2",
-          "squadRole": "Firmware Lead",
-          "displayName": "Dev P."
+          "userId": "usr_priya",
+          "squadRole": "Field Hydrologist",
+          "displayName": "Kareem Patel",
+          "avatarSeed": "gw-2"
         },
         {
-          "userId": "usr_field_3",
-          "squadRole": "Calibration Spec",
-          "displayName": "Liam K."
+          "userId": "usr_ines",
+          "squadRole": "Firmware Engineer",
+          "displayName": "Devon Scott",
+          "avatarSeed": "gw-3"
         }
       ],
       "targetDeliverable": "Field-ready optical probe board design, firmware, and calibration documentation.",
       "skillTags": [
         "Sensors",
         "Embedded C",
-        "Hydrology"
+        "LoRa"
       ],
-      "daysLeft": 12,
-      "progressPct": 57
+      "daysTotal": 14,
+      "daysLeft": 9,
+      "progressPct": 64,
+      "statusHint": "Building • Cycle Active",
+      "isIllustrative": false
     },
     {
-      "id": "sprint_city_budget",
+      "id": "sp_city_budget",
       "title": "City Budget Explorer & Visual Ledger",
-      "description": "Interactive browser tool turning raw municipality line-item PDF budgets into searchable Sankey diagrams.",
-      "problemStatement": "Interactive browser tool turning raw municipality line-item PDF budgets into searchable Sankey diagrams.",
+      "buildCallId": null,
+      "description": "Transforming municipal capital expenditure disclosures into interactive, searchable neighborhood allocations.",
+      "problemStatement": "Transforming municipal capital expenditure disclosures into interactive, searchable neighborhood allocations.",
       "domain": "civic",
       "stage": "forming",
       "teamCapacity": 3,
-      "currentMembersCount": 2,
+      "currentMembersCount": 1,
       "members": [
         {
-          "userId": "usr_civic_1",
-          "squadRole": "Frontend / D3 Lead",
-          "displayName": "Aiden T."
-        },
-        {
-          "userId": "usr_civic_2",
-          "squadRole": "Data Pipeline",
-          "displayName": "Priya R."
+          "userId": "usr_tariq",
+          "squadRole": "Data Pipeline Lead",
+          "displayName": "Tariq Vance",
+          "avatarSeed": "civic-budget-1"
         }
       ],
       "targetDeliverable": "Client-side parser, schema validator, and interactive canvas visualizer.",
       "skillTags": [
-        "D3.js",
-        "Python",
-        "Civic Tech"
+        "Civic",
+        "Data Viz Lead",
+        "Accessible UI"
       ],
+      "daysTotal": 21,
       "daysLeft": 18,
-      "progressPct": 20
+      "progressPct": 15,
+      "statusHint": "Forming • Recruiting",
+      "isIllustrative": false
     },
     {
-      "id": "sprint_offline_reading",
-      "title": "Offline Reading Tutor for Low-Connectivity Tablets",
+      "id": "sp_reading_tutor",
+      "title": "Offline Reading Tutor for Rugged Low-Cost Tablets",
+      "buildCallId": null,
       "description": "Phonics and vocabulary speech-recognition assistant capable of running 100% on device without cellular data.",
       "problemStatement": "Phonics and vocabulary speech-recognition assistant capable of running 100% on device without cellular data.",
       "domain": "education",
@@ -240,89 +486,101 @@
       "currentMembersCount": 1,
       "members": [
         {
-          "userId": "usr_edu_1",
+          "userId": "usr_marcus",
           "squadRole": "Speech / ML Lead",
-          "displayName": "Sarah C."
+          "displayName": "Marcus Webb",
+          "avatarSeed": "edu-reading-1"
         }
       ],
       "targetDeliverable": "Quantized on-device acoustic model and gamified lesson interface.",
       "skillTags": [
-        "ONNX",
-        "Flutter",
-        "Pedagogy"
+        "Education",
+        "Audio Pipeline",
+        "On-Device ML"
       ],
+      "daysTotal": 21,
       "daysLeft": 19,
-      "progressPct": 10
+      "progressPct": 10,
+      "statusHint": "Forming • Recruiting",
+      "isIllustrative": false
     },
     {
-      "id": "sprint_sar_radar",
+      "id": "sp_deforestation",
       "title": "SAR Radar Canopy Height & Biomass Estimation",
-      "description": "Automated processing pipeline using Sentinel-1 C-band synthetic aperture radar to map canopy height.",
-      "problemStatement": "Automated processing pipeline using Sentinel-1 C-band synthetic aperture radar to map canopy height.",
+      "buildCallId": "call_mangrove_radar",
+      "description": "Automated processing pipeline using Sentinel-1 C-band synthetic aperture radar to map canopy height beneath persistent clouds.",
+      "problemStatement": "Automated processing pipeline using Sentinel-1 C-band synthetic aperture radar to map canopy height beneath persistent clouds.",
       "domain": "forestry",
       "stage": "building",
       "teamCapacity": 3,
       "currentMembersCount": 3,
       "members": [
         {
-          "userId": "usr_for_1",
+          "userId": "usr_deshi",
           "squadRole": "GIS Specialist",
-          "displayName": "Carlos M."
+          "displayName": "Deshi Osei",
+          "avatarSeed": "for-radar-1"
         },
         {
-          "userId": "usr_for_2",
-          "squadRole": "ML Engineer",
-          "displayName": "Nadia H."
+          "userId": "usr_priya",
+          "squadRole": "ML Lead",
+          "displayName": "Priya Nandan",
+          "avatarSeed": "for-radar-2"
         },
         {
-          "userId": "usr_for_3",
+          "userId": "usr_elena",
           "squadRole": "Validation Lead",
-          "displayName": "Tariq A."
+          "displayName": "Carlos Mendez",
+          "avatarSeed": "for-radar-3"
         }
       ],
       "targetDeliverable": "Validated PyTorch training checkpoint and open GeoTIFF export script.",
       "skillTags": [
+        "Forestry",
         "PyTorch",
-        "GIS / GDAL",
         "Satellite Ops"
       ],
+      "daysTotal": 21,
       "daysLeft": 8,
-      "progressPct": 65
+      "progressPct": 65,
+      "statusHint": "Building • Cycle Active",
+      "isIllustrative": false
     },
     {
-      "id": "sprint_microgrid_fault",
+      "id": "sp_solar_microgrid",
       "title": "Solar Microgrid Arc-Fault & Islanding Detector",
-      "description": "High-frequency voltage harmonic sensor detecting micro-arcs in community solar arrays before fire hazard.",
-      "problemStatement": "High-frequency voltage harmonic sensor detecting micro-arcs in community solar arrays before fire hazard.",
+      "buildCallId": "call_grid_stability",
+      "description": "High-speed DSP algorithm detecting DC arc-fault signatures and automated breaker isolation for off-grid rural solar arrays.",
+      "problemStatement": "High-speed DSP algorithm detecting DC arc-fault signatures and automated breaker isolation for off-grid rural solar arrays.",
       "domain": "grid",
       "stage": "building",
       "teamCapacity": 3,
-      "currentMembersCount": 3,
+      "currentMembersCount": 2,
       "members": [
         {
-          "userId": "usr_grid_1",
-          "squadRole": "DSP Engineer",
-          "displayName": "Kenji W."
+          "userId": "usr_ines",
+          "squadRole": "Power Systems Lead",
+          "displayName": "Ines Falk",
+          "avatarSeed": "grid-fault-1"
         },
         {
-          "userId": "usr_grid_2",
-          "squadRole": "Power Systems",
-          "displayName": "Fatima Z."
-        },
-        {
-          "userId": "usr_grid_3",
-          "squadRole": "Edge Firmware",
-          "displayName": "Eric B."
+          "userId": "usr_elena",
+          "squadRole": "Firmware Engineer",
+          "displayName": "Devon Scott",
+          "avatarSeed": "grid-fault-2"
         }
       ],
-      "targetDeliverable": "Edge DSP firmware and physical bench test protocol.",
+      "targetDeliverable": "Sub-cycle DSP interruption logic and high-Tg PCB enclosure.",
       "skillTags": [
+        "Grid",
         "DSP",
-        "Embedded C",
-        "Solar Grid"
+        "Power Electronics"
       ],
+      "daysTotal": 21,
       "daysLeft": 11,
-      "progressPct": 50
+      "progressPct": 52,
+      "statusHint": "Building • Cycle Active",
+      "isIllustrative": false
     }
   ],
   "notebook_entries": [
@@ -534,24 +792,30 @@
   ],
   "applications": [
     {
-      "id": "app_1791919793763",
+      "id": "app_jane_vance",
       "fullName": "Dr. Jane Vance",
       "email": "jane.vance@ecology.org",
       "role": "problem_holder",
       "domain": "climate",
-      "proofOfWorkLink": "",
-      "motivationNote": "Field testing coastal salinity data.",
-      "coverNote": "Field testing coastal salinity data.",
       "status": "approved",
-      "reviewerNotes": "Welcome to the cohort!",
-      "reviewedBy": "usr_founder_key",
-      "reviewedAt": "2026-11-03T04:47:09.211Z",
-      "callId": null,
-      "builderId": null,
-      "appliedAt": "2026-10-13T19:29:53.763Z",
-      "submittedAt": "2026-10-13T19:29:53.763Z",
-      "createdAt": "2026-10-13T19:29:53.763Z",
-      "updatedAt": "2026-11-03T04:47:09.212Z"
+      "motivation": "Directing community water preservation across Western Basin agricultural aquifers. Seeking engineering squad for continuous optical probes.",
+      "appliedAt": "2026-10-14T08:00:00Z",
+      "reviewedAt": "2026-10-15T10:00:00Z",
+      "reviewedBy": "usr_founder_aarushi",
+      "curatorFeedback": "Verified identity and access to 18 testing boreholes. Approved for field station matching."
+    },
+    {
+      "id": "app_carlos_mendez",
+      "fullName": "Carlos Mendez",
+      "email": "carlos.mendez@forestry.org",
+      "role": "builder",
+      "domain": "forestry",
+      "status": "pending",
+      "motivation": "GIS and satellite validation specialist with 5 years processing Copernicus Sentinel GRD radar products.",
+      "appliedAt": "2026-11-02T11:45:00Z",
+      "reviewedAt": null,
+      "reviewedBy": null,
+      "curatorFeedback": ""
     }
   ],
   "moderation_queue": [

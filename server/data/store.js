@@ -527,8 +527,19 @@ function readDb() {
     return inMemoryDb;
   }
 
-  // 1. In serverless / test mode, check tmp file first if fresher
+  // 1. Check if TMP_DB_FILE exists and is strictly newer than DB_FILE (e.g. written by serverless runtime)
+  let useTmp = false;
   if (fs.existsSync(TMP_DB_FILE)) {
+    try {
+      if (fs.existsSync(DB_FILE)) {
+        useTmp = fs.statSync(TMP_DB_FILE).mtimeMs > fs.statSync(DB_FILE).mtimeMs;
+      } else {
+        useTmp = true;
+      }
+    } catch (_) {}
+  }
+
+  if (useTmp) {
     try {
       const raw = fs.readFileSync(TMP_DB_FILE, 'utf-8');
       inMemoryDb = JSON.parse(raw);
@@ -541,7 +552,7 @@ function readDb() {
     } catch (_) {}
   }
 
-  // 2. Read from repo DB_FILE
+  // 2. Primary Source of Truth: Read from repo DB_FILE (canopy-db.json)
   try {
     if (fs.existsSync(DB_FILE)) {
       const raw = fs.readFileSync(DB_FILE, 'utf-8');

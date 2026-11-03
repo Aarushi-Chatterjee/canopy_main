@@ -1107,7 +1107,7 @@
     const card = document.createElement('article');
     const domain = escapeHtml(sprint.domain || 'climate').toLowerCase();
     const stage = escapeHtml(sprint.stage || 'forming').toLowerCase();
-    card.className = 'elevated-card sprint-card in-view reveal';
+    card.className = 'elevated-card sprint-card in-view';
     card.setAttribute('data-domain', domain);
     card.setAttribute('data-stage', stage);
     card.setAttribute('data-id', sprint.id || '');
@@ -1179,7 +1179,7 @@
   function createSponsoredCard(call) {
     const card = document.createElement('article');
     const domain = escapeHtml(call.domain || 'climate').toLowerCase();
-    card.className = 'elevated-card sprint-card in-view reveal';
+    card.className = 'elevated-card sprint-card in-view';
     card.setAttribute('data-domain', domain);
     card.setAttribute('data-id', call.id || '');
 
