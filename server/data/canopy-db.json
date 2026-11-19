@@ -12,586 +12,84 @@
         "curator"
       ],
       "createdAt": "2026-08-01T00:00:00Z"
-    },
-    {
-      "id": "usr_elena",
-      "email": "elena.rostova@canopy.test",
-      "fullName": "Elena Rostova",
-      "displayName": "Elena Rostova",
-      "role": "approved_builder",
-      "roles": [
-        "approved_builder"
-      ],
-      "primaryDomain": "climate",
-      "headline": "Embedded Firmware & Optical Sensor Lead",
-      "createdAt": "2026-08-10T10:00:00Z"
-    },
-    {
-      "id": "usr_priya",
-      "email": "priya.nandan@canopy.test",
-      "fullName": "Priya Nandan",
-      "displayName": "Priya Nandan",
-      "role": "approved_builder",
-      "roles": [
-        "approved_builder"
-      ],
-      "primaryDomain": "climate",
-      "headline": "Spatial ML & Satellite Earth Observation Lead",
-      "createdAt": "2026-08-12T11:00:00Z"
-    },
-    {
-      "id": "usr_marcus",
-      "email": "marcus.webb@canopy.test",
-      "fullName": "Marcus Webb",
-      "displayName": "Marcus Webb",
-      "role": "approved_builder",
-      "roles": [
-        "approved_builder"
-      ],
-      "primaryDomain": "education",
-      "headline": "On-Device Audio & Accessible Offline UI Engineer",
-      "createdAt": "2026-08-15T09:00:00Z"
-    },
-    {
-      "id": "usr_ines",
-      "email": "ines.falk@canopy.test",
-      "fullName": "Ines Falk",
-      "displayName": "Ines Falk",
-      "role": "approved_builder",
-      "roles": [
-        "approved_builder"
-      ],
-      "primaryDomain": "hardware",
-      "headline": "Decentralized Microgrid & Power Systems Architect",
-      "createdAt": "2026-08-18T14:00:00Z"
-    },
-    {
-      "id": "usr_tariq",
-      "email": "tariq.vance@canopy.test",
-      "fullName": "Tariq Vance",
-      "displayName": "Tariq Vance",
-      "role": "approved_builder",
-      "roles": [
-        "approved_builder"
-      ],
-      "primaryDomain": "civic",
-      "headline": "Civic Data Pipeline & Public Ledger Auditor",
-      "createdAt": "2026-08-20T16:00:00Z"
-    },
-    {
-      "id": "usr_deshi",
-      "email": "deshi.osei@canopy.test",
-      "fullName": "Deshi Osei",
-      "displayName": "Deshi Osei",
-      "role": "approved_builder",
-      "roles": [
-        "approved_builder"
-      ],
-      "primaryDomain": "forestry",
-      "headline": "Radar Backscatter & Forestry Systems Architect",
-      "createdAt": "2026-08-22T10:00:00Z"
-    },
-    {
-      "id": "usr_rohan",
-      "email": "rohan.malhotra@canopy.test",
-      "fullName": "Dr. Rohan Malhotra",
-      "displayName": "Dr. Rohan Malhotra",
-      "role": "approved_builder",
-      "roles": [
-        "approved_builder"
-      ],
-      "primaryDomain": "health",
-      "headline": "Offline Medical Telemetry & CRDT Architect",
-      "createdAt": "2026-08-25T11:30:00Z"
-    },
-    {
-      "id": "usr_jane",
-      "email": "jane.vance@ecology.org",
-      "fullName": "Dr. Jane Vance",
-      "displayName": "Dr. Jane Vance",
-      "role": "problem_holder",
-      "roles": [
-        "problem_holder"
-      ],
-      "primaryDomain": "climate",
-      "headline": "Principal Hydrologist at Western Basin Water Authority",
-      "createdAt": "2026-10-14T08:00:00Z"
     }
   ],
-  "profiles": [
-    {
-      "id": "prof_elena",
-      "userId": "usr_elena",
-      "fullName": "Elena Rostova",
-      "displayName": "Elena Rostova",
-      "role": "builder",
-      "primaryDomain": "climate",
-      "skills": [
-        "Embedded C",
-        "Hardware Prototyping",
-        "Optical Sensors",
-        "LoRaWAN"
-      ],
-      "bio": "Hardware engineer with 7 years prototyping battery-powered telemetry boards and environmental sensor arrays in field conditions.",
-      "portfolioUrl": "https://github.com/canopy-field/sensors",
-      "availabilityHoursPerWeek": 15,
-      "matchPreference": "Looking for a firmware lead or spatial ML specialist to calibrate real-time drift filters.",
-      "status": "active"
-    },
-    {
-      "id": "prof_priya",
-      "userId": "usr_priya",
-      "fullName": "Priya Nandan",
-      "displayName": "Priya Nandan",
-      "role": "builder",
-      "primaryDomain": "climate",
-      "skills": [
-        "PyTorch",
-        "Spatial ML",
-        "Sentinel-1/2",
-        "GDAL",
-        "Python"
-      ],
-      "bio": "Applied ML lead specializing in cloud-penetrating synthetic aperture radar and hydrological time-series modeling.",
-      "portfolioUrl": "https://github.com/canopy-field/spatial-ml",
-      "availabilityHoursPerWeek": 20,
-      "matchPreference": "Seeking embedded hardware builders deploying physical monitoring nodes to ground-truth satellite models.",
-      "status": "active"
-    },
-    {
-      "id": "prof_marcus",
-      "userId": "usr_marcus",
-      "fullName": "Marcus Webb",
-      "displayName": "Marcus Webb",
-      "role": "builder",
-      "primaryDomain": "education",
-      "skills": [
-        "Offline UI",
-        "Flutter",
-        "ONNX",
-        "Speech Recognition",
-        "Accessibility"
-      ],
-      "bio": "Building low-latency phonics interfaces running locally on donated, low-power school tablets without internet connectivity.",
-      "portfolioUrl": "https://github.com/canopy-field/offline-tutor",
-      "availabilityHoursPerWeek": 15,
-      "matchPreference": "Connecting with pedagogical researchers or language educators testing localized curricula.",
-      "status": "active"
-    },
-    {
-      "id": "prof_ines",
-      "userId": "usr_ines",
-      "fullName": "Ines Falk",
-      "displayName": "Ines Falk",
-      "role": "builder",
-      "primaryDomain": "hardware",
-      "skills": [
-        "Power Electronics",
-        "Microgrids",
-        "Thermal Dissipation",
-        "KiCad"
-      ],
-      "bio": "Power systems engineer redesigning solar inverter monitoring nodes to withstand 50°C junction temperatures.",
-      "portfolioUrl": "https://github.com/canopy-field/grid-arc",
-      "availabilityHoursPerWeek": 18,
-      "matchPreference": "Looking for utility or cooperative problem holders testing decentralized arc-fault detection.",
-      "status": "active"
-    },
-    {
-      "id": "prof_tariq",
-      "userId": "usr_tariq",
-      "fullName": "Tariq Vance",
-      "displayName": "Tariq Vance",
-      "role": "builder",
-      "primaryDomain": "civic",
-      "skills": [
-        "D3.js",
-        "ETL Pipelines",
-        "Node.js",
-        "Civic Data Parsing",
-        "Accounting Reconcilers"
-      ],
-      "bio": "Data engineer transforming municipal budget PDF disclosures into interactive neighborhood-level visualizations.",
-      "portfolioUrl": "https://github.com/canopy-field/city-budget",
-      "availabilityHoursPerWeek": 12,
-      "matchPreference": "Seeking frontend visualization specialists or civic journalists auditing municipal allocations.",
-      "status": "active"
-    },
-    {
-      "id": "prof_jane",
-      "userId": "usr_jane",
-      "fullName": "Dr. Jane Vance",
-      "displayName": "Dr. Jane Vance",
-      "role": "problem_holder",
-      "primaryDomain": "climate",
-      "skills": [
-        "Groundwater Hydrology",
-        "Aquifer Chemistry",
-        "Regulatory Compliance"
-      ],
-      "bio": "Managing 18 community water districts with severe seasonal agricultural runoff. Providing real boreholes and lab correlation data.",
-      "portfolioUrl": "https://ecology.org/basin-initiative",
-      "availabilityHoursPerWeek": 10,
-      "matchPreference": "Seeking an embedded sensing team to deploy continuous nitrate/turbidity optical nodes.",
-      "status": "active"
-    }
-  ],
+  "profiles": [],
   "build_calls": [
     {
       "id": "call_singapore_cooling",
-      "title": "Urban Heat Island Microclimate Mapping Node",
-      "orgName": "Sustainable Cities Lab (Singapore Pilot)",
-      "creatorId": "usr_founder_aarushi",
-      "problemStatement": "Dense urban high-rise canyons experience severe localized microclimate heat bubbles. We need autonomous, solar-harvesting temperature and humidity nodes transmitting over LoRaWAN at 15-minute intervals.",
+      "title": "Cooling Singapore: Urban Heat Island Mitigation Sensor Array",
+      "organization": "Singapore Urban Climate Lab",
       "domain": "climate",
-      "targetDeliverable": "Weatherproof sensor enclosure CAD, solar power management circuit, and open MQTT telemetry ingest endpoint.",
-      "pilotBudget": "$7,500 deployment grant + sensor BOM stipend",
-      "datasetAccessUrl": "https://data.canopy.internal/sets/singapore-uhi-microclimate",
+      "status": "open",
+      "problemStatement": "Dense high-rise concrete canyons experience localized temperatures up to 7°C higher than surrounding vegetative areas. Existing municipal weather stations are spaced 5 km apart, creating blind spots in hyper-local pedestrian wind tunnels.",
+      "pilotBudget": "$35,000 deployment grant + pilot installation across 4 city blocks",
+      "targetDeliverable": "Low-profile solar/battery micro-weather telemetry stations transmitting micro-climate telemetry over NB-IoT every 90 seconds.",
       "neededSkills": [
-        "Sensors",
         "Embedded C",
-        "LoRaWAN",
-        "CAD"
+        "NB-IoT",
+        "Thermal Modeling",
+        "Hardware Enclosure"
       ],
-      "status": "active",
-      "isIllustrative": false,
-      "createdAt": "2026-08-15T10:00:00Z"
-    },
-    {
-      "id": "call_groundwater",
-      "title": "Groundwater Optical Probe Telemetry Node",
-      "orgName": "Western Basin Hydrology Initiative",
-      "creatorId": "usr_jane",
-      "problemStatement": "Chemical runoff threatens rural community well networks. We need a low-cost, optical absorption probe measuring turbidity and nitrate concentration with continuous edge calibration.",
-      "domain": "climate",
-      "targetDeliverable": "Field-ready optical probe BOM (< $50), ADC driver, and LoRa transmission firmware.",
-      "pilotBudget": "$8,500 deployment grant + 18 test borehole access",
-      "datasetAccessUrl": "https://data.canopy.internal/sets/groundwater-calibration-v3",
-      "neededSkills": [
-        "Spectroscopy",
-        "Hardware",
-        "Hydrology",
-        "LoRa"
-      ],
-      "status": "active",
-      "isIllustrative": false,
-      "createdAt": "2026-08-20T10:00:00Z"
-    },
-    {
-      "id": "call_grid_stability",
-      "title": "Solar Microgrid Arc-Fault & Islanding Detector",
-      "orgName": "Decentralized Energy Cooperative",
-      "creatorId": "usr_ines",
-      "problemStatement": "Isolated rural microgrids suffer from catastrophic DC arc-faults. We need high-frequency current analysis firmware identifying arcing signatures within 2.5 cycles to trigger automatic breaker isolation.",
-      "domain": "grid",
-      "targetDeliverable": "High-speed DSP sampling firmware and hardware breaker interface.",
-      "pilotBudget": "$9,200 hardware grant + test microgrid access",
-      "datasetAccessUrl": "https://data.canopy.internal/sets/microgrid-arc-signatures",
-      "neededSkills": [
-        "DSP",
-        "Power Electronics",
-        "High-Tg PCBs",
-        "Firmware"
-      ],
-      "status": "active",
-      "isIllustrative": false,
-      "createdAt": "2026-08-22T10:00:00Z"
-    },
-    {
-      "id": "call_mangrove_radar",
-      "title": "Sentinel-1 SAR Dual-Pol Mangrove Canopy Change Detector",
-      "orgName": "Coastal Conservation Alliance",
-      "creatorId": "usr_deshi",
-      "problemStatement": "Cloud cover obscures optical satellite monitoring of tropical intertidal mangroves. We need an automated C-band SAR backscatter diff pipeline identifying selective logging within 48h of satellite overpass.",
-      "domain": "forestry",
-      "targetDeliverable": "Cloud-penetrating dual-pol processing pipeline with GeoTIFF export and automated Slack/email alerting.",
-      "pilotBudget": "$11,000 cloud compute stipend + field ground-truth verification",
-      "datasetAccessUrl": "https://data.canopy.internal/sets/sentinel1-coastal-mangroves",
-      "neededSkills": [
-        "PyTorch",
-        "SAR Radar",
-        "GDAL",
-        "GIS"
-      ],
-      "status": "active",
-      "isIllustrative": false,
-      "createdAt": "2026-08-25T10:00:00Z"
+      "researchReference": "UHI micro-climate data schema v2.1",
+      "isIllustrative": true,
+      "createdAt": "2026-08-01T00:00:00Z"
     }
   ],
-  "matches": [
-    {
-      "id": "mat_intake_gw_1",
-      "requesterId": null,
-      "recipientId": "usr_elena",
-      "userId": null,
-      "matchUserId": "usr_elena",
-      "buildCallId": "call_groundwater",
-      "callId": "call_groundwater",
-      "intentNote": "Looking to connect our rural water district sensor deployment with an experienced embedded hardware engineer.",
-      "proposedRole": "Hardware Lead",
-      "status": "pending_curation",
-      "stage": "proposed",
-      "assignedCuratorId": "usr_founder_aarushi",
-      "curatorNotes": "Dr. Jane Vance requesting direct hardware co-builder for optical probe pilot.",
-      "internalFitScore": 94,
-      "score": 94,
-      "mutualConsent": false,
-      "revealedContact": null,
-      "matchMetadata": {
-        "isGuestIntake": true,
-        "fullName": "Dr. Jane Vance",
-        "email": "jane.vance@ecology.org",
-        "role": "problem_holder",
-        "domain": "climate",
-        "projectDescription": "We operate 18 agricultural monitoring boreholes and need an embedded engineer to assemble and calibrate optical nitrate telemetry nodes.",
-        "coBuilderNeeded": "Embedded Hardware & LoRaWAN Engineer",
-        "availability": "10 hrs/week"
-      },
-      "createdAt": "2026-10-28T14:20:00Z",
-      "updatedAt": null
-    },
-    {
-      "id": "mat_curated_pair_1",
-      "requesterId": "usr_priya",
-      "recipientId": "usr_deshi",
-      "userId": "usr_priya",
-      "matchUserId": "usr_deshi",
-      "buildCallId": "call_mangrove_radar",
-      "callId": "call_mangrove_radar",
-      "intentNote": "Connecting Spatial ML lead with Forestry Systems architect for cloud-penetrating Sentinel-1 SAR pipeline.",
-      "proposedRole": "Co-Lead",
-      "status": "introduced",
-      "stage": "introduced",
-      "assignedCuratorId": "usr_founder_aarushi",
-      "curatorNotes": "Perfect domain synergy: Priya handles model training while Deshi handles GIS raster calibration.",
-      "internalFitScore": 96,
-      "score": 96,
-      "mutualConsent": true,
-      "revealedContact": "deshi.osei@canopy.test",
-      "matchMetadata": {
-        "intentNote": "Mutual match introduced by founder for Sentinel-1 SAR pipeline.",
-        "proposedRole": "Spatial ML Lead"
-      },
-      "introductionSentAt": "2026-10-30T10:00:00Z",
-      "createdAt": "2026-10-29T16:00:00Z",
-      "updatedAt": "2026-10-30T10:00:00Z"
-    },
-    {
-      "id": "mat_handshake_tutor_1",
-      "requesterId": "usr_marcus",
-      "recipientId": "usr_tariq",
-      "userId": "usr_marcus",
-      "matchUserId": "usr_tariq",
-      "buildCallId": null,
-      "callId": null,
-      "intentNote": "Interested in adapting the audio phonics telemetry into an open civic classroom dataset.",
-      "proposedRole": "Data Pipeline Collaborator",
-      "status": "pending",
-      "stage": "proposed",
-      "assignedCuratorId": null,
-      "curatorNotes": "",
-      "internalFitScore": 82,
-      "score": 82,
-      "mutualConsent": false,
-      "revealedContact": null,
-      "matchMetadata": {
-        "intentNote": "Interested in adapting the audio phonics telemetry into an open civic classroom dataset."
-      },
-      "createdAt": "2026-11-01T09:15:00Z",
-      "updatedAt": null
-    }
-  ],
+  "matches": [],
   "sprints": [
     {
       "id": "sp_groundwater",
-      "title": "Groundwater Optical Probe Telemetry Squad",
-      "buildCallId": "call_groundwater",
-      "description": "Assembling optical probe, writing ADC driver, and calibrating spectrophotometric absorption curves for agricultural aquifers.",
-      "problemStatement": "Assembling optical probe, writing ADC driver, and calibrating spectrophotometric absorption curves for agricultural aquifers.",
+      "title": "Groundwater Sensor Network Calibration",
+      "buildCallId": "call_singapore_cooling",
+      "description": "High-turbidity optical telemetry and drift rejection filter across 14 rural monitoring boreholes.",
+      "problemStatement": "High-turbidity optical telemetry and drift rejection filter across 14 rural monitoring boreholes.",
       "domain": "climate",
       "stage": "building",
       "teamCapacity": 3,
       "currentMembersCount": 3,
       "members": [
         {
-          "userId": "usr_elena",
+          "userId": "usr_illustrative_1",
           "squadRole": "Hardware Lead",
-          "displayName": "Elena Rostova",
+          "displayName": "Elena R. (Demo)",
           "avatarSeed": "gw-1"
         },
         {
-          "userId": "usr_priya",
+          "userId": "usr_illustrative_2",
           "squadRole": "Field Hydrologist",
-          "displayName": "Kareem Patel",
+          "displayName": "Dr. Vance (Demo)",
           "avatarSeed": "gw-2"
         },
         {
-          "userId": "usr_ines",
+          "userId": "usr_illustrative_3",
           "squadRole": "Firmware Engineer",
-          "displayName": "Devon Scott",
+          "displayName": "Devon S. (Demo)",
           "avatarSeed": "gw-3"
         }
       ],
-      "targetDeliverable": "Field-ready optical probe board design, firmware, and calibration documentation.",
+      "targetDeliverable": "Ruggedized optical sensor enclosure and automated drift rejection firmware (Python/C).",
       "skillTags": [
-        "Sensors",
-        "Embedded C",
-        "LoRa"
+        "Climate",
+        "Hardware",
+        "Optical Sensors",
+        "LoRaWAN"
       ],
-      "daysTotal": 14,
+      "daysTotal": 21,
       "daysLeft": 9,
       "progressPct": 64,
-      "statusHint": "Building • Cycle Active",
-      "isIllustrative": false
-    },
-    {
-      "id": "sp_city_budget",
-      "title": "City Budget Explorer & Visual Ledger",
-      "buildCallId": null,
-      "description": "Transforming municipal capital expenditure disclosures into interactive, searchable neighborhood allocations.",
-      "problemStatement": "Transforming municipal capital expenditure disclosures into interactive, searchable neighborhood allocations.",
-      "domain": "civic",
-      "stage": "forming",
-      "teamCapacity": 3,
-      "currentMembersCount": 1,
-      "members": [
-        {
-          "userId": "usr_tariq",
-          "squadRole": "Data Pipeline Lead",
-          "displayName": "Tariq Vance",
-          "avatarSeed": "civic-budget-1"
-        }
-      ],
-      "targetDeliverable": "Client-side parser, schema validator, and interactive canvas visualizer.",
-      "skillTags": [
-        "Civic",
-        "Data Viz Lead",
-        "Accessible UI"
-      ],
-      "daysTotal": 21,
-      "daysLeft": 18,
-      "progressPct": 15,
-      "statusHint": "Forming • Recruiting",
-      "isIllustrative": false
-    },
-    {
-      "id": "sp_reading_tutor",
-      "title": "Offline Reading Tutor for Rugged Low-Cost Tablets",
-      "buildCallId": null,
-      "description": "Phonics and vocabulary speech-recognition assistant capable of running 100% on device without cellular data.",
-      "problemStatement": "Phonics and vocabulary speech-recognition assistant capable of running 100% on device without cellular data.",
-      "domain": "education",
-      "stage": "forming",
-      "teamCapacity": 3,
-      "currentMembersCount": 1,
-      "members": [
-        {
-          "userId": "usr_marcus",
-          "squadRole": "Speech / ML Lead",
-          "displayName": "Marcus Webb",
-          "avatarSeed": "edu-reading-1"
-        }
-      ],
-      "targetDeliverable": "Quantized on-device acoustic model and gamified lesson interface.",
-      "skillTags": [
-        "Education",
-        "Audio Pipeline",
-        "On-Device ML"
-      ],
-      "daysTotal": 21,
-      "daysLeft": 19,
-      "progressPct": 10,
-      "statusHint": "Forming • Recruiting",
-      "isIllustrative": false
-    },
-    {
-      "id": "sp_deforestation",
-      "title": "SAR Radar Canopy Height & Biomass Estimation",
-      "buildCallId": "call_mangrove_radar",
-      "description": "Automated processing pipeline using Sentinel-1 C-band synthetic aperture radar to map canopy height beneath persistent clouds.",
-      "problemStatement": "Automated processing pipeline using Sentinel-1 C-band synthetic aperture radar to map canopy height beneath persistent clouds.",
-      "domain": "forestry",
-      "stage": "building",
-      "teamCapacity": 3,
-      "currentMembersCount": 3,
-      "members": [
-        {
-          "userId": "usr_deshi",
-          "squadRole": "GIS Specialist",
-          "displayName": "Deshi Osei",
-          "avatarSeed": "for-radar-1"
-        },
-        {
-          "userId": "usr_priya",
-          "squadRole": "ML Lead",
-          "displayName": "Priya Nandan",
-          "avatarSeed": "for-radar-2"
-        },
-        {
-          "userId": "usr_elena",
-          "squadRole": "Validation Lead",
-          "displayName": "Carlos Mendez",
-          "avatarSeed": "for-radar-3"
-        }
-      ],
-      "targetDeliverable": "Validated PyTorch training checkpoint and open GeoTIFF export script.",
-      "skillTags": [
-        "Forestry",
-        "PyTorch",
-        "Satellite Ops"
-      ],
-      "daysTotal": 21,
-      "daysLeft": 8,
-      "progressPct": 65,
-      "statusHint": "Building • Cycle Active",
-      "isIllustrative": false
-    },
-    {
-      "id": "sp_solar_microgrid",
-      "title": "Solar Microgrid Arc-Fault & Islanding Detector",
-      "buildCallId": "call_grid_stability",
-      "description": "High-speed DSP algorithm detecting DC arc-fault signatures and automated breaker isolation for off-grid rural solar arrays.",
-      "problemStatement": "High-speed DSP algorithm detecting DC arc-fault signatures and automated breaker isolation for off-grid rural solar arrays.",
-      "domain": "grid",
-      "stage": "building",
-      "teamCapacity": 3,
-      "currentMembersCount": 2,
-      "members": [
-        {
-          "userId": "usr_ines",
-          "squadRole": "Power Systems Lead",
-          "displayName": "Ines Falk",
-          "avatarSeed": "grid-fault-1"
-        },
-        {
-          "userId": "usr_elena",
-          "squadRole": "Firmware Engineer",
-          "displayName": "Devon Scott",
-          "avatarSeed": "grid-fault-2"
-        }
-      ],
-      "targetDeliverable": "Sub-cycle DSP interruption logic and high-Tg PCB enclosure.",
-      "skillTags": [
-        "Grid",
-        "DSP",
-        "Power Electronics"
-      ],
-      "daysTotal": 21,
-      "daysLeft": 11,
-      "progressPct": 52,
-      "statusHint": "Building • Cycle Active",
-      "isIllustrative": false
+      "statusHint": "Illustrative Example • Cycle Benchmark",
+      "isIllustrative": true
     }
   ],
   "notebook_entries": [
     {
       "id": "entry_groundwater",
-      "authorId": "usr_priya_nandan",
-      "userId": "usr_priya_nandan",
-      "authorName": "Priya Nandan",
-      "sprintId": null,
-      "parentEntryId": null,
-      "grownFromLabel": "Sprint: Groundwater Sensor",
+      "authorId": "usr_founder_aarushi",
+      "userId": "usr_founder_aarushi",
+      "authorName": "Priya Nandan (Illustrative)",
+      "sprintId": "sp_groundwater",
+      "grownFromLabel": "Sprint: Groundwater Sensor (Benchmark)",
       "title": "Why my groundwater model kept overfitting on rainy days",
       "content": "### The Problem\nWhen evaluating our groundwater aquifer prediction model across 14 monitoring boreholes, we noticed validation loss plummeted during dry weeks but spiked violently by +380% during heavy precipitation events.\n\n### The Root Cause\nInspection of raw sensor telemetry revealed that three optical turbidity probes had cracked rubber seals. Rainwater seepage caused micro-droplets on the lens, creating synthetic high-turbidity pulses that the gradient boosting model interpreted as dramatic aquifer recharge events.\n\n```python\n# Isolated drift script snippet\nimport pandas as pd\nimport numpy as np\n\ndef check_turbidity_residual(df):\n    rain_mask = df['precip_mm'] > 5.0\n    return df.loc[rain_mask, 'turbidity_ntu'].std() / df.loc[~rain_mask, 'turbidity_ntu'].std()\n```\n\n### Resolution & Takeaway\nWe replaced the optical seals with vulcanized nitrile O-rings and added an automated drift rejection filter that discards single-point spikes that violate physical flow dynamics. The model stabilized with RMSE < 0.08 m across all weather conditions.",
       "bodyMarkdown": "### The Problem\nWhen evaluating our groundwater aquifer prediction model across 14 monitoring boreholes, we noticed validation loss plummeted during dry weeks but spiked violently by +380% during heavy precipitation events.\n\n### The Root Cause\nInspection of raw sensor telemetry revealed that three optical turbidity probes had cracked rubber seals. Rainwater seepage caused micro-droplets on the lens, creating synthetic high-turbidity pulses that the gradient boosting model interpreted as dramatic aquifer recharge events.\n\n```python\n# Isolated drift script snippet\nimport pandas as pd\nimport numpy as np\n\ndef check_turbidity_residual(df):\n    rain_mask = df['precip_mm'] > 5.0\n    return df.loc[rain_mask, 'turbidity_ntu'].std() / df.loc[~rain_mask, 'turbidity_ntu'].std()\n```\n\n### Resolution & Takeaway\nWe replaced the optical seals with vulcanized nitrile O-rings and added an automated drift rejection filter that discards single-point spikes that violate physical flow dynamics. The model stabilized with RMSE < 0.08 m across all weather conditions.",
@@ -608,216 +106,17 @@
       "branches": [],
       "moderationStatus": "approved",
       "isPublic": true,
-      "isIllustrative": false,
+      "isIllustrative": true,
       "coverImageUrl": null,
       "readingTimeMinutes": 3,
       "viewCount": 142,
       "isFeatured": false,
       "isFounderPost": false,
       "status": "published",
-      "createdAt": "2026-09-18T14:30:00Z",
-      "updatedAt": null
-    },
-    {
-      "id": "entry_thermal_vent",
-      "authorId": "usr_ines_falk",
-      "userId": "usr_ines_falk",
-      "authorName": "Ines Falk",
-      "sprintId": null,
-      "parentEntryId": null,
-      "grownFromLabel": "Sprint: Decentralized Fault Detection",
-      "title": "First failed prototype of the fault-detection board",
-      "content": "### Prototype Teardown\nOur team field-tested Rev A of the grid fault detector in an unconditioned solar inverter bay in Phoenix. Ambient temperatures inside the metal junction box exceeded 48°C.\n\n### Failure Analysis\nBecause our rapid prototype housing was printed with solid PETG walls and no convection chimney, heat generated by the onboard 24V step-down buck converter had nowhere to dissipate. Junction temperatures on the ADS1115 analog-to-digital converter reached 84°C after six hours, triggering thermal shutdown.\n\n### Rev B Modifications\n1. Added staggered hexagonal vent chimneys at top and bottom of the housing.\n2. Coupled the regulator to an anodized aluminum spreader plate with thermal pad interface.\n3. Swapped to high-Tg polycarbonate-CF blend.\n\nTemperature plateaued safely at 54°C in torture chamber validation.",
-      "bodyMarkdown": "### Prototype Teardown\nOur team field-tested Rev A of the grid fault detector in an unconditioned solar inverter bay in Phoenix. Ambient temperatures inside the metal junction box exceeded 48°C.\n\n### Failure Analysis\nBecause our rapid prototype housing was printed with solid PETG walls and no convection chimney, heat generated by the onboard 24V step-down buck converter had nowhere to dissipate. Junction temperatures on the ADS1115 analog-to-digital converter reached 84°C after six hours, triggering thermal shutdown.\n\n### Rev B Modifications\n1. Added staggered hexagonal vent chimneys at top and bottom of the housing.\n2. Coupled the regulator to an anodized aluminum spreader plate with thermal pad interface.\n3. Swapped to high-Tg polycarbonate-CF blend.\n\nTemperature plateaued safely at 54°C in torture chamber validation.",
-      "summarySnippet": "The 3D-printed enclosure trapped ambient heat and cooked the ADC sensor by hour six. Redesigned the vent pattern and swapped to an aluminum heat spreader.",
-      "teaser": "thermal_log.csv → 84°C at t+6h, spec max 65°C",
-      "domain": "hardware",
-      "entryType": "teardown",
-      "tags": [
-        "hardware",
-        "pcb",
-        "thermal",
-        "cad"
-      ],
-      "branches": [],
-      "moderationStatus": "approved",
-      "isPublic": true,
-      "isIllustrative": false,
-      "coverImageUrl": null,
-      "readingTimeMinutes": 4,
-      "viewCount": 98,
-      "isFeatured": false,
-      "isFounderPost": false,
-      "status": "published",
-      "createdAt": "2026-09-22T09:15:00Z",
-      "updatedAt": null
-    },
-    {
-      "id": "entry_budget_drift",
-      "authorId": "usr_tariq_vance",
-      "userId": "usr_tariq_vance",
-      "authorName": "Tariq Vance",
-      "sprintId": null,
-      "parentEntryId": null,
-      "grownFromLabel": "Sprint: City Budget Explorer",
-      "title": "A dataset that surprised me: the line-items don't sum to the total",
-      "content": "### The Anomaly\nWhile parsing open data extracts for the City Budget Explorer, our automated checksum pipeline threw continuous balance validation errors. The declared municipal total was $58.4M, but summing the departmental sub-tables produced only $56.1M.\n\n### The Investigation\nAfter auditing each capital allocation line item, we discovered that off-balance contingency fund expenditures were included in the summary headline figure but excluded from the department-level breakdown CSV.\n\n```javascript\n// Automated reconciliation validator\nconst subtotal = rows.reduce((acc, r) => acc + Number(r.amount), 0);\nconst discrepancy = Math.abs(subtotal - summaryTotal);\nif (discrepancy > 1000) {\n  reportDiscrepancy({ expected: summaryTotal, actual: subtotal, delta: discrepancy });\n}\n```\n\n### Public Impact\nWe published our automated reconciliation audit to the city comptroller's public comments desk. Two weeks later, the data portal released an amended export format documenting the capital reserve lines.",
-      "bodyMarkdown": "### The Anomaly\nWhile parsing open data extracts for the City Budget Explorer, our automated checksum pipeline threw continuous balance validation errors. The declared municipal total was $58.4M, but summing the departmental sub-tables produced only $56.1M.\n\n### The Investigation\nAfter auditing each capital allocation line item, we discovered that off-balance contingency fund expenditures were included in the summary headline figure but excluded from the department-level breakdown CSV.\n\n```javascript\n// Automated reconciliation validator\nconst subtotal = rows.reduce((acc, r) => acc + Number(r.amount), 0);\nconst discrepancy = Math.abs(subtotal - summaryTotal);\nif (discrepancy > 1000) {\n  reportDiscrepancy({ expected: summaryTotal, actual: subtotal, delta: discrepancy });\n}\n```\n\n### Public Impact\nWe published our automated reconciliation audit to the city comptroller's public comments desk. Two weeks later, the data portal released an amended export format documenting the capital reserve lines.",
-      "summarySnippet": "The city's published budget PDF and its open data export disagree by 4%. Wrote an automated reconciliation script before touching any user interface.",
-      "teaser": "reconcile.js → drift: +$2.3M unattributed capital allocations",
-      "domain": "civic",
-      "entryType": "field-report",
-      "tags": [
-        "civic-data",
-        "open-data",
-        "budget",
-        "audit"
-      ],
-      "branches": [],
-      "moderationStatus": "approved",
-      "isPublic": true,
-      "isIllustrative": false,
-      "coverImageUrl": null,
-      "readingTimeMinutes": 3,
-      "viewCount": 165,
-      "isFeatured": false,
-      "isFounderPost": false,
-      "status": "published",
-      "createdAt": "2026-09-25T11:45:00Z",
-      "updatedAt": null
-    },
-    {
-      "id": "entry_screen_touch",
-      "authorId": "usr_marcus_webb",
-      "userId": "usr_marcus_webb",
-      "authorName": "Marcus Webb",
-      "sprintId": null,
-      "parentEntryId": null,
-      "grownFromLabel": "Sprint: Adaptive Reading Tutor",
-      "title": "The small fix that made the tutor usable on a cracked screen",
-      "content": "### Field Testing Reality\nIn lab testing on iPads and Chrome simulated touch displays, our phonics exercise buttons passed all accessibility guidelines. But when we deployed to a public primary school in Nairobi with 20 donated 7-inch Android tablets, half had hairline cracks across the lower digitizer glass.\n\n### The Fix\nInstead of requiring users to hit exact visual bounding boxes, we implemented touch slop expansion using CSS pseudo-elements and an invisible 48px hit grid. Even with partial touch latency, tap targets register cleanly.\n\n```css\n.phonics-target {\n  position: relative;\n  min-height: 48px !important;\n}\n.phonics-target::after {\n  content: \"\";\n  position: absolute;\n  inset: -10px;\n}\n```\n\nLesson learned: Always test educational software on low-cost and refurbished hardware under actual classroom lighting.",
-      "bodyMarkdown": "### Field Testing Reality\nIn lab testing on iPads and Chrome simulated touch displays, our phonics exercise buttons passed all accessibility guidelines. But when we deployed to a public primary school in Nairobi with 20 donated 7-inch Android tablets, half had hairline cracks across the lower digitizer glass.\n\n### The Fix\nInstead of requiring users to hit exact visual bounding boxes, we implemented touch slop expansion using CSS pseudo-elements and an invisible 48px hit grid. Even with partial touch latency, tap targets register cleanly.\n\n```css\n.phonics-target {\n  position: relative;\n  min-height: 48px !important;\n}\n.phonics-target::after {\n  content: \"\";\n  position: absolute;\n  inset: -10px;\n}\n```\n\nLesson learned: Always test educational software on low-cost and refurbished hardware under actual classroom lighting.",
-      "summarySnippet": "Touch targets were fine in the desktop simulator but unusable on donated classroom tablets with damaged digitizers. Expanding target hitboxes solved it.",
-      "teaser": "tutor.css:212 → min-height: 48px !important; margin: 8px;",
-      "domain": "education",
-      "entryType": "field-report",
-      "tags": [
-        "accessibility",
-        "tablets",
-        "education",
-        "css"
-      ],
-      "branches": [],
-      "moderationStatus": "approved",
-      "isPublic": true,
-      "isIllustrative": false,
-      "coverImageUrl": null,
-      "readingTimeMinutes": 3,
-      "viewCount": 112,
-      "isFeatured": false,
-      "isFounderPost": false,
-      "status": "published",
-      "createdAt": "2026-09-28T08:00:00Z",
-      "updatedAt": null
-    },
-    {
-      "id": "entry_offline_conflict",
-      "authorId": "usr_dr__rohan_malhotra",
-      "userId": "usr_dr__rohan_malhotra",
-      "authorName": "Dr. Rohan Malhotra",
-      "sprintId": null,
-      "parentEntryId": null,
-      "grownFromLabel": "Sprint: Pediatric Spirometer",
-      "title": "Post-mortem: our offline sync merge conflicts in rural clinics",
-      "content": "### Incident Summary\nDuring field trials across three sub-district clinics without reliable cellular coverage, nurses recorded pediatric spirometry measurements on battery-powered field terminals. When clinics reconnected to the central server in the evening, last-write-wins timestamp replication silently overwrote afternoon inhalation flow curves.\n\n### Architectural Migration\nWe replaced timestamp-based REST sync with Automerge Conflict-Free Replicated Data Types (CRDTs). Every spirometry run is represented as an append-only delta event with cryptographic vector clocks.\n\n### Results\nMerge conflicts dropped from an average of 40 per day to zero. Even when two nurses enter patient vitals simultaneously while disconnected, both observations merge cleanly without data loss.",
-      "bodyMarkdown": "### Incident Summary\nDuring field trials across three sub-district clinics without reliable cellular coverage, nurses recorded pediatric spirometry measurements on battery-powered field terminals. When clinics reconnected to the central server in the evening, last-write-wins timestamp replication silently overwrote afternoon inhalation flow curves.\n\n### Architectural Migration\nWe replaced timestamp-based REST sync with Automerge Conflict-Free Replicated Data Types (CRDTs). Every spirometry run is represented as an append-only delta event with cryptographic vector clocks.\n\n### Results\nMerge conflicts dropped from an average of 40 per day to zero. Even when two nurses enter patient vitals simultaneously while disconnected, both observations merge cleanly without data loss.",
-      "summarySnippet": "Two clinic nurses editing the same patient trial record offline with no network coordinator. Migrated to deterministic conflict-free replicated data types.",
-      "teaser": "sync.md → conflicts/day dropped from 40 to 0 after CRDT migration",
-      "domain": "health",
-      "entryType": "post-mortem",
-      "tags": [
-        "crdt",
-        "offline-first",
-        "health",
-        "sync"
-      ],
-      "branches": [],
-      "moderationStatus": "approved",
-      "isPublic": true,
-      "isIllustrative": false,
-      "coverImageUrl": null,
-      "readingTimeMinutes": 3,
-      "viewCount": 6,
-      "isFeatured": false,
-      "isFounderPost": false,
-      "status": "published",
-      "createdAt": "2026-09-05T16:20:00Z",
-      "updatedAt": null
-    },
-    {
-      "id": "entry_radar_speckle",
-      "authorId": "usr_deshi_osei",
-      "userId": "usr_deshi_osei",
-      "authorName": "Deshi Osei",
-      "sprintId": null,
-      "parentEntryId": null,
-      "grownFromLabel": "Sprint: SAR Canopy Change Detection",
-      "title": "Filtering speckle noise in Sentinel-1 dual-pol backscatter over flooded mangroves",
-      "content": "### Technical Bottleneck\nSynthetic Aperture Radar (SAR) Sentinel-1 C-band backscatter penetrates cloud cover but suffers from severe speckle noise in intertidal mangrove forests. High tides create specular reflectance surfaces that simulate complete canopy clearance in automated threshold classifiers.\n\n### Implementation\nWe built an adaptive spatial Lee filter combined with a localized tidal elevation mask derived from the Copernicus digital elevation model. If the backscatter drop coincides with lunar peak high tide, the change detector dampens sensitivity.\n\n```python\n# Enhanced Lee speckle suppression\ndef lee_filter(img, win_size=5):\n    mean = uniform_filter(img, win_size)\n    var = uniform_filter(img**2, win_size) - mean**2\n    weight = var / (var + np.mean(var))\n    return mean + weight * (img - mean)\n```\n\nFalse-positive mangrove clearing alerts were reduced by 72% across the Niger Delta test corridor.",
-      "bodyMarkdown": "### Technical Bottleneck\nSynthetic Aperture Radar (SAR) Sentinel-1 C-band backscatter penetrates cloud cover but suffers from severe speckle noise in intertidal mangrove forests. High tides create specular reflectance surfaces that simulate complete canopy clearance in automated threshold classifiers.\n\n### Implementation\nWe built an adaptive spatial Lee filter combined with a localized tidal elevation mask derived from the Copernicus digital elevation model. If the backscatter drop coincides with lunar peak high tide, the change detector dampens sensitivity.\n\n```python\n# Enhanced Lee speckle suppression\ndef lee_filter(img, win_size=5):\n    mean = uniform_filter(img, win_size)\n    var = uniform_filter(img**2, win_size) - mean**2\n    weight = var / (var + np.mean(var))\n    return mean + weight * (img - mean)\n```\n\nFalse-positive mangrove clearing alerts were reduced by 72% across the Niger Delta test corridor.",
-      "summarySnippet": "Water specular reflections caused false-positive canopy drop alerts in tidal zones. Implemented an enhanced Lee filter with adaptive spatial windowing.",
-      "teaser": "sar_filter.py → false alarm rate reduced by 72% in intertidal zones",
-      "domain": "forestry",
-      "entryType": "sprint-update",
-      "tags": [
-        "sar",
-        "radar",
-        "mangroves",
-        "gis",
-        "python"
-      ],
-      "branches": [],
-      "moderationStatus": "approved",
-      "isPublic": true,
-      "isIllustrative": false,
-      "coverImageUrl": null,
-      "readingTimeMinutes": 4,
-      "viewCount": 189,
-      "isFeatured": false,
-      "isFounderPost": false,
-      "status": "published",
-      "createdAt": "2026-10-05T10:10:00Z",
-      "updatedAt": null
+      "createdAt": "2026-09-18T14:30:00Z"
     }
   ],
-  "applications": [
-    {
-      "id": "app_jane_vance",
-      "fullName": "Dr. Jane Vance",
-      "email": "jane.vance@ecology.org",
-      "role": "problem_holder",
-      "domain": "climate",
-      "status": "approved",
-      "motivation": "Directing community water preservation across Western Basin agricultural aquifers. Seeking engineering squad for continuous optical probes.",
-      "appliedAt": "2026-10-14T08:00:00Z",
-      "reviewedAt": "2026-10-15T10:00:00Z",
-      "reviewedBy": "usr_founder_aarushi",
-      "curatorFeedback": "Verified identity and access to 18 testing boreholes. Approved for field station matching."
-    },
-    {
-      "id": "app_carlos_mendez",
-      "fullName": "Carlos Mendez",
-      "email": "carlos.mendez@forestry.org",
-      "role": "builder",
-      "domain": "forestry",
-      "status": "pending",
-      "motivation": "GIS and satellite validation specialist with 5 years processing Copernicus Sentinel GRD radar products.",
-      "appliedAt": "2026-11-02T11:45:00Z",
-      "reviewedAt": null,
-      "reviewedBy": null,
-      "curatorFeedback": ""
-    }
-  ],
+  "applications": [],
   "moderation_queue": [
     {
       "id": "mod_1791919793943",
