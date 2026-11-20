@@ -200,6 +200,106 @@
       .rp-card-icon { width: 38px; height: 38px; }
       .rp-card-sub  { display: none; }
     }
+  
+    /* ====================================================
+       HOW CANOPY WORKS — 3-STEP GUIDED HIGHWAY
+       Botanical Paper Palette, fully adaptable to Light & Dark zones
+       ==================================================== */
+    .how-it-works-strip {
+      background: var(--card, #fcf8ea);
+      border: 1px solid var(--card-edge, #e4dabb);
+      border-radius: 20px;
+      padding: clamp(24px, 4vw, 36px) clamp(20px, 3.5vw, 32px);
+      margin: 32px auto 44px;
+      box-shadow: 0 4px 20px -2px var(--shadow, rgba(38,32,16,.08)), 3px 3px 0 var(--ink, #26241a);
+      position: relative;
+      transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .hiw-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .hiw-eyebrow {
+      font-family: 'Caveat Var', cursive;
+      font-variation-settings: 'wght' 650;
+      font-size: 1.35rem;
+      color: var(--forest, #1f5c40);
+      display: inline-block;
+      transform: rotate(-1.5deg);
+      margin-bottom: 4px;
+    }
+    .hiw-title {
+      font-family: 'Fraunces Var', serif;
+      font-weight: 700;
+      font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+      color: var(--ink, #26241a);
+      margin: 0;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .hiw-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .hiw-step-card {
+      background: var(--paper, #f4efdc);
+      border: 1px solid var(--card-edge, #e4dabb);
+      border-radius: 14px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 8px -2px var(--shadow, rgba(38,32,16,.06));
+      transition: transform 0.18s var(--ease-out, cubic-bezier(.23,1,.32,1)),
+                  border-color 0.18s ease,
+                  box-shadow 0.18s ease;
+    }
+    .hiw-step-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--forest, #1f5c40);
+      box-shadow: 0 6px 18px -4px var(--shadow, rgba(38,32,16,.14));
+    }
+    .hiw-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-family: 'Fraunces Var', serif;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      box-shadow: 1.5px 1.5px 0 var(--ink, #26241a);
+    }
+    .hiw-badge-1 { background: var(--coral, #cf5f45); color: #fff; }
+    .hiw-badge-2 { background: var(--forest, #1f5c40); color: var(--paper, #f4efdc); }
+    .hiw-badge-3 { background: var(--sun, #e3b23f); color: #12240f; }
+    .hiw-step-title {
+      font-family: 'Fraunces Var', serif;
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: var(--ink, #26241a);
+      margin: 0 0 8px;
+      letter-spacing: -0.015em;
+    }
+    .hiw-step-desc {
+      font-family: 'Jost Var', sans-serif;
+      color: var(--ink-soft, #5c5744);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin: 0;
+    }
+    .hiw-actions {
+      text-align: center;
+      margin-top: 26px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
   </style>
 
 </head>
@@ -311,7 +411,7 @@
         <a href="#problem">About</a>
         <a href="match.html">Match Teammates</a>
         <a href="sprint.html">Active Squads</a>
-        <a href="notebook.html">Shipped Demos</a>
+        <a href="notebook.html">Open Notebook</a>
       </nav>
       <div style="display:flex;align-items:center;gap:10px;">
         <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
@@ -345,7 +445,7 @@
       <span class="nav-drawer-section-label">Navigation</span>
       <a href="match.html" class="nav-drawer-link">Match Teammates</a>
       <a href="sprint.html" class="nav-drawer-link">Active Squads</a>
-      <a href="notebook.html" class="nav-drawer-link">Shipped Demos</a>
+      <a href="notebook.html" class="nav-drawer-link">Open Notebook</a>
       <a href="#problem" class="nav-drawer-link">About Canopy</a>
     </div>
 
@@ -437,41 +537,41 @@
       </div>
     </section>
 
-    <!-- ============ THE 3-STEP GUIDED HIGHWAY (UX OVERHAUL) ============ -->
-    <section class="how-it-works-strip wrap" style="background:#0e221b; border:1px solid rgba(110,231,183,0.18); border-radius:18px; padding:32px 28px; margin:24px auto 40px; box-shadow:0 12px 32px -8px rgba(0,0,0,0.35);">
-      <div style="text-align:center; margin-bottom:24px;">
-        <span style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; text-transform:uppercase; color:#6ee7b7; letter-spacing:0.12em; font-weight:600;">The 21-Day Journey</span>
-        <h3 style="color:#faf5e8; font-family:'Fraunces Var',serif; font-size:clamp(1.25rem, 2.5vw, 1.6rem); margin:6px 0 0; font-weight:700;">How Canopy Works in 3 Simple Steps</h3>
+    <!-- ============ THE 3-STEP GUIDED HIGHWAY ============ -->
+    <section class="how-it-works-strip wrap reveal in-view">
+      <div class="hiw-header">
+        <span class="hiw-eyebrow">the 21-day journey</span>
+        <h3 class="hiw-title">How Canopy Works in 3 Simple Steps</h3>
       </div>
       
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:18px;">
+      <div class="hiw-grid">
         <!-- Step 1 -->
-        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px;">
-          <div style="width:32px; height:32px; border-radius:50%; background:#f08c4a; color:#090e0c; font-weight:800; display:flex; align-items:center; justify-content:center; margin-bottom:14px; font-size:0.95rem;">1</div>
-          <h4 style="color:#faf5e8; margin:0 0 8px; font-size:1.05rem; font-family:'Fraunces Var',serif;">Pick a Challenge</h4>
-          <p style="color:#9eada3; font-size:0.88rem; margin:0; line-height:1.55;">Explore vetted, domain-specific problems posted by real operators and research labs.</p>
+        <div class="hiw-step-card">
+          <div class="hiw-badge hiw-badge-1" aria-hidden="true">1</div>
+          <h4 class="hiw-step-title">Pick a Challenge</h4>
+          <p class="hiw-step-desc">Explore vetted, domain-specific problems posted by real operators and research labs.</p>
         </div>
         
         <!-- Step 2 -->
-        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px;">
-          <div style="width:32px; height:32px; border-radius:50%; background:#6ee7b7; color:#090e0c; font-weight:800; display:flex; align-items:center; justify-content:center; margin-bottom:14px; font-size:0.95rem;">2</div>
-          <h4 style="color:#faf5e8; margin:0 0 8px; font-size:1.05rem; font-family:'Fraunces Var',serif;">Match Your Squad</h4>
-          <p style="color:#9eada3; font-size:0.88rem; margin:0; line-height:1.55;">Get paired with 2 complementary builders (Tech + UX + Domain) based on technical chemistry.</p>
+        <div class="hiw-step-card">
+          <div class="hiw-badge hiw-badge-2" aria-hidden="true">2</div>
+          <h4 class="hiw-step-title">Match Your Squad</h4>
+          <p class="hiw-step-desc">Get paired with 2 complementary builders (Tech + UX + Domain) based on technical chemistry.</p>
         </div>
         
         <!-- Step 3 -->
-        <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px;">
-          <div style="width:32px; height:32px; border-radius:50%; background:#e3b23f; color:#090e0c; font-weight:800; display:flex; align-items:center; justify-content:center; margin-bottom:14px; font-size:0.95rem;">3</div>
-          <h4 style="color:#faf5e8; margin:0 0 8px; font-size:1.05rem; font-family:'Fraunces Var',serif;">Ship in 21 Days</h4>
-          <p style="color:#9eada3; font-size:0.88rem; margin:0; line-height:1.55;">Build a working field prototype backed by weekly sprint checkpoints and demo logs.</p>
+        <div class="hiw-step-card">
+          <div class="hiw-badge hiw-badge-3" aria-hidden="true">3</div>
+          <h4 class="hiw-step-title">Ship in 21 Days</h4>
+          <p class="hiw-step-desc">Build a working field prototype backed by weekly sprint checkpoints and demo logs.</p>
         </div>
       </div>
 
-      <div style="text-align:center; margin-top:26px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
-        <a href="sprint.html" class="btn btn-stamp" style="font-weight:700; padding:12px 26px;">
+      <div class="hiw-actions">
+        <a href="sprint.html" class="btn btn-stamp">
           Browse Active Squads &rarr;
         </a>
-        <a href="match.html" class="btn btn-ghost" style="border:1px solid rgba(110,231,183,0.3); color:#faf5e8; padding:12px 22px;">
+        <a href="match.html" class="btn btn-ghost">
           Explore Open Challenges
         </a>
       </div>
@@ -886,7 +986,7 @@
             if (icon) icon.textContent = '🌱';
             if (title) title.textContent = 'Welcome, Enabler!';
             if (desc) desc.textContent = 'Support high-signal builders with domain mentorship, pilot resources, or deployment grants.';
-            if (pri) { pri.textContent = 'Explore Shipped Demos →'; pri.href = 'notebook.html'; }
+            if (pri) { pri.textContent = 'Explore Open Notebook →'; pri.href = 'notebook.html'; }
             if (sec) { sec.textContent = 'Apply as an Enabler'; sec.href = 'apply.html?role=enabler'; }
           }
           return;
