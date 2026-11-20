@@ -16,6 +16,7 @@ class BaseRepository {
 
   get client() {
     if (this.remoteDisabled) return null;
+    if (process.env.CANOPY_ISOLATE_STORE === 'true' || process.env.NODE_ENV === 'test') return null;
     return isConfigured() ? supabase : null;
   }
 

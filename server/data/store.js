@@ -589,21 +589,23 @@ function writeDb(data) {
     fs.writeFileSync(TMP_DB_FILE, jsonStr, 'utf-8');
   } catch (_) {}
 
-  // Asynchronously sync to Supabase Storage if configured
-  try {
-    const { supabase, isConfigured } = require('../config/supabase');
-    if (isConfigured() && supabase) {
-      supabase.storage
-        .from(STORAGE_BUCKET)
-        .upload(STORAGE_FILE, jsonStr, { contentType: 'application/json', upsert: true })
-        .then(() => {
-          lastRemoteSync = Date.now();
-        })
-        .catch(err => {
-          console.warn('[Canopy Store:AsyncUpload:Warn]', err.message);
-        });
-    }
-  } catch (_) {}
+  // Asynchronously sync to Supabase Storage if configured and NOT in isolated/test mode
+  if (!isIsolated()) {
+    try {
+      const { supabase, isConfigured } = require('../config/supabase');
+      if (isConfigured() && supabase) {
+        supabase.storage
+          .from(STORAGE_BUCKET)
+          .upload(STORAGE_FILE, jsonStr, { contentType: 'application/json', upsert: true })
+          .then(() => {
+            lastRemoteSync = Date.now();
+          })
+          .catch(err => {
+            console.warn('[Canopy Store:AsyncUpload:Warn]', err.message);
+          });
+      }
+    } catch (_) {}
+  }
 
   return true;
 }

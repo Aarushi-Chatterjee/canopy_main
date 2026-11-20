@@ -292,7 +292,7 @@ app.get(['/api/health', '/health'], async (req, res) => {
   const isProd = process.env.NODE_ENV === 'production';
   let dbStatus = 'local_resilient';
 
-  if (isConfigured() && supabase) {
+  if (process.env.NODE_ENV !== 'test' && process.env.CANOPY_ISOLATE_STORE !== 'true' && isConfigured() && supabase) {
     try {
       const { error } = await supabase.from('build_calls').select('id').limit(1);
       dbStatus = error ? 'unhealthy' : 'connected';
