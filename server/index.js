@@ -170,6 +170,20 @@ function renderNotFoundPage(res) {
 
 // Unified Stealth Founder Console & API Security Gate (SEC-02, SEC-04, SEC-05)
 function founderGate(req, res, next) {
+  // Query parameter key leak rejection (CWE-598)
+  if (req.query && req.query.key) {
+    return res.status(403).send(`
+      <!doctype html>
+      <html lang="en">
+      <head><meta charset="UTF-8"><title>Founder Station Gate - Canopy</title></head>
+      <body style="font-family:sans-serif;background:#1B2E20;color:#F5F2EB;padding:40px;text-align:center;">
+        <h1>Founder Station Gate</h1>
+        <p>Credential passing via URL query parameters is rejected (CWE-598). Use the secure unlock terminal.</p>
+      </body>
+      </html>
+    `);
+  }
+
   const staffRoles = ['owner', 'admin', 'moderator', 'match_curator', 'content_editor'];
   const hasStaffRole = req.user && req.user.roles && req.user.roles.some(r => staffRoles.includes(r));
   const isOwner = req.user && req.user.roles && req.user.roles.includes('owner');
@@ -202,7 +216,15 @@ function founderGate(req, res, next) {
     return next();
   }
 
-  // 4. STEALTH DEFENSE: For any outside visitor, showcase that NO SUCH PAGE EXISTS.
+  // 4. Authenticated users without administrative privileges are rejected with 403 Forbidden
+  if (req.user) {
+    return res.status(403).json({
+      error: 'Access forbidden: insufficient administrative privileges',
+      code: 'ROLE_RESTRICTED'
+    });
+  }
+
+  // 5. STEALTH DEFENSE: For any outside visitor, showcase that NO SUCH PAGE EXISTS.
   // API endpoints return the standard API 404 JSON
   const urlPath = req.originalUrl || req.path || '';
   if (urlPath.startsWith('/api/') || req.path.startsWith('/api/')) {
@@ -231,8 +253,17 @@ app.post('/admin/unlock', (req, res) => {
     return res.redirect('/admin');
   }
 
-  // Stealth: Return genuine 404 on invalid key attempts
-  return renderNotFoundPage(res);
+  // Insecure / invalid key unlock rejection (403 Access Denied challenge)
+  return res.status(403).send(`
+    <!doctype html>
+    <html lang="en">
+    <head><meta charset="UTF-8"><title>Access Denied - Founder Station Gate</title></head>
+    <body style="font-family:sans-serif;background:#1B2E20;color:#F5F2EB;padding:40px;text-align:center;">
+      <h1>Access Denied</h1>
+      <p>Invalid key provided to Founder Station Gate.</p>
+    </body>
+    </html>
+  `);
 });
 
 app.get('/admin/unlock', (req, res) => {

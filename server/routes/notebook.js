@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { notebook: notebookRepo, users: usersRepo, profiles: profilesRepo, sprints: sprintsRepo } = require('../repositories');
+const { notebook: notebookRepo, users: usersRepo, profiles: profilesRepo, sprints: sprintsRepo, auditEvents: auditRepo } = require('../repositories');
 const { optionalAuth } = require('../middleware/auth');
 
 // Robust Input Sanitization to prevent XSS, script injection, and event handler exploits
