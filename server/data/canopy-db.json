@@ -82,40 +82,7 @@
       "isIllustrative": true
     }
   ],
-  "notebook_entries": [
-    {
-      "id": "entry_groundwater",
-      "authorId": "usr_founder_aarushi",
-      "userId": "usr_founder_aarushi",
-      "authorName": "Priya Nandan (Illustrative)",
-      "sprintId": "sp_groundwater",
-      "grownFromLabel": "Sprint: Groundwater Sensor (Benchmark)",
-      "title": "Why my groundwater model kept overfitting on rainy days",
-      "content": "### The Problem\nWhen evaluating our groundwater aquifer prediction model across 14 monitoring boreholes, we noticed validation loss plummeted during dry weeks but spiked violently by +380% during heavy precipitation events.\n\n### The Root Cause\nInspection of raw sensor telemetry revealed that three optical turbidity probes had cracked rubber seals. Rainwater seepage caused micro-droplets on the lens, creating synthetic high-turbidity pulses that the gradient boosting model interpreted as dramatic aquifer recharge events.\n\n```python\n# Isolated drift script snippet\nimport pandas as pd\nimport numpy as np\n\ndef check_turbidity_residual(df):\n    rain_mask = df['precip_mm'] > 5.0\n    return df.loc[rain_mask, 'turbidity_ntu'].std() / df.loc[~rain_mask, 'turbidity_ntu'].std()\n```\n\n### Resolution & Takeaway\nWe replaced the optical seals with vulcanized nitrile O-rings and added an automated drift rejection filter that discards single-point spikes that violate physical flow dynamics. The model stabilized with RMSE < 0.08 m across all weather conditions.",
-      "bodyMarkdown": "### The Problem\nWhen evaluating our groundwater aquifer prediction model across 14 monitoring boreholes, we noticed validation loss plummeted during dry weeks but spiked violently by +380% during heavy precipitation events.\n\n### The Root Cause\nInspection of raw sensor telemetry revealed that three optical turbidity probes had cracked rubber seals. Rainwater seepage caused micro-droplets on the lens, creating synthetic high-turbidity pulses that the gradient boosting model interpreted as dramatic aquifer recharge events.\n\n```python\n# Isolated drift script snippet\nimport pandas as pd\nimport numpy as np\n\ndef check_turbidity_residual(df):\n    rain_mask = df['precip_mm'] > 5.0\n    return df.loc[rain_mask, 'turbidity_ntu'].std() / df.loc[~rain_mask, 'turbidity_ntu'].std()\n```\n\n### Resolution & Takeaway\nWe replaced the optical seals with vulcanized nitrile O-rings and added an automated drift rejection filter that discards single-point spikes that violate physical flow dynamics. The model stabilized with RMSE < 0.08 m across all weather conditions.",
-      "summarySnippet": "Turns out three optical sensors were miscalibrated after heavy storms and I was training on noise. Here is how I caught and isolated the drift.",
-      "teaser": "rmse_by_weather.py:14 → std(residual | rain) >> std(residual | dry)",
-      "domain": "climate",
-      "entryType": "post-mortem",
-      "tags": [
-        "optical-sensors",
-        "drift",
-        "groundwater",
-        "python"
-      ],
-      "branches": [],
-      "moderationStatus": "approved",
-      "isPublic": true,
-      "isIllustrative": true,
-      "coverImageUrl": null,
-      "readingTimeMinutes": 3,
-      "viewCount": 142,
-      "isFeatured": false,
-      "isFounderPost": false,
-      "status": "published",
-      "createdAt": "2026-09-18T14:30:00Z"
-    }
-  ],
+  "notebook_entries": [],
   "applications": [],
   "moderation_queue": [
     {

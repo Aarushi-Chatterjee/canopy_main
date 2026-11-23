@@ -368,139 +368,7 @@
       <button type="button" class="filter-chip domain-chip" data-domain="forestry" aria-pressed="false">Forestry</button>
     </div>
 
-    <div class="feed-grid" id="entryGrid">
-      <!-- In-progress dev log 1 -->
-      <article class="elevated-card interactive entry-card in-view" data-domain="climate" data-type="post-mortem" data-mode="logs" data-id="entry_groundwater" tabindex="0">
-        <div class="entry-top">
-          <div class="avatar sm" data-seed="Priya Nandan" aria-hidden="true"></div>
-          <span class="name">Priya Nandan</span>
-          <span class="when">Active Sprint</span>
-        </div>
-        <span class="entry-breadcrumb">grown from Sprint: Groundwater Sensor</span>
-        <h4>Why my groundwater model kept overfitting on rainy days</h4>
-        <p class="snippet">Turns out three optical sensors were miscalibrated after heavy storms and I was training on noise. Here is how I caught and isolated the drift.</p>
-        <div class="teaser"><span>rmse_by_weather.py:14 → std(residual | rain) &gt;&gt; std(residual | dry)</span></div>
-        <div class="entry-bottom">
-          <span class="tag-chip" data-domain="climate">Climate</span>
-          <span class="tag-chip skill">post-mortem</span>
-          <button type="button" class="grow-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            Grow entry
-            <span class="tooltip">Add a follow-up or reflection</span>
-          </button>
-        </div>
-      </article>
-
-      <!-- In-progress dev log 2 -->
-      <article class="elevated-card interactive entry-card in-view" data-domain="hardware" data-type="teardown" data-mode="logs" data-id="entry_thermal_vent" tabindex="0">
-        <div class="entry-top">
-          <div class="avatar sm" data-seed="Ines Falk" aria-hidden="true"></div>
-          <span class="name">Ines Falk</span>
-          <span class="when">Active Sprint</span>
-        </div>
-        <span class="entry-breadcrumb">grown from Sprint: Decentralized Fault Detection</span>
-        <h4>First failed prototype of the fault-detection board</h4>
-        <p class="snippet">The 3D-printed enclosure trapped ambient heat and cooked the ADC sensor by hour six. Redesigned the vent pattern and swapped to an aluminum heat spreader.</p>
-        <div class="teaser"><span>thermal_log.csv → 84°C at t+6h, spec max 65°C</span></div>
-        <div class="entry-bottom">
-          <span class="tag-chip" data-domain="hardware">Hardware</span>
-          <span class="tag-chip skill">teardown</span>
-          <button type="button" class="grow-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            Grow entry
-            <span class="tooltip">Add a follow-up or reflection</span>
-          </button>
-        </div>
-      </article>
-
-      <!-- In-progress dev log 3 -->
-      <article class="elevated-card interactive entry-card in-view" data-domain="civic" data-type="field-report" data-mode="logs" data-id="entry_budget_drift" tabindex="0">
-        <div class="entry-top">
-          <div class="avatar sm" data-seed="Tariq Vance" aria-hidden="true"></div>
-          <span class="name">Tariq Vance</span>
-          <span class="when">Active Sprint</span>
-        </div>
-        <span class="entry-breadcrumb">grown from Sprint: City Budget Explorer</span>
-        <h4>A dataset that surprised me: the line-items don't sum to the total</h4>
-        <p class="snippet">The city's published budget PDF and its open data export disagree by 4%. Wrote an automated reconciliation script before touching any user interface.</p>
-        <div class="teaser"><span>reconcile.js → drift: +$2.3M unattributed capital allocations</span></div>
-        <div class="entry-bottom">
-          <span class="tag-chip" data-domain="civic">Civic Tech</span>
-          <span class="tag-chip skill">field-report</span>
-          <button type="button" class="grow-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            Grow entry
-            <span class="tooltip">Add a follow-up or reflection</span>
-          </button>
-        </div>
-      </article>
-
-      <!-- In-progress dev log 4 -->
-      <article class="elevated-card interactive entry-card in-view" data-domain="education" data-type="field-report" data-mode="logs" data-id="entry_screen_touch" tabindex="0">
-        <div class="entry-top">
-          <div class="avatar sm" data-seed="Marcus Webb" aria-hidden="true"></div>
-          <span class="name">Marcus Webb</span>
-          <span class="when">Active Sprint</span>
-        </div>
-        <span class="entry-breadcrumb">grown from Sprint: Adaptive Reading Tutor</span>
-        <h4>The small fix that made the tutor usable on a cracked screen</h4>
-        <p class="snippet">Touch targets were fine in the desktop simulator but unusable on donated classroom tablets with damaged digitizers. Expanding target hitboxes solved it.</p>
-        <div class="teaser"><span>tutor.css:212 → min-height: 48px !important; margin: 8px;</span></div>
-        <div class="entry-bottom">
-          <span class="tag-chip" data-domain="education">Education</span>
-          <span class="tag-chip skill">field-report</span>
-          <button type="button" class="grow-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            Grow entry
-            <span class="tooltip">Add a follow-up or reflection</span>
-          </button>
-        </div>
-      </article>
-
-      <!-- In-progress dev log 5 -->
-      <article class="elevated-card interactive entry-card in-view" data-domain="health" data-type="post-mortem" data-mode="logs" data-id="entry_offline_conflict" tabindex="0">
-        <div class="entry-top">
-          <div class="avatar sm" data-seed="Dr. Rohan Malhotra" aria-hidden="true"></div>
-          <span class="name">Dr. Rohan Malhotra</span>
-          <span class="when">Active Sprint</span>
-        </div>
-        <span class="entry-breadcrumb">grown from Sprint: Pediatric Spirometer</span>
-        <h4>Post-mortem: our offline sync merge conflicts in rural clinics</h4>
-        <p class="snippet">Two clinic nurses editing the same patient trial record offline with no network coordinator. Migrated to deterministic conflict-free replicated data types.</p>
-        <div class="teaser"><span>sync.md → conflicts/day dropped from 40 to 0 after CRDT migration</span></div>
-        <div class="entry-bottom">
-          <span class="tag-chip" data-domain="health">Health</span>
-          <span class="tag-chip skill">post-mortem</span>
-          <button type="button" class="grow-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            Grow entry
-            <span class="tooltip">Add a follow-up or reflection</span>
-          </button>
-        </div>
-      </article>
-
-      <!-- In-progress dev log 6 -->
-      <article class="elevated-card interactive entry-card in-view" data-domain="forestry" data-type="sprint-update" data-mode="logs" data-id="entry_radar_speckle" tabindex="0">
-        <div class="entry-top">
-          <div class="avatar sm" data-seed="Deshi Osei" aria-hidden="true"></div>
-          <span class="name">Deshi Osei</span>
-          <span class="when">Active Sprint</span>
-        </div>
-        <span class="entry-breadcrumb">grown from Sprint: SAR Canopy Change Detection</span>
-        <h4>Filtering speckle noise in Sentinel-1 dual-pol backscatter over flooded mangroves</h4>
-        <p class="snippet">Water specular reflections caused false-positive canopy drop alerts in tidal zones. Implemented an enhanced Lee filter with adaptive spatial windowing.</p>
-        <div class="teaser"><span>sar_filter.py → false alarm rate reduced by 72% in intertidal zones</span></div>
-        <div class="entry-bottom">
-          <span class="tag-chip" data-domain="forestry">Forestry</span>
-          <span class="tag-chip skill">sprint-update</span>
-          <button type="button" class="grow-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            Grow entry
-            <span class="tooltip">Add a follow-up or reflection</span>
-          </button>
-        </div>
-      </article>
-    </div>
+    <div class="feed-grid" id="entryGrid"></div>
   </section>
 
   <!-- ==========================================
@@ -518,160 +386,12 @@
           <p>Tangible, completed outcomes shipped by Canopy squads. Every entry represents working hardware, deployed pipelines, or open-source software running in the field.</p>
         </div>
         <div class="meta-tag" style="font-size:0.84rem;color:var(--ink-faint);">
-          <strong style="color:var(--forest);" id="shippedCount">4</strong> verified shipped outcomes
+          <strong style="color:var(--forest);" id="shippedCount">0</strong> verified shipped outcomes
         </div>
       </div>
     </div>
 
-    <div class="shipped-grid" id="shippedGrid">
-      <!-- Shipped Story 1 -->
-      <article class="shipped-card in-view" data-domain="climate" data-id="sp_shipped_rural_water">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
-          <span class="tag-chip" data-domain="climate">Climate</span>
-          <span class="shipped-badge">✓ Deployed in Field</span>
-        </div>
-        <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;">Distributed Spectral Nitrate Probe for Rural Well Networks</h4>
-        <div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">
-          Squad: <strong>Elena Rostova</strong> (Hardware Lead) &amp; <strong>Kareem Patel</strong> (Field Hydrologist)
-        </div>
-        <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;">Constructed low-cost optical absorption probe detecting agricultural runoff with 94.2% accuracy against laboratory spectrophotometry.</p>
-        
-        <div class="impact-highlight-box">
-          <strong>Measured Impact:</strong> 18 community wells monitored · 94.2% lab correlation · $42/unit BOM
-        </div>
-
-        <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.4;">
-          <strong>Target Deliverable:</strong> Optical immersion probe, KiCad Gerber files, and LoRaWAN telemetry firmware.
-        </div>
-
-        <div class="chip-row" style="margin-bottom:8px;">
-          <span class="tag-chip skill">Hardware</span>
-          <span class="tag-chip skill">Optics</span>
-          <span class="tag-chip skill">LoRaWAN</span>
-          <span class="tag-chip skill">Hydrology</span>
-        </div>
-
-        <div class="shipped-links-row">
-          <a href="https://github.com/example/open-nitrate-probe" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:5px 10px;">
-            Open-Source Repo ↗
-          </a>
-          <a href="https://reports.example.org/nitrate-spectral-calibration" target="_blank" rel="noopener noreferrer" class="btn btn-stamp btn-sm" style="font-size:0.8rem;padding:5px 10px;">
-            Field Validation Report ↗
-          </a>
-        </div>
-      </article>
-
-      <!-- Shipped Story 2 -->
-      <article class="shipped-card in-view" data-domain="civic" data-id="sp_shipped_budget_engine">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
-          <span class="tag-chip" data-domain="civic">Civic Tech</span>
-          <span class="shipped-badge">✓ Open Source &amp; Live</span>
-        </div>
-        <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;">Municipal Capital Expenditure Reconciler &amp; Neighborhood Geo-Mapper</h4>
-        <div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">
-          Squad: <strong>Tariq Vance</strong> (Pipeline Lead) &amp; <strong>Marcus Webb</strong> (Cartography &amp; UI)
-        </div>
-        <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;">Automated ingestion pipeline parsing non-standard municipal budget PDFs and reconciling capital allocations across 45 neighborhood districts.</p>
-        
-        <div class="impact-highlight-box">
-          <strong>Measured Impact:</strong> $4.2M reconciled · 45 neighborhood maps · Open City Data Award
-        </div>
-
-        <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.4;">
-          <strong>Target Deliverable:</strong> Node.js ingestion parser, spatial PostgreSQL schema, and lightweight leaflet frontend.
-        </div>
-
-        <div class="chip-row" style="margin-bottom:8px;">
-          <span class="tag-chip skill">Civic</span>
-          <span class="tag-chip skill">PostgreSQL</span>
-          <span class="tag-chip skill">Data Pipelines</span>
-          <span class="tag-chip skill">Leaflet</span>
-        </div>
-
-        <div class="shipped-links-row">
-          <a href="https://github.com/example/civic-budget-reconciler" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:5px 10px;">
-            Open-Source Repo ↗
-          </a>
-          <a href="https://budget.example.org/analysis" target="_blank" rel="noopener noreferrer" class="btn btn-stamp btn-sm" style="font-size:0.8rem;padding:5px 10px;">
-            Live Budget Tool ↗
-          </a>
-        </div>
-      </article>
-
-      <!-- Shipped Story 3 -->
-      <article class="shipped-card in-view" data-domain="health" data-id="sp_shipped_lowcost_spirometer">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
-          <span class="tag-chip" data-domain="health">Health</span>
-          <span class="shipped-badge">✓ Clinically Tested</span>
-        </div>
-        <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;">Differential Pressure Edge Spirometer for Pediatric Asthma</h4>
-        <div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">
-          Squad: <strong>Dr. Rohan Malhotra</strong> (Clinical Validation) &amp; <strong>Ines Falk</strong> (Instrumentation)
-        </div>
-        <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;">Constructed 3D-printable Venturi tube flowmeter with ESP32 offline BLE calibration, validating peak expiratory flow rates in rural primary health centers.</p>
-        
-        <div class="impact-highlight-box">
-          <strong>Measured Impact:</strong> 120 clinic trials · ±3.4% clinical error margin · Sub-$15 build cost
-        </div>
-
-        <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.4;">
-          <strong>Target Deliverable:</strong> 3D STL models, differential pressure I2C firmware, and offline calibration PWA.
-        </div>
-
-        <div class="chip-row" style="margin-bottom:8px;">
-          <span class="tag-chip skill">Health</span>
-          <span class="tag-chip skill">ESP32</span>
-          <span class="tag-chip skill">Firmware</span>
-          <span class="tag-chip skill">Clinical Testing</span>
-        </div>
-
-        <div class="shipped-links-row">
-          <a href="https://github.com/example/open-spirometer" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:5px 10px;">
-            Open Hardware Files ↗
-          </a>
-          <a href="https://health-research.example.org/pediatric-spirometry-pilot" target="_blank" rel="noopener noreferrer" class="btn btn-stamp btn-sm" style="font-size:0.8rem;padding:5px 10px;">
-            Clinical Validation Paper ↗
-          </a>
-        </div>
-      </article>
-
-      <!-- Shipped Story 4 -->
-      <article class="shipped-card in-view" data-domain="forestry" data-id="sp_shipped_sar_deforest">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
-          <span class="tag-chip" data-domain="forestry">Forestry</span>
-          <span class="shipped-badge">✓ Active Monitoring</span>
-        </div>
-        <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;">Cloud-Penetrating Sentinel-1 SAR Coastal Mangrove Canopy Monitor</h4>
-        <div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">
-          Squad: <strong>Priya Nandan</strong> (Spatial ML Lead) &amp; <strong>Deshi Osei</strong> (Systems Architect)
-        </div>
-        <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;">Automated dual-polarization backscatter diff pipeline identifying selective logging beneath persistent tropical cloud cover within 48 hours of satellite overpass.</p>
-        
-        <div class="impact-highlight-box">
-          <strong>Measured Impact:</strong> 1,200 km² monitored · 48h alert turnaround · 89% ground-truth validation
-        </div>
-
-        <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.4;">
-          <strong>Target Deliverable:</strong> Automated raster diff pipeline running on Sentinel-1 GRD imagery with GeoTIFF export.
-        </div>
-
-        <div class="chip-row" style="margin-bottom:8px;">
-          <span class="tag-chip skill">Forestry</span>
-          <span class="tag-chip skill">Remote Sensing</span>
-          <span class="tag-chip skill">Python</span>
-          <span class="tag-chip skill">GIS</span>
-        </div>
-
-        <div class="shipped-links-row">
-          <a href="https://github.com/example/sar-mangrove-alerts" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:5px 10px;">
-            Pipeline Repo ↗
-          </a>
-          <a href="https://wetlands.example.org/sentinel1-backscatter-case" target="_blank" rel="noopener noreferrer" class="btn btn-stamp btn-sm" style="font-size:0.8rem;padding:5px 10px;">
-            Field Deployment Case ↗
-          </a>
-        </div>
-      </article>
-    </div>
+    <div class="shipped-grid" id="shippedGrid"></div>
   </section>
 
   <div class="stage-cta elevated-card reveal">
@@ -958,102 +678,8 @@
 <script type="module">
   import { notebook, sprints } from '/src/db.js';
 
-  // Seed entries dictionary to support rich reader on static initial cards
-  const SEED_ENTRIES = {
-    'entry_groundwater': {
-      id: 'entry_groundwater',
-      title: 'Why my groundwater model kept overfitting on rainy days',
-      domain: 'climate',
-      entryType: 'post-mortem',
-      authorName: 'Priya Nandan',
-      grownFromLabel: 'Sprint: Groundwater Sensor',
-      summarySnippet: 'Turns out three optical sensors were miscalibrated after heavy storms and I was training on noise. Here is how I caught and isolated the drift.',
-      bodyMarkdown: `### The Problem\nWhen evaluating our groundwater aquifer prediction model across 14 monitoring boreholes, we noticed validation loss plummeted during dry weeks but spiked violently by +380% during heavy precipitation events.\n\n### The Root Cause\nInspection of raw sensor telemetry revealed that three optical turbidity probes had cracked rubber seals. Rainwater seepage caused micro-droplets on the lens, creating synthetic high-turbidity pulses that the gradient boosting model interpreted as dramatic aquifer recharge events.\n\n\`\`\`python\n# Isolated drift script snippet\nimport pandas as pd\nimport numpy as np\n\ndef check_turbidity_residual(df):\n    rain_mask = df['precip_mm'] > 5.0\n    return df.loc[rain_mask, 'turbidity_ntu'].std() / df.loc[~rain_mask, 'turbidity_ntu'].std()\n\`\`\`\n\n### Resolution & Takeaway\nWe replaced the optical seals with vulcanized nitrile O-rings and added an automated drift rejection filter that discards single-point spikes that violate physical flow dynamics. The model stabilized with RMSE < 0.08 m across all weather conditions.`,
-      teaser: 'rmse_by_weather.py:14 → std(residual | rain) >> std(residual | dry)',
-      tags: ['optical-sensors', 'drift', 'groundwater', 'python'],
-      readingTimeMinutes: 3,
-      viewCount: 142,
-      createdAt: '2026-09-18T14:30:00Z'
-    },
-    'entry_thermal_vent': {
-      id: 'entry_thermal_vent',
-      title: 'First failed prototype of the fault-detection board',
-      domain: 'hardware',
-      entryType: 'teardown',
-      authorName: 'Ines Falk',
-      grownFromLabel: 'Sprint: Decentralized Fault Detection',
-      summarySnippet: 'The 3D-printed enclosure trapped ambient heat and cooked the ADC sensor by hour six. Redesigned the vent pattern and swapped to an aluminum heat spreader.',
-      bodyMarkdown: `### Prototype Teardown\nOur team field-tested Rev A of the grid fault detector in an unconditioned solar inverter bay in Phoenix. Ambient temperatures inside the metal junction box exceeded 48°C.\n\n### Failure Analysis\nBecause our rapid prototype housing was printed with solid PETG walls and no convection chimney, heat generated by the onboard 24V step-down buck converter had nowhere to dissipate. Junction temperatures on the ADS1115 analog-to-digital converter reached 84°C after six hours, triggering thermal shutdown.\n\n### Rev B Modifications\n1. Added staggered hexagonal vent chimneys at top and bottom of the housing.\n2. Coupled the regulator to an anodized aluminum spreader plate with thermal pad interface.\n3. Swapped to high-Tg polycarbonate-CF blend.\n\nTemperature plateaued safely at 54°C in torture chamber validation.`,
-      teaser: 'thermal_log.csv → 84°C at t+6h, spec max 65°C',
-      tags: ['hardware', 'pcb', 'thermal', 'cad'],
-      readingTimeMinutes: 4,
-      viewCount: 98,
-      createdAt: '2026-09-22T09:15:00Z'
-    },
-    'entry_budget_drift': {
-      id: 'entry_budget_drift',
-      title: 'A dataset that surprised me: the line-items don\'t sum to the total',
-      domain: 'civic',
-      entryType: 'field-report',
-      authorName: 'Tariq Vance',
-      grownFromLabel: 'Sprint: City Budget Explorer',
-      summarySnippet: 'The city\'s published budget PDF and its open data export disagree by 4%. Wrote an automated reconciliation script before touching any user interface.',
-      bodyMarkdown: `### The Anomaly\nWhile parsing open data extracts for the City Budget Explorer, our automated checksum pipeline threw continuous balance validation errors. The declared municipal total was $58.4M, but summing the departmental sub-tables produced only $56.1M.\n\n### The Investigation\nAfter auditing each capital allocation line item, we discovered that off-balance contingency fund expenditures were included in the summary headline figure but excluded from the department-level breakdown CSV.\n\n\`\`\`javascript\n// Automated reconciliation validator\nconst subtotal = rows.reduce((acc, r) => acc + Number(r.amount), 0);\nconst discrepancy = Math.abs(subtotal - summaryTotal);\nif (discrepancy > 1000) {\n  reportDiscrepancy({ expected: summaryTotal, actual: subtotal, delta: discrepancy });\n}\n\`\`\`\n\n### Public Impact\nWe published our automated reconciliation audit to the city comptroller\'s public comments desk. Two weeks later, the data portal released an amended export format documenting the capital reserve lines.`,
-      teaser: 'reconcile.js → drift: +$2.3M unattributed capital allocations',
-      tags: ['civic-data', 'open-data', 'budget', 'audit'],
-      readingTimeMinutes: 3,
-      viewCount: 165,
-      createdAt: '2026-09-25T11:45:00Z'
-    },
-    'entry_screen_touch': {
-      id: 'entry_screen_touch',
-      title: 'The small fix that made the tutor usable on a cracked screen',
-      domain: 'education',
-      entryType: 'field-report',
-      authorName: 'Marcus Webb',
-      grownFromLabel: 'Sprint: Adaptive Reading Tutor',
-      summarySnippet: 'Touch targets were fine in the desktop simulator but unusable on donated classroom tablets with damaged digitizers. Expanding target hitboxes solved it.',
-      bodyMarkdown: `### Field Testing Reality\nIn lab testing on iPads and Chrome simulated touch displays, our phonics exercise buttons passed all accessibility guidelines. But when we deployed to a public primary school in Nairobi with 20 donated 7-inch Android tablets, half had hairline cracks across the lower digitizer glass.\n\n### The Fix\nInstead of requiring users to hit exact visual bounding boxes, we implemented touch slop expansion using CSS pseudo-elements and an invisible 48px hit grid. Even with partial touch latency, tap targets register cleanly.\n\n\`\`\`css\n.phonics-target {\n  position: relative;\n  min-height: 48px !important;\n}\n.phonics-target::after {\n  content: "";\n  position: absolute;\n  inset: -10px;\n}\n\`\`\`\n\nLesson learned: Always test educational software on low-cost and refurbished hardware under actual classroom lighting.`,
-      teaser: 'tutor.css:212 → min-height: 48px !important; margin: 8px;',
-      tags: ['accessibility', 'tablets', 'education', 'css'],
-      readingTimeMinutes: 3,
-      viewCount: 112,
-      createdAt: '2026-09-28T08:00:00Z'
-    },
-    'entry_offline_conflict': {
-      id: 'entry_offline_conflict',
-      title: 'Post-mortem: our offline sync merge conflicts in rural clinics',
-      domain: 'health',
-      entryType: 'post-mortem',
-      authorName: 'Dr. Rohan Malhotra',
-      grownFromLabel: 'Sprint: Pediatric Spirometer',
-      summarySnippet: 'Two clinic nurses editing the same patient trial record offline with no network coordinator. Migrated to deterministic conflict-free replicated data types.',
-      bodyMarkdown: `### Incident Summary\nDuring field trials across three sub-district clinics without reliable cellular coverage, nurses recorded pediatric spirometry measurements on battery-powered field terminals. When clinics reconnected to the central server in the evening, last-write-wins timestamp replication silently overwrote afternoon inhalation flow curves.\n\n### Architectural Migration\nWe replaced timestamp-based REST sync with Automerge Conflict-Free Replicated Data Types (CRDTs). Every spirometry run is represented as an append-only delta event with cryptographic vector clocks.\n\n### Results\nMerge conflicts dropped from an average of 40 per day to zero. Even when two nurses enter patient vitals simultaneously while disconnected, both observations merge cleanly without data loss.`,
-      teaser: 'sync.md → conflicts/day dropped from 40 to 0 after CRDT migration',
-      tags: ['crdt', 'offline-first', 'health', 'sync'],
-      readingTimeMinutes: 3,
-      viewCount: 6,
-      createdAt: '2026-09-05T16:20:00Z',
-      branches: []
-    },
-    'entry_radar_speckle': {
-      id: 'entry_radar_speckle',
-      title: 'Filtering speckle noise in Sentinel-1 dual-pol backscatter over flooded mangroves',
-      domain: 'forestry',
-      entryType: 'sprint-update',
-      authorName: 'Deshi Osei',
-      grownFromLabel: 'Sprint: SAR Canopy Change Detection',
-      summarySnippet: 'Water specular reflections caused false-positive canopy drop alerts in tidal zones. Implemented an enhanced Lee filter with adaptive spatial windowing.',
-      bodyMarkdown: `### Technical Bottleneck\nSynthetic Aperture Radar (SAR) Sentinel-1 C-band backscatter penetrates cloud cover but suffers from severe speckle noise in intertidal mangrove forests. High tides create specular reflectance surfaces that simulate complete canopy clearance in automated threshold classifiers.\n\n### Implementation\nWe built an adaptive spatial Lee filter combined with a localized tidal elevation mask derived from the Copernicus digital elevation model. If the backscatter drop coincides with lunar peak high tide, the change detector dampens sensitivity.\n\n\`\`\`python\n# Enhanced Lee speckle suppression\ndef lee_filter(img, win_size=5):\n    mean = uniform_filter(img, win_size)\n    var = uniform_filter(img**2, win_size) - mean**2\n    weight = var / (var + np.mean(var))\n    return mean + weight * (img - mean)\n\`\`\`\n\nFalse-positive mangrove clearing alerts were reduced by 72% across the Niger Delta test corridor.`,
-      teaser: 'sar_filter.py → false alarm rate reduced by 72% in intertidal zones',
-      tags: ['sar', 'radar', 'mangroves', 'gis', 'python'],
-      readingTimeMinutes: 4,
-      viewCount: 189,
-      createdAt: '2026-10-05T10:10:00Z',
-      branches: []
-    }
-  };
-
+  // In-memory cache of live entries and user posts
+  const SEED_ENTRIES = {};
   // In-memory cache of live entries
   let liveEntriesMap = new Map();
 
@@ -1673,6 +1299,7 @@
           liveEntriesMap.set(newEntry.id, newEntry);
           const card = renderNoteCard(newEntry);
           entryGrid.prepend(card);
+          applyFilters();
         }
 
         composeForm.reset();
@@ -1718,6 +1345,10 @@
 
   async function loadLiveNotebookAndShipped() {
     try {
+      if (entryGrid) entryGrid.innerHTML = '';
+      const shippedGrid = document.getElementById('shippedGrid');
+      if (shippedGrid) shippedGrid.innerHTML = '';
+
       // 1. Load Field Notes & Blog Posts
       const notesRes = await notebook.getEntries();
       if (entryGrid && Array.isArray(notesRes) && notesRes.length > 0) {
@@ -1745,7 +1376,6 @@
 
       // 2. Load Shipped Stories from sprints API
       const board = await sprints.getBoard();
-      const shippedGrid = document.getElementById('shippedGrid');
       if (shippedGrid && board?.shipped) {
         board.shipped.forEach(sprint => {
           if (!shippedGrid.querySelector(`[data-id="${sprint.id}"]`)) {
@@ -1948,6 +1578,8 @@
     });
   }
 
+    // Initialize empty state immediately on load
+  applyFilters();
   loadLiveNotebookAndShipped();
 </script>
 </body>
