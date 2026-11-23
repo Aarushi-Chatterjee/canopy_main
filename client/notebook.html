@@ -368,7 +368,30 @@
       <button type="button" class="filter-chip domain-chip" data-domain="forestry" aria-pressed="false">Forestry</button>
     </div>
 
-    <div class="feed-grid" id="entryGrid"></div>
+    <div class="feed-grid" id="entryGrid">
+      <!-- Canonical Benchmark Dev Log 1 (Illustrative Baseline) -->
+      <article class="elevated-card interactive entry-card in-view" data-domain="climate" data-type="post-mortem" data-mode="logs" data-id="entry_groundwater" tabindex="0">
+        <div class="entry-top">
+          <div class="avatar sm" data-seed="Priya Nandan" aria-hidden="true">P</div>
+          <span class="name">Priya Nandan</span>
+          <span class="growth-badge" data-stage="forming" style="font-size:0.7rem;margin-left:6px;">⚡ Illustrative Benchmark</span>
+          <span class="when" style="margin-left:auto;">3 min read</span>
+        </div>
+        <span class="entry-breadcrumb">grown from Sprint: Groundwater Sensor (Benchmark)</span>
+        <h4 style="cursor:pointer;word-break:break-word;">Why my groundwater model kept overfitting on rainy days</h4>
+        <p class="snippet" style="word-break:break-word;">Turns out three optical sensors were miscalibrated after heavy storms and I was training on noise. Here is how I caught and isolated the drift.</p>
+        <div class="teaser"><span>rmse_by_weather.py:14 → std(residual | rain) &gt;&gt; std(residual | dry)</span></div>
+        <div class="entry-bottom">
+          <span class="tag-chip" data-domain="climate">Climate</span>
+          <span class="tag-chip skill">post-mortem</span>
+          <button type="button" class="grow-btn compose-trigger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Grow entry
+            <span class="tooltip">Add a follow-up or query</span>
+          </button>
+        </div>
+      </article>
+    </div>
   </section>
 
   <!-- ==========================================
@@ -386,12 +409,49 @@
           <p>Tangible, completed outcomes shipped by Canopy squads. Every entry represents working hardware, deployed pipelines, or open-source software running in the field.</p>
         </div>
         <div class="meta-tag" style="font-size:0.84rem;color:var(--ink-faint);">
-          <strong style="color:var(--forest);" id="shippedCount">0</strong> verified shipped outcomes
+          <strong style="color:var(--forest);" id="shippedCount">1</strong> verified shipped outcomes
         </div>
       </div>
     </div>
 
-    <div class="shipped-grid" id="shippedGrid"></div>
+    <div class="shipped-grid" id="shippedGrid">
+      <!-- Canonical Benchmark Shipped Story 1 (Illustrative Baseline) -->
+      <article class="shipped-card in-view" data-domain="climate" data-id="sp_shipped_rural_water">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+          <span class="tag-chip" data-domain="climate">Climate</span>
+          <span class="shipped-badge">⚡ Benchmark Shipped Outcome</span>
+        </div>
+        <h4 style="font-family:'Fraunces Var',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin:10px 0 6px 0;line-height:1.35;word-break:break-word;">Distributed Spectral Nitrate Probe for Rural Well Networks</h4>
+        <div style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:8px;">
+          Squad: <strong>Elena Rostova</strong> (Hardware Lead) &amp; <strong>Kareem Patel</strong> (Field Hydrologist)
+        </div>
+        <p style="color:var(--ink-soft);font-size:0.9rem;line-height:1.45;margin:0 0 10px;word-break:break-word;">Constructed low-cost optical absorption probe detecting agricultural runoff with 94.2% accuracy against laboratory spectrophotometry.</p>
+        
+        <div class="impact-highlight-box">
+          <strong>Measured Impact:</strong> 18 community wells monitored · 94.2% lab correlation · $42/unit BOM
+        </div>
+
+        <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;line-height:1.4;">
+          <strong>Target Deliverable:</strong> Optical immersion probe, KiCad Gerber files, and LoRaWAN telemetry firmware.
+        </div>
+
+        <div class="chip-row" style="margin-bottom:8px;">
+          <span class="tag-chip skill">Hardware</span>
+          <span class="tag-chip skill">Optics</span>
+          <span class="tag-chip skill">LoRaWAN</span>
+          <span class="tag-chip skill">Hydrology</span>
+        </div>
+
+        <div class="shipped-links-row">
+          <a href="https://github.com/example/open-nitrate-probe" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm" style="font-size:0.8rem;padding:5px 10px;">
+            Open-Source Repo ↗
+          </a>
+          <a href="https://reports.example.org/nitrate-spectral-calibration" target="_blank" rel="noopener noreferrer" class="btn btn-stamp btn-sm" style="font-size:0.8rem;padding:5px 10px;">
+            Field Validation Report ↗
+          </a>
+        </div>
+      </article>
+    </div>
   </section>
 
   <div class="stage-cta elevated-card reveal">
@@ -678,8 +738,25 @@
 <script type="module">
   import { notebook, sprints } from '/src/db.js';
 
-  // In-memory cache of live entries and user posts
-  const SEED_ENTRIES = {};
+    // Seed entries dictionary to support rich reader on canonical baseline cards
+  const SEED_ENTRIES = {
+    'entry_groundwater': {
+      id: 'entry_groundwater',
+      title: 'Why my groundwater model kept overfitting on rainy days',
+      domain: 'climate',
+      entryType: 'post-mortem',
+      authorName: 'Priya Nandan',
+      grownFromLabel: 'Sprint: Groundwater Sensor (Benchmark)',
+      summarySnippet: 'Turns out three optical sensors were miscalibrated after heavy storms and I was training on noise. Here is how I caught and isolated the drift.',
+      bodyMarkdown: `### The Problem\nWhen evaluating our groundwater aquifer prediction model across 14 monitoring boreholes, we noticed validation loss plummeted during dry weeks but spiked violently by +380% during heavy precipitation events.\n\n### The Root Cause\nInspection of raw sensor telemetry revealed that three optical turbidity probes had cracked rubber seals. Rainwater seepage caused micro-droplets on the lens, creating synthetic high-turbidity pulses that the gradient boosting model interpreted as dramatic aquifer recharge events.\n\n\`\`\`python\n# Isolated drift script snippet\nimport pandas as pd\nimport numpy as np\n\ndef check_turbidity_residual(df):\n    rain_mask = df['precip_mm'] > 5.0\n    return df.loc[rain_mask, 'turbidity_ntu'].std() / df.loc[~rain_mask, 'turbidity_ntu'].std()\n\`\`\`\n\n### Resolution & Takeaway\nWe replaced the optical seals with vulcanized nitrile O-rings and added an automated drift rejection filter that discards single-point spikes that violate physical flow dynamics. The model stabilized with RMSE < 0.08 m across all weather conditions.`,
+      teaser: 'rmse_by_weather.py:14 → std(residual | rain) >> std(residual | dry)',
+      tags: ['optical-sensors', 'drift', 'groundwater', 'python'],
+      readingTimeMinutes: 3,
+      viewCount: 142,
+      createdAt: '2026-09-18T14:30:00Z',
+      branches: []
+    }
+  };
   // In-memory cache of live entries
   let liveEntriesMap = new Map();
 
@@ -1345,25 +1422,21 @@
 
   async function loadLiveNotebookAndShipped() {
     try {
-      if (entryGrid) entryGrid.innerHTML = '';
       const shippedGrid = document.getElementById('shippedGrid');
-      if (shippedGrid) shippedGrid.innerHTML = '';
 
       // 1. Load Field Notes & Blog Posts
       const notesRes = await notebook.getEntries();
       if (entryGrid && Array.isArray(notesRes) && notesRes.length > 0) {
         notesRes.forEach(entry => {
           liveEntriesMap.set(entry.id, entry);
-          if (!entryGrid.querySelector(`[data-id="${entry.id}"]`)) {
+          const existingEl = entryGrid.querySelector(`[data-id="${entry.id}"]`);
+          if (!existingEl) {
             const card = renderNoteCard(entry);
             entryGrid.prepend(card);
           } else {
-            const existingEl = entryGrid.querySelector(`[data-id="${entry.id}"]`);
-            if (existingEl) {
-              existingEl.style.opacity = '1';
-              existingEl.style.transform = 'none';
-              existingEl.classList.add('in-view');
-            }
+            existingEl.style.opacity = '1';
+            existingEl.style.transform = 'none';
+            existingEl.classList.add('in-view');
           }
         });
       }
@@ -1376,19 +1449,22 @@
 
       // 2. Load Shipped Stories from sprints API
       const board = await sprints.getBoard();
-      if (shippedGrid && board?.shipped) {
+      if (shippedGrid && Array.isArray(board?.shipped) && board.shipped.length > 0) {
         board.shipped.forEach(sprint => {
           if (!shippedGrid.querySelector(`[data-id="${sprint.id}"]`)) {
             const card = renderShippedCard(sprint);
             shippedGrid.appendChild(card);
           }
         });
-        const shippedCountEl = document.getElementById('shippedCount');
-        if (shippedCountEl) shippedCountEl.textContent = shippedGrid.querySelectorAll('.shipped-card').length;
+      }
+      const shippedCountEl = document.getElementById('shippedCount');
+      if (shippedCountEl && shippedGrid) {
+        shippedCountEl.textContent = shippedGrid.querySelectorAll('.shipped-card').length;
       }
       applyFilters();
     } catch (err) {
       console.warn('[Canopy] Error loading notebook content:', err.message);
+      applyFilters();
     }
   }
 
@@ -1415,7 +1491,9 @@
       if (!emptyEl) {
         emptyEl = document.createElement('div');
         emptyEl.id = emptyId;
-        emptyEl.className = 'empty-state-notice reveal';
+        emptyEl.className = 'empty-state-notice';
+        emptyEl.style.display = 'flex';
+        emptyEl.style.opacity = '1';
         emptyEl.innerHTML = `
           <svg class="empty-icon" viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor"/></svg>
           <h4>${title}</h4>
@@ -1425,6 +1503,7 @@
         gridEl.appendChild(emptyEl);
       } else {
         emptyEl.style.display = 'flex';
+        emptyEl.style.opacity = '1';
       }
     } else if (emptyEl) {
       emptyEl.style.display = 'none';
