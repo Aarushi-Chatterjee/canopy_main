@@ -283,7 +283,7 @@ body.notebook-page {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
 .ivy-sticky-rail {
@@ -304,8 +304,8 @@ body.notebook-page {
   pointer-events: none;
   user-select: none;
   mix-blend-mode: multiply;
-  opacity: 0.92;
-  filter: contrast(1.18) saturate(1.26) brightness(0.96);
+  opacity: 0.25;
+  filter: contrast(1.12) saturate(1.18) brightness(0.96);
   -webkit-mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
   transition: opacity .3s ease, filter .3s ease;
@@ -313,8 +313,8 @@ body.notebook-page {
 
 :root[data-theme="dark"] .ivy-unit {
   mix-blend-mode: normal;
-  opacity: 0.88;
-  filter: brightness(1.22) contrast(1.10) saturate(1.35) drop-shadow(0 0 1px rgba(74, 222, 128, 0.18));
+  opacity: 0.25;
+  filter: brightness(1.08) contrast(1.05) saturate(1.2);
 }
 
 #ivyRight {
@@ -357,6 +357,8 @@ body.notebook-page {
   -webkit-backface-visibility: hidden;
 }
 
+.content-track section,
+.content-track .section,
 .content-track section .wrap {
   position: relative;
   z-index: 2;
@@ -365,7 +367,7 @@ body.notebook-page {
 @media (max-width: 980px) {
   #ivyRight { display: none !important; }
   .ivy-unit {
-    opacity: 0.65;
+    opacity: 0.22;
   }
   #ivyLeft {
     position: absolute;

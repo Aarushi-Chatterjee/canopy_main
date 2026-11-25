@@ -13,41 +13,8 @@ const GUEST_SEEN_KEY = 'canopy_guest_notif_seen';
 
 function getInitialSeed() {
   return {
-    sent: [
-      {
-        id: 'notif_sent_salinity',
-        type: 'sprint_application',
-        sprintId: 'sp_salinity_telemetry',
-        title: 'Coastal Salinity Telemetry Squad',
-        subtext: 'Squad accepted your note · Channel unlocked',
-        status: 'accepted',
-        revealedContact: 'matrix: #salinity-sprint:canopy.earth',
-        url: 'sprint.html#sp_salinity_telemetry',
-        createdAt: new Date(Date.now() - 48 * 3600 * 1000).toISOString()
-      },
-      {
-        id: 'notif_sent_groundwater',
-        type: 'sprint_application',
-        sprintId: 'sp_groundwater_sample',
-        title: 'Groundwater Optical Probe Squad',
-        subtext: 'Planted note as Sensors Lead · Under lead review',
-        status: 'pending_review',
-        url: 'sprint.html#sp_groundwater_sample',
-        createdAt: new Date(Date.now() - 14 * 3600 * 1000).toISOString()
-      }
-    ],
-    received: [
-      {
-        id: 'notif_rec_elena',
-        type: 'squad_request',
-        sprintId: 'sp_groundwater_sample',
-        title: 'Elena Vance → Groundwater Optical Probe',
-        subtext: 'Applied as Spectroscopy Engineer',
-        status: 'pending_review',
-        url: 'sprint.html#sp_groundwater_sample',
-        createdAt: new Date(Date.now() - 3 * 3600 * 1000).toISOString()
-      }
-    ]
+    sent: [],
+    received: []
   };
 }
 

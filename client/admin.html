@@ -31,6 +31,13 @@
       display: flex;
       min-height: 100vh;
     }
+    @media (max-width: 900px) {
+      .admin-layout { flex-direction: column; }
+      .admin-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--admin-border); }
+      .admin-nav { flex-direction: row !important; overflow-x: auto; padding: 10px 12px !important; gap: 6px !important; }
+      .admin-nav-item { white-space: nowrap; flex-shrink: 0; }
+      .admin-main { padding: 20px 16px !important; }
+    }
     .admin-sidebar {
       width: 260px;
       background: var(--admin-panel);
@@ -891,6 +898,9 @@
                 <option value="match.lede">Match Directory Lede Statement (match.lede)</option>
                 <option value="match.illustrative_example">Illustrative Example Notice (match.illustrative_example)</option>
               </optgroup>
+              <optgroup label="Apply Page (/apply.html)">
+                <option value="apply.hero.headline">Apply Hero Headline (apply.hero.headline)</option>
+              </optgroup>
               <optgroup label="Site-Wide Footer">
                 <option value="footer.motto">Footer Mission Motto (footer.motto)</option>
                 <option value="footer.charter">Footer Charter Statement (footer.charter)</option>
@@ -1557,8 +1567,17 @@
       document.querySelectorAll('.admin-tab-pane').forEach(el => {
         el.style.display = el.id === `tab-${tabName}` ? 'block' : 'none';
       });
-      if (tabName === 'broadcast') loadBroadcasts();
+      if (tabName === 'overview') loadOverview();
       if (tabName === 'applications') loadApplications();
+      if (tabName === 'users') loadUsers();
+      if (tabName === 'matching') loadMatches();
+      if (tabName === 'calls') loadCalls();
+      if (tabName === 'sprints') loadSprints();
+      if (tabName === 'content') loadContent();
+      if (tabName === 'notebook') loadNotebookPosts();
+      if (tabName === 'broadcast') loadBroadcasts();
+      if (tabName === 'settings') loadSettings();
+      if (tabName === 'audit') loadAudit();
     };
 
     document.querySelectorAll('.admin-nav-item').forEach(btn => {

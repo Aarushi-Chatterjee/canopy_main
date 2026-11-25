@@ -995,6 +995,11 @@ import { initNotificationCorner, notificationCenter } from './notifications.js';
         const key = el.getAttribute('data-content-key');
         if (dict[key]) {
           el.textContent = dict[key];
+          if (el.id === 'privateBetaBanner') {
+            el.style.display = 'inline-flex';
+          }
+        } else if (el.id === 'privateBetaBanner') {
+          el.style.display = 'none';
         }
       });
 
