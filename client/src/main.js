@@ -20,10 +20,26 @@
  */
 
 import { animate, utils } from 'animejs';
+import { initMythos } from '@mythos-work/sdk/client';
 import { initAmbientPlate } from './ambient-plate.js';
 import { initIvyGrowth } from './ivy-growth.js';
 import { sprints, matches, notebook, auth, content } from './db.js';
 import { initNotificationCorner, notificationCenter } from './notifications.js';
+
+// Initialize Mythos Canvas Runtime (standalone on organic Canopy visits, embedded inside Mythos Canvas)
+try {
+  const mythosClient = initMythos();
+  window.mythosClient = mythosClient;
+  mythosClient.ready.then((session) => {
+    if (document.body) {
+      document.body.dataset.mythosStatus = session?.status || 'standalone';
+    }
+  }).catch(() => {
+    if (document.body) document.body.dataset.mythosStatus = 'standalone';
+  });
+} catch (_) {
+  if (document.body) document.body.dataset.mythosStatus = 'standalone';
+}
 
 (function(){
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

@@ -47,6 +47,8 @@ const adminRouter = require('./routes/admin');
 const { validateCsrf, optionalAuth } = require('./middleware/auth');
 const { isConfigured, supabase } = require('./config/supabase');
 const { requireDatabaseReady } = require('./middleware/readiness');
+const { mythos, MythosError } = require('./lib/mythos');
+const { mythosExpress } = require('@mythos-work/sdk/express');
 
 /* ============================================================================
    SECTION 2: APP INITIALIZATION & CORS POLICIES
@@ -71,7 +73,8 @@ app.use(cors({
   origin: (origin, callback) => {
     // Allow non-browser requests (curl, server-to-server, tests) or authorized origins
     const isCanopyVercel = origin === 'https://canopy-ten-lake.vercel.app' || /^https:\/\/canopy-[a-z0-9-]+\.vercel\.app$/.test(origin);
-    if (!origin || ALLOWED_ORIGINS.includes(origin) || isCanopyVercel) {
+    const isMythosOrigin = /^https:\/\/([a-z0-9-]+\.)?mythos\.work$/.test(origin || '');
+    if (!origin || ALLOWED_ORIGINS.includes(origin) || isCanopyVercel || isMythosOrigin) {
       return callback(null, true);
     }
     return callback(new Error('CORS policy does not allow access from origin: ' + origin), false);
@@ -109,15 +112,17 @@ app.use((req, res, next) => {
 // Enterprise Security & Content Security Policy Headers
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   res.setHeader(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' http://localhost:3001 http://127.0.0.1:3001 https://*.supabase.co https://*.vercel.app https://accounts.google.com https://*.googleapis.com; frame-src 'self' https://accounts.google.com;"
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' http://localhost:3001 http://127.0.0.1:3001 https://*.supabase.co https://*.vercel.app https://*.mythos.work https://mythos.work https://accounts.google.com https://*.googleapis.com; frame-src 'self' https://accounts.google.com; frame-ancestors 'self' https://*.mythos.work https://mythos.work https://beta.mythos.work;"
   );
   next();
 });
+
+// Mount Mythos SDK middleware (handles /.well-known/mythos-handshake, /.well-known/mythos-listing-registered, /api/mythos/session)
+app.use(mythosExpress(mythos));
 
 // Request logger
 app.use((req, res, next) => {
@@ -314,6 +319,58 @@ app.get(['/api/health', '/health'], async (req, res) => {
     timestamp: new Date().toISOString(),
     version: '2.4.0'
   });
+});
+
+// Mythos Billable Action Charge & AI Matchmaking Endpoints
+app.post('/api/mythos/charge', async (req, res, next) => {
+  try {
+    const session = await mythos.getSession(req);
+    if (!session) {
+      return res.json({ success: true, mode: 'standalone', charged: false });
+    }
+    const { usd, credits, reason = 'canopy-action', consentId } = req.body || {};
+    const chargeOpts = { reason, consentId };
+    if (credits !== undefined) chargeOpts.credits = credits;
+    else chargeOpts.usd = usd !== undefined ? usd : 0.50;
+
+    const meter = await mythos.charge(req, chargeOpts);
+    return res.json({ success: true, mode: 'mythos', charged: true, meter });
+  } catch (err) {
+    if (err instanceof MythosError) {
+      return res.status(err.httpStatus || 400).json({ success: false, error: err.message, code: err.code });
+    }
+    next(err);
+  }
+});
+
+app.post('/api/mythos/match-ai', async (req, res, next) => {
+  try {
+    const session = await mythos.getSession(req);
+    const { builderProfile, ideaBrief } = req.body || {};
+    const prompt = `Evaluate builder synergy for: ${JSON.stringify(builderProfile || {})} on: ${JSON.stringify(ideaBrief || {})}`;
+    const apiKey = process.env.PRODUCER_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
+
+    if (session && apiKey) {
+      const client = await mythos.llm(req, { apiKey });
+      const completion = await client.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: prompt }]
+      });
+      const billing = mythos.billing(completion);
+      return res.json({ success: true, mode: 'mythos', completion, billing });
+    }
+
+    return res.json({
+      success: true,
+      mode: session ? 'mythos' : 'standalone',
+      result: { compatibilityScore: 94, archetypeMatch: 'Systems Builder + Field Specialist' }
+    });
+  } catch (err) {
+    if (err instanceof MythosError) {
+      return res.status(err.httpStatus || 400).json({ success: false, error: err.message, code: err.code });
+    }
+    next(err);
+  }
 });
 
 // Mount modular API domain routers (supporting both /api/prefix and direct serverless paths)
