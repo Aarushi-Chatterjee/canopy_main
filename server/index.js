@@ -353,15 +353,15 @@ app.post('/api/mythos/charge', async (req, res, next) => {
 app.post('/api/mythos/match-ai', async (req, res, next) => {
   try {
     const session = await mythos.getSession(req);
-    const { builderProfile, ideaBrief, consentId } = req.body || {};
+    const { builderProfile, ideaBrief, consentId, scope = 'all' } = req.body || {};
 
-    // 1. Run deterministic multi-factor synergy algorithm against live DB
+    // 1. Run deterministic multi-factor synergy algorithm against live DB (builders vs projects)
     const [profiles, calls, sprints] = await Promise.all([
       profilesRepo.find().catch(() => []),
       callsRepo.find(c => c.status === 'open').catch(() => []),
       sprintsRepo.find().catch(() => [])
     ]);
-    const algoResult = computeMatchSynergy(builderProfile, ideaBrief, { profiles, calls, sprints });
+    const algoResult = computeMatchSynergy(builderProfile, ideaBrief, { profiles, calls, sprints }, scope);
 
     const apiKey = process.env.PRODUCER_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
 

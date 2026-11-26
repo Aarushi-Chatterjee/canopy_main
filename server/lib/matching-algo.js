@@ -116,7 +116,7 @@ function scorePair(source, target) {
   };
 }
 
-function computeMatchSynergy(builderProfile = {}, ideaBrief = {}, pool = {}) {
+function computeMatchSynergy(builderProfile = {}, ideaBrief = {}, pool = {}, scope = 'all') {
   const { profiles = [], calls = [], sprints = [] } = pool;
 
   const source = {
@@ -131,66 +131,74 @@ function computeMatchSynergy(builderProfile = {}, ideaBrief = {}, pool = {}) {
 
   const candidates = [];
 
-  for (const p of profiles) {
-    const scored = scorePair(source, {
-      domain: p.primaryDomain,
-      role: p.role || 'builder',
-      craft: p.craft,
-      intent: p.intent,
-      weeklyHours: p.weeklyHours || p.availabilityHours,
-      timezone: p.timezone,
-      skills: p.skillTags || p.skills
-    });
-    candidates.push({
-      kind: 'collaborator',
-      id: p.userId || p.id,
-      title: p.displayName || p.fullName || 'Builder',
-      subtitle: p.headline || p.craft || p.primaryDomain,
-      domain: p.primaryDomain || 'climate',
-      ...scored
-    });
+  if (scope === 'all' || scope === 'builders') {
+    for (const p of profiles) {
+      const scored = scorePair(source, {
+        domain: p.primaryDomain,
+        role: p.role || 'builder',
+        craft: p.craft,
+        intent: p.intent,
+        weeklyHours: p.weeklyHours || p.availabilityHours,
+        timezone: p.timezone,
+        skills: p.skillTags || p.skills
+      });
+      candidates.push({
+        kind: 'collaborator',
+        id: p.userId || p.id,
+        title: p.displayName || p.fullName || 'Builder',
+        subtitle: p.headline || p.craft || p.primaryDomain,
+        domain: p.primaryDomain || 'climate',
+        ...scored
+      });
+    }
   }
 
-  for (const c of calls) {
-    const scored = scorePair(source, {
-      domain: c.domain,
-      role: 'problem_holder',
-      skills: c.neededSkills
-    });
-    candidates.push({
-      kind: 'build_call',
-      id: c.id,
-      title: c.title,
-      subtitle: c.organization || 'Sponsored Challenge',
-      domain: c.domain || 'climate',
-      ...scored
-    });
-  }
+  if (scope === 'all' || scope === 'projects') {
+    for (const c of calls) {
+      const scored = scorePair(source, {
+        domain: c.domain,
+        role: 'problem_holder',
+        intent: 'have_problem',
+        skills: c.neededSkills
+      });
+      candidates.push({
+        kind: 'build_call',
+        id: c.id,
+        title: c.title,
+        subtitle: c.organization || 'Sponsored Challenge',
+        domain: c.domain || 'climate',
+        ...scored
+      });
+    }
 
-  for (const s of sprints) {
-    const scored = scorePair(source, {
-      domain: s.domain,
-      role: 'builder',
-      skills: s.skillTags
-    });
-    candidates.push({
-      kind: 'sprint',
-      id: s.id,
-      title: s.title,
-      subtitle: s.statusHint || `Sprint (${s.stage || 'active'})`,
-      domain: s.domain || 'climate',
-      ...scored
-    });
+    for (const s of sprints) {
+      const scored = scorePair(source, {
+        domain: s.domain,
+        role: 'builder',
+        intent: 'have_problem',
+        skills: s.skillTags
+      });
+      candidates.push({
+        kind: 'sprint',
+        id: s.id,
+        title: s.title,
+        subtitle: s.statusHint || `Sprint (${s.stage || 'active'})`,
+        domain: s.domain || 'climate',
+        ...scored
+      });
+    }
   }
 
   candidates.sort((a, b) => b.score - a.score);
+  const fallbackArchetype = scope === 'builders' ? 'Co-Builder Peer Match' : 'Builder + Project Match';
   const top = candidates[0] || {
     score: 88,
-    archetypeMatch: 'Builder + Problem Holder',
+    archetypeMatch: fallbackArchetype,
     reasons: [`Direct domain synergy in ${String(source.domain).toUpperCase()}`]
   };
 
   return {
+    scope,
     compatibilityScore: top.score,
     archetypeMatch: top.archetypeMatch,
     reasons: top.reasons,

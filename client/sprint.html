@@ -441,7 +441,8 @@
       
       <div class="sprint-hero-actions">
         <a href="#squadsSection" class="btn btn-stamp btn-sm">See Active Sprints &darr;</a>
-        <a href="match.html" class="btn btn-ghost btn-sm">Browse Build Calls</a>
+        <button type="button" class="btn btn-ghost btn-sm" id="btnRecommendProjects" onclick="runSprintRecommendations()">⚡ Recommend Projects for Me</button>
+        <a href="match.html" class="btn btn-ghost btn-sm">Match Teammates</a>
       </div>
     </div>
 
@@ -518,6 +519,7 @@
 
   <!-- ============ SECTION 1: ACTIVE WORKING SQUADS ============ -->
   <section class="sprint-section-wrap reveal" id="squadsSection">
+    <div id="sprintRecommendPanel" style="display:none;background:color-mix(in srgb, var(--forest) 7%, var(--card));border:1px solid color-mix(in srgb, var(--forest) 30%, var(--card-edge));border-radius:12px;padding:18px 20px;margin-bottom:22px;"></div>
     <div class="sprint-section-head">
       <div class="sprint-section-head-title">
         <span class="sprint-section-tag">
@@ -1276,6 +1278,97 @@
 
   restorePendingDraftIfAny();
   loadLiveSprintsAndCalls();
+
+  window.runSprintRecommendations = async function() {
+    const btn = document.getElementById('btnRecommendProjects');
+    const panel = document.getElementById('sprintRecommendPanel');
+    if (!btn || !panel) return;
+
+    const origText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Finding Best Projects...';
+
+    try {
+      const m = window.mythosClient;
+      const mythosStatus = document.body?.dataset?.mythosStatus || 'standalone';
+
+      if (m && mythosStatus === 'expired') {
+        m.relaunch();
+        return;
+      }
+
+      let consentId;
+      let fetcher = fetch.bind(window);
+
+      if (m && mythosStatus === 'mythos') {
+        const capRes = await fetch('/api/mythos/capabilities').then(r => r.json()).catch(() => ({ llmEnabled: false }));
+        const chargeOpts = capRes.llmEnabled
+          ? { kind: 'llm', reason: 'Personalized Sprint & Project Recommendations' }
+          : { usd: capRes.fixedAnalysisUsd || 0.15, reason: 'Personalized Sprint & Project Recommendations' };
+        const confirmation = await m.confirmCharge(chargeOpts);
+        if (!confirmation?.approved) {
+          btn.disabled = false;
+          btn.textContent = origText;
+          return;
+        }
+        consentId = confirmation.consentId;
+        fetcher = m.fetch.bind(m);
+      }
+
+      const domain = (currentDomainFilter && currentDomainFilter !== 'all') ? currentDomainFilter : 'climate';
+      const q = sprintSearch ? sprintSearch.value.trim() : '';
+
+      const res = await fetcher('/api/mythos/match-ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scope: 'projects',
+          consentId,
+          builderProfile: {
+            role: 'builder',
+            intent: 'join_squad',
+            primaryDomain: domain,
+            skills: q ? q.split(/\s+/) : ['Hardware', 'Python', 'Thermal Modeling']
+          },
+          ideaBrief: { domain }
+        })
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) throw new Error(data.error || 'Could not compute project recommendations.');
+
+      const r = data.result || {};
+      const cardsHtml = (r.topMatches || []).map(tm => `
+        <div style="background:var(--paper);border:1px solid var(--card-edge);border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div>
+            <div style="font-weight:600;font-size:0.92rem;color:var(--ink);">${tm.title}</div>
+            <div style="font-size:0.78rem;color:var(--ink-faint);">${tm.subtitle || tm.kind} · ${(tm.domain || '').toUpperCase()}</div>
+          </div>
+          <span class="tag-chip" style="background:rgba(34,197,94,0.14);color:var(--forest);font-weight:700;">${tm.score}% fit</span>
+        </div>
+      `).join('');
+
+      panel.style.display = 'block';
+      panel.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <strong style="font-family:'Fraunces Var',serif;font-size:1.15rem;color:var(--forest);">Recommended Sprints &amp; Challenges for Your Interests</strong>
+            <span class="tag-chip skill">${r.compatibilityScore || 88}% Top Fit</span>
+          </div>
+          <button type="button" onclick="document.getElementById('sprintRecommendPanel').style.display='none'" style="background:none;border:none;color:var(--ink-faint);cursor:pointer;font-size:16px;">✕</button>
+        </div>
+        ${r.aiSummary ? `<p style="margin:0 0 10px;font-size:0.9rem;color:var(--ink);line-height:1.45;">${r.aiSummary}</p>` : ''}
+        <div style="display:grid;gap:8px;">${cardsHtml || '<p style="margin:0;font-size:0.86rem;color:var(--ink-soft);">No matching open projects yet.</p>'}</div>
+      `;
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } catch (err) {
+      panel.style.display = 'block';
+      panel.innerHTML = `<p style="margin:0;color:var(--coral);font-size:0.88rem;">${err.message || 'Recommendation failed.'}</p>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = origText;
+    }
+  };
 </script>
 
 <script>
