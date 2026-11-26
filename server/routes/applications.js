@@ -57,7 +57,7 @@ router.post('/', optionalAuth, async (req, res) => {
         status: saved.status,
         appliedAt: saved.appliedAt
       },
-      message: '🌱 Application received! Our team reviews submissions on a rolling basis.'
+      message: 'Application received! Our team reviews submissions on a rolling basis.'
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to submit application.' });

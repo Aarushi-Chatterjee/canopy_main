@@ -78,8 +78,8 @@ export const notificationCenter = {
             subtext: app.status === 'accepted'
               ? 'Squad accepted your note · Channel unlocked'
               : app.status === 'declined'
-              ? 'Cycle filled or closed'
-              : `Planted as ${app.role || 'Contributor'} · Under lead review`,
+                ? 'Cycle filled or closed'
+                : `Planted as ${app.role || 'Contributor'} · Under lead review`,
             status: app.status || 'pending_review',
             url: app.sprintId ? `sprint.html#${app.sprintId}` : 'sprint.html',
             createdAt: app.createdAt || new Date().toISOString()
@@ -145,7 +145,7 @@ export const notificationCenter = {
               received.push({
                 id: a.id || 'anc_' + Math.random().toString(36).slice(2, 8),
                 type: 'announcement',
-                title: `📢 ${a.title}`,
+                title: a.title,
                 subtext: a.message,
                 status: 'accepted',
                 isBroadcast: true,
@@ -218,7 +218,6 @@ export const notificationCenter = {
     if (!loggedIn) {
       sentListEl.innerHTML = `
         <div class="notif-empty">
-          <span style="font-size:1.8rem;">🌱</span>
           <p><strong>Track Your Applications</strong></p>
           <span class="hint-small">Sign in to track your planted sprint notes, squad reviews, and unlocked contact channels.</span>
           <div style="margin-top:14px;">
@@ -262,7 +261,6 @@ export const notificationCenter = {
       if (!data.sent || data.sent.length === 0) {
         sentListEl.innerHTML = `
           <div class="notif-empty">
-            <span style="font-size:1.8rem;">🌱</span>
             <p><strong>No planted notes yet</strong></p>
             <span class="hint-small">When you plant a note on an active sprint or send a handshake, your updates appear here.</span>
           </div>`;
@@ -271,7 +269,7 @@ export const notificationCenter = {
           const isAccepted = item.status === 'accepted';
           const isDeclined = item.status === 'declined';
           const statusClass = isAccepted ? 'status-accepted' : isDeclined ? 'status-declined' : 'status-pending';
-          const statusText = isAccepted ? '✓ Accepted' : isDeclined ? '✕ Closed' : '⏳ Reviewing';
+          const statusText = isAccepted ? 'Accepted' : isDeclined ? 'Closed' : 'Reviewing';
           const timeAgo = formatTimeAgo(item.createdAt);
           const targetUrl = item.url || (item.sprintId ? `sprint.html#${item.sprintId}` : 'sprint.html');
 
@@ -295,7 +293,6 @@ export const notificationCenter = {
       if (!data.received || data.received.length === 0) {
         recListEl.innerHTML = `
           <div class="notif-empty">
-            <span style="font-size:1.8rem;">🌿</span>
             <p><strong>No incoming requests</strong></p>
             <span class="hint-small">Incoming squad applications from fellow builders will appear here for review.</span>
           </div>`;
@@ -453,7 +450,7 @@ export function initNotificationCorner() {
       <aside class="notifications-panel" id="notificationsPanel" style="display:none;" role="region" aria-label="Collaboration & Notification Corner">
         <div class="notif-panel-header">
           <div class="notif-panel-title-wrap">
-            <span class="notif-panel-icon">🔔</span>
+            <span class="notif-panel-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
             <div>
               <h4 class="notif-panel-title">Notifications</h4>
               <p class="notif-panel-sub">Planted notes, reviews &amp; connections</p>

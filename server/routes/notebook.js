@@ -99,7 +99,7 @@ router.get('/:id', async (req, res) => {
       e => e.id === entry.id,
       { viewCount: newCount },
       { eq: { id: entry.id } }
-    ).catch(() => {});
+    ).catch(() => { });
     entry.viewCount = newCount;
 
     const author = entry.userId ? await usersRepo.findById(entry.userId) : (entry.authorId ? await usersRepo.findById(entry.authorId) : null);
@@ -194,7 +194,7 @@ router.post('/', optionalAuth, async (req, res) => {
 
     res.status(201).json({
       entry: saved,
-      message: '🌿 Field note planted in the Lab Notebook.'
+      message: 'Field note planted in the Lab Notebook.'
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to save notebook entry.' });
@@ -253,7 +253,7 @@ router.post('/:id/grow', optionalAuth, async (req, res) => {
     res.status(201).json({
       branch: newBranch,
       parent: updated,
-      message: `🌱 Entry branched successfully! Added ${queryType === 'query' ? 'query' : 'reflection'} to "${parent.title}".`
+      message: `Entry branched successfully! Added ${queryType === 'query' ? 'query' : 'reflection'} to "${parent.title}".`
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to grow notebook entry.' });

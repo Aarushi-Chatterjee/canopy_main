@@ -31,7 +31,7 @@ function render({ recipientName, senderName, intentNote, callTitle }) {
       <div style="background-color: #142017; border-left: 3px solid #4ade80; padding: 18px; margin: 0 0 24px 0; border-radius: 0 6px 6px 0; font-style: italic; color: #e4e7e4; line-height: 1.6;">
         "${intentNote}"
       </div>
-      <p style="font-size: 13px; color: #718096; line-height: 1.5; margin: 0 0 24px 0;">🔒 Privacy Protection: Your direct email is withheld until you accept the handshake.</p>
+      <p style="font-size: 13px; color: #718096; line-height: 1.5; margin: 0 0 24px 0;">Privacy Protection: Your direct email is withheld until you accept the handshake.</p>
       <div style="text-align: center; margin: 24px 0;">
         <a href="/match.html" style="background-color: #22543d; color: #68d391; padding: 12px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; display: inline-block;">Review Handshake in Sandbox →</a>
       </div>

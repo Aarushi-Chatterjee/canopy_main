@@ -183,8 +183,8 @@ router.post('/', optionalAuth, async (req, res) => {
     const rolesList = Array.isArray(neededRoles)
       ? neededRoles
       : (typeof neededRoles === 'string' && neededRoles.trim()
-          ? neededRoles.split(',').map(r => r.trim()).filter(Boolean)
-          : ['Technical Contributor']);
+        ? neededRoles.split(',').map(r => r.trim()).filter(Boolean)
+        : ['Technical Contributor']);
 
     const newSprint = {
       id: sprintId,
@@ -232,7 +232,7 @@ router.post('/', optionalAuth, async (req, res) => {
 
     res.status(201).json({
       sprint: saved,
-      message: '🌱 Working squad launched in Forming stage.'
+      message: 'Working squad launched in Forming stage.'
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to create sprint.' });
@@ -302,7 +302,7 @@ router.post('/:id/join', optionalAuth, async (req, res) => {
     res.status(201).json({
       application: newApplication,
       sprint: updated,
-      message: `🌱 Note planted! Awaiting squad lead review for "${sprint.title}".`
+      message: `Note planted! Awaiting squad lead review for "${sprint.title}".`
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to plant note.' });
@@ -333,7 +333,7 @@ router.patch('/applications/:appId/accept', optionalAuth, async (req, res) => {
     }
 
     // Update application status
-    const updatedApps = targetSprint.applications.map(a => 
+    const updatedApps = targetSprint.applications.map(a =>
       a.id === appId ? { ...a, status: 'accepted', acceptedAt: new Date().toISOString() } : a
     );
 
@@ -354,8 +354,8 @@ router.patch('/applications/:appId/accept', optionalAuth, async (req, res) => {
 
     const isFull = updatedMembers.length >= capacity;
     const newStage = isFull && (targetSprint.stage === 'forming' || targetSprint.status === 'planning') ? 'building' : targetSprint.stage;
-    const statusHint = isFull 
-      ? 'team locked for this cycle' 
+    const statusHint = isFull
+      ? 'team locked for this cycle'
       : `${updatedMembers.length} of ${capacity} spots filled`;
 
     const updatedSprint = await sprintsRepo.update(
@@ -405,7 +405,7 @@ router.patch('/applications/:appId/decline', optionalAuth, async (req, res) => {
       return res.status(404).json({ error: 'Application record not found.' });
     }
 
-    const updatedApps = targetSprint.applications.map(a => 
+    const updatedApps = targetSprint.applications.map(a =>
       a.id === appId ? { ...a, status: 'declined', declinedAt: new Date().toISOString() } : a
     );
 
@@ -434,7 +434,7 @@ router.post('/:id/notify', async (req, res) => {
 
     res.json({
       success: true,
-      message: `🔔 Subscribed! You will receive an invitation when the next sprint cycle opens for "${sprint.title}".`
+      message: `Subscribed! You will receive an invitation when the next sprint cycle opens for "${sprint.title}".`
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Notification subscription failed.' });
@@ -464,7 +464,7 @@ router.patch('/:id/stage', requireAuth, async (req, res) => {
       return res.status(403).json({ error: 'Only squad members, the sprint creator, or an administrator can transition sprint stages.' });
     }
 
-    const updates = { 
+    const updates = {
       stage,
       status: stage === 'forming' ? 'planning' : stage === 'building' ? 'active' : 'completed'
     };

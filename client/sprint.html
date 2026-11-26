@@ -1,911 +1,1010 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sprints - Canopy</title>
-<meta name="description" content="A sprint is where an idea becomes something you can point to. Two to four weeks, a real team, a visible clock, and a shipped outcome in the Canopy Library.">
-<link rel="canonical" href="https://canopy-ten-lake.vercel.app/sprint.html">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Canopy">
-<meta property="og:url" content="https://canopy-ten-lake.vercel.app/sprint.html">
-<meta property="og:title" content="Sprints - Canopy">
-<meta property="og:description" content="Two to four weeks, start to shipped. A team forms around one Build Call and ships a real, tangible outcome.">
-<meta property="og:image" content="https://canopy-ten-lake.vercel.app/og-image.png">
-<meta property="og:image:secure_url" content="https://canopy-ten-lake.vercel.app/og-image.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sprints - Canopy">
-<meta name="twitter:description" content="Two to four weeks, start to shipped. A team forms around one Build Call and ships a real, tangible outcome.">
-<meta name="twitter:image" content="https://canopy-ten-lake.vercel.app/og-image.png">
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="apple-touch-icon" href="/favicon.png">
-<link rel="stylesheet" href="/src/style.css">
 
-<style>
-  /* ==========================================================
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sprints - Canopy</title>
+  <meta name="description"
+    content="A sprint is where an idea becomes something you can point to. Two to four weeks, a real team, a visible clock, and a shipped outcome in the Canopy Library.">
+  <link rel="canonical" href="https://canopy-ten-lake.vercel.app/sprint.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Canopy">
+  <meta property="og:url" content="https://canopy-ten-lake.vercel.app/sprint.html">
+  <meta property="og:title" content="Sprints - Canopy">
+  <meta property="og:description"
+    content="Two to four weeks, start to shipped. A team forms around one Build Call and ships a real, tangible outcome.">
+  <meta property="og:image" content="https://canopy-ten-lake.vercel.app/og-image.png">
+  <meta property="og:image:secure_url" content="https://canopy-ten-lake.vercel.app/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sprints - Canopy">
+  <meta name="twitter:description"
+    content="Two to four weeks, start to shipped. A team forms around one Build Call and ships a real, tangible outcome.">
+  <meta name="twitter:image" content="https://canopy-ten-lake.vercel.app/og-image.png">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="stylesheet" href="/src/style.css">
+
+  <style>
+    /* ==========================================================
      SPRINT HERO & ADAPTABLE SIDE WIDGET
      ========================================================== */
-  .sprint-hero-flex {
-    display: grid;
-    grid-template-columns: 1.18fr 0.82fr;
-    gap: clamp(24px, 4vw, 44px);
-    align-items: center;
-    margin-bottom: 24px;
-  }
-
-  .sprint-hero-main {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .sprint-hero-main h1 {
-    font-size: clamp(2rem, 3.2vw, 2.75rem);
-    line-height: 1.1;
-    letter-spacing: -0.025em;
-    color: var(--ink);
-    margin: 4px 0 0;
-  }
-
-  .sprint-hero-main .lede {
-    margin-top: 4px;
-    font-size: clamp(0.95rem, 1.15vw, 1.05rem);
-    line-height: 1.6;
-    color: var(--ink-soft);
-    max-width: 58ch;
-  }
-
-  .sprint-hero-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 8px;
-  }
-
-  /* The Adaptable Side Widget Card */
-  .sprint-hero-widget {
-    background: var(--card);
-    border: 1px solid var(--card-edge);
-    border-radius: 18px;
-    padding: clamp(18px, 2.5vw, 24px);
-    box-shadow: 0 16px 38px -12px var(--shadow), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
-  }
-
-  .sprint-hero-widget::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--forest), var(--leaf), var(--sun));
-  }
-
-  .sprint-hero-widget:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 20px 44px -10px var(--shadow);
-  }
-
-  /* Widget Top Bar */
-  .shw-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .shw-badge {
-    font-family: 'Jost Var', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--forest);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: color-mix(in srgb, var(--forest) 10%, transparent);
-    padding: 3px 10px;
-    border-radius: 20px;
-    border: 1px solid color-mix(in srgb, var(--forest) 25%, transparent);
-  }
-
-  .shw-badge::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--leaf);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--leaf) 35%, transparent);
-    animation: scdPulse 2s infinite ease-in-out;
-  }
-
-  @keyframes scdPulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.25); opacity: 0.7; }
-  }
-
-  .shw-cycle-tag {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--ink-faint);
-    font-family: 'Jost Var', sans-serif;
-  }
-
-  /* Widget Body: Clock Box + Proof Columns */
-  .shw-body {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .shw-clock-box {
-    background: var(--paper);
-    border: 1px solid var(--card-edge);
-    border-radius: 14px;
-    padding: 14px 16px 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 0 0 auto;
-    min-width: 160px;
-    box-shadow: 0 4px 14px -4px var(--shadow);
-  }
-
-  .shw-ring-wrap {
-    position: relative;
-    width: 88px;
-    height: 88px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 8px;
-  }
-
-  .shw-ring-svg {
-    width: 100%;
-    height: 100%;
-    transform: rotate(-90deg);
-  }
-
-  .shw-ring-track {
-    fill: none;
-    stroke: color-mix(in srgb, var(--ink) 8%, transparent);
-    stroke-width: 8;
-  }
-
-  .shw-ring-fill {
-    fill: none;
-    stroke: var(--forest);
-    stroke-width: 8;
-    stroke-linecap: round;
-    stroke-dasharray: 326.72;
-    stroke-dashoffset: 80;
-    transition: stroke-dashoffset 0.6s ease;
-  }
-
-  .shw-ring-inner {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-  }
-
-  .shw-days-num {
-    font-family: 'Fraunces Var', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--ink);
-  }
-
-  .shw-days-label {
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-faint);
-    margin-top: 2px;
-  }
-
-  .shw-units-row {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-family: 'Jost Var', monospace;
-    margin-bottom: 6px;
-  }
-
-  .shw-unit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 26px;
-  }
-
-  .shw-unit-num {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--forest);
-    line-height: 1.1;
-  }
-
-  .shw-unit-label {
-    font-size: 0.52rem;
-    color: var(--ink-faint);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  .shw-unit-sep {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--ink-faint);
-    margin-top: -6px;
-  }
-
-  .shw-focus-label {
-    font-size: 0.7rem;
-    color: var(--ink-faint);
-    margin: 0;
-    text-align: center;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  /* Proof Side Column */
-  .shw-proof-col {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .shw-proof-item {
-    background: var(--paper);
-    border: 1px solid var(--card-edge);
-    border-radius: 8px;
-    padding: 8px 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 2px 8px -3px var(--shadow);
-  }
-
-  .shw-proof-val {
-    font-family: 'Fraunces Var', serif;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--forest);
-    line-height: 1;
-    min-width: 22px;
-  }
-
-  .shw-proof-text {
-    font-size: 0.76rem;
-    color: var(--ink-soft);
-    line-height: 1.3;
-    font-weight: 500;
-  }
-
-  /* Adaptable Responsive Breakpoints */
-  @media (max-width: 1040px) {
     .sprint-hero-flex {
-      grid-template-columns: 1fr;
-      gap: 28px;
+      display: grid;
+      grid-template-columns: 1.18fr 0.82fr;
+      gap: clamp(24px, 4vw, 44px);
+      align-items: center;
+      margin-bottom: 24px;
     }
-    .sprint-hero-widget {
-      max-width: 520px;
-    }
-  }
 
-  @media (max-width: 560px) {
-    .shw-body {
+    .sprint-hero-main {
+      display: flex;
       flex-direction: column;
-      align-items: stretch;
       gap: 12px;
     }
-    .shw-clock-box {
-      width: 100%;
-      min-width: 0;
+
+    .sprint-hero-main h1 {
+      font-size: clamp(2rem, 3.2vw, 2.75rem);
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      margin: 4px 0 0;
     }
-    .shw-proof-col {
-      flex-direction: row;
+
+    .sprint-hero-main .lede {
+      margin-top: 4px;
+      font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 58ch;
+    }
+
+    .sprint-hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    /* The Adaptable Side Widget Card */
+    .sprint-hero-widget {
+      background: var(--card);
+      border: 1px solid var(--card-edge);
+      border-radius: 18px;
+      padding: clamp(18px, 2.5vw, 24px);
+      box-shadow: 0 16px 38px -12px var(--shadow), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+    }
+
+    .sprint-hero-widget::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--forest), var(--leaf), var(--sun));
+    }
+
+    .sprint-hero-widget:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 44px -10px var(--shadow);
+    }
+
+    /* Widget Top Bar */
+    .shw-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
       flex-wrap: wrap;
     }
-    .shw-proof-item {
-      flex: 1 1 130px;
+
+    .shw-badge {
+      font-family: 'Jost Var', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--forest);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: color-mix(in srgb, var(--forest) 10%, transparent);
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid color-mix(in srgb, var(--forest) 25%, transparent);
     }
-  }
-</style>
+
+    .shw-badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--leaf);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--leaf) 35%, transparent);
+      animation: scdPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes scdPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.25);
+        opacity: 0.7;
+      }
+    }
+
+    .shw-cycle-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ink-faint);
+      font-family: 'Jost Var', sans-serif;
+    }
+
+    /* Widget Body: Clock Box + Proof Columns */
+    .shw-body {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .shw-clock-box {
+      background: var(--paper);
+      border: 1px solid var(--card-edge);
+      border-radius: 14px;
+      padding: 14px 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 auto;
+      min-width: 160px;
+      box-shadow: 0 4px 14px -4px var(--shadow);
+    }
+
+    .shw-ring-wrap {
+      position: relative;
+      width: 88px;
+      height: 88px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .shw-ring-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .shw-ring-track {
+      fill: none;
+      stroke: color-mix(in srgb, var(--ink) 8%, transparent);
+      stroke-width: 8;
+    }
+
+    .shw-ring-fill {
+      fill: none;
+      stroke: var(--forest);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 326.72;
+      stroke-dashoffset: 80;
+      transition: stroke-dashoffset 0.6s ease;
+    }
+
+    .shw-ring-inner {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .shw-days-num {
+      font-family: 'Fraunces Var', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .shw-days-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-faint);
+      margin-top: 2px;
+    }
+
+    .shw-units-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Jost Var', monospace;
+      margin-bottom: 6px;
+    }
+
+    .shw-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 26px;
+    }
+
+    .shw-unit-num {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--forest);
+      line-height: 1.1;
+    }
+
+    .shw-unit-label {
+      font-size: 0.52rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .shw-unit-sep {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ink-faint);
+      margin-top: -6px;
+    }
+
+    .shw-focus-label {
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      margin: 0;
+      text-align: center;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* Proof Side Column */
+    .shw-proof-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .shw-proof-item {
+      background: var(--paper);
+      border: 1px solid var(--card-edge);
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 8px -3px var(--shadow);
+    }
+
+    .shw-proof-val {
+      font-family: 'Fraunces Var', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--forest);
+      line-height: 1;
+      min-width: 22px;
+    }
+
+    .shw-proof-text {
+      font-size: 0.76rem;
+      color: var(--ink-soft);
+      line-height: 1.3;
+      font-weight: 500;
+    }
+
+    /* Adaptable Responsive Breakpoints */
+    @media (max-width: 1040px) {
+      .sprint-hero-flex {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .sprint-hero-widget {
+        max-width: 520px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .shw-body {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .shw-clock-box {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .shw-proof-col {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .shw-proof-item {
+        flex: 1 1 130px;
+      }
+    }
+  </style>
 
 </head>
+
 <body class="interior-page sprint-page">
 
-<!-- icon sprite -->
-<svg style="display:none" aria-hidden="true">
-  <symbol id="icon-sprout" viewBox="0 0 32 32">
-    <path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-    <path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor"/>
-    <path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor"/>
-  </symbol>
-  <symbol id="icon-bell" viewBox="0 0 16 16">
-    <path d="M8 1.5c-.4 0-.7.3-.7.7v.6C5 3.2 3.3 5 3.3 7.3v2.4c0 .5-.2 1-.6 1.4L2 12h12l-.7-1c-.4-.4-.6-.9-.6-1.4V7.3c0-2.3-1.7-4.1-4-4.5v-.6c0-.4-.3-.7-.7-.7Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none"/>
-    <path d="M6.3 13.2a1.8 1.8 0 0 0 3.4 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/>
-  </symbol>
-</svg>
+  <!-- icon sprite -->
+  <svg style="display:none" aria-hidden="true">
+    <symbol id="icon-sprout" viewBox="0 0 32 32">
+      <path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" />
+      <path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor" />
+      <path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor" />
+    </symbol>
+    <symbol id="icon-bell" viewBox="0 0 16 16">
+      <path
+        d="M8 1.5c-.4 0-.7.3-.7.7v.6C5 3.2 3.3 5 3.3 7.3v2.4c0 .5-.2 1-.6 1.4L2 12h12l-.7-1c-.4-.4-.6-.9-.6-1.4V7.3c0-2.3-1.7-4.1-4-4.5v-.6c0-.4-.3-.7-.7-.7Z"
+        stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none" />
+      <path d="M6.3 13.2a1.8 1.8 0 0 0 3.4 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
+        fill="none" />
+    </symbol>
+  </svg>
 
-<!-- ============ HEADER ============ -->
-<header>
-  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
-    <a class="logo" href="/" aria-label="Canopy home">
-      <div class="logo-main">
-        <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
-        CANOPY
-      </div>
-      <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
-    </a>
-    <nav class="primary-nav" aria-label="Primary">
-      <a href="/#problem">About</a>
-      <a href="match.html">Match Teammates</a>
-      <a href="sprint.html" aria-current="page">Active Squads</a>
-      <a href="notebook.html">Open Notebook</a>
-    </nav>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
-        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
-        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
-      </div>
-      <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html" title="Post a challenge, problem statement, or opportunity to recruit collaborators">Submit a Problem</a>
-      <button class="btn btn-ghost btn-sm notification-bell-btn" id="navNotificationsBtn" aria-label="Notifications" title="Collaboration &amp; Notification Corner">
-        <svg class="icon notif-bell-icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;">
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-        </svg>
-        <span class="notification-badge" id="navNotificationBadge" style="display:none;">0</span>
-      </button>
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- ============ THREE-LINE CORNER DRAWER ============ -->
-<div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
-<aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
-  <div class="nav-drawer-header">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <img src="/canopy-logo.png" alt="Canopy Logo" style="width:24px;height:24px;object-fit:contain;">
-      <span class="nav-drawer-logo">Canopy</span>
-    </div>
-    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
-  </div>
-
-  <div class="nav-drawer-section">
-    <span class="nav-drawer-section-label">Navigation</span>
-    <a href="match.html" class="nav-drawer-link">Match Teammates</a>
-    <a href="sprint.html" class="nav-drawer-link" style="color:var(--forest);font-weight:700;">Active Squads</a>
-    <a href="notebook.html" class="nav-drawer-link">Open Notebook</a>
-    <a href="/#problem" class="nav-drawer-link">About Canopy</a>
-  </div>
-
-  <div class="nav-drawer-divider"></div>
-
-  <div class="nav-drawer-cta-group">
-    <a href="post-call.html" class="btn btn-stamp btn-block nav-drawer-cta">
-      <span>Post a Build Call</span>
-      <span style="font-size:0.85rem;opacity:0.85;">↗</span>
-    </a>
-    <a href="apply.html" class="btn btn-ghost btn-block nav-drawer-cta" style="border:1px solid var(--line);">
-      Apply to Canopy
-    </a>
-    <div id="drawerAuthArea" style="margin-top:6px;text-align:center;">
-      <a href="login.html" class="nav-drawer-link-subtle">Sign In / Dashboard →</a>
-    </div>
-  </div>
-
-  <div class="nav-drawer-footer">
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      <span>Theme</span>
-    </button>
-    <div style="display:flex;gap:12px;">
-      <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
-      <a href="terms.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Terms</a>
-    </div>
-  </div>
-</aside>
-
-<main id="top">
-<div class="stage">
-
-  <!-- ============ SPRINT HERO WITH ADAPTABLE SIDE WIDGET ============ -->
-  <div class="sprint-hero-flex reveal" id="sprintHeroArea">
-    
-    <!-- Left Main Column: Headline, Lede & Action CTAs -->
-    <div class="sprint-hero-main">
-      <span class="kicker" style="font-size:1.05rem;color:var(--forest);">Sprint Loop: From Problem to Shipped Prototype</span>
-      <h1 data-content-key="sprint.hero.headline">Where active problem statements become working prototypes.</h1>
-      <p class="lede" data-content-key="sprint.lede">Two to four weeks, a visible clock, and a real squad. Active builders post what they are working on to recruit collaborators, while problem holders sponsor concrete challenges with research context and financial grants: no month-long email chains, just a team, a problem, and a date on the calendar.</p>
-      
-      <div class="sprint-hero-actions">
-        <a href="#squadsSection" class="btn btn-stamp btn-sm">See Active Sprints &darr;</a>
-        <button type="button" class="btn btn-ghost btn-sm" id="btnRecommendProjects" onclick="runSprintRecommendations()">⚡ Recommend Projects for Me</button>
-        <a href="match.html" class="btn btn-ghost btn-sm">Match Teammates</a>
-      </div>
-    </div>
-
-    <!-- Right Side Widget: Live Adaptable Countdown & Status Card -->
-    <aside class="sprint-hero-widget" aria-label="Sprint cycle countdown and proof widget">
-      <div class="shw-top">
-        <span class="shw-badge">Active Cycle Running</span>
-        <span class="shw-cycle-tag">Cycle 3 &bull; Groundwater Sensor</span>
-      </div>
-
-      <div class="shw-body">
-        <!-- Live Circular Clock Card -->
-        <div class="shw-clock-box" aria-live="polite">
-          <div class="shw-ring-wrap">
-            <svg class="shw-ring-svg" viewBox="0 0 120 120" aria-hidden="true">
-              <circle class="shw-ring-track" cx="60" cy="60" r="52"/>
-              <circle class="shw-ring-fill" id="scdRingFill" cx="60" cy="60" r="52"/>
-            </svg>
-            <div class="shw-ring-inner">
-              <span class="shw-days-num" id="scdDaysNum">12</span>
-              <span class="shw-days-label">days left</span>
-            </div>
-          </div>
-          <div class="shw-units-row">
-            <div class="shw-unit"><span class="shw-unit-num" id="scdHH">--</span><span class="shw-unit-label">hrs</span></div>
-            <div class="shw-unit-sep">:</div>
-            <div class="shw-unit"><span class="shw-unit-num" id="scdMM">--</span><span class="shw-unit-label">min</span></div>
-            <div class="shw-unit-sep">:</div>
-            <div class="shw-unit"><span class="shw-unit-num" id="scdSS">--</span><span class="shw-unit-label">sec</span></div>
-          </div>
-          <p class="shw-focus-label" data-content-key="sprint.hero.subheadline">The clock is already ticking.</p>
+  <!-- ============ HEADER ============ -->
+  <header>
+    <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+      <a class="logo" href="/" aria-label="Canopy home">
+        <div class="logo-main">
+          <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
+          CANOPY
         </div>
-
-        <!-- Proof Metrics Stack -->
-        <div class="shw-proof-col">
-          <div class="shw-proof-item">
-            <span class="shw-proof-val">5</span>
-            <span class="shw-proof-text">active squads shipping now</span>
-          </div>
-          <div class="shw-proof-item">
-            <span class="shw-proof-val">21</span>
-            <span class="shw-proof-text">day sprint window</span>
-          </div>
-          <div class="shw-proof-item">
-            <span class="shw-proof-val">3</span>
-            <span class="shw-proof-text">days to join forming squad</span>
-          </div>
+        <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
+      </a>
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="/#problem">About</a>
+        <a href="match.html">Match Teammates</a>
+        <a href="sprint.html" aria-current="page">Active Squads</a>
+        <a href="notebook.html">Open Notebook</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+          <a class="nav-auth-link" href="login.html"
+            style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log
+            In</a>
+          <a class="nav-auth-link" href="login.html?tab=signup"
+            style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign
+            Up</a>
         </div>
-      </div>
-    </aside>
-
-  </div>
-
-  <!-- Filter & Quick Action Toolbar -->
-  <div class="match-filter-bar reveal">
-    <div class="sprint-search-box">
-      <svg class="sprint-search-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input type="text" id="sprintSearch" class="sprint-search-input" placeholder="Search problem statements, skills, or roles..." aria-label="Search sprint problem statements">
-    </div>
-    <div class="filter-pill-row" data-filters-for=".sprint-filterable-grid" role="group" aria-label="Filter by domain">
-      <button type="button" class="filter-pill active" data-filter="all" aria-pressed="true">All Domains</button>
-      <button type="button" class="filter-pill" data-filter="climate" aria-pressed="false">Climate</button>
-      <button type="button" class="filter-pill" data-filter="grid" aria-pressed="false">Grid</button>
-      <button type="button" class="filter-pill" data-filter="forestry" aria-pressed="false">Forestry</button>
-      <button type="button" class="filter-pill" data-filter="civic" aria-pressed="false">Civic</button>
-      <button type="button" class="filter-pill" data-filter="ai" aria-pressed="false">AI &amp; Sensing</button>
-      <button type="button" class="filter-pill" data-filter="education" aria-pressed="false">Education</button>
-      <button type="button" id="btnResetSprintFilters" title="Clear search and filters">Reset</button>
-    </div>
-  </div>
-
-  <!-- ============ SECTION 1: ACTIVE WORKING SQUADS ============ -->
-  <section class="sprint-section-wrap reveal" id="squadsSection">
-    <div id="sprintRecommendPanel" style="display:none;background:color-mix(in srgb, var(--forest) 7%, var(--card));border:1px solid color-mix(in srgb, var(--forest) 30%, var(--card-edge));border-radius:12px;padding:18px 20px;margin-bottom:22px;"></div>
-    <div class="sprint-section-head">
-      <div class="sprint-section-head-title">
-        <span class="sprint-section-tag">
-          <svg class="icon" aria-hidden="true" style="width:14px;height:14px;"><use href="#icon-sprout"/></svg>
-          Community Squads · Active Cycles
-        </span>
-        <h2>Active Working Squads</h2>
-        <p>Builders and teams currently tackling problem statements in the field. Join an open seat or post what you are building to recruit collaborators.</p>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-        <span class="hint-small" id="squadCount" style="font-weight:600;">1 active squad</span>
-        <button type="button" class="btn btn-stamp btn-sm" id="btnOpenPostSquad">
-          <svg class="icon" aria-hidden="true" style="width:14px;height:14px;"><use href="#icon-sprout"/></svg>
-          Post What You're Working On →
+        <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html"
+          title="Post a challenge, problem statement, or opportunity to recruit collaborators">Submit a Problem</a>
+        <button class="btn btn-ghost btn-sm notification-bell-btn" id="navNotificationsBtn" aria-label="Notifications"
+          title="Collaboration &amp; Notification Corner">
+          <svg class="icon notif-bell-icon" aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="display:block;">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span class="notification-badge" id="navNotificationBadge" style="display:none;">0</span>
+        </button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
+          <span></span><span></span><span></span>
         </button>
       </div>
     </div>
+  </header>
 
-    <div class="squads-grid sprint-filterable-grid" id="activeSquadsGrid">
-      <!-- Squad 1: Groundwater Sensor -->
-      <article class="elevated-card sprint-card reveal" data-domain="climate" data-id="sp_groundwater">
-        <div class="sprint-card-header">
-          <span class="growth-badge" data-stage="in_sprint">Building · Cycle Active</span>
-          <span class="hint-small" style="font-size:0.75rem;color:var(--forest);font-weight:600;">Team Locked (3/3)</span>
+  <!-- ============ THREE-LINE CORNER DRAWER ============ -->
+  <div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
+    <div class="nav-drawer-header">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <img src="/canopy-logo.png" alt="Canopy Logo" style="width:24px;height:24px;object-fit:contain;">
+        <span class="nav-drawer-logo">Canopy</span>
+      </div>
+      <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
+    </div>
+
+    <div class="nav-drawer-section">
+      <span class="nav-drawer-section-label">Navigation</span>
+      <a href="match.html" class="nav-drawer-link">Match Teammates</a>
+      <a href="sprint.html" class="nav-drawer-link" style="color:var(--forest);font-weight:700;">Active Squads</a>
+      <a href="notebook.html" class="nav-drawer-link">Open Notebook</a>
+      <a href="/#problem" class="nav-drawer-link">About Canopy</a>
+    </div>
+
+    <div class="nav-drawer-divider"></div>
+
+    <div class="nav-drawer-cta-group">
+      <a href="post-call.html" class="btn btn-stamp btn-block nav-drawer-cta">
+        <span>Post a Build Call</span>
+        <span style="font-size:0.85rem;opacity:0.85;">↗</span>
+      </a>
+      <a href="apply.html" class="btn btn-ghost btn-block nav-drawer-cta" style="border:1px solid var(--line);">
+        Apply to Canopy
+      </a>
+      <div id="drawerAuthArea" style="margin-top:6px;text-align:center;">
+        <a href="login.html" class="nav-drawer-link-subtle">Sign In / Dashboard →</a>
+      </div>
+    </div>
+
+    <div class="nav-drawer-footer">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5" />
+          <path
+            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+        <span>Theme</span>
+      </button>
+      <div style="display:flex;gap:12px;">
+        <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+        <a href="terms.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Terms</a>
+      </div>
+    </div>
+  </aside>
+
+  <main id="top">
+    <div class="stage">
+
+      <!-- ============ SPRINT HERO WITH ADAPTABLE SIDE WIDGET ============ -->
+      <div class="sprint-hero-flex reveal" id="sprintHeroArea">
+
+        <!-- Left Main Column: Headline, Lede & Action CTAs -->
+        <div class="sprint-hero-main">
+          <span class="kicker" style="font-size:1.05rem;color:var(--forest);">Sprint Loop: From Problem to Shipped
+            Prototype</span>
+          <h1 data-content-key="sprint.hero.headline">Where active problem statements become working prototypes.</h1>
+          <p class="lede" data-content-key="sprint.lede">Two to four weeks, a visible clock, and a real squad. Active
+            builders post what they are working on to recruit collaborators, while problem holders sponsor concrete
+            challenges with research context and financial grants: no month-long email chains, just a team, a problem,
+            and a date on the calendar.</p>
+
+          <div class="sprint-hero-actions">
+            <a href="#squadsSection" class="btn btn-stamp btn-sm">See Active Sprints &darr;</a>
+            <button type="button" class="btn btn-ghost btn-sm" id="btnRecommendProjects"
+              onclick="runSprintRecommendations()">⚡ Recommend Projects for Me</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="btnRecommendProjects"
+              onclick="runSprintRecommendations()">Recommend Projects for Me</button>
+            <a href="match.html" class="btn btn-ghost btn-sm">Match Teammates</a>
+          </div>
         </div>
-        <h4>Groundwater contamination sensor</h4>
-        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">Assembling optical probe, writing ADC driver, and calibrating spectrophotometric absorption curves for agricultural aquifers.</p>
-        <div class="clock-row">
-          <svg class="clock-ring" viewBox="0 0 36 36" data-pct="64" aria-hidden="true">
-            <circle class="track" cx="18" cy="18" r="15"/>
-            <circle class="fill" cx="18" cy="18" r="15"/>
+
+        <!-- Right Side Widget: Live Adaptable Countdown & Status Card -->
+        <aside class="sprint-hero-widget" aria-label="Sprint cycle countdown and proof widget">
+          <div class="shw-top">
+            <span class="shw-badge">Active Cycle Running</span>
+            <span class="shw-cycle-tag">Cycle 3 &bull; Groundwater Sensor</span>
+          </div>
+
+          <div class="shw-body">
+            <!-- Live Circular Clock Card -->
+            <div class="shw-clock-box" aria-live="polite">
+              <div class="shw-ring-wrap">
+                <svg class="shw-ring-svg" viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="shw-ring-track" cx="60" cy="60" r="52" />
+                  <circle class="shw-ring-fill" id="scdRingFill" cx="60" cy="60" r="52" />
+                </svg>
+                <div class="shw-ring-inner">
+                  <span class="shw-days-num" id="scdDaysNum">12</span>
+                  <span class="shw-days-label">days left</span>
+                </div>
+              </div>
+              <div class="shw-units-row">
+                <div class="shw-unit"><span class="shw-unit-num" id="scdHH">--</span><span
+                    class="shw-unit-label">hrs</span></div>
+                <div class="shw-unit-sep">:</div>
+                <div class="shw-unit"><span class="shw-unit-num" id="scdMM">--</span><span
+                    class="shw-unit-label">min</span></div>
+                <div class="shw-unit-sep">:</div>
+                <div class="shw-unit"><span class="shw-unit-num" id="scdSS">--</span><span
+                    class="shw-unit-label">sec</span></div>
+              </div>
+              <p class="shw-focus-label" data-content-key="sprint.hero.subheadline">The clock is already ticking.</p>
+            </div>
+
+            <!-- Proof Metrics Stack -->
+            <div class="shw-proof-col">
+              <div class="shw-proof-item">
+                <span class="shw-proof-val">5</span>
+                <span class="shw-proof-text">active squads shipping now</span>
+              </div>
+              <div class="shw-proof-item">
+                <span class="shw-proof-val">21</span>
+                <span class="shw-proof-text">day sprint window</span>
+              </div>
+              <div class="shw-proof-item">
+                <span class="shw-proof-val">3</span>
+                <span class="shw-proof-text">days to join forming squad</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+      <!-- Filter & Quick Action Toolbar -->
+      <div class="match-filter-bar reveal">
+        <div class="sprint-search-box">
+          <svg class="sprint-search-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
           </svg>
-          <span class="clock-label"><b>9 of 14</b> days left · 64% progress</span>
+          <input type="text" id="sprintSearch" class="sprint-search-input"
+            placeholder="Search problem statements, skills, or roles..." aria-label="Search sprint problem statements">
         </div>
-        <div class="team-row">
-          <div class="avatar sm" data-seed="gw-1" aria-hidden="true" title="Elena R. (Hardware Lead)"></div>
-          <div class="avatar sm" data-seed="gw-2" aria-hidden="true" title="Kareem P. (Field Hydrologist)"></div>
-          <div class="avatar sm" data-seed="gw-3" aria-hidden="true" title="Devon S. (Firmware Engineer)"></div>
+        <div class="filter-pill-row" data-filters-for=".sprint-filterable-grid" role="group"
+          aria-label="Filter by domain">
+          <button type="button" class="filter-pill active" data-filter="all" aria-pressed="true">All Domains</button>
+          <button type="button" class="filter-pill" data-filter="climate" aria-pressed="false">Climate</button>
+          <button type="button" class="filter-pill" data-filter="grid" aria-pressed="false">Grid</button>
+          <button type="button" class="filter-pill" data-filter="forestry" aria-pressed="false">Forestry</button>
+          <button type="button" class="filter-pill" data-filter="civic" aria-pressed="false">Civic</button>
+          <button type="button" class="filter-pill" data-filter="ai" aria-pressed="false">AI &amp; Sensing</button>
+          <button type="button" class="filter-pill" data-filter="education" aria-pressed="false">Education</button>
+          <button type="button" id="btnResetSprintFilters" title="Clear search and filters">Reset</button>
         </div>
-        <div class="chip-row">
-          <span class="tag-chip" data-domain="climate">Climate</span>
-          <span class="tag-chip skill">Hardware</span>
-          <span class="tag-chip skill">LoRa</span>
+      </div>
+
+      <!-- ============ SECTION 1: ACTIVE WORKING SQUADS ============ -->
+      <section class="sprint-section-wrap reveal" id="squadsSection">
+        <div id="sprintRecommendPanel"
+          style="display:none;background:color-mix(in srgb, var(--forest) 7%, var(--card));border:1px solid color-mix(in srgb, var(--forest) 30%, var(--card-edge));border-radius:12px;padding:18px 20px;margin-bottom:22px;">
         </div>
-        <div class="card-foot" style="flex-wrap:wrap;gap:8px;">
-          <span class="hint-small">Capacity capped</span>
-          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
-            <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true"><use href="#icon-bell"/></svg> Notify next cycle</button>
-            <a href="post-call.html?mode=parallel&amp;ref=sp_groundwater" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:4px 8px;text-decoration:none;">⚡ Form parallel track →</a>
+        <div class="sprint-section-head">
+          <div class="sprint-section-head-title">
+            <span class="sprint-section-tag">
+              <svg class="icon" aria-hidden="true" style="width:14px;height:14px;">
+                <use href="#icon-sprout" />
+              </svg>
+              Community Squads · Active Cycles
+            </span>
+            <h2>Active Working Squads</h2>
+            <p>Builders and teams currently tackling problem statements in the field. Join an open seat or post what you
+              are building to recruit collaborators.</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <span class="hint-small" id="squadCount" style="font-weight:600;">1 active squad</span>
+            <button type="button" class="btn btn-stamp btn-sm" id="btnOpenPostSquad">
+              <svg class="icon" aria-hidden="true" style="width:14px;height:14px;">
+                <use href="#icon-sprout" />
+              </svg>
+              Post What You're Working On →
+            </button>
           </div>
         </div>
-      </article>
 
+        <div class="squads-grid sprint-filterable-grid" id="activeSquadsGrid">
+          <!-- Squad 1: Groundwater Sensor -->
+          <article class="elevated-card sprint-card reveal" data-domain="climate" data-id="sp_groundwater">
+            <div class="sprint-card-header">
+              <span class="growth-badge" data-stage="in_sprint">Building · Cycle Active</span>
+              <span class="hint-small" style="font-size:0.75rem;color:var(--forest);font-weight:600;">Team Locked
+                (3/3)</span>
+            </div>
+            <h4>Groundwater contamination sensor</h4>
+            <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">Assembling optical probe,
+              writing ADC driver, and calibrating spectrophotometric absorption curves for agricultural aquifers.</p>
+            <div class="clock-row">
+              <svg class="clock-ring" viewBox="0 0 36 36" data-pct="64" aria-hidden="true">
+                <circle class="track" cx="18" cy="18" r="15" />
+                <circle class="fill" cx="18" cy="18" r="15" />
+              </svg>
+              <span class="clock-label"><b>9 of 14</b> days left · 64% progress</span>
+            </div>
+            <div class="team-row">
+              <div class="avatar sm" data-seed="gw-1" aria-hidden="true" title="Elena R. (Hardware Lead)"></div>
+              <div class="avatar sm" data-seed="gw-2" aria-hidden="true" title="Kareem P. (Field Hydrologist)"></div>
+              <div class="avatar sm" data-seed="gw-3" aria-hidden="true" title="Devon S. (Firmware Engineer)"></div>
+            </div>
+            <div class="chip-row">
+              <span class="tag-chip" data-domain="climate">Climate</span>
+              <span class="tag-chip skill">Hardware</span>
+              <span class="tag-chip skill">LoRa</span>
+            </div>
+            <div class="card-foot" style="flex-wrap:wrap;gap:8px;">
+              <span class="hint-small">Capacity capped</span>
+              <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto;">
+                <button type="button" class="shovel-btn notify"><svg class="icon" aria-hidden="true">
+                    <use href="#icon-bell" />
+                  </svg> Notify next cycle</button>
+                <a href="post-call.html?mode=parallel&amp;ref=sp_groundwater" class="btn btn-ghost btn-sm"
+                  style="font-size:0.75rem;padding:4px 8px;text-decoration:none;">⚡ Form parallel track →</a>
+                <a href="post-call.html?mode=parallel&amp;ref=sp_groundwater" class="btn btn-ghost btn-sm"
+                  style="font-size:0.75rem;padding:4px 8px;text-decoration:none;">Form parallel track →</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ============ SECTION 2: SPONSORED PROBLEM STATEMENTS ============ -->
+      <section class="sprint-section-wrap reveal" id="sponsoredSection">
+        <div class="sprint-section-head">
+          <div class="sprint-section-head-title">
+            <span class="sprint-section-tag">
+              <svg class="icon" aria-hidden="true" style="width:14px;height:14px;">
+                <use href="#icon-sprout" />
+              </svg>
+              Organization Challenges · Research &amp; Grants
+            </span>
+            <h2>Sponsored Problem Statements &amp; Challenges</h2>
+            <p>Validated problem briefs posted by research institutes, civic foundations, and environmental
+              organizations with dedicated deployment grants and experimental support.</p>
           </div>
-  </section>
-
-  <!-- ============ SECTION 2: SPONSORED PROBLEM STATEMENTS ============ -->
-  <section class="sprint-section-wrap reveal" id="sponsoredSection">
-    <div class="sprint-section-head">
-      <div class="sprint-section-head-title">
-        <span class="sprint-section-tag">
-          <svg class="icon" aria-hidden="true" style="width:14px;height:14px;"><use href="#icon-sprout"/></svg>
-          Organization Challenges · Research &amp; Grants
-        </span>
-        <h2>Sponsored Problem Statements &amp; Challenges</h2>
-        <p>Validated problem briefs posted by research institutes, civic foundations, and environmental organizations with dedicated deployment grants and experimental support.</p>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-        <span class="hint-small" id="sponsoredCount" style="font-weight:600;">1 sponsored brief</span>
-        <a href="post-call.html" class="btn btn-ghost btn-sm">
-          Post a Sponsored Challenge →
-        </a>
-      </div>
-    </div>
-
-    <div class="sponsored-grid sprint-filterable-grid" id="sponsoredGrid">
-      <!-- Challenge 1: Singapore Urban Heat -->
-      <article class="elevated-card sprint-card reveal" data-domain="climate" data-id="call_singapore_cooling">
-        <div class="sprint-card-header">
-          <span class="tag-chip" data-domain="climate">Climate</span>
-          <span class="grant-badge">
-            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 4.5v1h-1.5v-1h1.5Zm0 2.5v5h-1.5V7h1.5Z"/></svg>
-            $15,000 Deployment Grant + Lab Calibration
-          </span>
-        </div>
-        <h4>Urban Heat Island Mitigation &amp; Thermal Sensor Mesh</h4>
-        <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-top:-6px;">
-          Sponsored by <strong>Cooling Singapore Lab</strong> · Urban Climate Initiative
-        </div>
-        <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">High-density urban canyons experience intense heat trapping. We need low-cost surface radiation sensors and microclimate models to validate facade greening interventions.</p>
-        
-        <div class="deliverables-box">
-          <strong>Target Deliverable:</strong> Open hardware multi-point radiant temperature logger + live microclimate map pipeline.
-        </div>
-
-        <div style="margin-top:2px;">
-          <a href="https://www.cooling.sg/research/urban-heat-island" target="_blank" rel="noopener noreferrer" class="research-ref-link">
-            <span>Research: Cooling Singapore Urban Climate Study ↗</span>
-          </a>
-        </div>
-
-        <div class="chip-row">
-          <span class="tag-chip skill">Hardware</span>
-          <span class="tag-chip skill">Thermal Modeling</span>
-          <span class="tag-chip skill">IoT</span>
-          <span class="tag-chip skill">Data Viz</span>
-        </div>
-
-        <div class="card-foot">
-          <span class="hint-small">Open for proposals</span>
-          <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Take on Challenge</button>
-        </div>
-      </article>
-
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <span class="hint-small" id="sponsoredCount" style="font-weight:600;">1 sponsored brief</span>
+            <a href="post-call.html" class="btn btn-ghost btn-sm">
+              Post a Sponsored Challenge →
+            </a>
           </div>
-  </section>
+        </div>
 
-  <!-- Parallel Squad Formation & Shipped Library Banner -->
-  <div class="parallel-squad-callout elevated-card reveal" style="margin:24px 0;padding:24px 28px;border-left:4px solid var(--forest);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;background:color-mix(in srgb, var(--paper) 60%, var(--card));border-radius:12px;">
-    <div style="max-width:620px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-        <span style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--forest);">Parallel Exploration Standard</span>
-        <span class="growth-badge" data-stage="sprouting" style="font-size:0.7rem;padding:1px 6px;">Zero Waitlists</span>
+        <div class="sponsored-grid sprint-filterable-grid" id="sponsoredGrid">
+          <!-- Challenge 1: Singapore Urban Heat -->
+          <article class="elevated-card sprint-card reveal" data-domain="climate" data-id="call_singapore_cooling">
+            <div class="sprint-card-header">
+              <span class="tag-chip" data-domain="climate">Climate</span>
+              <span class="grant-badge">
+                <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm.75 4.5v1h-1.5v-1h1.5Zm0 2.5v5h-1.5V7h1.5Z" />
+                </svg>
+                $15,000 Deployment Grant + Lab Calibration
+              </span>
+            </div>
+            <h4>Urban Heat Island Mitigation &amp; Thermal Sensor Mesh</h4>
+            <div class="sub" style="font-size:0.8rem;color:var(--ink-faint);margin-top:-6px;">
+              Sponsored by <strong>Cooling Singapore Lab</strong> · Urban Climate Initiative
+            </div>
+            <p class="line" style="color:var(--ink-soft);font-size:.9rem;line-height:1.45;">High-density urban canyons
+              experience intense heat trapping. We need low-cost surface radiation sensors and microclimate models to
+              validate facade greening interventions.</p>
+
+            <div class="deliverables-box">
+              <strong>Target Deliverable:</strong> Open hardware multi-point radiant temperature logger + live
+              microclimate map pipeline.
+            </div>
+
+            <div style="margin-top:2px;">
+              <a href="https://www.cooling.sg/research/urban-heat-island" target="_blank" rel="noopener noreferrer"
+                class="research-ref-link">
+                <span>Research: Cooling Singapore Urban Climate Study ↗</span>
+              </a>
+            </div>
+
+            <div class="chip-row">
+              <span class="tag-chip skill">Hardware</span>
+              <span class="tag-chip skill">Thermal Modeling</span>
+              <span class="tag-chip skill">IoT</span>
+              <span class="tag-chip skill">Data Viz</span>
+            </div>
+
+            <div class="card-foot">
+              <span class="hint-small">Open for proposals</span>
+              <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true">
+                  <use href="#icon-sprout" />
+                </svg> Take on Challenge</button>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Parallel Squad Formation & Shipped Library Banner -->
+      <div class="parallel-squad-callout elevated-card reveal"
+        style="margin:24px 0;padding:24px 28px;border-left:4px solid var(--forest);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;background:color-mix(in srgb, var(--paper) 60%, var(--card));border-radius:12px;">
+        <div style="max-width:620px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <span
+              style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--forest);">Parallel
+              Exploration Standard</span>
+            <span class="growth-badge" data-stage="sprouting" style="font-size:0.7rem;padding:1px 6px;">Zero
+              Waitlists</span>
+          </div>
+          <h3 style="margin:0 0 6px;font-size:1.1rem;color:var(--ink);">Is your target sprint squad already capped at 3
+            builders?</h3>
+          <p style="margin:0;font-size:0.86rem;color:var(--ink-soft);line-height:1.45;">Canopy does not make builders
+            wait in line. When an active sprint reaches capacity (3/3), you can fork the challenge to form a parallel
+            squad tackling an alternative technical angle, architecture, or dataset.</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <a href="post-call.html?mode=parallel" class="btn btn-stamp btn-sm" style="white-space:nowrap;">Form a
+            Parallel Squad →</a>
+          <a href="notebook.html" class="btn btn-ghost btn-sm" style="white-space:nowrap;">View Shipped Library →</a>
+        </div>
       </div>
-      <h3 style="margin:0 0 6px;font-size:1.1rem;color:var(--ink);">Is your target sprint squad already capped at 3 builders?</h3>
-      <p style="margin:0;font-size:0.86rem;color:var(--ink-soft);line-height:1.45;">Canopy does not make builders wait in line. When an active sprint reaches capacity (3/3), you can fork the challenge to form a parallel squad tackling an alternative technical angle, architecture, or dataset.</p>
-    </div>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-      <a href="post-call.html?mode=parallel" class="btn btn-stamp btn-sm" style="white-space:nowrap;">Form a Parallel Squad →</a>
-      <a href="notebook.html" class="btn btn-ghost btn-sm" style="white-space:nowrap;">View Shipped Library →</a>
-    </div>
-  </div>
 
-  <div class="stage-cta elevated-card reveal">
-    <h2>Start a sprint, or join one that's already growing.</h2>
-    <p class="lede">The next deadline is closer than you think: collaborate directly or sponsor a challenge.</p>
-    <div class="connect-row">
-      <button type="button" class="btn btn-stamp" id="btnCtaPostWorking">Post What You're Working On</button>
-      <a class="btn btn-ghost" href="match.html">Find teammates in Directory</a>
+      <div class="stage-cta elevated-card reveal">
+        <h2>Start a sprint, or join one that's already growing.</h2>
+        <p class="lede">The next deadline is closer than you think: collaborate directly or sponsor a challenge.</p>
+        <div class="connect-row">
+          <button type="button" class="btn btn-stamp" id="btnCtaPostWorking">Post What You're Working On</button>
+          <a class="btn btn-ghost" href="match.html">Find teammates in Directory</a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</main>
+  </main>
 
-<!-- ============ MODAL DRAWER: POST WHAT YOU'RE WORKING ON ============ -->
-<div class="app-drawer-backdrop" id="postSquadBackdrop" style="display:none;"></div>
-<div class="app-drawer" id="postSquadDrawer" style="display:none;z-index:96;">
-  <div class="drawer-drag-handle"></div>
-  <div class="drawer-head">
-    <div>
-      <h3>Post What You're Working On</h3>
-      <p class="sub">Define your project and recruit teammates.</p>
+  <!-- ============ MODAL DRAWER: POST WHAT YOU'RE WORKING ON ============ -->
+  <div class="app-drawer-backdrop" id="postSquadBackdrop" style="display:none;"></div>
+  <div class="app-drawer" id="postSquadDrawer" style="display:none;z-index:96;">
+    <div class="drawer-drag-handle"></div>
+    <div class="drawer-head">
+      <div>
+        <h3>Post What You're Working On</h3>
+        <p class="sub">Define your project and recruit teammates.</p>
+      </div>
+      <button class="modal-close" id="closePostSquadDrawer" aria-label="Close drawer">✕</button>
     </div>
-    <button class="modal-close" id="closePostSquadDrawer" aria-label="Close drawer">✕</button>
-  </div>
-  <form class="drawer-form" id="postSquadForm">
-    <!-- Title & Domain -->
-    <div class="field">
-      <label for="squadTitle">Project Title <span style="color:var(--forest);">*</span></label>
-      <input type="text" id="squadTitle" required placeholder="e.g. Offline edge frequency logger" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-    </div>
-    <div class="field">
-      <label for="squadDomain">Domain <span style="color:var(--forest);">*</span></label>
-      <select id="squadDomain" required style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-        <option value="climate">Climate &amp; Carbon</option>
-        <option value="grid">Energy &amp; Grid</option>
-        <option value="forestry">Forestry &amp; Biodiversity</option>
-        <option value="civic">Civic Tech</option>
-        <option value="ai">AI / ML</option>
-        <option value="education">Education</option>
-        <option value="hardware">Hardware &amp; Tooling</option>
-      </select>
-    </div>
-
-    <!-- Lead & Contact -->
-    <div class="collection-grid-2">
+    <form class="drawer-form" id="postSquadForm">
+      <!-- Title & Domain -->
       <div class="field">
-        <label for="squadLead">Lead Author / Name</label>
-        <input type="text" id="squadLead" placeholder="Elena Vance" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        <label for="squadTitle">Project Title <span style="color:var(--forest);">*</span></label>
+        <input type="text" id="squadTitle" required placeholder="e.g. Offline edge frequency logger"
+          style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
       <div class="field">
-        <label for="squadContact">Contact / Channel</label>
-        <input type="text" id="squadContact" placeholder="email or chat handle" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      </div>
-    </div>
-
-    <!-- Problem Statement -->
-    <div class="field">
-      <label for="squadDescription">Problem Statement <span style="color:var(--forest);">*</span></label>
-      <textarea id="squadDescription" required placeholder="What is the bottleneck and what needs solving?" style="min-height:85px;"></textarea>
-    </div>
-
-    <!-- Target Deliverable -->
-    <div class="field">
-      <label for="squadDeliverable">Target Deliverable <span style="color:var(--forest);">*</span></label>
-      <input type="text" id="squadDeliverable" required placeholder="e.g. Schematic, firmware &amp; telemetry dashboard" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-    </div>
-
-    <!-- Success Metric -->
-    <div class="field">
-      <label for="squadMetric">Success Metric (Optional)</label>
-      <input type="text" id="squadMetric" placeholder="e.g. Phase drift &lt; 0.05 Hz across 5-day field run" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-    </div>
-
-    <!-- Duration -->
-    <div class="field">
-      <label>Sprint Duration</label>
-      <div class="pill-group" data-group="squad-duration" data-single="true">
-        <button type="button" class="pill" data-val="14" aria-pressed="true">2 weeks</button>
-        <button type="button" class="pill" data-val="21" aria-pressed="false">3 weeks</button>
-        <button type="button" class="pill" data-val="28" aria-pressed="false">4 weeks</button>
-      </div>
-    </div>
-
-    <!-- Capacity & Needed Roles -->
-    <div class="collection-grid-2">
-      <div class="field">
-        <label for="squadCapacity">Capacity</label>
-        <select id="squadCapacity" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-          <option value="3" selected>3 seats</option>
-          <option value="4">4 seats</option>
-          <option value="5">5 seats</option>
+        <label for="squadDomain">Domain <span style="color:var(--forest);">*</span></label>
+        <select id="squadDomain" required
+          style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+          <option value="climate">Climate &amp; Carbon</option>
+          <option value="grid">Energy &amp; Grid</option>
+          <option value="forestry">Forestry &amp; Biodiversity</option>
+          <option value="civic">Civic Tech</option>
+          <option value="ai">AI / ML</option>
+          <option value="education">Education</option>
+          <option value="hardware">Hardware &amp; Tooling</option>
         </select>
       </div>
-      <div class="field">
-        <label for="squadNeededRoles">Roles Needed <span style="color:var(--forest);">*</span></label>
-        <input type="text" id="squadNeededRoles" required placeholder="e.g. Firmware Engineer, DSP Specialist" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      </div>
-    </div>
 
-    <!-- Reference URL -->
-    <div class="field">
-      <label for="squadRepoLink">Reference Repo / Link (Optional)</label>
-      <input type="text" id="squadRepoLink" placeholder="GitHub, schematic, or spec URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-    </div>
-
-    <div class="form-foot">
-      <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">ready in 60 seconds</span>
-      <button type="submit" class="btn btn-stamp btn-sm" id="btnSubmitWorkingSquad">Launch Working Squad →</button>
-    </div>
-  </form>
-</div>
-
-<!-- ============ FOOTER ============ -->
-<footer>
-  <div class="wrap">
-    <div>
-      <div class="footer-logo">
-        <img src="/canopy-logo.png" alt="Canopy Logo" height="36" style="height:36px;width:auto;display:block;">
-        <div class="footer-logo-text">
-          <span class="footer-logo-name">CANOPY</span>
-          <span class="footer-logo-sub">Build · Connect · Ship</span>
+      <!-- Lead & Contact -->
+      <div class="collection-grid-2">
+        <div class="field">
+          <label for="squadLead">Lead Author / Name</label>
+          <input type="text" id="squadLead" placeholder="Elena Vance"
+            style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        </div>
+        <div class="field">
+          <label for="squadContact">Contact / Channel</label>
+          <input type="text" id="squadContact" placeholder="email or chat handle"
+            style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
         </div>
       </div>
-      <div style="margin-top:14px;">
-        <p class="founder-quote"><span data-content-key="home.founder_quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."</span><cite>Aarushi Chatterjee, Founder</cite></p>
+
+      <!-- Problem Statement -->
+      <div class="field">
+        <label for="squadDescription">Problem Statement <span style="color:var(--forest);">*</span></label>
+        <textarea id="squadDescription" required placeholder="What is the bottleneck and what needs solving?"
+          style="min-height:85px;"></textarea>
+      </div>
+
+      <!-- Target Deliverable -->
+      <div class="field">
+        <label for="squadDeliverable">Target Deliverable <span style="color:var(--forest);">*</span></label>
+        <input type="text" id="squadDeliverable" required
+          placeholder="e.g. Schematic, firmware &amp; telemetry dashboard"
+          style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <!-- Success Metric -->
+      <div class="field">
+        <label for="squadMetric">Success Metric (Optional)</label>
+        <input type="text" id="squadMetric" placeholder="e.g. Phase drift &lt; 0.05 Hz across 5-day field run"
+          style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <!-- Duration -->
+      <div class="field">
+        <label>Sprint Duration</label>
+        <div class="pill-group" data-group="squad-duration" data-single="true">
+          <button type="button" class="pill" data-val="14" aria-pressed="true">2 weeks</button>
+          <button type="button" class="pill" data-val="21" aria-pressed="false">3 weeks</button>
+          <button type="button" class="pill" data-val="28" aria-pressed="false">4 weeks</button>
+        </div>
+      </div>
+
+      <!-- Capacity & Needed Roles -->
+      <div class="collection-grid-2">
+        <div class="field">
+          <label for="squadCapacity">Capacity</label>
+          <select id="squadCapacity"
+            style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+            <option value="3" selected>3 seats</option>
+            <option value="4">4 seats</option>
+            <option value="5">5 seats</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="squadNeededRoles">Roles Needed <span style="color:var(--forest);">*</span></label>
+          <input type="text" id="squadNeededRoles" required placeholder="e.g. Firmware Engineer, DSP Specialist"
+            style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+        </div>
+      </div>
+
+      <!-- Reference URL -->
+      <div class="field">
+        <label for="squadRepoLink">Reference Repo / Link (Optional)</label>
+        <input type="text" id="squadRepoLink" placeholder="GitHub, schematic, or spec URL"
+          style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:8px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
+      <div class="form-foot">
+        <span class="hint-small script" style="font-size:.9rem;color:var(--forest);">ready in 60 seconds</span>
+        <button type="submit" class="btn btn-stamp btn-sm" id="btnSubmitWorkingSquad">Launch Working Squad →</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
+      <div>
+        <div class="footer-logo">
+          <img src="/canopy-logo.png" alt="Canopy Logo" height="36" style="height:36px;width:auto;display:block;">
+          <div class="footer-logo-text">
+            <span class="footer-logo-name">CANOPY</span>
+            <span class="footer-logo-sub">Build · Connect · Ship</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <p class="founder-quote"><span data-content-key="home.founder_quote">"I kept hearing the same frustration from
+              brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project
+              at a time."</span><cite>Aarushi Chatterjee, Founder</cite></p>
+        </div>
+      </div>
+      <div>
+        <h5>Ecosystem</h5>
+        <a href="match.html">Build Calls Directory</a>
+        <a href="sprint.html">Active Sprints Board</a>
+        <a href="notebook.html">Open Notebook</a>
+        <a href="/#problem">The Coordination Gap</a>
+      </div>
+      <div>
+        <h5>Workspaces</h5>
+        <a href="post-call.html">Post a Build Call</a>
+        <a href="builders.html">Builders Guild</a>
+        <a href="problem-holders.html">Problem Holders</a>
+        <a href="enablers.html">Sponsors &amp; Enablers</a>
+      </div>
+      <div>
+        <h5>Charter &amp; Legal</h5>
+        <a href="terms.html">Community Charter</a>
+        <a href="privacy.html">Data Privacy</a>
+        <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
+        <a href="https://www.linkedin.com/company/canopy-collaborate/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
-    <div>
-      <h5>Ecosystem</h5>
-      <a href="match.html">Build Calls Directory</a>
-      <a href="sprint.html">Active Sprints Board</a>
-      <a href="notebook.html">Open Notebook</a>
-      <a href="/#problem">The Coordination Gap</a>
+    <div class="foot-bottom">
+      <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
+      <span>&copy; 2026 Canopy. All rights reserved.</span>
     </div>
-    <div>
-      <h5>Workspaces</h5>
-      <a href="post-call.html">Post a Build Call</a>
-      <a href="builders.html">Builders Guild</a>
-      <a href="problem-holders.html">Problem Holders</a>
-      <a href="enablers.html">Sponsors &amp; Enablers</a>
-    </div>
-    <div>
-      <h5>Charter &amp; Legal</h5>
-      <a href="terms.html">Community Charter</a>
-      <a href="privacy.html">Data Privacy</a>
-      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
-      <a href="https://www.linkedin.com/company/canopy-collaborate/" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </div>
-  <div class="foot-bottom">
-    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
-    <span>&copy; 2026 Canopy. All rights reserved.</span>
-  </div>
-</footer>
+  </footer>
 
-<!-- ============ APPLICATION DRAWER ============ -->
-<div class="app-drawer-backdrop" id="appDrawerBackdrop"></div>
-<div class="app-drawer" id="appDrawer">
-  <div class="drawer-drag-handle"></div>
-  <div class="drawer-head">
-    <div>
-      <h3 id="drawerTitle">Sprint Collaboration Note</h3>
-      <p class="sub" id="drawerSub">Domain · Sprint Workspace</p>
-    </div>
-    <button class="modal-close" id="closeDrawer" aria-label="Close drawer">✕</button>
-  </div>
-  <div class="drawer-auth-notice" id="drawerAuthNotice" style="display:none;">
-    <span class="drawer-auth-notice-icon">🌱</span>
-    <div class="drawer-auth-notice-body">
-      <strong>Sign in to send this note</strong>
-      <p>Draft your note below. We'll connect it to your account on sign in.</p>
-    </div>
-    <a href="login.html" class="drawer-auth-login-link btn btn-sm btn-outline">Sign In</a>
-  </div>
-  <form class="drawer-form" id="appDrawerForm">
-    <div class="field">
-      <label for="dNote">Your Angle / Approach *</label>
-      <textarea id="dNote" placeholder="What is your angle or how would you approach this problem?" required></textarea>
-    </div>
-    <div class="field">
-      <label>Relevant Skills</label>
-      <div class="pill-group" data-group="drawer-skills">
-        <button type="button" class="pill" aria-pressed="true">Hardware / Embedded</button>
-        <button type="button" class="pill" aria-pressed="false">AI / Machine Learning</button>
-        <button type="button" class="pill" aria-pressed="false">UI / Product Design</button>
-        <button type="button" class="pill" aria-pressed="false">Full-Stack Dev</button>
-        <button type="button" class="pill" aria-pressed="false">Domain Research</button>
+  <!-- ============ APPLICATION DRAWER ============ -->
+  <div class="app-drawer-backdrop" id="appDrawerBackdrop"></div>
+  <div class="app-drawer" id="appDrawer">
+    <div class="drawer-drag-handle"></div>
+    <div class="drawer-head">
+      <div>
+        <h3 id="drawerTitle">Sprint Collaboration Note</h3>
+        <p class="sub" id="drawerSub">Domain · Sprint Workspace</p>
       </div>
+      <button class="modal-close" id="closeDrawer" aria-label="Close drawer">✕</button>
     </div>
-    <div class="field">
-      <label>Availability</label>
-      <div class="pill-group" data-group="drawer-avail" data-single="true">
-        <button type="button" class="pill" aria-pressed="true">Full sprint (2–4 weeks)</button>
-        <button type="button" class="pill" aria-pressed="false">Part-time (10–15 hrs/wk)</button>
-        <button type="button" class="pill" aria-pressed="false">Advisory / Mentor</button>
+    <div class="drawer-auth-notice" id="drawerAuthNotice" style="display:none;">
+      <span class="drawer-auth-notice-icon">🌱</span>
+      <div class="drawer-auth-notice-body">
+        <strong>Sign in to send this note</strong>
+        <p>Draft your note below. We'll connect it to your account on sign in.</p>
       </div>
+      <a href="login.html" class="drawer-auth-login-link btn btn-sm btn-outline">Sign In</a>
     </div>
-    <div class="field">
-      <label for="dLink">Work / Portfolio Link</label>
-      <input type="text" id="dLink" placeholder="GitHub, portfolio, or project URL (optional)">
-    </div>
-    <div class="form-foot">
-      <span class="hint-small script" style="font-size:.85rem;color:var(--forest);">Quick note to challenge leads</span>
-      <button type="submit" class="btn btn-stamp btn-sm">Send Note →</button>
-    </div>
-  </form>
-</div>
+    <form class="drawer-form" id="appDrawerForm">
+      <div class="field">
+        <label for="dNote">Your Angle / Approach *</label>
+        <textarea id="dNote" placeholder="What is your angle or how would you approach this problem?"
+          required></textarea>
+      </div>
+      <div class="field">
+        <label>Relevant Skills</label>
+        <div class="pill-group" data-group="drawer-skills">
+          <button type="button" class="pill" aria-pressed="true">Hardware / Embedded</button>
+          <button type="button" class="pill" aria-pressed="false">AI / Machine Learning</button>
+          <button type="button" class="pill" aria-pressed="false">UI / Product Design</button>
+          <button type="button" class="pill" aria-pressed="false">Full-Stack Dev</button>
+          <button type="button" class="pill" aria-pressed="false">Domain Research</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Availability</label>
+        <div class="pill-group" data-group="drawer-avail" data-single="true">
+          <button type="button" class="pill" aria-pressed="true">Full sprint (2–4 weeks)</button>
+          <button type="button" class="pill" aria-pressed="false">Part-time (10–15 hrs/wk)</button>
+          <button type="button" class="pill" aria-pressed="false">Advisory / Mentor</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="dLink">Work / Portfolio Link</label>
+        <input type="text" id="dLink" placeholder="GitHub, portfolio, or project URL (optional)">
+      </div>
+      <div class="form-foot">
+        <span class="hint-small script" style="font-size:.85rem;color:var(--forest);">Quick note to challenge
+          leads</span>
+        <button type="submit" class="btn btn-stamp btn-sm">Send Note →</button>
+      </div>
+    </form>
+  </div>
 
-<div class="toast" id="toast">🌱 Note planted: we will be in touch soon.</div>
+  <div class="toast" id="toast">🌱 Note planted: we will be in touch soon.</div>
+  <div class="toast" id="toast">Note planted: we will be in touch soon.</div>
 
-<script type="module" src="/src/main.js"></script>
-<script type="module">
-  import { sprints, calls } from '/src/db.js';
-  import { notificationCenter } from '/src/notifications.js';
+  <script type="module" src="/src/main.js"></script>
+  <script type="module">
+    import { sprints, calls } from '/src/db.js';
+    import { notificationCenter } from '/src/notifications.js';
 
-  function escapeHtml(str) {
-    if (!str) return '';
-    return String(str).replace(/[&<>"']/g, m => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    })[m]);
-  }
-
-  function createSquadCard(sprint) {
-    const card = document.createElement('article');
-    const domain = escapeHtml(sprint.domain || 'climate').toLowerCase();
-    const stage = escapeHtml(sprint.stage || 'forming').toLowerCase();
-    card.className = 'elevated-card sprint-card in-view';
-    card.setAttribute('data-domain', domain);
-    card.setAttribute('data-stage', stage);
-    card.setAttribute('data-id', sprint.id || '');
-
-    const title = escapeHtml(sprint.title || 'Untitled Working Squad');
-    const desc = escapeHtml(sprint.problemStatement || sprint.description || sprint.objective || '');
-    const neededSkills = Array.isArray(sprint.skillTags) ? sprint.skillTags : (Array.isArray(sprint.neededRoles) ? sprint.neededRoles : ['Technical Contributor']);
-    const skillChips = neededSkills.map(r => `<span class="tag-chip skill">${escapeHtml(r)}</span>`).join('');
-    const cycle = sprint.cycleDuration ? `${sprint.cycleDuration}d cycle` : '21-day cycle';
-    const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
-    const capacity = parseInt(sprint.teamCapacity || 3, 10);
-    const currentMembers = Array.isArray(sprint.members) ? sprint.members.length : (parseInt(sprint.currentMembersCount, 10) || 1);
-    const seatsOpen = Math.max(0, capacity - currentMembers);
-
-    let stageBadge = '';
-    let seatsLabel = '';
-    if (stage === 'building' || stage === 'in_sprint') {
-      stageBadge = '<span class="growth-badge" data-stage="in_sprint">Building · Cycle Active</span>';
-      seatsLabel = seatsOpen === 0 ? 'Team Locked (3/3)' : `${seatsOpen} of ${capacity} spots open`;
-    } else if (stage === 'shipped' || stage === 'completed') {
-      stageBadge = '<span class="growth-badge" data-stage="shipped" style="background:rgba(59,130,246,0.18);color:#60a5fa;border:1px solid rgba(59,130,246,0.35);">Shipped Prototype</span>';
-      seatsLabel = 'Milestone Shipped';
-    } else {
-      stageBadge = '<span class="growth-badge" data-stage="sprouting">Forming · Recruiting</span>';
-      seatsLabel = `${seatsOpen} of ${capacity} spots open`;
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[m]);
     }
 
-    card.innerHTML = `
+    function createSquadCard(sprint) {
+      const card = document.createElement('article');
+      const domain = escapeHtml(sprint.domain || 'climate').toLowerCase();
+      const stage = escapeHtml(sprint.stage || 'forming').toLowerCase();
+      card.className = 'elevated-card sprint-card in-view';
+      card.setAttribute('data-domain', domain);
+      card.setAttribute('data-stage', stage);
+      card.setAttribute('data-id', sprint.id || '');
+
+      const title = escapeHtml(sprint.title || 'Untitled Working Squad');
+      const desc = escapeHtml(sprint.problemStatement || sprint.description || sprint.objective || '');
+      const neededSkills = Array.isArray(sprint.skillTags) ? sprint.skillTags : (Array.isArray(sprint.neededRoles) ? sprint.neededRoles : ['Technical Contributor']);
+      const skillChips = neededSkills.map(r => `<span class="tag-chip skill">${escapeHtml(r)}</span>`).join('');
+      const cycle = sprint.cycleDuration ? `${sprint.cycleDuration}d cycle` : '21-day cycle';
+      const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
+      const capacity = parseInt(sprint.teamCapacity || 3, 10);
+      const currentMembers = Array.isArray(sprint.members) ? sprint.members.length : (parseInt(sprint.currentMembersCount, 10) || 1);
+      const seatsOpen = Math.max(0, capacity - currentMembers);
+
+      let stageBadge = '';
+      let seatsLabel = '';
+      if (stage === 'building' || stage === 'in_sprint') {
+        stageBadge = '<span class="growth-badge" data-stage="in_sprint">Building · Cycle Active</span>';
+        seatsLabel = seatsOpen === 0 ? 'Team Locked (3/3)' : `${seatsOpen} of ${capacity} spots open`;
+      } else if (stage === 'shipped' || stage === 'completed') {
+        stageBadge = '<span class="growth-badge" data-stage="shipped" style="background:rgba(59,130,246,0.18);color:#60a5fa;border:1px solid rgba(59,130,246,0.35);">Shipped Prototype</span>';
+        seatsLabel = 'Milestone Shipped';
+      } else {
+        stageBadge = '<span class="growth-badge" data-stage="sprouting">Forming · Recruiting</span>';
+        seatsLabel = `${seatsOpen} of ${capacity} spots open`;
+      }
+
+      card.innerHTML = `
       <div class="sprint-card-header">
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
@@ -943,27 +1042,27 @@
         </button>
       </div>
     `;
-    return card;
-  }
+      return card;
+    }
 
-  function createSponsoredCard(call) {
-    const card = document.createElement('article');
-    const domain = escapeHtml(call.domain || 'climate').toLowerCase();
-    card.className = 'elevated-card sprint-card in-view';
-    card.setAttribute('data-domain', domain);
-    card.setAttribute('data-id', call.id || '');
+    function createSponsoredCard(call) {
+      const card = document.createElement('article');
+      const domain = escapeHtml(call.domain || 'climate').toLowerCase();
+      card.className = 'elevated-card sprint-card in-view';
+      card.setAttribute('data-domain', domain);
+      card.setAttribute('data-id', call.id || '');
 
-    const title = escapeHtml(call.title || 'Untitled Challenge');
-    const sponsor = escapeHtml(call.organization || call.sponsorOrg || call.orgName || 'Canopy Foundation');
-    const desc = escapeHtml(call.problemStatement || call.summary || '');
-    const tier = escapeHtml(call.pilotBudget || call.rewardPool || call.supportTier || 'Sponsored Challenge');
-    const target = escapeHtml(call.targetDeliverable || (call.targetOutcomes?.[0] || ''));
-    const ref = call.researchReference;
-    const skills = Array.isArray(call.neededSkills) ? call.neededSkills : (Array.isArray(call.skillChips) ? call.skillChips : []);
-    const skillChips = skills.map(s => `<span class="tag-chip skill">${escapeHtml(s)}</span>`).join('');
-    const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
+      const title = escapeHtml(call.title || 'Untitled Challenge');
+      const sponsor = escapeHtml(call.organization || call.sponsorOrg || call.orgName || 'Canopy Foundation');
+      const desc = escapeHtml(call.problemStatement || call.summary || '');
+      const tier = escapeHtml(call.pilotBudget || call.rewardPool || call.supportTier || 'Sponsored Challenge');
+      const target = escapeHtml(call.targetDeliverable || (call.targetOutcomes?.[0] || ''));
+      const ref = call.researchReference;
+      const skills = Array.isArray(call.neededSkills) ? call.neededSkills : (Array.isArray(call.skillChips) ? call.skillChips : []);
+      const skillChips = skills.map(s => `<span class="tag-chip skill">${escapeHtml(s)}</span>`).join('');
+      const domainLabel = domain.charAt(0).toUpperCase() + domain.slice(1);
 
-    card.innerHTML = `
+      card.innerHTML = `
       <div class="sprint-card-header">
         <span class="tag-chip" data-domain="${domain}">${domainLabel}</span>
         <span class="grant-badge">
@@ -991,354 +1090,355 @@
         <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Take on Challenge</button>
       </div>
     `;
-    return card;
-  }
-
-  async function loadLiveSprintsAndCalls() {
-    try {
-      // 1. Load All Active Squads (Forming, Building, and Shipped directly from centralized database)
-      const board = await sprints.getBoard();
-      const squadsGrid = document.getElementById('activeSquadsGrid');
-      if (squadsGrid && board) {
-        const allSprints = [
-          ...(board.forming || []),
-          ...(board.building || []),
-          ...(board.shipped || [])
-        ];
-        if (allSprints.length > 0) {
-          squadsGrid.innerHTML = '';
-          allSprints.forEach(sprint => {
-            const card = createSquadCard(sprint);
-            squadsGrid.appendChild(card);
-          });
-        }
-        const squadCountEl = document.getElementById('squadCount');
-        const count = squadsGrid.querySelectorAll('.sprint-card').length;
-        if (squadCountEl) squadCountEl.textContent = `${count} active squad${count === 1 ? '' : 's'}`;
-      }
-
-      // 2. Load Sponsored Challenges directly from centralized database
-      const callData = await calls.getCalls();
-      const sponsoredGrid = document.getElementById('sponsoredGrid');
-      if (sponsoredGrid && Array.isArray(callData) && callData.length > 0) {
-        sponsoredGrid.innerHTML = '';
-        callData.forEach(call => {
-          const card = createSponsoredCard(call);
-          sponsoredGrid.appendChild(card);
-        });
-        const sponsoredCountEl = document.getElementById('sponsoredCount');
-        const sCount = sponsoredGrid.querySelectorAll('.sprint-card').length;
-        if (sponsoredCountEl) sponsoredCountEl.textContent = `${sCount} sponsored brief${sCount === 1 ? '' : 's'}`;
-      }
-      applySprintFilters();
-    } catch (err) {
-      console.warn('[Canopy] Live load warning:', err.message);
+      return card;
     }
-  }
+
+    async function loadLiveSprintsAndCalls() {
+      try {
+        // 1. Load All Active Squads (Forming, Building, and Shipped directly from centralized database)
+        const board = await sprints.getBoard();
+        const squadsGrid = document.getElementById('activeSquadsGrid');
+        if (squadsGrid && board) {
+          const allSprints = [
+            ...(board.forming || []),
+            ...(board.building || []),
+            ...(board.shipped || [])
+          ];
+          if (allSprints.length > 0) {
+            squadsGrid.innerHTML = '';
+            allSprints.forEach(sprint => {
+              const card = createSquadCard(sprint);
+              squadsGrid.appendChild(card);
+            });
+          }
+          const squadCountEl = document.getElementById('squadCount');
+          const count = squadsGrid.querySelectorAll('.sprint-card').length;
+          if (squadCountEl) squadCountEl.textContent = `${count} active squad${count === 1 ? '' : 's'}`;
+        }
+
+        // 2. Load Sponsored Challenges directly from centralized database
+        const callData = await calls.getCalls();
+        const sponsoredGrid = document.getElementById('sponsoredGrid');
+        if (sponsoredGrid && Array.isArray(callData) && callData.length > 0) {
+          sponsoredGrid.innerHTML = '';
+          callData.forEach(call => {
+            const card = createSponsoredCard(call);
+            sponsoredGrid.appendChild(card);
+          });
+          const sponsoredCountEl = document.getElementById('sponsoredCount');
+          const sCount = sponsoredGrid.querySelectorAll('.sprint-card').length;
+          if (sponsoredCountEl) sponsoredCountEl.textContent = `${sCount} sponsored brief${sCount === 1 ? '' : 's'}`;
+        }
+        applySprintFilters();
+      } catch (err) {
+        console.warn('[Canopy] Live load warning:', err.message);
+      }
+    }
 
     // Drawer handling for posting working squads
-  const postSquadDrawer = document.getElementById('postSquadDrawer');
-  const postSquadBackdrop = document.getElementById('postSquadBackdrop');
-  const closePostSquadBtn = document.getElementById('closePostSquadDrawer');
-  const openPostSquadBtns = [document.getElementById('btnOpenPostSquad'), document.getElementById('btnCtaPostWorking')].filter(Boolean);
+    const postSquadDrawer = document.getElementById('postSquadDrawer');
+    const postSquadBackdrop = document.getElementById('postSquadBackdrop');
+    const closePostSquadBtn = document.getElementById('closePostSquadDrawer');
+    const openPostSquadBtns = [document.getElementById('btnOpenPostSquad'), document.getElementById('btnCtaPostWorking')].filter(Boolean);
 
-  function openPostSquad() {
-    if (!postSquadDrawer || !postSquadBackdrop) return;
-    postSquadBackdrop.style.display = 'block';
-    postSquadDrawer.style.display = 'block';
-    setTimeout(() => {
-      postSquadBackdrop.classList.add('is-open', 'open');
-      postSquadDrawer.classList.add('is-open', 'open');
-    }, 10);
-  }
+    function openPostSquad() {
+      if (!postSquadDrawer || !postSquadBackdrop) return;
+      postSquadBackdrop.style.display = 'block';
+      postSquadDrawer.style.display = 'block';
+      setTimeout(() => {
+        postSquadBackdrop.classList.add('is-open', 'open');
+        postSquadDrawer.classList.add('is-open', 'open');
+      }, 10);
+    }
 
-  function closePostSquad() {
-    if (!postSquadDrawer || !postSquadBackdrop) return;
-    postSquadBackdrop.classList.remove('is-open', 'open');
-    postSquadDrawer.classList.remove('is-open', 'open');
-    setTimeout(() => {
-      postSquadBackdrop.style.display = 'none';
-      postSquadDrawer.style.display = 'none';
-    }, 280);
-  }
+    function closePostSquad() {
+      if (!postSquadDrawer || !postSquadBackdrop) return;
+      postSquadBackdrop.classList.remove('is-open', 'open');
+      postSquadDrawer.classList.remove('is-open', 'open');
+      setTimeout(() => {
+        postSquadBackdrop.style.display = 'none';
+        postSquadDrawer.style.display = 'none';
+      }, 280);
+    }
 
-  openPostSquadBtns.forEach(btn => btn.addEventListener('click', openPostSquad));
-  if (closePostSquadBtn) closePostSquadBtn.addEventListener('click', closePostSquad);
-  if (postSquadBackdrop) postSquadBackdrop.addEventListener('click', closePostSquad);
+    openPostSquadBtns.forEach(btn => btn.addEventListener('click', openPostSquad));
+    if (closePostSquadBtn) closePostSquadBtn.addEventListener('click', closePostSquad);
+    if (postSquadBackdrop) postSquadBackdrop.addEventListener('click', closePostSquad);
 
-  // Duration pill toggles in the squad drawer
-  document.querySelectorAll('[data-group="squad-duration"] .pill').forEach(pill => {
-    pill.addEventListener('click', () => {
-      document.querySelectorAll('[data-group="squad-duration"] .pill').forEach(p => p.setAttribute('aria-pressed', 'false'));
-      pill.setAttribute('aria-pressed', 'true');
+    // Duration pill toggles in the squad drawer
+    document.querySelectorAll('[data-group="squad-duration"] .pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('[data-group="squad-duration"] .pill').forEach(p => p.setAttribute('aria-pressed', 'false'));
+        pill.setAttribute('aria-pressed', 'true');
+      });
     });
-  });
 
-  // Handle Form Submission for launching a squad
-  const postSquadForm = document.getElementById('postSquadForm');
-  if (postSquadForm) {
-    postSquadForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const submitBtn = document.getElementById('btnSubmitWorkingSquad');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Launching Squad...';
-      }
-
-      const activeDurationPill = document.querySelector('[data-group="squad-duration"] .pill[aria-pressed="true"]');
-      const durationVal = activeDurationPill ? parseInt(activeDurationPill.getAttribute('data-val'), 10) : 21;
-      const rolesInput = document.getElementById('squadNeededRoles')?.value || '';
-      const neededRoles = rolesInput.split(',').map(r => r.trim()).filter(Boolean);
-      const capacityVal = parseInt(document.getElementById('squadCapacity')?.value || '3', 10);
-      const leadVal = document.getElementById('squadLead')?.value || 'You (Squad Creator)';
-      const contactVal = document.getElementById('squadContact')?.value || '';
-      const deliverableVal = document.getElementById('squadDeliverable')?.value || '';
-      const metricVal = document.getElementById('squadMetric')?.value || '';
-      const repoVal = document.getElementById('squadRepoLink')?.value || '';
-
-      const payload = {
-        title: document.getElementById('squadTitle')?.value || '',
-        domain: document.getElementById('squadDomain')?.value || 'climate',
-        leadAuthor: leadVal,
-        contactChannel: contactVal,
-        problemStatement: document.getElementById('squadDescription')?.value || '',
-        objective: document.getElementById('squadDescription')?.value || '',
-        targetDeliverable: deliverableVal,
-        milestoneMetric: metricVal,
-        cycleDuration: durationVal,
-        teamCapacity: capacityVal,
-        neededRoles: neededRoles.length ? neededRoles : ['Technical Contributor'],
-        referenceUrl: repoVal
-      };
-
-      try {
-        const result = await sprints.createSprint(payload);
-        const squadsGrid = document.getElementById('activeSquadsGrid');
-        const newSprint = result?.sprint || { ...payload, id: 'sp_' + Date.now(), members: [leadVal] };
-        if (squadsGrid) {
-          const card = createSquadCard(newSprint);
-          squadsGrid.prepend(card);
-
-          const squadCountEl = document.getElementById('squadCount');
-          if (squadCountEl) squadCountEl.textContent = squadsGrid.querySelectorAll('.sprint-card').length;
-        }
-
-        // Add incoming review notification so squad creator can test reviewing collaborator notes
-        notificationCenter.addIncomingRequest({
-          sprintId: newSprint.id,
-          sprintTitle: payload.title,
-          applicantName: 'Tariq Al-Mansoor',
-          applicantEmail: 'tariq.mansoor@canopy.earth',
-          role: neededRoles[0] || 'Technical Contributor',
-          note: `Interested in joining "${payload.title}". I can build the prototype and telemetry stack for the ${durationVal}-day cycle.`,
-          skills: ['Telemetry', 'Hardware', 'Full-Stack'],
-          availability: 'Full sprint (2–4 weeks)',
-          portfolioUrl: 'https://github.com/tariq-canopy/working-squad',
-          status: 'pending_review'
-        });
-
-        postSquadForm.reset();
-        closePostSquad();
-        const toast = document.getElementById('toast');
-        if (toast) {
-          toast.textContent = '🌱 Working squad launched! Incoming candidate request logged in Notifications Corner (🔔).';
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 4500);
-        }
-      } catch (err) {
-        alert(err.message || 'Could not launch squad. Please try again.');
-      } finally {
+    // Handle Form Submission for launching a squad
+    const postSquadForm = document.getElementById('postSquadForm');
+    if (postSquadForm) {
+      postSquadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('btnSubmitWorkingSquad');
         if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Launch Working Squad →';
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Launching Squad...';
         }
-      }
-    });
-  }
 
-  // Filter & Search Logic
-  let currentDomainFilter = 'all';
-  let currentSearchQuery = '';
+        const activeDurationPill = document.querySelector('[data-group="squad-duration"] .pill[aria-pressed="true"]');
+        const durationVal = activeDurationPill ? parseInt(activeDurationPill.getAttribute('data-val'), 10) : 21;
+        const rolesInput = document.getElementById('squadNeededRoles')?.value || '';
+        const neededRoles = rolesInput.split(',').map(r => r.trim()).filter(Boolean);
+        const capacityVal = parseInt(document.getElementById('squadCapacity')?.value || '3', 10);
+        const leadVal = document.getElementById('squadLead')?.value || 'You (Squad Creator)';
+        const contactVal = document.getElementById('squadContact')?.value || '';
+        const deliverableVal = document.getElementById('squadDeliverable')?.value || '';
+        const metricVal = document.getElementById('squadMetric')?.value || '';
+        const repoVal = document.getElementById('squadRepoLink')?.value || '';
 
-  function updateGridEmptyState(gridEl, emptyId, title, message, actionHtml) {
-    if (!gridEl) return;
-    let emptyEl = gridEl.querySelector('#' + emptyId);
-    const visibleCards = gridEl.querySelectorAll('.sprint-card:not([style*="display: none"])');
-    if (visibleCards.length === 0) {
-      if (!emptyEl) {
-        emptyEl = document.createElement('div');
-        emptyEl.id = emptyId;
-        emptyEl.className = 'empty-state-notice reveal';
-        emptyEl.innerHTML = `
+        const payload = {
+          title: document.getElementById('squadTitle')?.value || '',
+          domain: document.getElementById('squadDomain')?.value || 'climate',
+          leadAuthor: leadVal,
+          contactChannel: contactVal,
+          problemStatement: document.getElementById('squadDescription')?.value || '',
+          objective: document.getElementById('squadDescription')?.value || '',
+          targetDeliverable: deliverableVal,
+          milestoneMetric: metricVal,
+          cycleDuration: durationVal,
+          teamCapacity: capacityVal,
+          neededRoles: neededRoles.length ? neededRoles : ['Technical Contributor'],
+          referenceUrl: repoVal
+        };
+
+        try {
+          const result = await sprints.createSprint(payload);
+          const squadsGrid = document.getElementById('activeSquadsGrid');
+          const newSprint = result?.sprint || { ...payload, id: 'sp_' + Date.now(), members: [leadVal] };
+          if (squadsGrid) {
+            const card = createSquadCard(newSprint);
+            squadsGrid.prepend(card);
+
+            const squadCountEl = document.getElementById('squadCount');
+            if (squadCountEl) squadCountEl.textContent = squadsGrid.querySelectorAll('.sprint-card').length;
+          }
+
+          // Add incoming review notification so squad creator can test reviewing collaborator notes
+          notificationCenter.addIncomingRequest({
+            sprintId: newSprint.id,
+            sprintTitle: payload.title,
+            applicantName: 'Tariq Al-Mansoor',
+            applicantEmail: 'tariq.mansoor@canopy.earth',
+            role: neededRoles[0] || 'Technical Contributor',
+            note: `Interested in joining "${payload.title}". I can build the prototype and telemetry stack for the ${durationVal}-day cycle.`,
+            skills: ['Telemetry', 'Hardware', 'Full-Stack'],
+            availability: 'Full sprint (2–4 weeks)',
+            portfolioUrl: 'https://github.com/tariq-canopy/working-squad',
+            status: 'pending_review'
+          });
+
+          postSquadForm.reset();
+          closePostSquad();
+          const toast = document.getElementById('toast');
+          if (toast) {
+            toast.textContent = '🌱 Working squad launched! Incoming candidate request logged in Notifications Corner (🔔).';
+            toast.textContent = 'Working squad launched! Incoming candidate request logged in Notifications Corner.';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4500);
+          }
+        } catch (err) {
+          alert(err.message || 'Could not launch squad. Please try again.');
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Launch Working Squad →';
+          }
+        }
+      });
+    }
+
+    // Filter & Search Logic
+    let currentDomainFilter = 'all';
+    let currentSearchQuery = '';
+
+    function updateGridEmptyState(gridEl, emptyId, title, message, actionHtml) {
+      if (!gridEl) return;
+      let emptyEl = gridEl.querySelector('#' + emptyId);
+      const visibleCards = gridEl.querySelectorAll('.sprint-card:not([style*="display: none"])');
+      if (visibleCards.length === 0) {
+        if (!emptyEl) {
+          emptyEl = document.createElement('div');
+          emptyEl.id = emptyId;
+          emptyEl.className = 'empty-state-notice reveal';
+          emptyEl.innerHTML = `
           <svg class="empty-icon" viewBox="0 0 32 32" fill="none"><path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor"/><path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor"/></svg>
           <h4>${title}</h4>
           <p>${message}</p>
           ${actionHtml ? `<div class="empty-action">${actionHtml}</div>` : ''}
         `;
-        gridEl.appendChild(emptyEl);
-      } else {
-        emptyEl.style.display = 'flex';
-      }
-    } else if (emptyEl) {
-      emptyEl.style.display = 'none';
-    }
-  }
-
-  function applySprintFilters() {
-    const allCards = document.querySelectorAll('#activeSquadsGrid .sprint-card, #sponsoredGrid .sprint-card');
-    allCards.forEach(card => {
-      const cardDomain = (card.getAttribute('data-domain') || '').toLowerCase();
-      const textContent = (card.textContent || '').toLowerCase();
-
-      const matchesDomain = (currentDomainFilter === 'all') || (cardDomain === currentDomainFilter);
-      const matchesSearch = !currentSearchQuery || textContent.includes(currentSearchQuery);
-
-      if (matchesDomain && matchesSearch) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-
-    const squadsGrid = document.getElementById('activeSquadsGrid');
-    updateGridEmptyState(
-      squadsGrid,
-      'squadsEmptyNotice',
-      'No active squads found in this view',
-      'Have an active problem statement or need collaborators? Post what you are building and start an active sprint cycle.',
-      '<button type="button" class="btn btn-stamp btn-sm" onclick="document.getElementById(\'btnOpenPostSquad\')?.click()">Post What You\'re Working On →</button>'
-    );
-
-    const sponsoredGrid = document.getElementById('sponsoredGrid');
-    updateGridEmptyState(
-      sponsoredGrid,
-      'sponsoredEmptyNotice',
-      'No sponsored briefs found in this view',
-      'Organizations and researchers regularly sponsor challenges with research context and experimental support.',
-      '<a href="post-call.html" class="btn btn-ghost btn-sm">Post a Sponsored Challenge →</a>'
-    );
-  }
-
-  // Search input listener
-  const sprintSearch = document.getElementById('sprintSearch');
-  if (sprintSearch) {
-    sprintSearch.addEventListener('input', (e) => {
-      currentSearchQuery = e.target.value.trim().toLowerCase();
-      applySprintFilters();
-    });
-  }
-
-  // Domain filter pills listener
-  const filterPills = document.querySelectorAll('.filter-pill[data-filter]');
-  filterPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      filterPills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-      currentDomainFilter = pill.getAttribute('data-filter') || 'all';
-      applySprintFilters();
-    });
-  });
-
-  // Reset filter button
-  const btnReset = document.getElementById('btnResetSprintFilters');
-  if (btnReset) {
-    btnReset.addEventListener('click', () => {
-      if (sprintSearch) sprintSearch.value = '';
-      currentSearchQuery = '';
-      filterPills.forEach(p => p.classList.remove('active'));
-      const allPill = document.querySelector('.filter-pill[data-filter="all"]');
-      if (allPill) allPill.classList.add('active');
-      currentDomainFilter = 'all';
-      applySprintFilters();
-    });
-  }
-
-  function restorePendingDraftIfAny() {
-    const raw = sessionStorage.getItem('canopy_pending_note') || sessionStorage.getItem('canopy_shovel_draft');
-    if (!raw) return;
-    try {
-      const draft = JSON.parse(raw);
-      if (!draft || !draft.note) return;
-
-      const card = draft.callId ? document.querySelector(`[data-id="${draft.callId}"]`) : null;
-      if (card && card.querySelector('.shovel-btn:not([href])')) {
-        card.querySelector('.shovel-btn:not([href])').click();
-      }
-
-      setTimeout(() => {
-        const noteEl = document.getElementById('dNote');
-        const linkEl = document.getElementById('dLink');
-        if (noteEl) noteEl.value = draft.note;
-        if (linkEl && draft.link) linkEl.value = draft.link;
-      }, 200);
-    } catch (e) {
-      console.error('Draft restore error', e);
-    }
-  }
-
-  restorePendingDraftIfAny();
-  loadLiveSprintsAndCalls();
-
-  window.runSprintRecommendations = async function() {
-    const btn = document.getElementById('btnRecommendProjects');
-    const panel = document.getElementById('sprintRecommendPanel');
-    if (!btn || !panel) return;
-
-    const origText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Finding Best Projects...';
-
-    try {
-      const m = window.mythosClient;
-      const mythosStatus = document.body?.dataset?.mythosStatus || 'standalone';
-
-      if (m && mythosStatus === 'expired') {
-        m.relaunch();
-        return;
-      }
-
-      let consentId;
-      let fetcher = fetch.bind(window);
-
-      if (m && mythosStatus === 'mythos') {
-        const capRes = await fetch('/api/mythos/capabilities').then(r => r.json()).catch(() => ({ llmEnabled: false }));
-        const chargeOpts = capRes.llmEnabled
-          ? { kind: 'llm', reason: 'Personalized Sprint & Project Recommendations' }
-          : { usd: capRes.fixedAnalysisUsd || 0.15, reason: 'Personalized Sprint & Project Recommendations' };
-        const confirmation = await m.confirmCharge(chargeOpts);
-        if (!confirmation?.approved) {
-          btn.disabled = false;
-          btn.textContent = origText;
-          return;
+          gridEl.appendChild(emptyEl);
+        } else {
+          emptyEl.style.display = 'flex';
         }
-        consentId = confirmation.consentId;
-        fetcher = m.fetch.bind(m);
+      } else if (emptyEl) {
+        emptyEl.style.display = 'none';
       }
+    }
 
-      const domain = (currentDomainFilter && currentDomainFilter !== 'all') ? currentDomainFilter : 'climate';
-      const q = sprintSearch ? sprintSearch.value.trim() : '';
+    function applySprintFilters() {
+      const allCards = document.querySelectorAll('#activeSquadsGrid .sprint-card, #sponsoredGrid .sprint-card');
+      allCards.forEach(card => {
+        const cardDomain = (card.getAttribute('data-domain') || '').toLowerCase();
+        const textContent = (card.textContent || '').toLowerCase();
 
-      const res = await fetcher('/api/mythos/match-ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          scope: 'projects',
-          consentId,
-          builderProfile: {
-            role: 'builder',
-            intent: 'join_squad',
-            primaryDomain: domain,
-            skills: q ? q.split(/\s+/) : ['Hardware', 'Python', 'Thermal Modeling']
-          },
-          ideaBrief: { domain }
-        })
+        const matchesDomain = (currentDomainFilter === 'all') || (cardDomain === currentDomainFilter);
+        const matchesSearch = !currentSearchQuery || textContent.includes(currentSearchQuery);
+
+        if (matchesDomain && matchesSearch) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
       });
 
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.success) throw new Error(data.error || 'Could not compute project recommendations.');
+      const squadsGrid = document.getElementById('activeSquadsGrid');
+      updateGridEmptyState(
+        squadsGrid,
+        'squadsEmptyNotice',
+        'No active squads found in this view',
+        'Have an active problem statement or need collaborators? Post what you are building and start an active sprint cycle.',
+        '<button type="button" class="btn btn-stamp btn-sm" onclick="document.getElementById(\'btnOpenPostSquad\')?.click()">Post What You\'re Working On →</button>'
+      );
 
-      const r = data.result || {};
-      const cardsHtml = (r.topMatches || []).map(tm => `
+      const sponsoredGrid = document.getElementById('sponsoredGrid');
+      updateGridEmptyState(
+        sponsoredGrid,
+        'sponsoredEmptyNotice',
+        'No sponsored briefs found in this view',
+        'Organizations and researchers regularly sponsor challenges with research context and experimental support.',
+        '<a href="post-call.html" class="btn btn-ghost btn-sm">Post a Sponsored Challenge →</a>'
+      );
+    }
+
+    // Search input listener
+    const sprintSearch = document.getElementById('sprintSearch');
+    if (sprintSearch) {
+      sprintSearch.addEventListener('input', (e) => {
+        currentSearchQuery = e.target.value.trim().toLowerCase();
+        applySprintFilters();
+      });
+    }
+
+    // Domain filter pills listener
+    const filterPills = document.querySelectorAll('.filter-pill[data-filter]');
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        currentDomainFilter = pill.getAttribute('data-filter') || 'all';
+        applySprintFilters();
+      });
+    });
+
+    // Reset filter button
+    const btnReset = document.getElementById('btnResetSprintFilters');
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        if (sprintSearch) sprintSearch.value = '';
+        currentSearchQuery = '';
+        filterPills.forEach(p => p.classList.remove('active'));
+        const allPill = document.querySelector('.filter-pill[data-filter="all"]');
+        if (allPill) allPill.classList.add('active');
+        currentDomainFilter = 'all';
+        applySprintFilters();
+      });
+    }
+
+    function restorePendingDraftIfAny() {
+      const raw = sessionStorage.getItem('canopy_pending_note') || sessionStorage.getItem('canopy_shovel_draft');
+      if (!raw) return;
+      try {
+        const draft = JSON.parse(raw);
+        if (!draft || !draft.note) return;
+
+        const card = draft.callId ? document.querySelector(`[data-id="${draft.callId}"]`) : null;
+        if (card && card.querySelector('.shovel-btn:not([href])')) {
+          card.querySelector('.shovel-btn:not([href])').click();
+        }
+
+        setTimeout(() => {
+          const noteEl = document.getElementById('dNote');
+          const linkEl = document.getElementById('dLink');
+          if (noteEl) noteEl.value = draft.note;
+          if (linkEl && draft.link) linkEl.value = draft.link;
+        }, 200);
+      } catch (e) {
+        console.error('Draft restore error', e);
+      }
+    }
+
+    restorePendingDraftIfAny();
+    loadLiveSprintsAndCalls();
+
+    window.runSprintRecommendations = async function () {
+      const btn = document.getElementById('btnRecommendProjects');
+      const panel = document.getElementById('sprintRecommendPanel');
+      if (!btn || !panel) return;
+
+      const origText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Finding Best Projects...';
+
+      try {
+        const m = window.mythosClient;
+        const mythosStatus = document.body?.dataset?.mythosStatus || 'standalone';
+
+        if (m && mythosStatus === 'expired') {
+          m.relaunch();
+          return;
+        }
+
+        let consentId;
+        let fetcher = fetch.bind(window);
+
+        if (m && mythosStatus === 'mythos') {
+          const capRes = await fetch('/api/mythos/capabilities').then(r => r.json()).catch(() => ({ llmEnabled: false }));
+          const chargeOpts = capRes.llmEnabled
+            ? { kind: 'llm', reason: 'Personalized Sprint & Project Recommendations' }
+            : { usd: capRes.fixedAnalysisUsd || 0.15, reason: 'Personalized Sprint & Project Recommendations' };
+          const confirmation = await m.confirmCharge(chargeOpts);
+          if (!confirmation?.approved) {
+            btn.disabled = false;
+            btn.textContent = origText;
+            return;
+          }
+          consentId = confirmation.consentId;
+          fetcher = m.fetch.bind(m);
+        }
+
+        const domain = (currentDomainFilter && currentDomainFilter !== 'all') ? currentDomainFilter : 'climate';
+        const q = sprintSearch ? sprintSearch.value.trim() : '';
+
+        const res = await fetcher('/api/mythos/match-ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            scope: 'projects',
+            consentId,
+            builderProfile: {
+              role: 'builder',
+              intent: 'join_squad',
+              primaryDomain: domain,
+              skills: q ? q.split(/\s+/) : ['Hardware', 'Python', 'Thermal Modeling']
+            },
+            ideaBrief: { domain }
+          })
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success) throw new Error(data.error || 'Could not compute project recommendations.');
+
+        const r = data.result || {};
+        const cardsHtml = (r.topMatches || []).map(tm => `
         <div style="background:var(--paper);border:1px solid var(--card-edge);border-radius:8px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
           <div>
             <div style="font-weight:600;font-size:0.92rem;color:var(--ink);">${tm.title}</div>
@@ -1348,8 +1448,8 @@
         </div>
       `).join('');
 
-      panel.style.display = 'block';
-      panel.innerHTML = `
+        panel.style.display = 'block';
+        panel.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
           <div style="display:flex;align-items:center;gap:10px;">
             <strong style="font-family:'Fraunces Var',serif;font-size:1.15rem;color:var(--forest);">Recommended Sprints &amp; Challenges for Your Interests</strong>
@@ -1360,109 +1460,110 @@
         ${r.aiSummary ? `<p style="margin:0 0 10px;font-size:0.9rem;color:var(--ink);line-height:1.45;">${r.aiSummary}</p>` : ''}
         <div style="display:grid;gap:8px;">${cardsHtml || '<p style="margin:0;font-size:0.86rem;color:var(--ink-soft);">No matching open projects yet.</p>'}</div>
       `;
-      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    } catch (err) {
-      panel.style.display = 'block';
-      panel.innerHTML = `<p style="margin:0;color:var(--coral);font-size:0.88rem;">${err.message || 'Recommendation failed.'}</p>`;
-    } finally {
-      btn.disabled = false;
-      btn.textContent = origText;
-    }
-  };
-</script>
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (err) {
+        panel.style.display = 'block';
+        panel.innerHTML = `<p style="margin:0;color:var(--coral);font-size:0.88rem;">${err.message || 'Recommendation failed.'}</p>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = origText;
+      }
+    };
+  </script>
 
-<script>
-  /* ==========================================================
-     LIVE SPRINT COUNTDOWN CONTROLLER
-     ========================================================== */
-  (function initSprintLiveCountdown() {
-    // 21-day recurring sprint cycle reference (groundwater cycle ends in 12 days)
-    // We anchor to a future deadline stored in localStorage or set to 12 days 14 hours ahead
-    var STORAGE_KEY = 'canopy_sprint_cycle_target';
-    var targetTime = null;
+  <script>
+    /* ==========================================================
+       LIVE SPRINT COUNTDOWN CONTROLLER
+       ========================================================== */
+    (function initSprintLiveCountdown() {
+      // 21-day recurring sprint cycle reference (groundwater cycle ends in 12 days)
+      // We anchor to a future deadline stored in localStorage or set to 12 days 14 hours ahead
+      var STORAGE_KEY = 'canopy_sprint_cycle_target';
+      var targetTime = null;
 
-    try {
-      var stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        var parsed = parseInt(stored, 10);
-        if (parsed > Date.now()) {
-          targetTime = parsed;
+      try {
+        var stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+          var parsed = parseInt(stored, 10);
+          if (parsed > Date.now()) {
+            targetTime = parsed;
+          }
+        }
+      } catch (e) { }
+
+      if (!targetTime) {
+        // 12 days, 14 hours, 32 minutes from now
+        targetTime = Date.now() + (12 * 86400 + 14 * 3600 + 32 * 60) * 1000;
+        try { localStorage.setItem(STORAGE_KEY, targetTime.toString()); } catch (e) { }
+      }
+
+      var totalCycleMs = 21 * 86400 * 1000;
+      var radius = 52;
+      var circumference = 2 * Math.PI * radius; // ~326.72
+
+      // Real-time synchronization with Founder Console cycle settings
+      try {
+        fetch('/api/sprints/cycle')
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data && data.success && data.cycle) {
+              if (data.cycle.targetDeadline) {
+                var sTarget = new Date(data.cycle.targetDeadline).getTime();
+                if (!isNaN(sTarget)) {
+                  targetTime = sTarget;
+                  try { localStorage.setItem(STORAGE_KEY, targetTime.toString()); } catch (e) { }
+                }
+              }
+              if (data.cycle.totalDurationDays) {
+                totalCycleMs = data.cycle.totalDurationDays * 86400 * 1000;
+              }
+              var cycleTagEl = document.querySelector('.shw-cycle-tag');
+              if (cycleTagEl && data.cycle.cycleTag) {
+                cycleTagEl.textContent = data.cycle.cycleTag;
+              }
+              var cycleBadgeEl = document.querySelector('.shw-badge');
+              if (cycleBadgeEl && data.cycle.status) {
+                cycleBadgeEl.textContent = data.cycle.status === 'active' ? 'Active Cycle Running' : (data.cycle.status === 'forming' ? 'Forming Stage' : 'Cycle Complete');
+              }
+              update();
+            }
+          })
+          .catch(function () { });
+      } catch (err) { }
+
+      function update() {
+        var now = Date.now();
+        var remaining = Math.max(0, targetTime - now);
+
+        var days = Math.floor(remaining / (86400 * 1000));
+        var hrs = Math.floor((remaining % (86400 * 1000)) / (3600 * 1000));
+        var mins = Math.floor((remaining % (3600 * 1000)) / (60 * 1000));
+        var secs = Math.floor((remaining % (60 * 1000)) / 1000);
+
+        var daysEl = document.getElementById('scdDaysNum');
+        var hhEl = document.getElementById('scdHH');
+        var mmEl = document.getElementById('scdMM');
+        var ssEl = document.getElementById('scdSS');
+        var fillEl = document.getElementById('scdRingFill');
+
+        if (daysEl) daysEl.textContent = days;
+        if (hhEl) hhEl.textContent = String(hrs).padStart(2, '0');
+        if (mmEl) mmEl.textContent = String(mins).padStart(2, '0');
+        if (ssEl) ssEl.textContent = String(secs).padStart(2, '0');
+
+        if (fillEl) {
+          var pctCompleted = 1 - (remaining / totalCycleMs);
+          pctCompleted = Math.max(0, Math.min(1, pctCompleted));
+          var offset = circumference * (1 - pctCompleted);
+          fillEl.style.strokeDashoffset = offset.toFixed(2);
         }
       }
-    } catch(e) {}
 
-    if (!targetTime) {
-      // 12 days, 14 hours, 32 minutes from now
-      targetTime = Date.now() + (12 * 86400 + 14 * 3600 + 32 * 60) * 1000;
-      try { localStorage.setItem(STORAGE_KEY, targetTime.toString()); } catch(e) {}
-    }
-
-    var totalCycleMs = 21 * 86400 * 1000;
-    var radius = 52;
-    var circumference = 2 * Math.PI * radius; // ~326.72
-
-    // Real-time synchronization with Founder Console cycle settings
-    try {
-      fetch('/api/sprints/cycle')
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          if (data && data.success && data.cycle) {
-            if (data.cycle.targetDeadline) {
-              var sTarget = new Date(data.cycle.targetDeadline).getTime();
-              if (!isNaN(sTarget)) {
-                targetTime = sTarget;
-                try { localStorage.setItem(STORAGE_KEY, targetTime.toString()); } catch(e) {}
-              }
-            }
-            if (data.cycle.totalDurationDays) {
-              totalCycleMs = data.cycle.totalDurationDays * 86400 * 1000;
-            }
-            var cycleTagEl = document.querySelector('.shw-cycle-tag');
-            if (cycleTagEl && data.cycle.cycleTag) {
-              cycleTagEl.textContent = data.cycle.cycleTag;
-            }
-            var cycleBadgeEl = document.querySelector('.shw-badge');
-            if (cycleBadgeEl && data.cycle.status) {
-              cycleBadgeEl.textContent = data.cycle.status === 'active' ? 'Active Cycle Running' : (data.cycle.status === 'forming' ? 'Forming Stage' : 'Cycle Complete');
-            }
-            update();
-          }
-        })
-        .catch(function() {});
-    } catch(err) {}
-
-    function update() {
-      var now = Date.now();
-      var remaining = Math.max(0, targetTime - now);
-
-      var days = Math.floor(remaining / (86400 * 1000));
-      var hrs = Math.floor((remaining % (86400 * 1000)) / (3600 * 1000));
-      var mins = Math.floor((remaining % (3600 * 1000)) / (60 * 1000));
-      var secs = Math.floor((remaining % (60 * 1000)) / 1000);
-
-      var daysEl = document.getElementById('scdDaysNum');
-      var hhEl = document.getElementById('scdHH');
-      var mmEl = document.getElementById('scdMM');
-      var ssEl = document.getElementById('scdSS');
-      var fillEl = document.getElementById('scdRingFill');
-
-      if (daysEl) daysEl.textContent = days;
-      if (hhEl) hhEl.textContent = String(hrs).padStart(2, '0');
-      if (mmEl) mmEl.textContent = String(mins).padStart(2, '0');
-      if (ssEl) ssEl.textContent = String(secs).padStart(2, '0');
-
-      if (fillEl) {
-        var pctCompleted = 1 - (remaining / totalCycleMs);
-        pctCompleted = Math.max(0, Math.min(1, pctCompleted));
-        var offset = circumference * (1 - pctCompleted);
-        fillEl.style.strokeDashoffset = offset.toFixed(2);
-      }
-    }
-
-    update();
-    setInterval(update, 1000);
-  })();
-</script>
+      update();
+      setInterval(update, 1000);
+    })();
+  </script>
 
 </body>
+
 </html>

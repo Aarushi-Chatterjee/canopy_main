@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +18,7 @@
       --admin-amber: #ecc94b;
       --admin-rose: #f87171;
     }
+
     body {
       background-color: var(--admin-bg);
       color: #e2e8f0;
@@ -27,17 +29,40 @@
       display: flex;
       flex-direction: column;
     }
+
     .admin-layout {
       display: flex;
       min-height: 100vh;
     }
+
     @media (max-width: 900px) {
-      .admin-layout { flex-direction: column; }
-      .admin-sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--admin-border); }
-      .admin-nav { flex-direction: row !important; overflow-x: auto; padding: 10px 12px !important; gap: 6px !important; }
-      .admin-nav-item { white-space: nowrap; flex-shrink: 0; }
-      .admin-main { padding: 20px 16px !important; }
+      .admin-layout {
+        flex-direction: column;
+      }
+
+      .admin-sidebar {
+        width: 100% !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--admin-border);
+      }
+
+      .admin-nav {
+        flex-direction: row !important;
+        overflow-x: auto;
+        padding: 10px 12px !important;
+        gap: 6px !important;
+      }
+
+      .admin-nav-item {
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .admin-main {
+        padding: 20px 16px !important;
+      }
     }
+
     .admin-sidebar {
       width: 260px;
       background: var(--admin-panel);
@@ -46,6 +71,7 @@
       flex-direction: column;
       flex-shrink: 0;
     }
+
     .admin-brand {
       padding: 24px;
       border-bottom: 1px solid var(--admin-border);
@@ -53,17 +79,20 @@
       align-items: center;
       gap: 12px;
     }
+
     .admin-brand img {
       width: 28px;
       height: 28px;
       object-fit: contain;
     }
+
     .admin-brand-title {
       font-weight: 700;
       font-size: 15px;
       letter-spacing: -0.02em;
       color: #ffffff;
     }
+
     .admin-brand-tag {
       font-size: 10px;
       font-weight: 700;
@@ -75,6 +104,7 @@
       border-radius: 4px;
       margin-left: auto;
     }
+
     .admin-nav {
       padding: 16px 12px;
       display: flex;
@@ -82,6 +112,7 @@
       gap: 4px;
       flex-grow: 1;
     }
+
     .admin-nav-item {
       display: flex;
       align-items: center;
@@ -96,20 +127,24 @@
       border: 1px solid transparent;
       transition: all 0.15s ease;
     }
+
     .admin-nav-item:hover {
       color: #ffffff;
       background: rgba(255, 255, 255, 0.03);
     }
+
     .admin-nav-item.active {
       color: var(--admin-accent);
       background: var(--admin-accent-soft);
       border-color: rgba(74, 222, 128, 0.2);
     }
+
     .admin-nav-icon {
       font-size: 16px;
       width: 20px;
       text-align: center;
     }
+
     .admin-user-bar {
       padding: 16px;
       border-top: 1px solid var(--admin-border);
@@ -118,12 +153,14 @@
       justify-content: space-between;
       font-size: 12px;
     }
+
     .admin-main {
       flex-grow: 1;
       overflow-y: auto;
       padding: 32px 40px;
       max-width: 1200px;
     }
+
     .admin-header {
       display: flex;
       justify-content: space-between;
@@ -132,6 +169,7 @@
       gap: 16px;
       flex-wrap: wrap;
     }
+
     .admin-scope-box {
       display: inline-flex;
       flex-direction: column;
@@ -139,6 +177,7 @@
       gap: 5px;
       text-align: right;
     }
+
     .admin-scope-pill {
       display: inline-flex;
       align-items: center;
@@ -155,12 +194,14 @@
       box-shadow: 0 0 12px rgba(74, 222, 128, 0.1);
       white-space: nowrap;
     }
+
     .admin-scope-desc {
       font-size: 11px;
       color: #94a3b8;
       max-width: 380px;
       line-height: 1.35;
     }
+
     .admin-title {
       font-size: 24px;
       font-weight: 600;
@@ -168,23 +209,27 @@
       margin: 0 0 6px 0;
       letter-spacing: -0.02em;
     }
+
     .admin-subtitle {
       font-size: 14px;
       color: #64748b;
       margin: 0;
     }
+
     .admin-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 18px;
       margin-bottom: 32px;
     }
+
     .metric-card {
       background: var(--admin-panel);
       border: 1px solid var(--admin-border);
       border-radius: 8px;
       padding: 20px;
     }
+
     .metric-card-label {
       font-size: 11px;
       font-weight: 700;
@@ -193,12 +238,14 @@
       color: #64748b;
       margin-bottom: 8px;
     }
+
     .metric-card-val {
       font-size: 28px;
       font-weight: 700;
       color: #ffffff;
       font-family: monospace;
     }
+
     .admin-card {
       background: var(--admin-panel);
       border: 1px solid var(--admin-border);
@@ -206,6 +253,7 @@
       padding: 24px;
       margin-bottom: 24px;
     }
+
     .admin-card-title {
       font-size: 16px;
       font-weight: 600;
@@ -215,6 +263,7 @@
       justify-content: space-between;
       align-items: center;
     }
+
     .data-table {
       width: 100%;
       border-collapse: separate;
@@ -225,6 +274,7 @@
       border-radius: 8px;
       overflow: hidden;
     }
+
     .data-table th {
       text-align: left;
       padding: 12px 16px;
@@ -236,6 +286,7 @@
       letter-spacing: 0.08em;
       border-bottom: 1px solid var(--admin-border-bright);
     }
+
     .data-table td {
       padding: 14px 16px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -243,12 +294,15 @@
       vertical-align: middle;
       font-size: 13px;
     }
+
     .data-table tr:last-child td {
       border-bottom: none;
     }
+
     .data-table tr:hover td {
       background: rgba(74, 222, 128, 0.04);
     }
+
     .code-chip {
       display: inline-flex;
       align-items: center;
@@ -263,6 +317,7 @@
       letter-spacing: 0.02em;
       white-space: nowrap;
     }
+
     .badge {
       display: inline-block;
       padding: 4px 9px;
@@ -274,11 +329,37 @@
       border: 1px solid transparent;
       white-space: nowrap;
     }
-    .badge-green { background: rgba(74, 222, 128, 0.16); color: #4ade80; border-color: rgba(74, 222, 128, 0.35); }
-    .badge-amber { background: rgba(236, 201, 75, 0.16); color: #facc15; border-color: rgba(236, 201, 75, 0.35); }
-    .badge-blue { background: rgba(96, 165, 250, 0.16); color: #60a5fa; border-color: rgba(96, 165, 250, 0.35); }
-    .badge-rose { background: rgba(248, 113, 113, 0.16); color: #f87171; border-color: rgba(248, 113, 113, 0.35); }
-    .badge-purple { background: rgba(168, 85, 247, 0.16); color: #c084fc; border-color: rgba(168, 85, 247, 0.35); }
+
+    .badge-green {
+      background: rgba(74, 222, 128, 0.16);
+      color: #4ade80;
+      border-color: rgba(74, 222, 128, 0.35);
+    }
+
+    .badge-amber {
+      background: rgba(236, 201, 75, 0.16);
+      color: #facc15;
+      border-color: rgba(236, 201, 75, 0.35);
+    }
+
+    .badge-blue {
+      background: rgba(96, 165, 250, 0.16);
+      color: #60a5fa;
+      border-color: rgba(96, 165, 250, 0.35);
+    }
+
+    .badge-rose {
+      background: rgba(248, 113, 113, 0.16);
+      color: #f87171;
+      border-color: rgba(248, 113, 113, 0.35);
+    }
+
+    .badge-purple {
+      background: rgba(168, 85, 247, 0.16);
+      color: #c084fc;
+      border-color: rgba(168, 85, 247, 0.35);
+    }
+
     .btn {
       padding: 7px 14px;
       border-radius: 6px;
@@ -292,15 +373,45 @@
       gap: 6px;
       white-space: nowrap;
     }
-    .btn-primary { background: #166534; color: #86efac; border-color: #22c55e; }
-    .btn-primary:hover { background: #22c55e; color: #052e16; }
-    .btn-secondary { background: #1e293b; color: #f1f5f9; border: 1px solid #475569; }
-    .btn-secondary:hover { background: #334155; color: #ffffff; border-color: #64748b; }
-    .btn-danger { background: rgba(248, 113, 113, 0.15); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.35); }
-    .btn-danger:hover { background: rgba(248, 113, 113, 0.3); color: #ffffff; }
+
+    .btn-primary {
+      background: #166534;
+      color: #86efac;
+      border-color: #22c55e;
+    }
+
+    .btn-primary:hover {
+      background: #22c55e;
+      color: #052e16;
+    }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid #475569;
+    }
+
+    .btn-secondary:hover {
+      background: #334155;
+      color: #ffffff;
+      border-color: #64748b;
+    }
+
+    .btn-danger {
+      background: rgba(248, 113, 113, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(248, 113, 113, 0.35);
+    }
+
+    .btn-danger:hover {
+      background: rgba(248, 113, 113, 0.3);
+      color: #ffffff;
+    }
+
     .form-group {
       margin-bottom: 16px;
     }
+
     .form-label {
       display: block;
       font-size: 12px;
@@ -310,7 +421,10 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    .form-input, .form-select, .form-textarea {
+
+    .form-input,
+    .form-select,
+    .form-textarea {
       width: 100%;
       background: #090e09;
       border: 1px solid var(--admin-border);
@@ -321,9 +435,13 @@
       box-sizing: border-box;
       outline: none;
     }
-    .form-input:focus, .form-textarea:focus, .form-select:focus {
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
       border-color: var(--admin-accent);
     }
+
     .auth-gate-screen {
       position: fixed;
       top: 0;
@@ -340,6 +458,7 @@
       text-align: center;
       box-sizing: border-box;
     }
+
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -355,6 +474,7 @@
       padding: 20px;
       box-sizing: border-box;
     }
+
     .modal-card {
       background: var(--admin-panel);
       border: 1px solid var(--admin-border-bright);
@@ -366,6 +486,7 @@
       padding: 24px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
     }
+
     .modal-header {
       display: flex;
       justify-content: space-between;
@@ -374,12 +495,14 @@
       border-bottom: 1px solid var(--admin-border);
       padding-bottom: 12px;
     }
+
     .modal-title {
       font-size: 18px;
       font-weight: 600;
       color: #ffffff;
       margin: 0;
     }
+
     .modal-close {
       background: none;
       border: none;
@@ -389,19 +512,25 @@
       padding: 4px 8px;
       line-height: 1;
     }
+
     .modal-close:hover {
       color: #ffffff;
     }
   </style>
 </head>
+
 <body>
 
   <!-- Security Gate Overlay: strictly validates session and founder role before DOM reveal -->
   <div id="authGate" class="auth-gate-screen">
     <img src="/canopy-logo.png" alt="Canopy" style="width: 42px; height: 42px; margin-bottom: 20px;">
-    <h2 id="gateTitle" style="color: #ffffff; margin: 0 0 10px 0; font-size: 20px;">Authenticating Operations Access...</h2>
-    <p id="gateMessage" style="color: #64748b; font-size: 14px; max-width: 440px; margin: 0 0 24px 0;">Verifying Field Station credentials and operational permissions.</p>
-    <a id="gateAction" href="/login.html" style="display: none; background: #22543d; color: #68d391; padding: 10px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px;">Return to Field Station Login</a>
+    <h2 id="gateTitle" style="color: #ffffff; margin: 0 0 10px 0; font-size: 20px;">Authenticating Operations Access...
+    </h2>
+    <p id="gateMessage" style="color: #64748b; font-size: 14px; max-width: 440px; margin: 0 0 24px 0;">Verifying Field
+      Station credentials and operational permissions.</p>
+    <a id="gateAction" href="/login.html"
+      style="display: none; background: #22543d; color: #68d391; padding: 10px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px;">Return
+      to Field Station Login</a>
   </div>
 
   <div class="admin-layout" id="adminApp" style="display: none;">
@@ -419,15 +548,30 @@
       <nav class="admin-nav">
         <div class="admin-nav-item active" data-tab="overview"><span class="admin-nav-icon">📊</span> Overview</div>
         <div class="admin-nav-item" data-tab="applications"><span class="admin-nav-icon">📋</span> Applications</div>
-        <div class="admin-nav-item" data-tab="users"><span class="admin-nav-icon">👥</span> User Access &amp; Roles</div>
+        <div class="admin-nav-item" data-tab="users"><span class="admin-nav-icon">👥</span> User Access &amp; Roles
+        </div>
         <div class="admin-nav-item" data-tab="matching"><span class="admin-nav-icon">🤝</span> Manual Matching</div>
         <div class="admin-nav-item" data-tab="calls"><span class="admin-nav-icon">🌱</span> Build Calls</div>
         <div class="admin-nav-item" data-tab="sprints"><span class="admin-nav-icon">⏱️</span> Sprints &amp; Cycles</div>
         <div class="admin-nav-item" data-tab="content"><span class="admin-nav-icon">🎨</span> Content Studio</div>
-        <div class="admin-nav-item" data-tab="notebook"><span class="admin-nav-icon">📖</span> Lab Notebook &amp; Blog</div>
-        <div class="admin-nav-item" data-tab="broadcast"><span class="admin-nav-icon">📢</span> Platform Broadcasts</div>
-        <div class="admin-nav-item" data-tab="settings"><span class="admin-nav-icon">⚙️</span> Settings &amp; Quotas</div>
+        <div class="admin-nav-item" data-tab="notebook"><span class="admin-nav-icon">📖</span> Lab Notebook &amp; Blog
+        </div>
+        <div class="admin-nav-item" data-tab="broadcast"><span class="admin-nav-icon">📢</span> Platform Broadcasts
+        </div>
+        <div class="admin-nav-item" data-tab="settings"><span class="admin-nav-icon">⚙️</span> Settings &amp; Quotas
+        </div>
         <div class="admin-nav-item" data-tab="audit"><span class="admin-nav-icon">📜</span> Audit Log</div>
+        <div class="admin-nav-item active" data-tab="overview">Overview</div>
+        <div class="admin-nav-item" data-tab="applications">Applications</div>
+        <div class="admin-nav-item" data-tab="users">User Access &amp; Roles</div>
+        <div class="admin-nav-item" data-tab="matching">Manual Matching</div>
+        <div class="admin-nav-item" data-tab="calls">Build Calls</div>
+        <div class="admin-nav-item" data-tab="sprints">Sprints &amp; Cycles</div>
+        <div class="admin-nav-item" data-tab="content">Content Studio</div>
+        <div class="admin-nav-item" data-tab="notebook">Lab Notebook &amp; Blog</div>
+        <div class="admin-nav-item" data-tab="broadcast">Platform Broadcasts</div>
+        <div class="admin-nav-item" data-tab="settings">Settings &amp; Quotas</div>
+        <div class="admin-nav-item" data-tab="audit">Audit Log</div>
       </nav>
 
       <div class="admin-user-bar">
@@ -450,7 +594,9 @@
           </div>
           <div class="admin-scope-box">
             <span class="admin-scope-pill">🧭 Station Pulse · Site-Wide Control</span>
-            <span class="admin-scope-desc">Telemetry across all member pipelines, review queues &amp; active sprint cycles</span>
+            <span class="admin-scope-pill">Station Pulse · Site-Wide Control</span>
+            <span class="admin-scope-desc">Telemetry across all member pipelines, review queues &amp; active sprint
+              cycles</span>
           </div>
         </div>
 
@@ -476,13 +622,16 @@
         <div class="admin-card">
           <div class="admin-card-title">Founder Action Priorities</div>
           <p style="color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 0 0 16px 0;">
-            Welcome to the Canopy Founder Console. For the private beta launch, this station gives you personal, direct facilitation of cohort applications, match introductions, card uploads, and operational oversight before automated matching takes over.
+            Welcome to the Canopy Founder Console. For the private beta launch, this station gives you personal, direct
+            facilitation of cohort applications, match introductions, card uploads, and operational oversight before
+            automated matching takes over.
           </p>
           <div style="display: flex; gap: 12px;">
             <button class="btn btn-primary" onclick="switchTab('applications')">Review Applications →</button>
             <button class="btn btn-secondary" onclick="switchTab('matching')">Facilitate Matches →</button>
             <button class="btn btn-secondary" onclick="switchTab('content')">Edit Content Cards →</button>
             <button class="btn btn-secondary" onclick="switchTab('broadcast')">📢 Send Broadcast →</button>
+            <button class="btn btn-secondary" onclick="switchTab('broadcast')">Send Broadcast →</button>
           </div>
         </div>
       </section>
@@ -496,7 +645,9 @@
           </div>
           <div class="admin-scope-box">
             <span class="admin-scope-pill">📋 Scope: /apply.html</span>
-            <span class="admin-scope-desc">Controls builder, problem holder &amp; enabler intake, review statuses, and onboarding decisions</span>
+            <span class="admin-scope-pill">Scope: /apply.html</span>
+            <span class="admin-scope-desc">Controls builder, problem holder &amp; enabler intake, review statuses, and
+              onboarding decisions</span>
           </div>
         </div>
         <div class="admin-card">
@@ -511,7 +662,9 @@
               </tr>
             </thead>
             <tbody id="applicationsTableBody">
-              <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading applications...</td></tr>
+              <tr>
+                <td colspan="5" style="text-align: center; color: #64748b;">Loading applications...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -526,7 +679,9 @@
           </div>
           <div class="admin-scope-box">
             <span class="admin-scope-pill">👥 Scope: Site-Wide Access &amp; Roles</span>
-            <span class="admin-scope-desc">Grants operational permissions (approved_builder, curator, moderator, admin) &amp; feature gates</span>
+            <span class="admin-scope-pill">Scope: Site-Wide Access &amp; Roles</span>
+            <span class="admin-scope-desc">Grants operational permissions (approved_builder, curator, moderator, admin)
+              &amp; feature gates</span>
           </div>
         </div>
         <div class="admin-card">
@@ -540,7 +695,9 @@
               </tr>
             </thead>
             <tbody id="usersTableBody">
-              <tr><td colspan="4" style="text-align: center; color: #64748b;">Loading users...</td></tr>
+              <tr>
+                <td colspan="4" style="text-align: center; color: #64748b;">Loading users...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -553,7 +710,8 @@
               <button class="modal-close" onclick="closeRoleModal()">&times;</button>
             </div>
             <input type="hidden" id="roleUserId">
-            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--admin-border); border-radius: 6px; padding: 12px; margin-bottom: 16px;">
+            <div
+              style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--admin-border); border-radius: 6px; padding: 12px; margin-bottom: 16px;">
               <div id="roleUserTarget" style="font-size: 14px; color: #ffffff; font-weight: 600;"></div>
               <div id="roleCurrentRoles" style="font-size: 12px; color: #94a3b8; margin-top: 4px;"></div>
             </div>
@@ -589,16 +747,20 @@
         <div class="admin-header">
           <div>
             <h1 class="admin-title">Manual Matching &amp; Algorithmic Engine</h1>
-            <p class="admin-subtitle">Run heuristic pairing across the cohort, curate custom 1-on-1 matches, and personally introduce collaborators.</p>
+            <p class="admin-subtitle">Run heuristic pairing across the cohort, curate custom 1-on-1 matches, and
+              personally introduce collaborators.</p>
           </div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
             <div class="admin-scope-box">
               <span class="admin-scope-pill">🤝 Scope: /match.html · Curated Matchmaker</span>
-              <span class="admin-scope-desc">Pairwise algorithm, custom 1-on-1 overrides, and personalized founder introductions</span>
+              <span class="admin-scope-pill">Scope: /match.html · Curated Matchmaker</span>
+              <span class="admin-scope-desc">Pairwise algorithm, custom 1-on-1 overrides, and personalized founder
+                introductions</span>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <button type="button" class="btn btn-primary" id="btnRunAlgorithm" onclick="runMatchingAlgorithm()">
                 <span>⚡</span> Run Matching Algorithm
+                Run Matching Algorithm
               </button>
               <button type="button" class="btn btn-secondary" onclick="openManualPairModal()">
                 <span>+</span> Create Custom 1-on-1 Pair
@@ -608,31 +770,41 @@
         </div>
 
         <!-- Heuristic Algorithm Output Studio (Expands on run) -->
-        <div class="admin-card" id="algorithmResultsCard" style="display: none; border: 1px solid #22c55e; background: #0c160e; margin-bottom: 24px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div class="admin-card" id="algorithmResultsCard"
+          style="display: none; border: 1px solid #22c55e; background: #0c160e; margin-bottom: 24px;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
             <div>
               <h3 style="margin: 0; color: #4ade80; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
-                <span>⚡</span> Heuristic Algorithmic Pairings (<span id="algoResultsCount">0</span> Candidates Evaluated)
+                <span>⚡</span> Heuristic Algorithmic Pairings (<span id="algoResultsCount">0</span> Candidates
+                Evaluated)
+                Heuristic Algorithmic Pairings (<span id="algoResultsCount">0</span> Candidates Evaluated)
               </h3>
-              <p style="margin: 4px 0 0; font-size: 13px; color: #94a3b8;">Ranked based on domain synergy, role complementarity (builder + problem holder), and technical skills.</p>
+              <p style="margin: 4px 0 0; font-size: 13px; color: #94a3b8;">Ranked based on domain synergy, role
+                complementarity (builder + problem holder), and technical skills.</p>
             </div>
             <div style="display: flex; gap: 8px;">
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="document.getElementById('algorithmResultsCard').style.display='none'">Hide Results</button>
-              <button type="button" class="btn btn-primary" style="padding: 4px 10px; font-size: 11px;" onclick="runMatchingAlgorithm()">↻ Re-run Engine</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="document.getElementById('algorithmResultsCard').style.display='none'">Hide Results</button>
+              <button type="button" class="btn btn-primary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="runMatchingAlgorithm()">↻ Re-run Engine</button>
             </div>
           </div>
-          <div id="algoPairsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px;">
+          <div id="algoPairsGrid"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px;">
             <!-- Rendered dynamically -->
           </div>
         </div>
 
         <!-- Pending Inquiries & Intakes Table -->
         <div class="admin-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
             <div class="admin-card-title" style="margin-bottom: 0;">
               Collaboration Inquiries &amp; Match Intakes (<span id="matchesTotalCount">0</span>)
             </div>
-            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="loadMatches()">↻ Refresh Queue</button>
+            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="loadMatches()">↻
+              Refresh Queue</button>
           </div>
           <table class="data-table">
             <thead>
@@ -646,7 +818,10 @@
               </tr>
             </thead>
             <tbody id="matchesTableBody">
-              <tr><td colspan="6" style="text-align: center; color: #64748b; padding: 20px;">Loading matches &amp; intakes...</td></tr>
+              <tr>
+                <td colspan="6" style="text-align: center; color: #64748b; padding: 20px;">Loading matches &amp;
+                  intakes...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -657,14 +832,18 @@
         <div class="admin-header">
           <div>
             <h1 class="admin-title">Build Calls Management</h1>
-            <p class="admin-subtitle">Directly author, edit, approve, or retire live challenges in the open directory.</p>
+            <p class="admin-subtitle">Directly author, edit, approve, or retire live challenges in the open directory.
+            </p>
           </div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
             <div class="admin-scope-box">
               <span class="admin-scope-pill">🌱 Scope: /post-call.html &amp; /match.html</span>
-              <span class="admin-scope-desc">Publishes, approves, and edits sponsored challenges, milestone grants, and domain RFPs</span>
+              <span class="admin-scope-pill">Scope: /post-call.html &amp; /match.html</span>
+              <span class="admin-scope-desc">Publishes, approves, and edits sponsored challenges, milestone grants, and
+                domain RFPs</span>
             </div>
-            <button id="openCreateCallBtn" class="btn btn-primary" onclick="openCreateCallModal()">+ Create Build Call</button>
+            <button id="openCreateCallBtn" class="btn btn-primary" onclick="openCreateCallModal()">+ Create Build
+              Call</button>
           </div>
         </div>
         <div class="admin-card">
@@ -680,7 +859,9 @@
               </tr>
             </thead>
             <tbody id="callsTableBody">
-              <tr><td colspan="6" style="text-align: center; color: #64748b;">Loading build calls...</td></tr>
+              <tr>
+                <td colspan="6" style="text-align: center; color: #64748b;">Loading build calls...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -695,7 +876,8 @@
             <input type="hidden" id="callEditId">
             <div class="form-group">
               <label class="form-label">Call Title</label>
-              <input type="text" id="callTitleInput" class="form-input" placeholder="e.g. Decentralized Water Quality Sentinel">
+              <input type="text" id="callTitleInput" class="form-input"
+                placeholder="e.g. Decentralized Water Quality Sentinel">
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="form-group">
@@ -715,11 +897,13 @@
             </div>
             <div class="form-group">
               <label class="form-label">Problem Statement</label>
-              <textarea id="callProblemInput" class="form-textarea" rows="3" placeholder="Describe the technical bottleneck and scope..."></textarea>
+              <textarea id="callProblemInput" class="form-textarea" rows="3"
+                placeholder="Describe the technical bottleneck and scope..."></textarea>
             </div>
             <div class="form-group">
               <label class="form-label">Target Deliverable</label>
-              <input type="text" id="callDeliverableInput" class="form-input" placeholder="e.g. Functional prototype code &amp; validation report">
+              <input type="text" id="callDeliverableInput" class="form-input"
+                placeholder="e.g. Functional prototype code &amp; validation report">
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="form-group">
@@ -733,7 +917,8 @@
             </div>
             <div class="form-group">
               <label class="form-label">Needed Skills (comma separated)</label>
-              <input type="text" id="callSkillsInput" class="form-input" placeholder="e.g. Embedded C++, LoRaWAN, Python, GIS">
+              <input type="text" id="callSkillsInput" class="form-input"
+                placeholder="e.g. Embedded C++, LoRaWAN, Python, GIS">
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="form-group">
@@ -762,18 +947,21 @@
       </section>
 
       <!-- 6. CONTENT STUDIO TAB -->
-      
+
       <!-- 5b. SPRINTS & CYCLES CONTROL ROOM -->
       <section id="tab-sprints" class="admin-tab-pane" style="display: none;">
         <div class="admin-header">
           <div>
             <h1 class="admin-title">Sprints &amp; Cycles Control Room</h1>
-            <p class="admin-subtitle">Directly manage recurring cycle deadlines, synchronized countdown clocks, and active squads across the platform.</p>
+            <p class="admin-subtitle">Directly manage recurring cycle deadlines, synchronized countdown clocks, and
+              active squads across the platform.</p>
           </div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
             <div class="admin-scope-box">
               <span class="admin-scope-pill">⏱️ Scope: /sprint.html</span>
-              <span class="admin-scope-desc">Drives 21-day synchronized countdown clock, squad vacancies, and prototype milestones</span>
+              <span class="admin-scope-pill">Scope: /sprint.html</span>
+              <span class="admin-scope-desc">Drives 21-day synchronized countdown clock, squad vacancies, and prototype
+                milestones</span>
             </div>
             <button class="btn btn-primary" onclick="openCreateSquadModal()">+ Create New Squad</button>
           </div>
@@ -785,21 +973,26 @@
             <div>
               <h3 style="margin: 0; color: #4ade80; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
                 <span>⏱️</span> Live Sprint Cycle &amp; Countdown Target
+                Live Sprint Cycle &amp; Countdown Target
               </h3>
-              <p style="margin: 4px 0 0; font-size: 13px; color: #94a3b8;">Drives the live countdown widget, cycle badge, and active progress on the Sprint page without touching code.</p>
+              <p style="margin: 4px 0 0; font-size: 13px; color: #94a3b8;">Drives the live countdown widget, cycle
+                badge, and active progress on the Sprint page without touching code.</p>
             </div>
             <span id="cycleLiveStatusBadge" class="badge badge-green">ACTIVE CYCLE RUNNING</span>
           </div>
 
           <form id="cycleConfigForm" onsubmit="saveSprintCycle(event)">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 16px;">
+            <div
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 16px;">
               <div class="form-group" style="margin-bottom: 0;">
                 <label class="form-label">Active Cycle Name</label>
-                <input type="text" id="cycleNameInput" class="form-input" placeholder="e.g. Groundwater Sensor Sprint - Cycle 3" required>
+                <input type="text" id="cycleNameInput" class="form-input"
+                  placeholder="e.g. Groundwater Sensor Sprint - Cycle 3" required>
               </div>
               <div class="form-group" style="margin-bottom: 0;">
                 <label class="form-label">Cycle Display Tag</label>
-                <input type="text" id="cycleTagInput" class="form-input" placeholder="e.g. Cycle 3 • Groundwater Sensor" required>
+                <input type="text" id="cycleTagInput" class="form-input" placeholder="e.g. Cycle 3 • Groundwater Sensor"
+                  required>
               </div>
               <div class="form-group" style="margin-bottom: 0;">
                 <label class="form-label">Countdown Target Deadline</label>
@@ -831,13 +1024,18 @@
 
         <!-- Active Squads Table -->
         <div class="admin-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
             <div class="admin-card-title" style="margin-bottom: 0;">Community Working Squads</div>
             <div id="squadFilterBar" style="display: flex; gap: 8px;">
-              <button type="button" class="btn btn-secondary active-filter" style="padding: 4px 10px; font-size: 11px;" onclick="filterSquads('all')">All (<span id="countSquadsAll">0</span>)</button>
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterSquads('building')">Building (<span id="countSquadsBuilding">0</span>)</button>
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterSquads('forming')">Forming (<span id="countSquadsForming">0</span>)</button>
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterSquads('shipped')">Shipped (<span id="countSquadsShipped">0</span>)</button>
+              <button type="button" class="btn btn-secondary active-filter" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterSquads('all')">All (<span id="countSquadsAll">0</span>)</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterSquads('building')">Building (<span id="countSquadsBuilding">0</span>)</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterSquads('forming')">Forming (<span id="countSquadsForming">0</span>)</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterSquads('shipped')">Shipped (<span id="countSquadsShipped">0</span>)</button>
             </div>
           </div>
           <table class="data-table">
@@ -852,7 +1050,9 @@
               </tr>
             </thead>
             <tbody id="squadsTableBody">
-              <tr><td colspan="6" style="text-align: center; color: #64748b;">Loading squads...</td></tr>
+              <tr>
+                <td colspan="6" style="text-align: center; color: #64748b;">Loading squads...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -862,18 +1062,21 @@
         <div class="admin-header">
           <div>
             <h1 class="admin-title">Content Studio &amp; Direct Copy</h1>
-            <p class="admin-subtitle">Centrally control and edit public website headlines, ledes, quotes, and illustrative notices without touching code.</p>
+            <p class="admin-subtitle">Centrally control and edit public website headlines, ledes, quotes, and
+              illustrative notices without touching code.</p>
           </div>
           <div class="admin-scope-box">
             <span class="admin-scope-pill">🎨 Scope: /index.html &amp; Site-Wide Copy</span>
-            <span class="admin-scope-desc">Updates public headlines, hero statements, founder quotes, ledes &amp; footers in real time</span>
+            <span class="admin-scope-pill">Scope: /index.html &amp; Site-Wide Copy</span>
+            <span class="admin-scope-desc">Updates public headlines, hero statements, founder quotes, ledes &amp;
+              footers in real time</span>
           </div>
         </div>
 
         <div class="admin-card" style="border: 1px solid var(--admin-border-bright);">
           <div class="admin-card-title" id="contentFormTitle">Compose / Edit Content Item</div>
           <input type="hidden" id="contentEditId">
-          
+
           <div style="margin-bottom: 14px;">
             <label class="form-label" style="color: #4ade80;">Quick Select Site Copy Preset</label>
             <select id="contentKeyPreset" class="form-select" onchange="applyKeyPreset(this.value)">
@@ -881,7 +1084,8 @@
               <optgroup label="Homepage (/index.html)">
                 <option value="home.hero.headline">Home Hero Headline (home.hero.headline)</option>
                 <option value="home.hero.subheadline">Home Hero Subheadline (home.hero.subheadline)</option>
-                <option value="home.private_beta_banner">Private Beta Announcement Banner (home.private_beta_banner)</option>
+                <option value="home.private_beta_banner">Private Beta Announcement Banner (home.private_beta_banner)
+                </option>
                 <option value="home.founder_quote">Founder Perspective Quote (home.founder_quote)</option>
               </optgroup>
               <optgroup label="Sprint Page (/sprint.html)">
@@ -896,7 +1100,8 @@
               <optgroup label="Match Directory (/match.html)">
                 <option value="match.hero.headline">Match Directory Hero Headline (match.hero.headline)</option>
                 <option value="match.lede">Match Directory Lede Statement (match.lede)</option>
-                <option value="match.illustrative_example">Illustrative Example Notice (match.illustrative_example)</option>
+                <option value="match.illustrative_example">Illustrative Example Notice (match.illustrative_example)
+                </option>
               </optgroup>
               <optgroup label="Apply Page (/apply.html)">
                 <option value="apply.hero.headline">Apply Hero Headline (apply.hero.headline)</option>
@@ -930,7 +1135,8 @@
           </div>
           <div class="form-group">
             <label class="form-label">Body Copy *</label>
-            <textarea id="contentBodyInput" class="form-textarea" rows="3" placeholder="Card or banner body text..."></textarea>
+            <textarea id="contentBodyInput" class="form-textarea" rows="3"
+              placeholder="Card or banner body text..."></textarea>
           </div>
           <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
             <input type="checkbox" id="contentIllustrativeCheck">
@@ -940,14 +1146,17 @@
           </div>
           <div style="display: flex; gap: 10px;">
             <button id="saveContentBtn" class="btn btn-primary">Save Content Item</button>
-            <button type="button" id="cancelEditContentBtn" class="btn btn-secondary" style="display: none;" onclick="cancelEditContent()">Cancel Edit</button>
+            <button type="button" id="cancelEditContentBtn" class="btn btn-secondary" style="display: none;"
+              onclick="cancelEditContent()">Cancel Edit</button>
           </div>
         </div>
 
         <div class="admin-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <div class="admin-card-title" style="margin-bottom: 0;">Published &amp; Draft Items (<span id="contentItemsCount">0</span>)</div>
-            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="loadContent()">↻ Refresh Copy</button>
+            <div class="admin-card-title" style="margin-bottom: 0;">Published &amp; Draft Items (<span
+                id="contentItemsCount">0</span>)</div>
+            <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="loadContent()">↻
+              Refresh Copy</button>
           </div>
           <table class="data-table">
             <thead>
@@ -960,25 +1169,32 @@
               </tr>
             </thead>
             <tbody id="contentTableBody">
-              <tr><td colspan="5" style="text-align: center; color: #64748b; padding: 20px;">Loading content items...</td></tr>
+              <tr>
+                <td colspan="5" style="text-align: center; color: #64748b; padding: 20px;">Loading content items...</td>
+              </tr>
             </tbody>
           </table>
         </div>
-      </section></section>
+      </section>
+      </section>
 
       <!-- 7. LAB NOTEBOOK & BLOG STUDIO TAB -->
       <section id="tab-notebook" class="admin-tab-pane" style="display: none;">
         <div class="admin-header">
           <div>
             <h1 class="admin-title">Lab Notebook &amp; Blog Studio</h1>
-            <p class="admin-subtitle">Publish, edit, feature, and curate technical dev logs, teardowns, and founder field notes.</p>
+            <p class="admin-subtitle">Publish, edit, feature, and curate technical dev logs, teardowns, and founder
+              field notes.</p>
           </div>
           <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
             <div class="admin-scope-box">
               <span class="admin-scope-pill">📖 Scope: /notebook.html</span>
-              <span class="admin-scope-desc">Publishes, features, and edits technical teardowns, field notes, and founder essays</span>
+              <span class="admin-scope-pill">Scope: /notebook.html</span>
+              <span class="admin-scope-desc">Publishes, features, and edits technical teardowns, field notes, and
+                founder essays</span>
             </div>
-            <button id="openCreatePostBtn" class="btn btn-primary" onclick="openCreatePostModal()">+ Write New Post / Note</button>
+            <button id="openCreatePostBtn" class="btn btn-primary" onclick="openCreatePostModal()">+ Write New Post /
+              Note</button>
           </div>
         </div>
 
@@ -995,7 +1211,9 @@
               </tr>
             </thead>
             <tbody id="notebookTableBody">
-              <tr><td colspan="6" style="text-align: center; color: #64748b;">Loading notebook posts...</td></tr>
+              <tr>
+                <td colspan="6" style="text-align: center; color: #64748b;">Loading notebook posts...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -1010,7 +1228,8 @@
             <input type="hidden" id="postEditId">
             <div class="form-group">
               <label class="form-label">Post Title</label>
-              <input type="text" id="postTitleInput" class="form-input" placeholder="e.g. Why My Groundwater Model Kept Overfitting">
+              <input type="text" id="postTitleInput" class="form-input"
+                placeholder="e.g. Why My Groundwater Model Kept Overfitting">
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="form-group">
@@ -1044,21 +1263,25 @@
               </div>
               <div class="form-group">
                 <label class="form-label">Cover Image URL (Optional)</label>
-                <input type="text" id="postCoverImageInput" class="form-input" placeholder="e.g. /og-image.png or https://...">
+                <input type="text" id="postCoverImageInput" class="form-input"
+                  placeholder="e.g. /og-image.png or https://...">
               </div>
             </div>
             <div class="form-group">
               <label class="form-label">Summary / Snippet</label>
-              <textarea id="postSummaryInput" class="form-textarea" rows="2" placeholder="One or two sentences describing the problem, discovery, or outcome..."></textarea>
+              <textarea id="postSummaryInput" class="form-textarea" rows="2"
+                placeholder="One or two sentences describing the problem, discovery, or outcome..."></textarea>
             </div>
             <div class="form-group">
               <label class="form-label">Body Markdown / Content</label>
-              <textarea id="postBodyInput" class="form-textarea" rows="7" placeholder="Detailed technical content in Markdown (use ### Headings, ```code blocks, bullet points)..."></textarea>
+              <textarea id="postBodyInput" class="form-textarea" rows="7"
+                placeholder="Detailed technical content in Markdown (use ### Headings, ```code blocks, bullet points)..."></textarea>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="form-group">
                 <label class="form-label">Code Snippet / Terminal Metric (Optional)</label>
-                <input type="text" id="postTeaserInput" class="form-input" placeholder="e.g. drift.py:14 -> rmse < 0.08m">
+                <input type="text" id="postTeaserInput" class="form-input"
+                  placeholder="e.g. drift.py:14 -> rmse < 0.08m">
               </div>
               <div class="form-group">
                 <label class="form-label">Tags (comma separated)</label>
@@ -1076,15 +1299,18 @@
               </div>
               <div class="form-group">
                 <label class="form-label">Reading Time (Minutes, optional)</label>
-                <input type="number" id="postReadingTimeInput" class="form-input" min="1" max="60" placeholder="Auto-calculated if blank">
+                <input type="number" id="postReadingTimeInput" class="form-input" min="1" max="60"
+                  placeholder="Auto-calculated if blank">
               </div>
             </div>
             <div style="display: flex; gap: 24px; margin: 12px 0 20px;">
-              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
+              <label
+                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
                 <input type="checkbox" id="postFounderCheck">
                 <span><strong>★ Founder Note</strong> (Show verified Founder Badge)</span>
               </label>
-              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
+              <label
+                style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
                 <input type="checkbox" id="postFeaturedCheck">
                 <span><strong>Featured Story</strong> (Promote in highlights)</span>
               </label>
@@ -1102,16 +1328,20 @@
         <div class="admin-header">
           <div>
             <h1 class="admin-title">Platform Broadcast &amp; Push Notifications</h1>
-            <p class="admin-subtitle">Directly dispatch announcements, sprint alerts, and updates to connected collaborators in real-time.</p>
+            <p class="admin-subtitle">Directly dispatch announcements, sprint alerts, and updates to connected
+              collaborators in real-time.</p>
           </div>
           <div class="admin-scope-box">
             <span class="admin-scope-pill">📢 Scope: Notification Bell &amp; Alerts</span>
-            <span class="admin-scope-desc">Directly pushes live popover announcements to connected members across all pages</span>
+            <span class="admin-scope-pill">Scope: Notification Bell &amp; Alerts</span>
+            <span class="admin-scope-desc">Directly pushes live popover announcements to connected members across all
+              pages</span>
           </div>
         </div>
 
         <div class="admin-card" style="margin-bottom: 24px;">
           <div class="admin-card-title">🚀 Direct Push Notification Dispatcher</div>
+          <div class="admin-card-title">Direct Push Notification Dispatcher</div>
           <p style="color: #94a3b8; font-size: 13px; margin: 0 0 16px 0;">
             Dispatches appear instantly in the notification corner for connected collaborators across all pages.
           </p>
@@ -1119,41 +1349,66 @@
           <form id="broadcastForm" onsubmit="event.preventDefault(); handleSendBroadcast();">
             <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; margin-bottom: 14px;">
               <div>
-                <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Notification Title *</label>
-                <input type="text" id="bcTitle" class="form-input" placeholder="e.g. Sprint Cycle 3 Selection Announced" required style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
+                <label
+                  style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Notification
+                  Title *</label>
+                <input type="text" id="bcTitle" class="form-input" placeholder="e.g. Sprint Cycle 3 Selection Announced"
+                  required
+                  style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
               </div>
               <div>
-                <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Target Audience</label>
-                <select id="bcAudience" style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
+                <label
+                  style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Target
+                  Audience</label>
+                <select id="bcAudience"
+                  style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
                   <option value="all">📢 All Collaborators</option>
                   <option value="builders">⚡ Builders (Technical Contributors)</option>
                   <option value="enablers">🤝 Enablers &amp; Mentors</option>
                   <option value="problem_holders">🎯 Problem Statement Holders</option>
+                  <option value="all">All Collaborators</option>
+                  <option value="builders">Builders (Technical Contributors)</option>
+                  <option value="enablers">Enablers &amp; Mentors</option>
+                  <option value="problem_holders">Problem Statement Holders</option>
                 </select>
               </div>
               <div>
-                <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Category Tag</label>
-                <select id="bcType" style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
+                <label
+                  style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Category
+                  Tag</label>
+                <select id="bcType"
+                  style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
                   <option value="announcement">📢 Announcement</option>
                   <option value="sprint_update">🌱 Sprint Milestone</option>
                   <option value="dispatch">⚡ System Dispatch</option>
+                  <option value="announcement">Announcement</option>
+                  <option value="sprint_update">Sprint Milestone</option>
+                  <option value="dispatch">System Dispatch</option>
                 </select>
               </div>
             </div>
 
             <div style="margin-bottom: 14px;">
-              <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Action / Destination Link (Optional)</label>
-              <input type="text" id="bcUrl" placeholder="e.g. sprint.html#sp_salinity_telemetry" style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
+              <label
+                style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Action /
+                Destination Link (Optional)</label>
+              <input type="text" id="bcUrl" placeholder="e.g. sprint.html#sp_salinity_telemetry"
+                style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px;">
             </div>
 
             <div style="margin-bottom: 16px;">
-              <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Push Notification Message *</label>
-              <textarea id="bcMessage" rows="3" placeholder="Enter clear, concise notification update for collaborators..." required style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px; font-family: inherit; resize: vertical;"></textarea>
+              <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Push
+                Notification Message *</label>
+              <textarea id="bcMessage" rows="3"
+                placeholder="Enter clear, concise notification update for collaborators..." required
+                style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px; font-family: inherit; resize: vertical;"></textarea>
             </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 12px;">
-              <button type="submit" class="btn btn-primary" id="bcSubmitBtn" style="background: #4ade80; color: #090e09; font-weight: 700; padding: 10px 22px; border: none; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+              <button type="submit" class="btn btn-primary" id="bcSubmitBtn"
+                style="background: #4ade80; color: #090e09; font-weight: 700; padding: 10px 22px; border: none; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
                 <span>🚀</span> Push Notification Now
+                Push Notification Now
               </button>
             </div>
           </form>
@@ -1172,7 +1427,10 @@
               </tr>
             </thead>
             <tbody id="broadcastsTableBody">
-              <tr><td colspan="5" style="text-align: center; color: #64748b; padding: 20px;">Loading live dispatches...</td></tr>
+              <tr>
+                <td colspan="5" style="text-align: center; color: #64748b; padding: 20px;">Loading live dispatches...
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -1187,13 +1445,16 @@
           </div>
           <div class="admin-scope-box">
             <span class="admin-scope-pill">⚙️ Scope: Backend Config &amp; Quotas</span>
-            <span class="admin-scope-desc">Configures directory card limits, public submission locks, and illustrative badges</span>
+            <span class="admin-scope-pill">Scope: Backend Config &amp; Quotas</span>
+            <span class="admin-scope-desc">Configures directory card limits, public submission locks, and illustrative
+              badges</span>
           </div>
         </div>
 
         <div class="admin-card">
           <div class="admin-card-title">Listing &amp; Pagination Quotas</div>
-          <p style="font-size: 13px; color: #94a3b8; margin: 0 0 16px 0;">Controls maximum cards served in public directories before truncation.</p>
+          <p style="font-size: 13px; color: #94a3b8; margin: 0 0 16px 0;">Controls maximum cards served in public
+            directories before truncation.</p>
           <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
             <div class="form-group">
               <label class="form-label">Calls Listing Limit</label>
@@ -1208,27 +1469,36 @@
               <input type="number" id="settingNotebookLimit" class="form-input" min="1" max="100" value="30">
             </div>
           </div>
-          <button id="saveListingLimitsBtn" class="btn btn-primary" onclick="saveListingLimits()">Save Listing Limits</button>
+          <button id="saveListingLimitsBtn" class="btn btn-primary" onclick="saveListingLimits()">Save Listing
+            Limits</button>
         </div>
 
         <div class="admin-card">
           <div class="admin-card-title">Operational Feature Flags</div>
-          <p style="font-size: 13px; color: #94a3b8; margin: 0 0 16px 0;">Dynamic platform controls executed without redeploying containers.</p>
+          <p style="font-size: 13px; color: #94a3b8; margin: 0 0 16px 0;">Dynamic platform controls executed without
+            redeploying containers.</p>
           <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px;">
-            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
+            <label
+              style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
               <input type="checkbox" id="flagPublicNotebook" checked>
-              <span><strong>Allow Public Lab Notebook Submissions</strong> — Verified builders can publish field notes and articles.</span>
+              <span><strong>Allow Public Lab Notebook Submissions</strong> — Verified builders can publish field notes
+                and articles.</span>
             </label>
-            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
+            <label
+              style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
               <input type="checkbox" id="flagIllustrativeItems" checked>
-              <span><strong>Render Illustrative Demo Badges</strong> — Show non-deceptive disclaimers on example sandbox entries.</span>
+              <span><strong>Render Illustrative Demo Badges</strong> — Show non-deceptive disclaimers on example sandbox
+                entries.</span>
             </label>
-            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
+            <label
+              style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13.5px; color: #cbd5e1;">
               <input type="checkbox" id="flagRequireModeration" checked>
-              <span><strong>Require Moderation For Build Calls</strong> — Submissions require operational approval before public broadcast.</span>
+              <span><strong>Require Moderation For Build Calls</strong> — Submissions require operational approval
+                before public broadcast.</span>
             </label>
           </div>
-          <button id="saveFeatureFlagsBtn" class="btn btn-primary" onclick="saveFeatureFlags()">Save Feature Flags</button>
+          <button id="saveFeatureFlagsBtn" class="btn btn-primary" onclick="saveFeatureFlags()">Save Feature
+            Flags</button>
         </div>
       </section>
 
@@ -1237,28 +1507,42 @@
         <div class="admin-header">
           <div>
             <h1 class="admin-title">System Audit Log</h1>
-            <p class="admin-subtitle">Chronological ledger of operational interventions, role changes, and decisions.</p>
+            <p class="admin-subtitle">Chronological ledger of operational interventions, role changes, and decisions.
+            </p>
           </div>
           <div class="admin-scope-box">
             <span class="admin-scope-pill">📜 Scope: Immutable System Ledger</span>
-            <span class="admin-scope-desc">Chronological cryptographic record of every administrative action, edit, and role grant</span>
+            <span class="admin-scope-pill">Scope: Immutable System Ledger</span>
+            <span class="admin-scope-desc">Chronological cryptographic record of every administrative action, edit, and
+              role grant</span>
           </div>
         </div>
         <div class="admin-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
             <div id="auditFilterBar" style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <button type="button" class="btn btn-secondary active-filter" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('all')">All Events</button>
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('application')">Applications</button>
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('call')">Build Calls</button>
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('sprint')">Sprints &amp; Clocks</button>
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('broadcast')">Broadcasts</button>
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('notebook')">Notebook</button>
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('role')">Roles</button>
-              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="filterAudit('settings')">Settings</button>
+              <button type="button" class="btn btn-secondary active-filter" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterAudit('all')">All Events</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterAudit('application')">Applications</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterAudit('call')">Build Calls</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterAudit('sprint')">Sprints &amp; Clocks</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterAudit('broadcast')">Broadcasts</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterAudit('notebook')">Notebook</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterAudit('role')">Roles</button>
+              <button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;"
+                onclick="filterAudit('settings')">Settings</button>
             </div>
             <div style="display: flex; align-items: center; gap: 12px;">
-              <span id="auditCountTotal" style="font-size: 12px; color: #94a3b8; font-family: monospace;">0 total events</span>
-              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="loadAudit()">↻ Refresh</button>
+              <span id="auditCountTotal" style="font-size: 12px; color: #94a3b8; font-family: monospace;">0 total
+                events</span>
+              <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" onclick="loadAudit()">↻
+                Refresh</button>
             </div>
           </div>
           <table class="data-table">
@@ -1272,204 +1556,246 @@
               </tr>
             </thead>
             <tbody id="auditTableBody">
-              <tr><td colspan="5" style="text-align: center; color: #64748b;">Loading audit events...</td></tr>
+              <tr>
+                <td colspan="5" style="text-align: center; color: #64748b;">Loading audit events...</td>
+              </tr>
             </tbody>
           </table>
         </div>
       </section>
-    
-    <!-- Squad Create / Edit Modal -->
-    <div id="squadModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
-      <div style="background: #0f1710; border: 1px solid #1c2e1f; border-radius: 12px; max-width: 580px; width: 100%; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
-          <h3 id="squadModalTitle" style="margin: 0; color: #f1f5f9; font-size: 1.2rem;">Create Sprint Squad</h3>
-          <button class="modal-close" onclick="closeSquadModal()" style="background: none; border: none; color: #64748b; font-size: 20px; cursor: pointer;">&times;</button>
+
+      <!-- Squad Create / Edit Modal -->
+      <div id="squadModal" class="modal-overlay"
+        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
+        <div
+          style="background: #0f1710; border: 1px solid #1c2e1f; border-radius: 12px; max-width: 580px; width: 100%; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <h3 id="squadModalTitle" style="margin: 0; color: #f1f5f9; font-size: 1.2rem;">Create Sprint Squad</h3>
+            <button class="modal-close" onclick="closeSquadModal()"
+              style="background: none; border: none; color: #64748b; font-size: 20px; cursor: pointer;">&times;</button>
+          </div>
+          <form onsubmit="saveSquad(event)">
+            <input type="hidden" id="squadEditId">
+            <div class="form-group">
+              <label class="form-label">Squad Title</label>
+              <input type="text" id="squadTitleInput" class="form-input"
+                placeholder="e.g. Groundwater Optical Probe Telemetry Squad" required>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Domain</label>
+                <select id="squadDomainSelect" class="form-select">
+                  <option value="climate">Climate</option>
+                  <option value="civic">Civic Tech</option>
+                  <option value="education">Education</option>
+                  <option value="forestry">Forestry</option>
+                  <option value="grid">Grid / Energy</option>
+                  <option value="ai">AI &amp; Sensing</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Stage</label>
+                <select id="squadStageSelect" class="form-select">
+                  <option value="forming">Forming Squad</option>
+                  <option value="building">Building • Cycle Active</option>
+                  <option value="shipped">Shipped Prototype</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Problem Statement</label>
+              <textarea id="squadProblemInput" class="form-textarea" rows="2"
+                placeholder="Brief technical summary of the challenge..." required></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target Deliverable</label>
+              <input type="text" id="squadDeliverableInput" class="form-input"
+                placeholder="e.g. Field-ready board design, firmware, and calibration documentation" required>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Team Capacity (Max Builders)</label>
+                <input type="number" id="squadCapacityInput" class="form-input" min="1" max="10" value="3" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Skill Tags (comma-separated)</label>
+                <input type="text" id="squadSkillsInput" class="form-input"
+                  placeholder="e.g. Embedded C, DSP, Hydrology">
+              </div>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+              <button type="button" class="btn btn-secondary" onclick="closeSquadModal()">Cancel</button>
+              <button type="submit" id="saveSquadBtn" class="btn btn-primary">Save Squad</button>
+            </div>
+          </form>
         </div>
-        <form onsubmit="saveSquad(event)">
-          <input type="hidden" id="squadEditId">
+      </div>
+
+      <!-- Build Call Reject Modal -->
+      <div id="callReviewModal" class="modal-overlay"
+        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
+        <div
+          style="background: #0f1710; border: 1px solid #1c2e1f; border-radius: 12px; max-width: 500px; width: 100%; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div>
+              <h3 id="callReviewModalTitle" style="margin: 0; color: #f1f5f9; font-size: 1.2rem;">Decline Build Call
+              </h3>
+              <p style="margin: 4px 0 0; font-size: 13px; color: #94a3b8;">Provide optional curator feedback for the
+                submission author.</p>
+            </div>
+            <button class="modal-close" onclick="closeCallReviewModal()"
+              style="background: none; border: none; color: #64748b; font-size: 20px; cursor: pointer;">&times;</button>
+          </div>
+          <input type="hidden" id="callReviewTargetId">
           <div class="form-group">
-            <label class="form-label">Squad Title</label>
-            <input type="text" id="squadTitleInput" class="form-input" placeholder="e.g. Groundwater Optical Probe Telemetry Squad" required>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div class="form-group">
-              <label class="form-label">Domain</label>
-              <select id="squadDomainSelect" class="form-select">
-                <option value="climate">Climate</option>
-                <option value="civic">Civic Tech</option>
-                <option value="education">Education</option>
-                <option value="forestry">Forestry</option>
-                <option value="grid">Grid / Energy</option>
-                <option value="ai">AI &amp; Sensing</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Stage</label>
-              <select id="squadStageSelect" class="form-select">
-                <option value="forming">Forming Squad</option>
-                <option value="building">Building • Cycle Active</option>
-                <option value="shipped">Shipped Prototype</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Problem Statement</label>
-            <textarea id="squadProblemInput" class="form-textarea" rows="2" placeholder="Brief technical summary of the challenge..." required></textarea>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Target Deliverable</label>
-            <input type="text" id="squadDeliverableInput" class="form-input" placeholder="e.g. Field-ready board design, firmware, and calibration documentation" required>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div class="form-group">
-              <label class="form-label">Team Capacity (Max Builders)</label>
-              <input type="number" id="squadCapacityInput" class="form-input" min="1" max="10" value="3" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Skill Tags (comma-separated)</label>
-              <input type="text" id="squadSkillsInput" class="form-input" placeholder="e.g. Embedded C, DSP, Hydrology">
-            </div>
+            <label class="form-label">Curator Reason / Note</label>
+            <textarea id="callReviewNoteInput" class="form-textarea" rows="3"
+              placeholder="e.g. Does not meet technical deliverable clarity requirements..."></textarea>
           </div>
           <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-            <button type="button" class="btn btn-secondary" onclick="closeSquadModal()">Cancel</button>
-            <button type="submit" id="saveSquadBtn" class="btn btn-primary">Save Squad</button>
+            <button type="button" class="btn btn-secondary" onclick="closeCallReviewModal()">Cancel</button>
+            <button type="button" class="btn btn-danger" onclick="submitCallReview('reject')">Confirm Decline</button>
           </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Build Call Reject Modal -->
-    <div id="callReviewModal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
-      <div style="background: #0f1710; border: 1px solid #1c2e1f; border-radius: 12px; max-width: 500px; width: 100%; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
-          <div>
-            <h3 id="callReviewModalTitle" style="margin: 0; color: #f1f5f9; font-size: 1.2rem;">Decline Build Call</h3>
-            <p style="margin: 4px 0 0; font-size: 13px; color: #94a3b8;">Provide optional curator feedback for the submission author.</p>
-          </div>
-          <button class="modal-close" onclick="closeCallReviewModal()" style="background: none; border: none; color: #64748b; font-size: 20px; cursor: pointer;">&times;</button>
-        </div>
-        <input type="hidden" id="callReviewTargetId">
-        <div class="form-group">
-          <label class="form-label">Curator Reason / Note</label>
-          <textarea id="callReviewNoteInput" class="form-textarea" rows="3" placeholder="e.g. Does not meet technical deliverable clarity requirements..."></textarea>
-        </div>
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-          <button type="button" class="btn btn-secondary" onclick="closeCallReviewModal()">Cancel</button>
-          <button type="button" class="btn btn-danger" onclick="submitCallReview('reject')">Confirm Decline</button>
         </div>
       </div>
-    </div>
 
-    <!-- In-Page Application Review Modal (Replaces browser prompt) -->
-    <div id="appReviewModal" class="admin-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
-      <div style="background: #0f1710; border: 1px solid #1c2e1f; border-radius: 12px; max-width: 500px; width: 100%; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
-          <div>
-            <h3 id="appReviewTitle" style="margin: 0; color: #f1f5f9; font-size: 1.2rem;">Review Application</h3>
-            <p id="appReviewSubtitle" style="margin: 4px 0 0; color: #94a3b8; font-size: 13px;">Applicant Details</p>
-          </div>
-          <button onclick="closeAppReviewModal()" style="background: transparent; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; padding: 0 4px;">&times;</button>
-        </div>
-
-        <div style="margin-bottom: 18px;">
-          <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 8px;">Decision Action</label>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
-            <button type="button" class="btn app-decision-btn" id="btnDecisionApproved" onclick="selectAppDecision('approved')" style="padding: 10px; font-size: 12px; font-weight: 700; border-radius: 6px; border: 1px solid #22c55e; background: rgba(34,197,94,0.15); color: #4ade80; cursor: pointer;">
-              ✓ Approve
-            </button>
-            <button type="button" class="btn app-decision-btn" id="btnDecisionWaitlisted" onclick="selectAppDecision('waitlisted')" style="padding: 10px; font-size: 12px; font-weight: 600; border-radius: 6px; border: 1px solid #64748b; background: transparent; color: #94a3b8; cursor: pointer;">
-              ⏳ Waitlist
-            </button>
-            <button type="button" class="btn app-decision-btn" id="btnDecisionDeclined" onclick="selectAppDecision('declined')" style="padding: 10px; font-size: 12px; font-weight: 600; border-radius: 6px; border: 1px solid #64748b; background: transparent; color: #94a3b8; cursor: pointer;">
-              ✕ Decline
-            </button>
-          </div>
-        </div>
-
-        <div style="margin-bottom: 20px;">
-          <label style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Curator Note / Feedback to Applicant (Optional)</label>
-          <textarea id="appReviewNote" rows="3" placeholder="e.g. Welcome to Sprint Cycle 3! Your optical probe proposal has been accepted..." style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px; font-family: inherit; font-size: 13px; resize: vertical;"></textarea>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; gap: 10px;">
-          <button class="btn btn-secondary" onclick="closeAppReviewModal()" style="padding: 10px 18px; border-radius: 6px;">Cancel</button>
-          <button class="btn btn-primary" id="btnConfirmAppReview" onclick="confirmAppReview()" style="background: #4ade80; color: #090e09; font-weight: 700; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
-            Confirm Decision →
-          </button>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Custom 1-on-1 Manual Pair Modal -->
-    <div id="manualPairModal" class="modal-overlay" style="display: none;">
-      <div class="modal-card" style="max-width: 580px;">
-        <div class="modal-header">
-          <h3 class="modal-title">Create Custom 1-on-1 Match</h3>
-          <button class="modal-close" onclick="closeManualPairModal()">&times;</button>
-        </div>
-        <form onsubmit="submitManualPair(event)">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-            <div class="form-group">
-              <label class="form-label">Person A (Initiator / Builder) *</label>
-              <select id="pairPersonASelect" class="form-select" required>
-                <option value="">-- Choose Collaborator A --</option>
-              </select>
+      <!-- In-Page Application Review Modal (Replaces browser prompt) -->
+      <div id="appReviewModal" class="admin-modal"
+        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center; padding: 20px;">
+        <div
+          style="background: #0f1710; border: 1px solid #1c2e1f; border-radius: 12px; max-width: 500px; width: 100%; padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div>
+              <h3 id="appReviewTitle" style="margin: 0; color: #f1f5f9; font-size: 1.2rem;">Review Application</h3>
+              <p id="appReviewSubtitle" style="margin: 4px 0 0; color: #94a3b8; font-size: 13px;">Applicant Details</p>
             </div>
-            <div class="form-group">
-              <label class="form-label">Person B (Partner / Problem) *</label>
-              <select id="pairPersonBSelect" class="form-select" required>
-                <option value="">-- Choose Collaborator B --</option>
-              </select>
+            <button onclick="closeAppReviewModal()"
+              style="background: transparent; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; padding: 0 4px;">&times;</button>
+          </div>
+
+          <div style="margin-bottom: 18px;">
+            <label
+              style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 8px;">Decision
+              Action</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+              <button type="button" class="btn app-decision-btn" id="btnDecisionApproved"
+                onclick="selectAppDecision('approved')"
+                style="padding: 10px; font-size: 12px; font-weight: 700; border-radius: 6px; border: 1px solid #22c55e; background: rgba(34,197,94,0.15); color: #4ade80; cursor: pointer;">
+                ✓ Approve
+              </button>
+              <button type="button" class="btn app-decision-btn" id="btnDecisionWaitlisted"
+                onclick="selectAppDecision('waitlisted')"
+                style="padding: 10px; font-size: 12px; font-weight: 600; border-radius: 6px; border: 1px solid #64748b; background: transparent; color: #94a3b8; cursor: pointer;">
+                ⏳ Waitlist
+                Waitlist
+              </button>
+              <button type="button" class="btn app-decision-btn" id="btnDecisionDeclined"
+                onclick="selectAppDecision('declined')"
+                style="padding: 10px; font-size: 12px; font-weight: 600; border-radius: 6px; border: 1px solid #64748b; background: transparent; color: #94a3b8; cursor: pointer;">
+                ✕ Decline
+              </button>
             </div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Shared Sprint Topic / Challenge Focus *</label>
-            <input type="text" id="pairTopicInput" class="form-input" placeholder="e.g. Low-Cost Optical Groundwater Sensor Telemetry" required>
+
+          <div style="margin-bottom: 20px;">
+            <label
+              style="display: block; font-size: 12px; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Curator
+              Note / Feedback to Applicant (Optional)</label>
+            <textarea id="appReviewNote" rows="3"
+              placeholder="e.g. Welcome to Sprint Cycle 3! Your optical probe proposal has been accepted..."
+              style="width: 100%; box-sizing: border-box; background: #090e09; border: 1px solid #2d4a32; padding: 10px 12px; color: #fff; border-radius: 6px; font-family: inherit; font-size: 13px; resize: vertical;"></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px;">
+            <button class="btn btn-secondary" onclick="closeAppReviewModal()"
+              style="padding: 10px 18px; border-radius: 6px;">Cancel</button>
+            <button class="btn btn-primary" id="btnConfirmAppReview" onclick="confirmAppReview()"
+              style="background: #4ade80; color: #090e09; font-weight: 700; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+              Confirm Decision →
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Custom 1-on-1 Manual Pair Modal -->
+      <div id="manualPairModal" class="modal-overlay" style="display: none;">
+        <div class="modal-card" style="max-width: 580px;">
+          <div class="modal-header">
+            <h3 class="modal-title">Create Custom 1-on-1 Match</h3>
+            <button class="modal-close" onclick="closeManualPairModal()">&times;</button>
+          </div>
+          <form onsubmit="submitManualPair(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Person A (Initiator / Builder) *</label>
+                <select id="pairPersonASelect" class="form-select" required>
+                  <option value="">-- Choose Collaborator A --</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Person B (Partner / Problem) *</label>
+                <select id="pairPersonBSelect" class="form-select" required>
+                  <option value="">-- Choose Collaborator B --</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Shared Sprint Topic / Challenge Focus *</label>
+              <input type="text" id="pairTopicInput" class="form-input"
+                placeholder="e.g. Low-Cost Optical Groundwater Sensor Telemetry" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Curator Scoping Note (Included in Introduction Email) *</label>
+              <textarea id="pairCuratorNoteInput" class="form-textarea" rows="4"
+                placeholder="e.g. Hi Maya &amp; Dev — I am introducing you both because Maya is prototyping the optical probe hardware and Dev has deep embedded DSP firmware experience..."
+                required></textarea>
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="pairDispatchEmailCheck" checked>
+              <label for="pairDispatchEmailCheck" style="font-size: 13px; color: #cbd5e1; cursor: pointer;">
+                Dispatch verified curator introduction email to both parties immediately
+              </label>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+              <button type="button" class="btn btn-secondary" onclick="closeManualPairModal()">Cancel</button>
+              <button type="submit" id="btnSubmitManualPair" class="btn btn-primary">Dispatch 1-on-1 Introduction
+                →</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Curator Scoping Intro Note Modal -->
+      <div id="curatorIntroModal" class="modal-overlay" style="display: none;">
+        <div class="modal-card" style="max-width: 500px;">
+          <div class="modal-header">
+            <h3 class="modal-title" id="curatorIntroTitle">Dispatch Curator Introduction</h3>
+            <button class="modal-close" onclick="closeCuratorIntroModal()">&times;</button>
+          </div>
+          <input type="hidden" id="curatorIntroMatchId">
+          <div
+            style="background: rgba(255,255,255,0.03); border: 1px solid var(--admin-border); border-radius: 6px; padding: 12px; margin-bottom: 14px;">
+            <div id="curatorIntroParties" style="font-size: 13.5px; color: #ffffff; font-weight: 600;"></div>
+            <div id="curatorIntroTopic" style="font-size: 12px; color: #94a3b8; margin-top: 3px;"></div>
           </div>
           <div class="form-group">
-            <label class="form-label">Curator Scoping Note (Included in Introduction Email) *</label>
-            <textarea id="pairCuratorNoteInput" class="form-textarea" rows="4" placeholder="e.g. Hi Maya &amp; Dev — I am introducing you both because Maya is prototyping the optical probe hardware and Dev has deep embedded DSP firmware experience..." required></textarea>
-          </div>
-          <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
-            <input type="checkbox" id="pairDispatchEmailCheck" checked>
-            <label for="pairDispatchEmailCheck" style="font-size: 13px; color: #cbd5e1; cursor: pointer;">
-              Dispatch verified curator introduction email to both parties immediately
-            </label>
+            <label class="form-label">Personal Curator Scoping Note *</label>
+            <textarea id="curatorIntroNoteInput" class="form-textarea" rows="4"
+              placeholder="Personal note explaining why you are connecting these two builders..."></textarea>
           </div>
           <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-            <button type="button" class="btn btn-secondary" onclick="closeManualPairModal()">Cancel</button>
-            <button type="submit" id="btnSubmitManualPair" class="btn btn-primary">Dispatch 1-on-1 Introduction →</button>
+            <button type="button" class="btn btn-secondary" onclick="closeCuratorIntroModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" id="btnConfirmCuratorIntro"
+              onclick="confirmCuratorIntro()">Dispatch Introduction Email →</button>
           </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Curator Scoping Intro Note Modal -->
-    <div id="curatorIntroModal" class="modal-overlay" style="display: none;">
-      <div class="modal-card" style="max-width: 500px;">
-        <div class="modal-header">
-          <h3 class="modal-title" id="curatorIntroTitle">Dispatch Curator Introduction</h3>
-          <button class="modal-close" onclick="closeCuratorIntroModal()">&times;</button>
-        </div>
-        <input type="hidden" id="curatorIntroMatchId">
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--admin-border); border-radius: 6px; padding: 12px; margin-bottom: 14px;">
-          <div id="curatorIntroParties" style="font-size: 13.5px; color: #ffffff; font-weight: 600;"></div>
-          <div id="curatorIntroTopic" style="font-size: 12px; color: #94a3b8; margin-top: 3px;"></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Personal Curator Scoping Note *</label>
-          <textarea id="curatorIntroNoteInput" class="form-textarea" rows="4" placeholder="Personal note explaining why you are connecting these two builders..."></textarea>
-        </div>
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-          <button type="button" class="btn btn-secondary" onclick="closeCuratorIntroModal()">Cancel</button>
-          <button type="button" class="btn btn-primary" id="btnConfirmCuratorIntro" onclick="confirmCuratorIntro()">Dispatch Introduction Email →</button>
         </div>
       </div>
-    </div>
 
-    <!-- Real-time In-Page Toast Container -->
-    <div id="adminToastContainer" style="position: fixed; bottom: 24px; right: 24px; z-index: 99999; display: flex; flex-direction: column; gap: 8px; pointer-events: none;"></div>
+      <!-- Real-time In-Page Toast Container -->
+      <div id="adminToastContainer"
+        style="position: fixed; bottom: 24px; right: 24px; z-index: 99999; display: flex; flex-direction: column; gap: 8px; pointer-events: none;">
+      </div>
     </main>
   </div>
 
@@ -1560,7 +1886,7 @@
     }
 
     // Tab switching
-    window.switchTab = function(tabName) {
+    window.switchTab = function (tabName) {
       document.querySelectorAll('.admin-nav-item').forEach(el => {
         el.classList.toggle('active', el.dataset.tab === tabName);
       });
@@ -1631,7 +1957,7 @@
     let currentReviewAppId = null;
     let currentReviewDecision = 'approved';
 
-    window.openAppReviewModal = function(id, defaultStatus = 'approved', applicantName = '', role = '') {
+    window.openAppReviewModal = function (id, defaultStatus = 'approved', applicantName = '', role = '') {
       currentReviewAppId = id;
       currentReviewDecision = defaultStatus;
       document.getElementById('appReviewTitle').textContent = `Review: ${applicantName || 'Applicant'}`;
@@ -1642,13 +1968,13 @@
       modal.style.display = 'flex';
     };
 
-    window.closeAppReviewModal = function() {
+    window.closeAppReviewModal = function () {
       const modal = document.getElementById('appReviewModal');
       if (modal) modal.style.display = 'none';
       currentReviewAppId = null;
     };
 
-    window.selectAppDecision = function(status) {
+    window.selectAppDecision = function (status) {
       currentReviewDecision = status;
       const btnApp = document.getElementById('btnDecisionApproved');
       const btnWait = document.getElementById('btnDecisionWaitlisted');
@@ -1683,7 +2009,7 @@
       }
     };
 
-    window.confirmAppReview = async function() {
+    window.confirmAppReview = async function () {
       if (!currentReviewAppId) return;
       const btn = document.getElementById('btnConfirmAppReview');
       const note = document.getElementById('appReviewNote').value.trim();
@@ -1707,7 +2033,7 @@
       }
     };
 
-    window.updateAppStatus = function(id, status, applicantName, role) {
+    window.updateAppStatus = function (id, status, applicantName, role) {
       openAppReviewModal(id, status, applicantName, role);
     };
 
@@ -1732,7 +2058,7 @@
       }
     }
 
-    window.assignUserRole = function(userId) {
+    window.assignUserRole = function (userId) {
       const u = (window.__usersList || []).find(x => x.id === userId);
       const modal = document.getElementById('roleModal');
       document.getElementById('roleUserId').value = userId;
@@ -1742,12 +2068,12 @@
       if (modal) modal.style.display = 'flex';
     };
 
-    window.closeRoleModal = function() {
+    window.closeRoleModal = function () {
       const modal = document.getElementById('roleModal');
       if (modal) modal.style.display = 'none';
     };
 
-    window.submitRoleModal = async function() {
+    window.submitRoleModal = async function () {
       const userId = document.getElementById('roleUserId').value;
       const role = document.getElementById('roleSelect').value;
       const action = document.getElementById('roleActionSelect').value;
@@ -1765,8 +2091,10 @@
           closeRoleModal();
           loadUsers();
           alert(res.data?.message || `Role "${role}" successfully ${action === 'grant' ? 'assigned' : 'revoked'}.`);
+          showAdminToast(res.data?.message || `Role "${role}" successfully ${action === 'grant' ? 'assigned' : 'revoked'}.`, 'success');
         } else {
           alert(res.message || 'Role update failed.');
+          showAdminToast(res.message || 'Role update failed.', 'error');
         }
       } finally {
         if (submitBtn) {
@@ -1847,11 +2175,12 @@
     }
 
     // 4.2 Heuristic Algorithm Execution
-    window.runMatchingAlgorithm = async function() {
+    window.runMatchingAlgorithm = async function () {
       const btn = document.getElementById('btnRunAlgorithm');
       if (btn) {
         btn.disabled = true;
         btn.innerHTML = '<span>⚡</span> Running Engine...';
+        btn.innerHTML = 'Running Engine...';
       }
 
       showAdminToast('Running heuristic matching algorithm across verified members and cohort intakes...', 'success');
@@ -1871,6 +2200,7 @@
         if (btn) {
           btn.disabled = false;
           btn.innerHTML = '<span>⚡</span> Run Matching Algorithm';
+          btn.innerHTML = 'Run Matching Algorithm';
         }
       }
     };
@@ -1895,6 +2225,7 @@
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
               <span class="badge badge-green" style="font-size: 12px; font-weight: 800;">⚡ ${p.score}% Match Affinity</span>
+              <span class="badge badge-green" style="font-size: 12px; font-weight: 800;">${p.score}% Match Affinity</span>
               <span class="badge badge-blue" style="font-size: 11px;">${escapeHtml(p.personA.domain.toUpperCase())}</span>
             </div>
 
@@ -1947,12 +2278,12 @@
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    window.dismissAlgoPair = function(idx) {
+    window.dismissAlgoPair = function (idx) {
       window.__algoSuggestedPairs.splice(idx, 1);
       renderAlgorithmResults(window.__algoSuggestedPairs, window.__algoSuggestedPairs.length);
     };
 
-    window.openAlgoIntroModal = function(idx) {
+    window.openAlgoIntroModal = function (idx) {
       const p = window.__algoSuggestedPairs[idx];
       if (!p) return;
       openManualPairModal();
@@ -1985,12 +2316,12 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
     };
 
     // 4.3 Custom Pair Creation Modal
-    window.openManualPairModal = function() {
+    window.openManualPairModal = function () {
       populatePairSelectors();
       document.getElementById('manualPairModal').style.display = 'flex';
     };
 
-    window.closeManualPairModal = function() {
+    window.closeManualPairModal = function () {
       document.getElementById('manualPairModal').style.display = 'none';
     };
 
@@ -2016,7 +2347,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       selB.innerHTML = optionsHtml.join('');
     }
 
-    window.prefillPairModal = function(id, name, email, domain) {
+    window.prefillPairModal = function (id, name, email, domain) {
       openManualPairModal();
       const selA = document.getElementById('pairPersonASelect');
       if (selA) {
@@ -2040,7 +2371,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       document.getElementById('pairCuratorNoteInput').value = `Hi ${name} — Connecting you with a complementary co-builder for your project proposal.`;
     };
 
-    window.submitManualPair = async function(e) {
+    window.submitManualPair = async function (e) {
       e.preventDefault();
       const initiatorId = document.getElementById('pairPersonASelect').value;
       const recipientId = document.getElementById('pairPersonBSelect').value;
@@ -2051,10 +2382,12 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
 
       if (!initiatorId || !recipientId) {
         alert('Please choose two distinct collaborators to pair.');
+        showAdminToast('Please choose two distinct collaborators to pair.', 'error');
         return;
       }
       if (initiatorId === recipientId) {
         alert('Person A and Person B cannot be the same person.');
+        showAdminToast('Person A and Person B cannot be the same person.', 'error');
         return;
       }
 
@@ -2085,7 +2418,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
     };
 
     // 4.4 Curator Single-Inquiry Introduction Modal
-    window.openCuratorIntroModal = function(matchId, reqName, reqEmail) {
+    window.openCuratorIntroModal = function (matchId, reqName, reqEmail) {
       document.getElementById('curatorIntroMatchId').value = matchId;
       document.getElementById('curatorIntroTitle').textContent = `Introduce: ${reqName}`;
       document.getElementById('curatorIntroParties').textContent = `Candidate: ${reqName} (${reqEmail})`;
@@ -2094,11 +2427,11 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       document.getElementById('curatorIntroModal').style.display = 'flex';
     };
 
-    window.closeCuratorIntroModal = function() {
+    window.closeCuratorIntroModal = function () {
       document.getElementById('curatorIntroModal').style.display = 'none';
     };
 
-    window.confirmCuratorIntro = async function() {
+    window.confirmCuratorIntro = async function () {
       const matchId = document.getElementById('curatorIntroMatchId').value;
       const notes = document.getElementById('curatorIntroNoteInput').value.trim();
       const btn = document.getElementById('btnConfirmCuratorIntro');
@@ -2171,7 +2504,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       `).join('');
     }
 
-    window.openCreateCallModal = function() {
+    window.openCreateCallModal = function () {
       document.getElementById('callModalTitle').textContent = 'Create Build Call';
       document.getElementById('callEditId').value = '';
       document.getElementById('callTitleInput').value = '';
@@ -2187,7 +2520,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       document.getElementById('callModal').style.display = 'flex';
     };
 
-    window.openEditCallModal = function(id) {
+    window.openEditCallModal = function (id) {
       const call = (window.__currentCalls || []).find(c => c.id === id);
       if (!call) return;
       document.getElementById('callModalTitle').textContent = 'Edit Build Call';
@@ -2205,11 +2538,11 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       document.getElementById('callModal').style.display = 'flex';
     };
 
-    window.closeCallModal = function() {
+    window.closeCallModal = function () {
       document.getElementById('callModal').style.display = 'none';
     };
 
-    window.saveCallModal = async function() {
+    window.saveCallModal = async function () {
       const editId = document.getElementById('callEditId').value;
       const title = document.getElementById('callTitleInput').value.trim();
       const organization = document.getElementById('callOrgInput').value.trim();
@@ -2224,6 +2557,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
 
       if (!title || !problemStatement) {
         alert('Title and Problem Statement are required.');
+        showAdminToast('Title and Problem Statement are required.', 'error');
         return;
       }
 
@@ -2256,7 +2590,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }
     };
 
-    window.deleteCall = async function(id, title) {
+    window.deleteCall = async function (id, title) {
       if (!confirm(`Are you sure you want to permanently delete the Build Call "${title}"? This action is logged in audit history and cannot be undone.`)) {
         return;
       }
@@ -2272,7 +2606,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
     };
 
 
-    window.approveCall = async function(id) {
+    window.approveCall = async function (id) {
       const res = await apiRequest(`/admin/calls/${id}/review`, {
         method: 'POST',
         body: JSON.stringify({ action: 'approve' })
@@ -2287,18 +2621,18 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }
     };
 
-    window.openRejectCallModal = function(id) {
+    window.openRejectCallModal = function (id) {
       document.getElementById('callReviewTargetId').value = id;
       document.getElementById('callReviewNoteInput').value = '';
       document.getElementById('callReviewModal').style.display = 'flex';
     };
 
-    window.closeCallReviewModal = function() {
+    window.closeCallReviewModal = function () {
       document.getElementById('callReviewModal').style.display = 'none';
       document.getElementById('callReviewTargetId').value = '';
     };
 
-    window.submitCallReview = async function(action) {
+    window.submitCallReview = async function (action) {
       const id = document.getElementById('callReviewTargetId').value;
       const note = document.getElementById('callReviewNoteInput').value.trim();
       closeCallReviewModal();
@@ -2345,10 +2679,10 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
           try {
             const d = new Date(cycle.targetDeadline);
             const pad = n => String(n).padStart(2, '0');
-            const localIso = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+            const localIso = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
             const deadEl = document.getElementById('cycleDeadlineInput');
             if (deadEl) deadEl.value = localIso;
-          } catch(e) {}
+          } catch (e) { }
         }
         const durEl = document.getElementById('cycleDurationInput');
         if (durEl) durEl.value = cycle.totalDurationDays || 21;
@@ -2409,8 +2743,8 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
         const stageBadge = s.stage === 'building' || s.stage === 'in_sprint'
           ? '<span class="badge badge-green">Building • Active</span>'
           : (s.stage === 'forming'
-              ? '<span class="badge badge-amber">Forming</span>'
-              : '<span class="badge badge-blue">Shipped</span>');
+            ? '<span class="badge badge-amber">Forming</span>'
+            : '<span class="badge badge-blue">Shipped</span>');
         return `
           <tr>
             <td>
@@ -2441,12 +2775,12 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }).join('');
     }
 
-    window.filterSquads = function(stage) {
+    window.filterSquads = function (stage) {
       window.__currentSquadFilter = stage;
       renderSquadsTable();
     };
 
-    window.saveSprintCycle = async function(e) {
+    window.saveSprintCycle = async function (e) {
       e.preventDefault();
       const btn = document.getElementById('saveCycleBtn');
       btn.disabled = true;
@@ -2478,7 +2812,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }
     };
 
-    window.openCreateSquadModal = function() {
+    window.openCreateSquadModal = function () {
       document.getElementById('squadModalTitle').textContent = 'Create Sprint Squad';
       document.getElementById('squadEditId').value = '';
       document.getElementById('squadTitleInput').value = '';
@@ -2491,7 +2825,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       document.getElementById('squadModal').style.display = 'flex';
     };
 
-    window.openEditSquadModal = function(id) {
+    window.openEditSquadModal = function (id) {
       const squad = (window.__sprintsList || []).find(s => s.id === id);
       if (!squad) return;
       document.getElementById('squadModalTitle').textContent = 'Edit Sprint Squad';
@@ -2506,11 +2840,11 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       document.getElementById('squadModal').style.display = 'flex';
     };
 
-    window.closeSquadModal = function() {
+    window.closeSquadModal = function () {
       document.getElementById('squadModal').style.display = 'none';
     };
 
-    window.saveSquad = async function(e) {
+    window.saveSquad = async function (e) {
       e.preventDefault();
       const editId = document.getElementById('squadEditId').value;
       const btn = document.getElementById('saveSquadBtn');
@@ -2542,7 +2876,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }
     };
 
-    window.changeSquadStage = async function(id, stage) {
+    window.changeSquadStage = async function (id, stage) {
       const res = await apiRequest(`/admin/sprints/${id}`, {
         method: 'PATCH',
         body: JSON.stringify({ stage })
@@ -2556,7 +2890,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }
     };
 
-    window.deleteSquad = async function(id, title) {
+    window.deleteSquad = async function (id, title) {
       if (!confirm(`Permanently remove squad "${title}"? This action is logged in audit history.`)) return;
       const res = await apiRequest(`/admin/sprints/${id}`, { method: 'DELETE' });
       if (res.ok) {
@@ -2580,6 +2914,13 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       if (key.startsWith('apply.')) return '📍 Scope: /apply.html';
       if (key.startsWith('footer.')) return '📍 Scope: Global Footer';
       return '📍 Scope: Dynamic Page';
+      if (key.startsWith('home.')) return 'Scope: /index.html';
+      if (key.startsWith('sprint.')) return 'Scope: /sprint.html';
+      if (key.startsWith('notebook.')) return 'Scope: /notebook.html';
+      if (key.startsWith('match.')) return 'Scope: /match.html';
+      if (key.startsWith('apply.')) return 'Scope: /apply.html';
+      if (key.startsWith('footer.')) return 'Scope: Global Footer';
+      return 'Scope: Dynamic Page';
     }
 
     async function loadContent() {
@@ -2622,10 +2963,11 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
             <td>
               <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
                 <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 11.5px;" onclick="openEditContent('${c.id}')">✏️ Edit</button>
+                <button class="btn btn-secondary" style="padding: 5px 10px; font-size: 11.5px;" onclick="openEditContent('${c.id}')">Edit</button>
                 ${c.status !== 'published'
-                  ? `<button class="btn btn-primary" style="padding: 5px 10px; font-size: 11.5px;" onclick="publishContent('${c.id}')">Publish</button>`
-                  : '<span class="badge badge-green" style="font-size: 11px;">● Live</span>'
-                }
+            ? `<button class="btn btn-primary" style="padding: 5px 10px; font-size: 11.5px;" onclick="publishContent('${c.id}')">Publish</button>`
+            : '<span class="badge badge-green" style="font-size: 11px;">● Live</span>'
+          }
                 <button class="btn btn-danger" style="padding: 5px 10px; font-size: 11.5px;" onclick="deleteContentItem('${c.id}', '${escapeHtml(c.contentKey)}')">Delete</button>
               </div>
             </td>
@@ -2636,7 +2978,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }
     }
 
-    window.openEditContent = function(id) {
+    window.openEditContent = function (id) {
       const item = (window.__contentList || []).find(c => c.id === id);
       if (!item) return;
 
@@ -2650,6 +2992,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
 
       const formTitle = document.getElementById('contentFormTitle');
       if (formTitle) formTitle.textContent = `✏️ Edit Content: ${item.contentKey}`;
+      if (formTitle) formTitle.textContent = `Edit Content: ${item.contentKey}`;
 
       const saveBtn = document.getElementById('saveContentBtn');
       if (saveBtn) {
@@ -2666,7 +3009,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       document.getElementById('tab-content').querySelector('.admin-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
-    window.cancelEditContent = function() {
+    window.cancelEditContent = function () {
       document.getElementById('contentEditId').value = '';
       document.getElementById('contentKeyInput').value = '';
       document.getElementById('contentKeyInput').readOnly = false;
@@ -2688,7 +3031,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       if (presetSelect) presetSelect.value = '';
     };
 
-    window.applyKeyPreset = function(val) {
+    window.applyKeyPreset = function (val) {
       if (!val) return;
       if (val === 'custom') {
         cancelEditContent();
@@ -2715,6 +3058,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
 
       if (!contentKey || !title || !body) {
         alert('Key, Title, and Body are required.');
+        showAdminToast('Key, Title, and Body are required.', 'error');
         return;
       }
 
@@ -2756,7 +3100,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }
     });
 
-    window.publishContent = async function(id) {
+    window.publishContent = async function (id) {
       const res = await apiRequest(`/admin/content/${id}/publish`, { method: 'POST' });
       if (res.ok) {
         showAdminToast('Content item published live!', 'success');
@@ -2767,7 +3111,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }
     };
 
-    window.deleteContentItem = async function(id, key) {
+    window.deleteContentItem = async function (id, key) {
       if (!confirm(`Permanently remove content item "${key}"? This action is logged in audit history and cannot be undone.`)) {
         return;
       }
@@ -2801,6 +3145,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
             <td>
               <strong>${escapeHtml(p.title)}</strong>
               ${p.coverImageUrl ? `<br><small style="color:#64748b;">🖼️ ${escapeHtml(p.coverImageUrl)}</small>` : ''}
+              ${p.coverImageUrl ? `<br><small style="color:#64748b;">Cover: ${escapeHtml(p.coverImageUrl)}</small>` : ''}
               ${p.summarySnippet ? `<br><small style="color:#94a3b8;">${escapeHtml(p.summarySnippet.slice(0, 60))}...</small>` : ''}
             </td>
             <td>
@@ -2834,7 +3179,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }
     }
 
-    window.openCreatePostModal = function() {
+    window.openCreatePostModal = function () {
       document.getElementById('postModalTitle').textContent = 'Write Lab Note / Blog Post';
       document.getElementById('postEditId').value = '';
       document.getElementById('postTitleInput').value = '';
@@ -2853,7 +3198,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       document.getElementById('postModal').style.display = 'flex';
     };
 
-    window.openEditPostModal = function(id) {
+    window.openEditPostModal = function (id) {
       const p = adminNotebookEntries.find(entry => entry.id === id);
       if (!p) return;
       document.getElementById('postModalTitle').textContent = 'Edit Lab Note / Blog Post';
@@ -2874,11 +3219,11 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       document.getElementById('postModal').style.display = 'flex';
     };
 
-    window.closePostModal = function() {
+    window.closePostModal = function () {
       document.getElementById('postModal').style.display = 'none';
     };
 
-    window.savePostModal = async function() {
+    window.savePostModal = async function () {
       const editId = document.getElementById('postEditId').value.trim();
       const title = document.getElementById('postTitleInput').value.trim();
       const entryType = document.getElementById('postTypeSelect').value;
@@ -2897,6 +3242,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
 
       if (!title || !bodyMarkdown) {
         alert('Title and Body Markdown are required.');
+        showAdminToast('Title and Body Markdown are required.', 'error');
         return;
       }
 
@@ -2926,10 +3272,11 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
         loadAudit();
       } else {
         alert(res.message || 'Saving notebook post failed.');
+        showAdminToast(res.message || 'Saving notebook post failed.', 'error');
       }
     };
 
-    window.deletePost = async function(id, title) {
+    window.deletePost = async function (id, title) {
       if (!confirm(`Permanently remove notebook entry "${title}"? This action is logged in audit history and cannot be undone.`)) {
         return;
       }
@@ -2939,6 +3286,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
         loadAudit();
       } else {
         alert(res.message || 'Deletion failed.');
+        showAdminToast(res.message || 'Deletion failed.', 'error');
       }
     };
 
@@ -2966,7 +3314,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }
     }
 
-    window.saveListingLimits = async function() {
+    window.saveListingLimits = async function () {
       const calls = Number(document.getElementById('settingCallsLimit').value) || 20;
       const sprints = Number(document.getElementById('settingSprintsLimit').value) || 20;
       const notebook = Number(document.getElementById('settingNotebookLimit').value) || 30;
@@ -2982,15 +3330,17 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
 
       if (res.ok) {
         alert('Listing quotas saved successfully!');
+        showAdminToast('Listing quotas saved successfully!', 'success');
         loadSettings();
         loadBroadcasts();
         loadAudit();
       } else {
         alert(res.message || 'Failed to save listing limits.');
+        showAdminToast(res.message || 'Failed to save listing limits.', 'error');
       }
     };
 
-    window.saveFeatureFlags = async function() {
+    window.saveFeatureFlags = async function () {
       const allowPublicNotebookPublishing = document.getElementById('flagPublicNotebook').checked;
       const showIllustrativeItems = document.getElementById('flagIllustrativeItems').checked;
       const requireModerationForCalls = document.getElementById('flagRequireModeration').checked;
@@ -3010,11 +3360,13 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
 
       if (res.ok) {
         alert('Feature flags updated successfully!');
+        showAdminToast('Feature flags updated successfully!', 'success');
         loadSettings();
         loadBroadcasts();
         loadAudit();
       } else {
         alert(res.message || 'Failed to update feature flags.');
+        showAdminToast(res.message || 'Failed to update feature flags.', 'error');
       }
     };
 
@@ -3106,7 +3458,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }).join('');
     }
 
-    window.filterAudit = function(cat) {
+    window.filterAudit = function (cat) {
       window.__currentAuditFilter = cat;
       const bar = document.getElementById('auditFilterBar');
       if (bar) {
@@ -3130,7 +3482,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
     }
 
     checkAuth();
-  
+
     // Broadcast Dispatches Logic
     async function loadBroadcasts() {
       const tbody = document.getElementById('broadcastsTableBody');
@@ -3166,9 +3518,9 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }).join('');
     }
 
-    
+
     // Non-blocking Toast Alerts
-    window.showAdminToast = function(msg, type = 'success') {
+    window.showAdminToast = function (msg, type = 'success') {
       const container = document.getElementById('adminToastContainer');
       if (!container) return;
       const toast = document.createElement('div');
@@ -3188,6 +3540,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
         transform: translateY(12px);
       `;
       toast.innerHTML = (isErr ? '⚠️ ' : '✓ ') + escapeHtml(msg);
+      toast.innerHTML = (isErr ? '! ' : '✓ ') + escapeHtml(msg);
       container.appendChild(toast);
       requestAnimationFrame(() => {
         toast.style.opacity = '1';
@@ -3200,7 +3553,7 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
       }, 4000);
     };
 
-    window.handleSendBroadcast = async function() {
+    window.handleSendBroadcast = async function () {
       const title = document.getElementById('bcTitle').value.trim();
       const message = document.getElementById('bcMessage').value.trim();
       const targetAudience = document.getElementById('bcAudience').value;
@@ -3219,17 +3572,19 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
 
       btn.disabled = false;
       btn.textContent = '📢 Dispatch Platform Broadcast';
+      btn.textContent = 'Dispatch Platform Broadcast';
 
       if (res.ok) {
         document.getElementById('broadcastForm').reset();
         loadBroadcasts();
         showAdminToast('🚀 Platform notification pushed live to all collaborators!', 'success');
+        showAdminToast('Platform notification pushed live to all collaborators!', 'success');
       } else {
         showAdminToast(res.message || 'Failed to dispatch broadcast.', 'error');
       }
     };
 
-    window.retractBroadcast = async function(id) {
+    window.retractBroadcast = async function (id) {
       if (!confirm('Are you sure you want to retract and delete this broadcast?')) return;
       const res = await apiRequest(`/admin/announcements/${id}`, { method: 'DELETE' });
       if (res.ok) {
@@ -3242,4 +3597,5 @@ We recommend you explore pairing on: "${p.topic}". Let's kick off a brief introd
 
   </script>
 </body>
+
 </html>

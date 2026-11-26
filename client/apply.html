@@ -1,453 +1,516 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apply to Canopy - Join the Sandbox</title>
-<meta name="description" content="Apply to Canopy. Form a profile with your domain, skills, and collaboration style to match with intentional teams.">
-<link rel="canonical" href="/apply.html">
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="apple-touch-icon" href="/favicon.png">
-<link rel="stylesheet" href="/src/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply to Canopy - Join the Sandbox</title>
+  <meta name="description"
+    content="Apply to Canopy. Form a profile with your domain, skills, and collaboration style to match with intentional teams.">
+  <link rel="canonical" href="/apply.html">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="stylesheet" href="/src/style.css">
 </head>
+
 <body class="interior-page">
 
-<!-- ============ HEADER ============ -->
-<header>
-  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
-    <a class="logo" href="/" aria-label="Canopy home">
-      <div class="logo-main">
-        <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
-        CANOPY
+  <!-- ============ HEADER ============ -->
+  <header>
+    <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+      <a class="logo" href="/" aria-label="Canopy home">
+        <div class="logo-main">
+          <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
+          CANOPY
+        </div>
+        <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
+      </a>
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="/#problem">About</a>
+        <a href="match.html">Match Teammates</a>
+        <a href="sprint.html">Active Squads</a>
+        <a href="notebook.html">Open Notebook</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+          <a class="nav-auth-link" href="login.html"
+            style="font-size:0.88rem;font-weight:600;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:6px;">Log
+            In</a>
+          <a class="nav-auth-link" href="login.html?tab=signup"
+            style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;">Sign
+            Up</a>
+        </div>
+        <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html"
+          title="Post a challenge, problem statement, or opportunity to recruit collaborators">Submit a Problem</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
-      <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
-    </a>
-    <nav class="primary-nav" aria-label="Primary">
-      <a href="/#problem">About</a>
-      <a href="match.html">Match Teammates</a>
-      <a href="sprint.html">Active Squads</a>
-      <a href="notebook.html">Open Notebook</a>
-    </nav>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
-        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:6px;">Log In</a>
-        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;">Sign Up</a>
+    </div>
+  </header>
+
+  <!-- ============ THREE-LINE CORNER DRAWER ============ -->
+  <div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
+    <div class="nav-drawer-header">
+      <span class="nav-drawer-logo">Canopy</span>
+      <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
+    </div>
+    <div class="nav-drawer-section">
+      <span class="nav-drawer-section-label">Navigation</span>
+      <a href="match.html" class="nav-drawer-link">Match Teammates</a>
+      <a href="sprint.html" class="nav-drawer-link">Active Squads</a>
+      <a href="notebook.html" class="nav-drawer-link">Open Notebook</a>
+      <a href="/#problem" class="nav-drawer-link">About Canopy</a>
+    </div>
+
+    <div class="nav-drawer-divider"></div>
+
+    <div class="nav-drawer-cta-group">
+      <a href="post-call.html" class="btn btn-stamp btn-block nav-drawer-cta">
+        <span>Post a Build Call</span>
+        <span style="font-size:0.85rem;opacity:0.85;">↗</span>
+      </a>
+      <a href="apply.html" class="btn btn-ghost btn-block nav-drawer-cta" style="border:1px solid var(--line);">
+        Apply to Canopy
+      </a>
+      <div id="drawerAuthArea" style="margin-top:6px;text-align:center;">
+        <a href="login.html" class="nav-drawer-link-subtle">Sign In / Dashboard →</a>
       </div>
-      <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html" title="Post a challenge, problem statement, or opportunity to recruit collaborators">Submit a Problem</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
-        <span></span><span></span><span></span>
+    </div>
+
+    <div class="nav-drawer-footer">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5" />
+          <path
+            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+        <span>Theme</span>
       </button>
+      <div style="display:flex;gap:12px;">
+        <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+        <a href="terms.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Terms</a>
+      </div>
     </div>
-  </div>
-</header>
+  </aside>
 
-<!-- ============ THREE-LINE CORNER DRAWER ============ -->
-<div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
-<aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
-  <div class="nav-drawer-header">
-    <span class="nav-drawer-logo">Canopy</span>
-    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
-  </div>
-  <div class="nav-drawer-section">
-    <span class="nav-drawer-section-label">Navigation</span>
-    <a href="match.html" class="nav-drawer-link">Match Teammates</a>
-    <a href="sprint.html" class="nav-drawer-link">Active Squads</a>
-    <a href="notebook.html" class="nav-drawer-link">Open Notebook</a>
-    <a href="/#problem" class="nav-drawer-link">About Canopy</a>
-  </div>
+  <main id="top">
+    <div class="stage" style="max-width:720px;">
+      <div class="stage-head reveal">
+        <span class="kicker">Membership</span>
+        <h1 data-content-key="apply.hero.headline" style="font-size:clamp(1.9rem,3.6vw,2.6rem);margin-top:4px;">Join
+          Canopy</h1>
+        <p class="lede">Create your collaborator profile.</p>
 
-  <div class="nav-drawer-divider"></div>
-
-  <div class="nav-drawer-cta-group">
-    <a href="post-call.html" class="btn btn-stamp btn-block nav-drawer-cta">
-      <span>Post a Build Call</span>
-      <span style="font-size:0.85rem;opacity:0.85;">↗</span>
-    </a>
-    <a href="apply.html" class="btn btn-ghost btn-block nav-drawer-cta" style="border:1px solid var(--line);">
-      Apply to Canopy
-    </a>
-    <div id="drawerAuthArea" style="margin-top:6px;text-align:center;">
-      <a href="login.html" class="nav-drawer-link-subtle">Sign In / Dashboard →</a>
-    </div>
-  </div>
-
-  <div class="nav-drawer-footer">
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      <span>Theme</span>
-    </button>
-    <div style="display:flex;gap:12px;">
-      <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
-      <a href="terms.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Terms</a>
-    </div>
-  </div>
-</aside>
-
-<main id="top">
-<div class="stage" style="max-width:720px;">
-  <div class="stage-head reveal">
-    <span class="kicker">Membership</span>
-    <h1 data-content-key="apply.hero.headline" style="font-size:clamp(1.9rem,3.6vw,2.6rem);margin-top:4px;">Join Canopy</h1>
-    <p class="lede">Create your collaborator profile.</p>
-
-    <!-- Auth Notice Banner (shown when unauthenticated) -->
-    <div id="authGateNotice" class="paper-card" style="display:none;margin-top:16px;padding:14px 18px;background:color-mix(in srgb, var(--coral) 8%, var(--paper));border:1px solid color-mix(in srgb, var(--coral) 35%, transparent);border-radius:10px;text-align:left;">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-        <div style="font-size:0.92rem;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:6px;">
-          <span>🔒</span> Sign in to save your profile.
+        <!-- Auth Notice Banner (shown when unauthenticated) -->
+        <div id="authGateNotice" class="paper-card"
+          style="display:none;margin-top:16px;padding:14px 18px;background:color-mix(in srgb, var(--coral) 8%, var(--paper));border:1px solid color-mix(in srgb, var(--coral) 35%, transparent);border-radius:10px;text-align:left;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+            <div style="font-size:0.92rem;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:6px;">
+              Sign in to save your profile.
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button type="button" id="applyGoogleAuthBtn" class="btn-google"
+                style="width:auto;padding:6px 12px;font-size:0.82rem;">
+                <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="#4285F4"
+                    d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z" />
+                  <path fill="#34A853"
+                    d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z" />
+                  <path fill="#FBBC05"
+                    d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" />
+                  <path fill="#EA4335"
+                    d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" />
+                </svg>
+                <span>Google</span>
+              </button>
+              <a href="login.html?redirect=/apply.html" id="applySignInBtn" class="btn btn-stamp btn-sm">Sign In →</a>
+            </div>
+          </div>
         </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <button type="button" id="applyGoogleAuthBtn" class="btn-google" style="width:auto;padding:6px 12px;font-size:0.82rem;">
-            <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-            <span>Google</span>
-          </button>
-          <a href="login.html?redirect=/apply.html" id="applySignInBtn" class="btn btn-stamp btn-sm">Sign In →</a>
-        </div>
-      </div>
-    </div>
 
-    <!-- Verified User Badge (shown when authenticated) -->
-    <div id="authIdentityBadge" class="paper-card" style="display:none;margin-top:16px;padding:12px 18px;background:color-mix(in srgb, var(--forest) 8%, var(--paper));border:1px solid color-mix(in srgb, var(--forest) 25%, transparent);border-radius:10px;display:flex;align-items:center;justify-content:space-between;font-size:0.88rem;text-align:left;">
-      <span style="color:var(--forest);font-weight:600;display:flex;align-items:center;gap:6px;">
-        <span>🌱</span> Submitting as: <strong id="authUserName" style="color:var(--ink);"></strong> (<span id="authUserEmail" style="color:var(--ink-soft);"></span>)
-      </span>
-      <span style="font-size:0.78rem;color:var(--forest);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;background:rgba(255,255,255,0.7);padding:3px 8px;border-radius:4px;">Verified ✓</span>
-    </div>
-  </div>
-
-  <div class="elevated-card paper-card" style="padding:32px clamp(18px,4vw,36px);border-radius:14px;margin-top:20px;">
-    <form id="fullApplyForm" style="display:flex;flex-direction:column;gap:18px;">
-      <div class="field">
-        <label for="appName" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Name</label>
-        <input type="text" id="appName" required placeholder="Elena Rostova" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      </div>
-
-      <div class="field">
-        <label for="appEmail" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Email</label>
-        <input type="email" id="appEmail" required placeholder="elena@domain.org" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      </div>
-
-      <div class="field" id="appPasswordGroup">
-        <label for="appPassword" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Password</label>
-        <input type="password" id="appPassword" placeholder="8+ characters" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      </div>
-
-      <div class="field">
-        <label style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Role</label>
-        <div class="pill-group" data-group="role" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
-          <button type="button" class="pill" aria-pressed="true">Builder</button>
-          <button type="button" class="pill" aria-pressed="false">Problem Holder</button>
-          <button type="button" class="pill" aria-pressed="false">Enabler</button>
+        <!-- Verified User Badge (shown when authenticated) -->
+        <div id="authIdentityBadge" class="paper-card"
+          style="display:none;margin-top:16px;padding:12px 18px;background:color-mix(in srgb, var(--forest) 8%, var(--paper));border:1px solid color-mix(in srgb, var(--forest) 25%, transparent);border-radius:10px;display:flex;align-items:center;justify-content:space-between;font-size:0.88rem;text-align:left;">
+          <span style="color:var(--forest);font-weight:600;display:flex;align-items:center;gap:6px;">
+            Submitting as: <strong id="authUserName" style="color:var(--ink);"></strong> (<span id="authUserEmail"
+              style="color:var(--ink-soft);"></span>)
+          </span>
+          <span
+            style="font-size:0.78rem;color:var(--forest);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;background:rgba(255,255,255,0.7);padding:3px 8px;border-radius:4px;">Verified
+            ✓</span>
         </div>
       </div>
 
-      <div class="field">
-        <label style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Domain</label>
-        <div class="pill-group" data-group="domain" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
-          <button type="button" class="pill" aria-pressed="true">Climate</button>
-          <button type="button" class="pill" aria-pressed="false">Health</button>
-          <button type="button" class="pill" aria-pressed="false">Education</button>
-          <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
-          <button type="button" class="pill" aria-pressed="false">Hardware</button>
-          <button type="button" class="pill" aria-pressed="false">AI / ML</button>
-          <button type="button" class="pill" aria-pressed="false">Design</button>
-        </div>
-      </div>
+      <div class="elevated-card paper-card"
+        style="padding:32px clamp(18px,4vw,36px);border-radius:14px;margin-top:20px;">
+        <form id="fullApplyForm" style="display:flex;flex-direction:column;gap:18px;">
+          <div class="field">
+            <label for="appName"
+              style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Name</label>
+            <input type="text" id="appName" required placeholder="Elena Rostova"
+              style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+          </div>
 
-      <div class="field">
-        <label for="appLink" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Portfolio Link</label>
-        <input type="text" id="appLink" placeholder="GitHub or portfolio URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      </div>
+          <div class="field">
+            <label for="appEmail"
+              style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Email</label>
+            <input type="email" id="appEmail" required placeholder="elena@domain.org"
+              style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+          </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
-        <div class="field">
-          <label for="appIntent" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Collaboration Intent</label>
-          <select id="appIntent" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
-            <option value="join_squad">Have skills — want to join a squad</option>
-            <option value="have_problem">Have a problem/idea — need co-builders</option>
-            <option value="sponsor">Sponsoring / advising a squad</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="appCraft" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Primary Craft</label>
-          <select id="appCraft" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
-            <option value="software">Software / Full-Stack</option>
-            <option value="hardware">Hardware / Embedded</option>
-            <option value="ml">ML / Data Science</option>
-            <option value="design">Product / UI Design</option>
-            <option value="research">Field / Domain Research</option>
-            <option value="ops">Operations / GTM</option>
-          </select>
-        </div>
-      </div>
+          <div class="field" id="appPasswordGroup">
+            <label for="appPassword"
+              style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Password</label>
+            <input type="password" id="appPassword" placeholder="8+ characters"
+              style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+          </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
-        <div class="field">
-          <label for="appHours" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Weekly Commitment</label>
-          <select id="appHours" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
-            <option value="5-10">5–10 hrs/wk</option>
-            <option value="10-20" selected>10–20 hrs/wk (Core Sprint)</option>
-            <option value="20+">20+ hrs/wk (Sprint Lead)</option>
-            <option value="<5">&lt; 5 hrs/wk (Advisory)</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="appTimezone" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Timezone Window</label>
-          <select id="appTimezone" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
-            <option value="async">Async-First (Global)</option>
-            <option value="apac">APAC / IST (UTC+5:30 to +10)</option>
-            <option value="emea">EMEA (UTC+0 to +3)</option>
-            <option value="americas">Americas (UTC-8 to -3)</option>
-          </select>
-        </div>
-      </div>
+          <div class="field">
+            <label
+              style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Role</label>
+            <div class="pill-group" data-group="role" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button type="button" class="pill" aria-pressed="true">Builder</button>
+              <button type="button" class="pill" aria-pressed="false">Problem Holder</button>
+              <button type="button" class="pill" aria-pressed="false">Enabler</button>
+            </div>
+          </div>
 
-      <div class="field">
-        <label for="appSkills" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Core Skill Tags (comma-separated)</label>
-        <input type="text" id="appSkills" placeholder="e.g. Python, LoRaWAN, React, PCB Design" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
-      </div>
+          <div class="field">
+            <label
+              style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Domain</label>
+            <div class="pill-group" data-group="domain" data-single="true" style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button type="button" class="pill" aria-pressed="true">Climate</button>
+              <button type="button" class="pill" aria-pressed="false">Health</button>
+              <button type="button" class="pill" aria-pressed="false">Education</button>
+              <button type="button" class="pill" aria-pressed="false">Civic Tech</button>
+              <button type="button" class="pill" aria-pressed="false">Hardware</button>
+              <button type="button" class="pill" aria-pressed="false">AI / ML</button>
+              <button type="button" class="pill" aria-pressed="false">Design</button>
+            </div>
+          </div>
 
-      <div class="field">
-        <label for="appNote" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">What You Build</label>
-        <textarea id="appNote" required rows="3" placeholder="Skills, tools, or projects..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:inherit;"></textarea>
-      </div>
+          <div class="field">
+            <label for="appLink"
+              style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Portfolio
+              Link</label>
+            <input type="text" id="appLink" placeholder="GitHub or portfolio URL"
+              style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+          </div>
 
-      <div class="field" style="display:flex;align-items:flex-start;gap:8px;margin-top:2px;">
-        <input type="checkbox" id="appConsent" required style="margin-top:3px;accent-color:var(--forest);">
-        <label for="appConsent" style="font-size:0.8rem;color:var(--ink-soft);line-height:1.4;">
-          I agree to the <a href="privacy.html" target="_blank" style="color:var(--forest);text-decoration:underline;">Privacy Policy</a>.
-        </label>
-      </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
+            <div class="field">
+              <label for="appIntent"
+                style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Collaboration
+                Intent</label>
+              <select id="appIntent"
+                style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
+                <option value="join_squad">Have skills — want to join a squad</option>
+                <option value="have_problem">Have a problem/idea — need co-builders</option>
+                <option value="sponsor">Sponsoring / advising a squad</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="appCraft"
+                style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Primary
+                Craft</label>
+              <select id="appCraft"
+                style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
+                <option value="software">Software / Full-Stack</option>
+                <option value="hardware">Hardware / Embedded</option>
+                <option value="ml">ML / Data Science</option>
+                <option value="design">Product / UI Design</option>
+                <option value="research">Field / Domain Research</option>
+                <option value="ops">Operations / GTM</option>
+              </select>
+            </div>
+          </div>
 
-      <div id="applyAlert" style="display:none;" role="alert"></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
+            <div class="field">
+              <label for="appHours"
+                style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Weekly
+                Commitment</label>
+              <select id="appHours"
+                style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
+                <option value="5-10">5–10 hrs/wk</option>
+                <option value="10-20" selected>10–20 hrs/wk (Core Sprint)</option>
+                <option value="20+">20+ hrs/wk (Sprint Lead)</option>
+                <option value="<5">&lt; 5 hrs/wk (Advisory)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="appTimezone"
+                style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Timezone
+                Window</label>
+              <select id="appTimezone"
+                style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
+                <option value="async">Async-First (Global)</option>
+                <option value="apac">APAC / IST (UTC+5:30 to +10)</option>
+                <option value="emea">EMEA (UTC+0 to +3)</option>
+                <option value="americas">Americas (UTC-8 to -3)</option>
+              </select>
+            </div>
+          </div>
 
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:14px;border-top:1px solid var(--line);">
-        <span style="font-size:0.8rem;color:var(--ink-faint);">Rolling reviews</span>
-        <button type="submit" id="appSubmitBtn" class="btn btn-stamp">Apply →</button>
-      </div>
-    </form>
-  </div>
-</div>
-</main>
+          <div class="field">
+            <label for="appSkills"
+              style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Core
+              Skill Tags (comma-separated)</label>
+            <input type="text" id="appSkills" placeholder="e.g. Python, LoRaWAN, React, PCB Design"
+              style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+          </div>
 
-<div class="toast" id="toast">🌱 Application planted: welcome to Canopy.</div>
+          <div class="field">
+            <label for="appNote"
+              style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">What
+              You Build</label>
+            <textarea id="appNote" required rows="3" placeholder="Skills, tools, or projects..."
+              style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:inherit;"></textarea>
+          </div>
 
-<!-- ============ FOOTER ============ -->
-<footer>
-  <div class="wrap">
-    <div>
-      <div class="footer-logo">
-        <img src="/canopy-logo.png" alt="Canopy Logo" height="36" style="height:36px;width:auto;display:block;">
-        <div class="footer-logo-text">
-          <span class="footer-logo-name">CANOPY</span>
-          <span class="footer-logo-sub">Build · Connect · Ship</span>
-        </div>
-      </div>
-      <div style="margin-top:14px;">
-        <p class="founder-quote"><span data-content-key="home.founder_quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."</span><cite>Aarushi Chatterjee, Founder</cite></p>
+          <div class="field" style="display:flex;align-items:flex-start;gap:8px;margin-top:2px;">
+            <input type="checkbox" id="appConsent" required style="margin-top:3px;accent-color:var(--forest);">
+            <label for="appConsent" style="font-size:0.8rem;color:var(--ink-soft);line-height:1.4;">
+              I agree to the <a href="privacy.html" target="_blank"
+                style="color:var(--forest);text-decoration:underline;">Privacy Policy</a>.
+            </label>
+          </div>
+
+          <div id="applyAlert" style="display:none;" role="alert"></div>
+
+          <div
+            style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:14px;border-top:1px solid var(--line);">
+            <span style="font-size:0.8rem;color:var(--ink-faint);">Rolling reviews</span>
+            <button type="submit" id="appSubmitBtn" class="btn btn-stamp">Apply →</button>
+          </div>
+        </form>
       </div>
     </div>
-    <div>
-      <h5>Ecosystem</h5>
-      <a href="match.html">Build Calls Directory</a>
-      <a href="sprint.html">Active Sprints Board</a>
-      <a href="notebook.html">Open Notebook</a>
-      <a href="/#problem">The Coordination Gap</a>
+  </main>
+
+  <div class="toast" id="toast">Application planted: welcome to Canopy.</div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
+      <div>
+        <div class="footer-logo">
+          <img src="/canopy-logo.png" alt="Canopy Logo" height="36" style="height:36px;width:auto;display:block;">
+          <div class="footer-logo-text">
+            <span class="footer-logo-name">CANOPY</span>
+            <span class="footer-logo-sub">Build · Connect · Ship</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <p class="founder-quote"><span data-content-key="home.founder_quote">"I kept hearing the same frustration from
+              brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project
+              at a time."</span><cite>Aarushi Chatterjee, Founder</cite></p>
+        </div>
+      </div>
+      <div>
+        <h5>Ecosystem</h5>
+        <a href="match.html">Build Calls Directory</a>
+        <a href="sprint.html">Active Sprints Board</a>
+        <a href="notebook.html">Open Notebook</a>
+        <a href="/#problem">The Coordination Gap</a>
+      </div>
+      <div>
+        <h5>Workspaces</h5>
+        <a href="post-call.html">Post a Build Call</a>
+        <a href="builders.html">Builders Guild</a>
+        <a href="problem-holders.html">Problem Holders</a>
+        <a href="enablers.html">Sponsors &amp; Enablers</a>
+      </div>
+      <div>
+        <h5>Charter &amp; Legal</h5>
+        <a href="terms.html">Community Charter</a>
+        <a href="privacy.html">Data Privacy</a>
+        <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
+        <a href="https://www.linkedin.com/company/canopy-collaborate/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
     </div>
-    <div>
-      <h5>Workspaces</h5>
-      <a href="post-call.html">Post a Build Call</a>
-      <a href="builders.html">Builders Guild</a>
-      <a href="problem-holders.html">Problem Holders</a>
-      <a href="enablers.html">Sponsors &amp; Enablers</a>
+    <div class="foot-bottom">
+      <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
+      <span>&copy; 2026 Canopy. All rights reserved.</span>
     </div>
-    <div>
-      <h5>Charter &amp; Legal</h5>
-      <a href="terms.html">Community Charter</a>
-      <a href="privacy.html">Data Privacy</a>
-      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
-      <a href="https://www.linkedin.com/company/canopy-collaborate/" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </div>
-  <div class="foot-bottom">
-    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
-    <span>&copy; 2026 Canopy. All rights reserved.</span>
-  </div>
-</footer>
+  </footer>
 
-<script type="module" src="/src/main.js"></script>
-<script type="module">
-  import { db, auth } from '/src/db.js';
-  const form = document.getElementById('fullApplyForm');
-  const toast = document.getElementById('toast');
-  const submitBtn = document.getElementById('appSubmitBtn');
-  const authGateNotice = document.getElementById('authGateNotice');
-  const authIdentityBadge = document.getElementById('authIdentityBadge');
-  const authUserName = document.getElementById('authUserName');
-  const authUserEmail = document.getElementById('authUserEmail');
-  const applyGoogleAuthBtn = document.getElementById('applyGoogleAuthBtn');
-  const applySignInBtn = document.getElementById('applySignInBtn');
+  <script type="module" src="/src/main.js"></script>
+  <script type="module">
+    import { db, auth } from '/src/db.js';
+    const form = document.getElementById('fullApplyForm');
+    const toast = document.getElementById('toast');
+    const submitBtn = document.getElementById('appSubmitBtn');
+    const authGateNotice = document.getElementById('authGateNotice');
+    const authIdentityBadge = document.getElementById('authIdentityBadge');
+    const authUserName = document.getElementById('authUserName');
+    const authUserEmail = document.getElementById('authUserEmail');
+    const applyGoogleAuthBtn = document.getElementById('applyGoogleAuthBtn');
+    const applySignInBtn = document.getElementById('applySignInBtn');
 
-  const DRAFT_KEY = 'canopy_apply_draft';
-  let currentUser = null;
+    const DRAFT_KEY = 'canopy_apply_draft';
+    let currentUser = null;
 
-  // Helper: Save draft to sessionStorage
-  function saveDraft() {
-    const rolePill = form ? form.querySelector('[data-group="role"] .pill[aria-pressed="true"]') : null;
-    const domainPill = form ? form.querySelector('[data-group="domain"] .pill[aria-pressed="true"]') : null;
-    const draft = {
-      name: document.getElementById('appName')?.value || '',
-      email: document.getElementById('appEmail')?.value || '',
-      link: document.getElementById('appLink')?.value || '',
-      note: document.getElementById('appNote')?.value || '',
-      role: rolePill ? rolePill.textContent : 'Builder',
-      domain: domainPill ? domainPill.textContent : 'Climate'
-    };
-    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-  }
-
-  // Helper: Restore draft from sessionStorage
-  function restoreDraft() {
-    try {
-      const raw = sessionStorage.getItem(DRAFT_KEY);
-      if (!raw) return;
-      const draft = JSON.parse(raw);
-      if (draft.name && document.getElementById('appName')) document.getElementById('appName').value = draft.name;
-      if (draft.email && document.getElementById('appEmail')) document.getElementById('appEmail').value = draft.email;
-      if (draft.link && document.getElementById('appLink')) document.getElementById('appLink').value = draft.link;
-      if (draft.note && document.getElementById('appNote')) document.getElementById('appNote').value = draft.note;
-    } catch (_) {}
-  }
-
-  // Monitor form input changes to auto-save draft
-  if (form) {
-    form.addEventListener('input', saveDraft);
-  }
-
-  // Hook Google Auth on Apply page
-  if (applyGoogleAuthBtn) {
-    applyGoogleAuthBtn.addEventListener('click', async () => {
-      saveDraft();
-      applyGoogleAuthBtn.disabled = true;
-      applyGoogleAuthBtn.innerHTML = 'Connecting...';
-      try {
-        await auth.signInWithGoogle('/apply.html');
-      } catch (err) {
-        applyGoogleAuthBtn.disabled = false;
-        applyGoogleAuthBtn.innerHTML = 'Google';
-        alert('Could not start Google Sign-In: ' + err.message);
-      }
-    });
-  }
-
-  if (applySignInBtn) {
-    applySignInBtn.addEventListener('click', () => {
-      saveDraft();
-    });
-  }
-
-  // Initial Auth Check
-  async function checkAuth() {
-    restoreDraft();
-    try {
-      currentUser = await auth.getCurrentUser();
-      if (currentUser && !currentUser.isGuest) {
-        if (authGateNotice) authGateNotice.style.display = 'none';
-        const pwdGroup = document.getElementById('appPasswordGroup');
-        if (pwdGroup) pwdGroup.style.display = 'none';
-        if (authIdentityBadge) {
-          authIdentityBadge.style.display = 'flex';
-          if (authUserName) authUserName.textContent = currentUser.displayName || currentUser.email?.split('@')[0] || 'Collaborator';
-          if (authUserEmail) authUserEmail.textContent = currentUser.email || '';
-        }
-        // Auto-fill user email & name if empty
-        const emailInput = document.getElementById('appEmail');
-        const nameInput = document.getElementById('appName');
-        if (emailInput && (!emailInput.value || emailInput.value === 'elena@domain.org')) {
-          emailInput.value = currentUser.email || '';
-        }
-        if (nameInput && (!nameInput.value || nameInput.value === 'Elena Rostova')) {
-          nameInput.value = currentUser.displayName || '';
-        }
-      } else {
-        if (authGateNotice) authGateNotice.style.display = 'block';
-        const pwdGroup = document.getElementById('appPasswordGroup');
-        if (pwdGroup) pwdGroup.style.display = 'flex';
-        if (authIdentityBadge) authIdentityBadge.style.display = 'none';
-      }
-    } catch (_) {
-      if (authGateNotice) authGateNotice.style.display = 'block';
+    // Helper: Save draft to sessionStorage
+    function saveDraft() {
+      const rolePill = form ? form.querySelector('[data-group="role"] .pill[aria-pressed="true"]') : null;
+      const domainPill = form ? form.querySelector('[data-group="domain"] .pill[aria-pressed="true"]') : null;
+      const draft = {
+        name: document.getElementById('appName')?.value || '',
+        email: document.getElementById('appEmail')?.value || '',
+        link: document.getElementById('appLink')?.value || '',
+        note: document.getElementById('appNote')?.value || '',
+        role: rolePill ? rolePill.textContent : 'Builder',
+        domain: domainPill ? domainPill.textContent : 'Climate'
+      };
+      sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
     }
-  }
 
-  checkAuth();
+    // Helper: Restore draft from sessionStorage
+    function restoreDraft() {
+      try {
+        const raw = sessionStorage.getItem(DRAFT_KEY);
+        if (!raw) return;
+        const draft = JSON.parse(raw);
+        if (draft.name && document.getElementById('appName')) document.getElementById('appName').value = draft.name;
+        if (draft.email && document.getElementById('appEmail')) document.getElementById('appEmail').value = draft.email;
+        if (draft.link && document.getElementById('appLink')) document.getElementById('appLink').value = draft.link;
+        if (draft.note && document.getElementById('appNote')) document.getElementById('appNote').value = draft.note;
+      } catch (_) { }
+    }
 
-  if (form) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    // Monitor form input changes to auto-save draft
+    if (form) {
+      form.addEventListener('input', saveDraft);
+    }
 
-      const name = document.getElementById('appName').value.trim();
-      const email = document.getElementById('appEmail').value.trim();
-      const password = document.getElementById('appPassword')?.value || '';
-      const link = document.getElementById('appLink').value.trim();
-      const note = document.getElementById('appNote').value.trim();
-      const rolePill = form.querySelector('[data-group="role"] .pill[aria-pressed="true"]');
-      const domainPill = form.querySelector('[data-group="domain"] .pill[aria-pressed="true"]');
-      const role = rolePill ? rolePill.textContent : 'Builder';
-      const domain = domainPill ? domainPill.textContent : 'Climate';
-
-      const applyAlert = document.getElementById('applyAlert');
-      if (applyAlert) applyAlert.style.display = 'none';
-
-      // Atomic Registration if not already authenticated
-      if (!currentUser || currentUser.isGuest) {
-        if (!password || password.length < 8) {
-          if (applyAlert) {
-            applyAlert.className = 'status-alert status-alert-error';
-            applyAlert.innerHTML = '<div><strong>Passcode Required:</strong> Please enter a password of at least 8 characters to secure your Field Station Pass.</div>';
-            applyAlert.style.display = 'flex';
-          }
-          document.getElementById('appPassword')?.focus();
-          return;
-        }
-
-        const origText = submitBtn ? submitBtn.innerHTML : '';
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = 'Creating Pass & Planting Profile...';
-        }
-
+    // Hook Google Auth on Apply page
+    if (applyGoogleAuthBtn) {
+      applyGoogleAuthBtn.addEventListener('click', async () => {
+        saveDraft();
+        applyGoogleAuthBtn.disabled = true;
+        applyGoogleAuthBtn.innerHTML = 'Connecting...';
         try {
-          // 1. Create account pass
-          let regResult = null;
-          try {
-            regResult = await auth.signUp(email, password, { displayName: name, role: role.toLowerCase().replace(' ', '_') });
-          } catch (signUpErr) {
-            // If already registered, attempt login
-            if (signUpErr.message.includes('already exists')) {
-              await auth.signIn(email, password);
-            } else {
-              throw signUpErr;
+          await auth.signInWithGoogle('/apply.html');
+        } catch (err) {
+          applyGoogleAuthBtn.disabled = false;
+          applyGoogleAuthBtn.innerHTML = 'Google';
+          alert('Could not start Google Sign-In: ' + err.message);
+        }
+      });
+    }
+
+    if (applySignInBtn) {
+      applySignInBtn.addEventListener('click', () => {
+        saveDraft();
+      });
+    }
+
+    // Initial Auth Check
+    async function checkAuth() {
+      restoreDraft();
+      try {
+        currentUser = await auth.getCurrentUser();
+        if (currentUser && !currentUser.isGuest) {
+          if (authGateNotice) authGateNotice.style.display = 'none';
+          const pwdGroup = document.getElementById('appPasswordGroup');
+          if (pwdGroup) pwdGroup.style.display = 'none';
+          if (authIdentityBadge) {
+            authIdentityBadge.style.display = 'flex';
+            if (authUserName) authUserName.textContent = currentUser.displayName || currentUser.email?.split('@')[0] || 'Collaborator';
+            if (authUserEmail) authUserEmail.textContent = currentUser.email || '';
+          }
+          // Auto-fill user email & name if empty
+          const emailInput = document.getElementById('appEmail');
+          const nameInput = document.getElementById('appName');
+          if (emailInput && (!emailInput.value || emailInput.value === 'elena@domain.org')) {
+            emailInput.value = currentUser.email || '';
+          }
+          if (nameInput && (!nameInput.value || nameInput.value === 'Elena Rostova')) {
+            nameInput.value = currentUser.displayName || '';
+          }
+        } else {
+          if (authGateNotice) authGateNotice.style.display = 'block';
+          const pwdGroup = document.getElementById('appPasswordGroup');
+          if (pwdGroup) pwdGroup.style.display = 'flex';
+          if (authIdentityBadge) authIdentityBadge.style.display = 'none';
+        }
+      } catch (_) {
+        if (authGateNotice) authGateNotice.style.display = 'block';
+      }
+    }
+
+    checkAuth();
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('appName').value.trim();
+        const email = document.getElementById('appEmail').value.trim();
+        const password = document.getElementById('appPassword')?.value || '';
+        const link = document.getElementById('appLink').value.trim();
+        const note = document.getElementById('appNote').value.trim();
+        const rolePill = form.querySelector('[data-group="role"] .pill[aria-pressed="true"]');
+        const domainPill = form.querySelector('[data-group="domain"] .pill[aria-pressed="true"]');
+        const role = rolePill ? rolePill.textContent : 'Builder';
+        const domain = domainPill ? domainPill.textContent : 'Climate';
+
+        const applyAlert = document.getElementById('applyAlert');
+        if (applyAlert) applyAlert.style.display = 'none';
+
+        // Atomic Registration if not already authenticated
+        if (!currentUser || currentUser.isGuest) {
+          if (!password || password.length < 8) {
+            if (applyAlert) {
+              applyAlert.className = 'status-alert status-alert-error';
+              applyAlert.innerHTML = '<div><strong>Passcode Required:</strong> Please enter a password of at least 8 characters to secure your Field Station Pass.</div>';
+              applyAlert.style.display = 'flex';
             }
+            document.getElementById('appPassword')?.focus();
+            return;
           }
 
-          // 2. Submit application
-          const intent = document.getElementById('appIntent')?.value || 'join_squad';
-          const craft = document.getElementById('appCraft')?.value || 'software';
-          const weeklyHours = document.getElementById('appHours')?.value || '10-20';
-          const timezone = document.getElementById('appTimezone')?.value || 'async';
-          const skillsRaw = document.getElementById('appSkills')?.value || '';
-          const skills = skillsRaw.split(',').map(s => s.trim()).filter(Boolean);
-          await db.submitApplication({ fullName: name, name, email, role, domain, intent, craft, weeklyHours, timezone, skills, link, proofOfWorkLink: link, motivationNote: note, note });
-          db.saveProfile({ name, email, role, domain, intent, craft, weeklyHours, timezone, skills });
-          sessionStorage.removeItem(DRAFT_KEY);
+          const origText = submitBtn ? submitBtn.innerHTML : '';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Creating Pass & Planting Profile...';
+          }
 
-          // 3. Render inline OTP verification card
-          if (applyAlert) {
-            applyAlert.className = 'status-alert status-alert-pending';
-            applyAlert.innerHTML = `
+          try {
+            // 1. Create account pass
+            let regResult = null;
+            try {
+              regResult = await auth.signUp(email, password, { displayName: name, role: role.toLowerCase().replace(' ', '_') });
+            } catch (signUpErr) {
+              // If already registered, attempt login
+              if (signUpErr.message.includes('already exists')) {
+                await auth.signIn(email, password);
+              } else {
+                throw signUpErr;
+              }
+            }
+
+            // 2. Submit application
+            const intent = document.getElementById('appIntent')?.value || 'join_squad';
+            const craft = document.getElementById('appCraft')?.value || 'software';
+            const weeklyHours = document.getElementById('appHours')?.value || '10-20';
+            const timezone = document.getElementById('appTimezone')?.value || 'async';
+            const skillsRaw = document.getElementById('appSkills')?.value || '';
+            const skills = skillsRaw.split(',').map(s => s.trim()).filter(Boolean);
+            await db.submitApplication({ fullName: name, name, email, role, domain, intent, craft, weeklyHours, timezone, skills, link, proofOfWorkLink: link, motivationNote: note, note });
+            db.saveProfile({ name, email, role, domain, intent, craft, weeklyHours, timezone, skills });
+            sessionStorage.removeItem(DRAFT_KEY);
+
+            // 3. Render inline OTP verification card
+            if (applyAlert) {
+              applyAlert.className = 'status-alert status-alert-pending';
+              applyAlert.innerHTML = `
               <div style="width:100%;text-align:left;">
-                <div style="font-weight:700;font-size:1.02rem;color:var(--forest);margin-bottom:6px;">🌱 Profile Planted &amp; Pass Dispatched!</div>
+                <div style="font-weight:700;font-size:1.02rem;color:var(--forest);margin-bottom:6px;">Profile Planted &amp; Pass Dispatched</div>
                 <p style="margin:0 0 12px;font-size:0.86rem;color:var(--ink-soft);line-height:1.4;">
                   A 6-digit verification code has been dispatched to <strong>${email}</strong>. Enter it below to activate your Field Station Pass:
                 </p>
@@ -458,95 +521,96 @@
                 <div id="inlineOtpErr" style="color:var(--coral);font-size:0.82rem;margin-top:8px;"></div>
               </div>
             `;
-            applyAlert.style.display = 'flex';
+              applyAlert.style.display = 'flex';
 
-            const inlineBtn = document.getElementById('inlineVerifyBtn');
-            const inlineInput = document.getElementById('inlineOtpInput');
-            const inlineErr = document.getElementById('inlineOtpErr');
+              const inlineBtn = document.getElementById('inlineVerifyBtn');
+              const inlineInput = document.getElementById('inlineOtpInput');
+              const inlineErr = document.getElementById('inlineOtpErr');
 
-            inlineBtn.addEventListener('click', async () => {
-              const code = inlineInput.value.trim();
-              if (!code || code.length < 6) {
-                inlineErr.textContent = 'Please enter the complete 6-digit code.';
-                return;
-              }
-              inlineBtn.disabled = true;
-              inlineBtn.textContent = 'Verifying...';
-              try {
-                await auth.verifyOtp(email, code);
-                applyAlert.className = 'status-alert status-alert-success';
-                applyAlert.innerHTML = '<div><strong>🌱 Pass Activated:</strong> Welcome to Canopy! Redirecting to Match Sandbox...</div>';
-                setTimeout(() => { window.location.href = 'match.html'; }, 1000);
-              } catch (verifyErr) {
-                inlineBtn.disabled = false;
-                inlineBtn.textContent = 'Activate Pass →';
-                inlineErr.textContent = verifyErr.message || 'Invalid code. Please re-enter.';
-              }
-            });
+              inlineBtn.addEventListener('click', async () => {
+                const code = inlineInput.value.trim();
+                if (!code || code.length < 6) {
+                  inlineErr.textContent = 'Please enter the complete 6-digit code.';
+                  return;
+                }
+                inlineBtn.disabled = true;
+                inlineBtn.textContent = 'Verifying...';
+                try {
+                  await auth.verifyOtp(email, code);
+                  applyAlert.className = 'status-alert status-alert-success';
+                  applyAlert.innerHTML = '<div><strong>Pass Activated:</strong> Welcome to Canopy! Redirecting to Match Sandbox...</div>';
+                  setTimeout(() => { window.location.href = 'match.html'; }, 1000);
+                } catch (verifyErr) {
+                  inlineBtn.disabled = false;
+                  inlineBtn.textContent = 'Activate Pass →';
+                  inlineErr.textContent = verifyErr.message || 'Invalid code. Please re-enter.';
+                }
+              });
+            }
+
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = 'Profile Planted ✓';
+            }
+            return;
+          } catch (err) {
+            if (applyAlert) {
+              applyAlert.className = 'status-alert status-alert-error';
+              applyAlert.innerHTML = `<div><strong>Error:</strong> ${err.message || 'Submission could not be completed.'}</div>`;
+              applyAlert.style.display = 'flex';
+            }
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = origText;
+            }
+            return;
           }
+        }
 
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Profile Planted ✓';
+        // Existing Authenticated User submission:
+        const origText = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = 'Planting Profile...';
+        }
+
+        try {
+          const intent = document.getElementById('appIntent')?.value || 'join_squad';
+          const craft = document.getElementById('appCraft')?.value || 'software';
+          const weeklyHours = document.getElementById('appHours')?.value || '10-20';
+          const timezone = document.getElementById('appTimezone')?.value || 'async';
+          const skillsRaw = document.getElementById('appSkills')?.value || '';
+          const skills = skillsRaw.split(',').map(s => s.trim()).filter(Boolean);
+          await db.submitApplication({ fullName: name, name, email, role, domain, intent, craft, weeklyHours, timezone, skills, link, proofOfWorkLink: link, motivationNote: note, note });
+          db.saveProfile({ name, email, role, domain, intent, craft, weeklyHours, timezone, skills });
+          sessionStorage.removeItem(DRAFT_KEY);
+          if (toast) {
+            toast.textContent = 'Application received: queued for curator review.';
+            toast.classList.add('show');
           }
-          return;
+          setTimeout(() => {
+            window.location.href = 'match.html';
+          }, 1200);
         } catch (err) {
           if (applyAlert) {
             applyAlert.className = 'status-alert status-alert-error';
-            applyAlert.innerHTML = `<div><strong>Error:</strong> ${err.message || 'Submission could not be completed.'}</div>`;
-            applyAlert.style.display = 'flex';
-          }
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = origText;
-          }
-          return;
-        }
-      }
-
-      // Existing Authenticated User submission:
-      const origText = submitBtn ? submitBtn.innerHTML : '';
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = 'Planting Profile...';
-      }
-
-      try {
-        const intent = document.getElementById('appIntent')?.value || 'join_squad';
-        const craft = document.getElementById('appCraft')?.value || 'software';
-        const weeklyHours = document.getElementById('appHours')?.value || '10-20';
-        const timezone = document.getElementById('appTimezone')?.value || 'async';
-        const skillsRaw = document.getElementById('appSkills')?.value || '';
-        const skills = skillsRaw.split(',').map(s => s.trim()).filter(Boolean);
-        await db.submitApplication({ fullName: name, name, email, role, domain, intent, craft, weeklyHours, timezone, skills, link, proofOfWorkLink: link, motivationNote: note, note });
-        db.saveProfile({ name, email, role, domain, intent, craft, weeklyHours, timezone, skills });
-        sessionStorage.removeItem(DRAFT_KEY);
-        if (toast) {
-          toast.textContent = '🌱 Application received: queued for curator review.';
-          toast.classList.add('show');
-        }
-        setTimeout(() => {
-          window.location.href = 'match.html';
-        }, 1200);
-      } catch (err) {
-        if (applyAlert) {
-          applyAlert.className = 'status-alert status-alert-error';
-          applyAlert.innerHTML = `
+            applyAlert.innerHTML = `
             <div>
               <strong>Submission could not be saved:</strong> <span class="err-desc">${err.message || 'The service is currently unreachable.'}</span>
               <br><small style="color:var(--ink-soft);">Your drafted information has been preserved below.</small>
               <br><button type="button" class="btn-retry" onclick="document.getElementById('appSubmitBtn').click();">↻ Retry Submission</button>
             </div>
           `;
-          applyAlert.style.display = 'flex';
+            applyAlert.style.display = 'flex';
+          }
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origText;
+          }
         }
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = origText;
-        }
-      }
-    });
-  }
-</script>
+      });
+    }
+  </script>
 </body>
+
 </html>

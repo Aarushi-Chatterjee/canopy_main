@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { 
+const {
   applications: appsRepo,
   users: usersRepo,
   profiles: profilesRepo,
@@ -18,6 +18,7 @@ const {
 const { requireRole, requireAnyRole } = require('../middleware/auth');
 const emailService = require('../services/email');
 const storageService = require('../services/storage');
+const { scorePair } = require('../lib/matching-algo');
 
 // Base gate: Operational staff credentials required
 router.use(requireAnyRole(['content_editor', 'match_curator', 'moderator', 'admin', 'owner']));
@@ -112,9 +113,9 @@ router.patch('/applications/:id/status', requireAnyRole(['moderator', 'admin', '
     if (status === 'approved' && app.email) {
       const user = await usersRepo.findByEmail(app.email);
       if (user) {
-        const approvedRole = app.role === 'problem_holder' ? 'approved_problem_holder' 
-          : app.role === 'enabler' ? 'approved_enabler' 
-          : 'approved_builder';
+        const approvedRole = app.role === 'problem_holder' ? 'approved_problem_holder'
+          : app.role === 'enabler' ? 'approved_enabler'
+            : 'approved_builder';
 
         await userRolesRepo.grantRole(user.id, approvedRole, req.user.id);
       }
@@ -420,7 +421,7 @@ router.post('/matches/run-algorithm', requireAnyRole(['match_curator', 'moderato
     const [profiles, users, applications, matches, calls] = await Promise.all([
       profilesRepo.find(),
       usersRepo.find(),
-      applicationsRepo.find(a => a.status === 'approved' || a.status === 'pending_review'),
+      appsRepo.find(a => a.status === 'approved' || a.status === 'pending_review'),
       matchesRepo.find(),
       callsRepo.find(c => c.status === 'open')
     ]);
@@ -441,7 +442,11 @@ router.post('/matches/run-algorithm', requireAnyRole(['match_curator', 'moderato
         email: email,
         role: u?.role || p.role || 'builder',
         domain: (p.primaryDomain || 'climate').toLowerCase(),
-        skills: Array.isArray(p.skills) ? p.skills : [],
+        intent: p.intent || '',
+        craft: p.craft || '',
+        weeklyHours: p.weeklyHours || p.availabilityHours || '',
+        timezone: p.timezone || '',
+        skills: Array.isArray(p.skillTags) && p.skillTags.length ? p.skillTags : (Array.isArray(p.skills) ? p.skills : []),
         tagline: p.headline || p.tagline || '',
         source: 'user_profile'
       });
@@ -458,6 +463,10 @@ router.post('/matches/run-algorithm', requireAnyRole(['match_curator', 'moderato
         email: email,
         role: a.role || 'builder',
         domain: (a.domain || 'climate').toLowerCase(),
+        intent: a.intent || '',
+        craft: a.craft || '',
+        weeklyHours: a.weeklyHours || '',
+        timezone: a.timezone || '',
         skills: Array.isArray(a.skills) ? a.skills : (a.skills ? a.skills.split(',').map(s => s.trim()) : []),
         tagline: a.problemStatement || a.projectDescription || a.background || '',
         source: 'application'
@@ -476,6 +485,10 @@ router.post('/matches/run-algorithm', requireAnyRole(['match_curator', 'moderato
           email: email,
           role: m.matchMetadata.role || 'builder',
           domain: (m.matchMetadata.domain || 'climate').toLowerCase(),
+          intent: m.matchMetadata.intent || '',
+          craft: m.matchMetadata.craft || '',
+          weeklyHours: m.matchMetadata.weeklyHours || '',
+          timezone: m.matchMetadata.timezone || '',
           skills: Array.isArray(m.matchMetadata.skillsWanted) ? m.matchMetadata.skillsWanted : [],
           tagline: m.matchMetadata.projectDescription || '',
           source: 'squad_intake'
@@ -483,59 +496,14 @@ router.post('/matches/run-algorithm', requireAnyRole(['match_curator', 'moderato
       }
     }
 
-    // Generate pairwise matching heuristic scores
+    // Generate pairwise matching heuristic scores using shared scorePair()
     const pairs = [];
     for (let i = 0; i < candidates.length; i++) {
       for (let j = i + 1; j < candidates.length; j++) {
         const A = candidates[i];
         const B = candidates[j];
 
-        let score = 20; // baseline
-        const reasons = [];
-
-        // Domain similarity
-        if (A.domain === B.domain) {
-          score += 35;
-          reasons.push(`Direct domain synergy in ${A.domain.toUpperCase()}`);
-        } else {
-          const related = [
-            ['climate', 'forestry'],
-            ['climate', 'grid'],
-            ['civic', 'data'],
-            ['hardware', 'grid']
-          ];
-          const isRelated = related.some(r => r.includes(A.domain) && r.includes(B.domain));
-          if (isRelated) {
-            score += 20;
-            reasons.push(`Interdisciplinary domain cross-over (${A.domain} + ${B.domain})`);
-          }
-        }
-
-        // Role complementarity
-        const roleA = A.role.toLowerCase();
-        const roleB = B.role.toLowerCase();
-        if ((roleA.includes('builder') && roleB.includes('problem')) || (roleB.includes('builder') && roleA.includes('problem'))) {
-          score += 30;
-          reasons.push('High-affinity pairing: Builder + Problem Statement Holder');
-        } else if ((roleA.includes('hardware') && roleB.includes('software')) || (roleB.includes('hardware') && roleA.includes('software'))) {
-          score += 25;
-          reasons.push('Full-stack pairing: Hardware Lead + Software/Firmware Engineer');
-        } else if (roleA === roleB && roleA.includes('builder')) {
-          score += 20;
-          reasons.push('Complementary builder sprint co-leads');
-        }
-
-        // Skills intersection
-        const skillsA = new Set(A.skills.map(s => s.toLowerCase()));
-        const skillsB = new Set(B.skills.map(s => s.toLowerCase()));
-        let commonSkills = 0;
-        for (const s of skillsA) {
-          if (skillsB.has(s)) commonSkills++;
-        }
-        if (commonSkills > 0) {
-          score += Math.min(15, commonSkills * 8);
-          reasons.push(`Shared technical language (${commonSkills} shared skill tags)`);
-        }
+        const { score, reasons } = scorePair(A, B);
 
         // Determine recommended sprint topic
         let topic = `${A.domain.charAt(0).toUpperCase() + A.domain.slice(1)} Rapid Prototype Sprint`;
@@ -544,47 +512,47 @@ router.post('/matches/run-algorithm', requireAnyRole(['match_curator', 'moderato
           topic = matchedCall.title;
         }
 
-        score = Math.min(98, score);
+        const cappedScore = Math.min(98, score);
 
-        if (score >= 60) {
-          pairs.push({
-            pairId: `sug_${A.id}_${B.id}`,
-            score,
-            personA: {
-              id: A.id,
-              name: A.name,
-              email: A.email,
-              role: A.role,
-              domain: A.domain,
-              tagline: A.tagline
-            },
-            personB: {
-              id: B.id,
-              name: B.name,
-              email: B.email,
-              role: B.role,
-              domain: B.domain,
-              tagline: B.tagline
-            },
-            topic,
-            reasons
-          });
+          if (cappedScore >= 60) {
+            pairs.push({
+              pairId: `sug_${A.id}_${B.id}`,
+              score: cappedScore,
+              personA: {
+                id: A.id,
+                name: A.name,
+                email: A.email,
+                role: A.role,
+                domain: A.domain,
+                tagline: A.tagline
+              },
+              personB: {
+                id: B.id,
+                name: B.name,
+                email: B.email,
+                role: B.role,
+                domain: B.domain,
+                tagline: B.tagline
+              },
+              topic,
+              reasons
+            });
+          }
         }
       }
+
+      pairs.sort((a, b) => b.score - a.score);
+
+      res.json({
+        success: true,
+        totalCandidates: candidates.length,
+        suggestedPairs: pairs.slice(0, 10),
+        timestamp: new Date().toISOString()
+      });
+    } catch (err) {
+      res.status(err.statusCode || 500).json({ error: err.message || 'Matching algorithm failed.' });
     }
-
-    pairs.sort((a, b) => b.score - a.score);
-
-    res.json({
-      success: true,
-      totalCandidates: candidates.length,
-      suggestedPairs: pairs.slice(0, 10),
-      timestamp: new Date().toISOString()
-    });
-  } catch (err) {
-    res.status(err.statusCode || 500).json({ error: err.message || 'Matching algorithm failed.' });
-  }
-});
+  });
 
 // -------------------------------------------------------------
 // 5. Content Studio
@@ -970,7 +938,7 @@ router.post('/calls/:id/review', requireAnyRole(['moderator', 'admin', 'owner'])
         decisionNote: note
       },
       { eq: { entity_type: 'build_call', entity_id: req.params.id } }
-    ).catch(() => {});
+    ).catch(() => { });
 
     await auditRepo.logEvent({
       actorId: req.user.id,
@@ -1016,7 +984,7 @@ router.get('/sprints', requireAnyRole(['moderator', 'admin', 'owner']), async (r
 router.put('/sprints/cycle', requireAnyRole(['admin', 'owner']), async (req, res) => {
   try {
     const { cycleName, cycleTag, targetDeadline, totalDurationDays, status, activeSquadsCount, daysToJoinForming } = req.body;
-    
+
     const existing = await settingsRepo.findById('sprint_cycle');
     const updatedValue = {
       ...(existing?.value || {}),

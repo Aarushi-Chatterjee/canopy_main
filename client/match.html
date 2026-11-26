@@ -1,639 +1,795 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Match - Canopy</title>
-<meta name="description" content="Browse Build Calls and builders on Canopy. Not a swipe, an invitation: write a short note about what you'd bring, and the poster chooses who joins.">
-<link rel="canonical" href="https://canopy-ten-lake.vercel.app/match.html">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Canopy">
-<meta property="og:url" content="https://canopy-ten-lake.vercel.app/match.html">
-<meta property="og:title" content="Match - Canopy">
-<meta property="og:description" content="Not a swipe, an invitation. Browse Build Calls and builders, and write a real note about what you'd bring.">
-<meta property="og:image" content="https://canopy-ten-lake.vercel.app/og-image.png">
-<meta property="og:image:secure_url" content="https://canopy-ten-lake.vercel.app/og-image.png">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Match - Canopy">
-<meta name="twitter:description" content="Not a swipe, an invitation. Browse Build Calls and builders, and write a real note about what you'd bring.">
-<meta name="twitter:image" content="https://canopy-ten-lake.vercel.app/og-image.png">
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="apple-touch-icon" href="/favicon.png">
-<link rel="stylesheet" href="/src/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Match - Canopy</title>
+  <meta name="description"
+    content="Browse Build Calls and builders on Canopy. Not a swipe, an invitation: write a short note about what you'd bring, and the poster chooses who joins.">
+  <link rel="canonical" href="https://canopy-ten-lake.vercel.app/match.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Canopy">
+  <meta property="og:url" content="https://canopy-ten-lake.vercel.app/match.html">
+  <meta property="og:title" content="Match - Canopy">
+  <meta property="og:description"
+    content="Not a swipe, an invitation. Browse Build Calls and builders, and write a real note about what you'd bring.">
+  <meta property="og:image" content="https://canopy-ten-lake.vercel.app/og-image.png">
+  <meta property="og:image:secure_url" content="https://canopy-ten-lake.vercel.app/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Match - Canopy">
+  <meta name="twitter:description"
+    content="Not a swipe, an invitation. Browse Build Calls and builders, and write a real note about what you'd bring.">
+  <meta name="twitter:image" content="https://canopy-ten-lake.vercel.app/og-image.png">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="stylesheet" href="/src/style.css">
 </head>
+
 <body class="interior-page match-page">
 
-<!-- icon sprite -->
-<svg style="display:none" aria-hidden="true">
-  <symbol id="icon-sprout" viewBox="0 0 32 32">
-    <path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-    <path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor"/>
-    <path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor"/>
-  </symbol>
-  <symbol id="icon-bell" viewBox="0 0 16 16">
-    <path d="M8 1.5a3.5 3.5 0 0 0-3.5 3.5v2.2L3.2 9.5a.75.75 0 0 0 .55 1.25h8.5a.75.75 0 0 0 .55-1.25l-1.3-2.3V5A3.5 3.5 0 0 0 8 1.5z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
-    <path d="M6.5 12a1.5 1.5 0 0 0 3 0" stroke="currentColor" stroke-width="1.2" fill="none"/>
-  </symbol>
-</svg>
+  <!-- icon sprite -->
+  <svg style="display:none" aria-hidden="true">
+    <symbol id="icon-sprout" viewBox="0 0 32 32">
+      <path d="M16 30V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none" />
+      <path d="M16 18C16 18 4 17 5 6C16 6 16 18 16 18Z" fill="currentColor" />
+      <path d="M16 14C16 14 27 12 27 3C16 4 16 14 16 14Z" fill="currentColor" />
+    </symbol>
+    <symbol id="icon-bell" viewBox="0 0 16 16">
+      <path
+        d="M8 1.5a3.5 3.5 0 0 0-3.5 3.5v2.2L3.2 9.5a.75.75 0 0 0 .55 1.25h8.5a.75.75 0 0 0 .55-1.25l-1.3-2.3V5A3.5 3.5 0 0 0 8 1.5z"
+        stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round" />
+      <path d="M6.5 12a1.5 1.5 0 0 0 3 0" stroke="currentColor" stroke-width="1.2" fill="none" />
+    </symbol>
+  </svg>
 
-<!-- ============ HEADER ============ -->
-<header>
-  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
-    <a class="logo" href="/" aria-label="Canopy home">
-      <div class="logo-main">
-        <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
-        CANOPY
-      </div>
-      <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
-    </a>
-    <nav class="primary-nav" aria-label="Primary">
-      <a href="/#problem">About</a>
-      <a href="match.html" aria-current="page">Match Teammates</a>
-      <a href="sprint.html">Active Squads</a>
-      <a href="notebook.html">Open Notebook</a>
-    </nav>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
-        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log In</a>
-        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
-      </div>
-      <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html" title="Post a challenge, problem statement, or opportunity to recruit collaborators">Submit a Problem</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- ============ THREE-LINE CORNER DRAWER ============ -->
-<div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
-<aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
-  <div class="nav-drawer-header">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <img src="/canopy-logo.png" alt="Canopy Logo" style="width:24px;height:24px;object-fit:contain;">
-      <span class="nav-drawer-logo">Canopy</span>
-    </div>
-    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
-  </div>
-
-  <div class="nav-drawer-section">
-    <span class="nav-drawer-section-label">Navigation</span>
-    <a href="match.html" class="nav-drawer-link" style="color:var(--forest);font-weight:700;">Match Teammates</a>
-    <a href="sprint.html" class="nav-drawer-link">Active Squads</a>
-    <a href="notebook.html" class="nav-drawer-link">Open Notebook</a>
-    <a href="/#problem" class="nav-drawer-link">About Canopy</a>
-  </div>
-
-  <div class="nav-drawer-divider"></div>
-
-  <div class="nav-drawer-cta-group">
-    <a href="post-call.html" class="btn btn-stamp btn-block nav-drawer-cta">
-      <span>Post a Build Call</span>
-      <span style="font-size:0.85rem;opacity:0.85;">↗</span>
-    </a>
-    <a href="apply.html" class="btn btn-ghost btn-block nav-drawer-cta" style="border:1px solid var(--line);">
-      Apply to Canopy
-    </a>
-    <div id="drawerAuthArea" style="margin-top:6px;text-align:center;">
-      <a href="login.html" class="nav-drawer-link-subtle">Sign In / Dashboard →</a>
-    </div>
-  </div>
-
-  <div class="nav-drawer-footer">
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      <span>Theme</span>
-    </button>
-    <div style="display:flex;gap:12px;">
-      <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
-      <a href="terms.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Terms</a>
-    </div>
-  </div>
-</aside>
-
-<main id="top">
-<div class="stage">
-  <div class="stage-head reveal" style="margin-bottom:20px;">
-    <h1 data-content-key="match.hero.headline">Finding the right teammate shouldn't feel like swiping through strangers.</h1>
-    <p class="lede" data-content-key="match.lede">It should feel like meeting someone at a workshop, realizing you both care about the same problem, and deciding to build together: high-context, not high-volume. A written note, read by a real person, who chooses.</p>
-  </div>
-
-  <!-- ---- Profile Builder with Verified Connections Network ---- -->
-  <div class="profile-builder elevated-card reveal" id="profileBuilderModule" data-domain="design">
-    <div class="profile-builder-header" style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
-      <img src="/avatars/avatar-builders.png" id="activeAvatarImg" alt="Selected Persona Avatar" style="width:64px;height:64px;object-fit:contain;border-radius:12px;background:rgba(31,92,64,0.08);padding:6px;flex:0 0 auto;">
-      <div style="flex:1;min-width:240px;">
-        <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--forest);">Build Your Sandbox Profile</span>
-        <h3 class="profile-builder-title" id="profileTitle">Select your community role and focus domain</h3>
-        <p class="profile-builder-sub">Select your primary role below to configure your generative avatar and highlight calls tailored to your craft.</p>
-      </div>
-    </div>
-
-    <div class="role-picker" style="margin-top:18px;">
-      <button type="button" class="role-pick-btn" data-role="builder" data-avatar="/avatars/avatar-builders.png" aria-pressed="true">
-        <img src="/avatars/avatar-builders.png" alt="Builder">
-        <span>Builder</span>
-      </button>
-      <button type="button" class="role-pick-btn" data-role="problem-holder" data-avatar="/avatars/avatar-problem-holders.png" aria-pressed="false">
-        <img src="/avatars/avatar-problem-holders.png" alt="Problem Holder">
-        <span>Problem Holder</span>
-      </button>
-      <button type="button" class="role-pick-btn" data-role="enabler" data-avatar="/avatars/avatar-enablers.png" aria-pressed="false">
-        <img src="/avatars/avatar-enablers.png" alt="Enabler">
-        <span>Enabler</span>
-      </button>
-    </div>
-
-    <div style="border-top:1px solid var(--line);padding-top:16px;margin-top:16px;">
-      <div class="profile-builder-bar" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-          <span style="font-size:0.8rem;color:var(--ink-soft);font-weight:600;">Active tags:</span>
-          <span class="tag-chip skill" id="profileTagRole">Builder</span>
-          <span class="tag-chip" data-domain="climate">Climate &amp; AI Focus</span>
+  <!-- ============ HEADER ============ -->
+  <header>
+    <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+      <a class="logo" href="/" aria-label="Canopy home">
+        <div class="logo-main">
+          <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
+          CANOPY
         </div>
-        <div class="profile-builder-actions" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          <button type="button" class="btn btn-ghost btn-sm" id="btnToggleConnections" aria-expanded="false">
-            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true" style="margin-right:2px;"><circle cx="4" cy="8" r="2.5"/><circle cx="12" cy="4" r="2.5"/><circle cx="12" cy="12" r="2.5"/><path d="M4 8l8-4M4 8l8 4" stroke="currentColor" stroke-width="1.5"/></svg>
-            Verified Connections (3)
+        <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
+      </a>
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="/#problem">About</a>
+        <a href="match.html" aria-current="page">Match Teammates</a>
+        <a href="sprint.html">Active Squads</a>
+        <a href="notebook.html">Open Notebook</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+          <a class="nav-auth-link" href="login.html"
+            style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Log
+            In</a>
+          <a class="nav-auth-link" href="login.html?tab=signup"
+            style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign
+            Up</a>
+        </div>
+        <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html"
+          title="Post a challenge, problem statement, or opportunity to recruit collaborators">Submit a Problem</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ THREE-LINE CORNER DRAWER ============ -->
+  <div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
+    <div class="nav-drawer-header">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <img src="/canopy-logo.png" alt="Canopy Logo" style="width:24px;height:24px;object-fit:contain;">
+        <span class="nav-drawer-logo">Canopy</span>
+      </div>
+      <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
+    </div>
+
+    <div class="nav-drawer-section">
+      <span class="nav-drawer-section-label">Navigation</span>
+      <a href="match.html" class="nav-drawer-link" style="color:var(--forest);font-weight:700;">Match Teammates</a>
+      <a href="sprint.html" class="nav-drawer-link">Active Squads</a>
+      <a href="notebook.html" class="nav-drawer-link">Open Notebook</a>
+      <a href="/#problem" class="nav-drawer-link">About Canopy</a>
+    </div>
+
+    <div class="nav-drawer-divider"></div>
+
+    <div class="nav-drawer-cta-group">
+      <a href="post-call.html" class="btn btn-stamp btn-block nav-drawer-cta">
+        <span>Post a Build Call</span>
+        <span style="font-size:0.85rem;opacity:0.85;">↗</span>
+      </a>
+      <a href="apply.html" class="btn btn-ghost btn-block nav-drawer-cta" style="border:1px solid var(--line);">
+        Apply to Canopy
+      </a>
+      <div id="drawerAuthArea" style="margin-top:6px;text-align:center;">
+        <a href="login.html" class="nav-drawer-link-subtle">Sign In / Dashboard →</a>
+      </div>
+    </div>
+
+    <div class="nav-drawer-footer">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5" />
+          <path
+            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        </svg>
+        <span>Theme</span>
+      </button>
+      <div style="display:flex;gap:12px;">
+        <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+        <a href="terms.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Terms</a>
+      </div>
+    </div>
+  </aside>
+
+  <main id="top">
+    <div class="stage">
+      <div class="stage-head reveal" style="margin-bottom:20px;">
+        <h1 data-content-key="match.hero.headline">Finding the right teammate shouldn't feel like swiping through
+          strangers.</h1>
+        <p class="lede" data-content-key="match.lede">It should feel like meeting someone at a workshop, realizing you
+          both care about the same problem, and deciding to build together: high-context, not high-volume. A written
+          note, read by a real person, who chooses.</p>
+      </div>
+
+      <!-- ---- Profile Builder with Verified Connections Network ---- -->
+      <div class="profile-builder elevated-card reveal" id="profileBuilderModule" data-domain="design">
+        <div class="profile-builder-header" style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+          <img src="/avatars/avatar-builders.png" id="activeAvatarImg" alt="Selected Persona Avatar"
+            style="width:64px;height:64px;object-fit:contain;border-radius:12px;background:rgba(31,92,64,0.08);padding:6px;flex:0 0 auto;">
+          <div style="flex:1;min-width:240px;">
+            <span
+              style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;color:var(--forest);">Build
+              Your Sandbox Profile</span>
+            <h3 class="profile-builder-title" id="profileTitle">Select your community role and focus domain</h3>
+            <p class="profile-builder-sub">Select your primary role below to configure your generative avatar and
+              highlight calls tailored to your craft.</p>
+          </div>
+        </div>
+
+        <div class="role-picker" style="margin-top:18px;">
+          <button type="button" class="role-pick-btn" data-role="builder" data-avatar="/avatars/avatar-builders.png"
+            aria-pressed="true">
+            <img src="/avatars/avatar-builders.png" alt="Builder">
+            <span>Builder</span>
           </button>
-          <button type="button" class="btn btn-ghost btn-sm" id="btnToggleMyHandshakes" aria-expanded="false">
-            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true" style="margin-right:2px;"><path d="M7 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm-2-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-2-2a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-2-2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z"/><path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h11A1.5 1.5 0 0 1 15 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13.5v-11zM2.5 2a.5.5 0 0 0-.5.5v11a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-11a.5.5 0 0 0-.5-.5h-11z"/></svg>
-            My Handshakes (<span id="myHandshakeCount">0</span>)
+          <button type="button" class="role-pick-btn" data-role="problem-holder"
+            data-avatar="/avatars/avatar-problem-holders.png" aria-pressed="false">
+            <img src="/avatars/avatar-problem-holders.png" alt="Problem Holder">
+            <span>Problem Holder</span>
           </button>
-          <a href="apply.html" class="btn btn-stamp btn-sm">Complete Verified Profile →</a>
+          <button type="button" class="role-pick-btn" data-role="enabler" data-avatar="/avatars/avatar-enablers.png"
+            aria-pressed="false">
+            <img src="/avatars/avatar-enablers.png" alt="Enabler">
+            <span>Enabler</span>
+          </button>
+        </div>
+
+        <div style="border-top:1px solid var(--line);padding-top:16px;margin-top:16px;">
+          <div class="profile-builder-bar"
+            style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <span style="font-size:0.8rem;color:var(--ink-soft);font-weight:600;">Active tags:</span>
+              <span class="tag-chip skill" id="profileTagRole">Builder</span>
+              <span class="tag-chip" data-domain="climate">Climate &amp; AI Focus</span>
+            </div>
+            <div class="profile-builder-actions" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <button type="button" class="btn btn-ghost btn-sm" id="btnToggleConnections" aria-expanded="false">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
+                  style="margin-right:2px;">
+                  <circle cx="4" cy="8" r="2.5" />
+                  <circle cx="12" cy="4" r="2.5" />
+                  <circle cx="12" cy="12" r="2.5" />
+                  <path d="M4 8l8-4M4 8l8 4" stroke="currentColor" stroke-width="1.5" />
+                </svg>
+                Verified Connections (3)
+              </button>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnToggleMyHandshakes" aria-expanded="false">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"
+                  style="margin-right:2px;">
+                  <path
+                    d="M7 11.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm-2-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-2-2a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-2-2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z" />
+                  <path
+                    d="M1 2.5A1.5 1.5 0 0 1 2.5 1h11A1.5 1.5 0 0 1 15 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13.5v-11zM2.5 2a.5.5 0 0 0-.5.5v11a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-11a.5.5 0 0 0-.5-.5h-11z" />
+                </svg>
+                My Handshakes (<span id="myHandshakeCount">0</span>)
+              </button>
+              <a href="apply.html" class="btn btn-stamp btn-sm">Complete Verified Profile →</a>
+            </div>
+          </div>
+
+          <!-- Verified Connections Expandable Deck -->
+          <div class="verified-connections-panel" id="verifiedConnectionsPanel"
+            style="display:none;background:color-mix(in srgb, var(--paper) 60%, var(--card));border:1px solid var(--card-edge);border-radius:10px;padding:16px 18px;margin-top:14px;">
+            <div
+              style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span
+                  style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--forest);">Verified
+                  Peer Connections</span>
+                <span class="illustrative-badge" style="font-size:0.7rem;padding:2px 6px;">Demo Sandbox</span>
+              </div>
+              <span data-content-key="match.illustrative_example" style="font-size:0.75rem;color:var(--ink-faint);">3
+                sample collaborator channels demonstrating active cycle matching</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;">
+              <div
+                style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
+                <img src="/avatars/avatar-builders.png" alt=""
+                  style="width:32px;height:32px;border-radius:6px;object-fit:contain;background:rgba(31,92,64,0.06);">
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">Elena R.</div>
+                  <div style="font-size:0.75rem;color:var(--ink-faint);">Hardware Engineer · Soil Sensor</div>
+                  <span class="growth-badge" data-stage="in_sprint"
+                    style="margin-top:6px;font-size:0.68rem;padding:2px 6px;">Sprint Forming</span>
+                </div>
+              </div>
+              <div
+                style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
+                <img src="/avatars/avatar-problem-holders.png" alt=""
+                  style="width:32px;height:32px;border-radius:6px;object-fit:contain;background:rgba(31,92,64,0.06);">
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">Rural Water Alliance</div>
+                  <div style="font-size:0.75rem;color:var(--ink-faint);">Problem Holder · Real-Time Telemetry</div>
+                  <span class="growth-badge" data-stage="sprouting"
+                    style="margin-top:6px;font-size:0.68rem;padding:2px 6px;">Open Call Lead</span>
+                </div>
+              </div>
+              <div
+                style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
+                <img src="/avatars/avatar-enablers.png" alt=""
+                  style="width:32px;height:32px;border-radius:6px;object-fit:contain;background:rgba(31,92,64,0.06);">
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">Maya L. (Seed Fund)</div>
+                  <div style="font-size:0.75rem;color:var(--ink-faint);">Enabler · Deployment Grant Sponsor</div>
+                  <span class="growth-badge" data-stage="shipped"
+                    style="margin-top:6px;font-size:0.68rem;padding:2px 6px;">Scout Channel</span>
+                </div>
+              </div>
+            </div>
+            <div
+              style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-size:0.8rem;flex-wrap:wrap;gap:8px;">
+              <span style="color:var(--ink-soft);">Verified collaborators receive direct sprint notifications and
+                invitation channels.</span>
+              <a href="apply.html" style="color:var(--forest);font-weight:600;text-decoration:none;">Update Verification
+                Intake →</a>
+            </div>
+          </div>
+
+          <!-- My Handshakes & Notes Outbox Deck -->
+          <div class="my-handshakes-panel" id="myHandshakesPanel"
+            style="display:none;background:color-mix(in srgb, var(--paper) 60%, var(--card));border:1px solid var(--card-edge);border-radius:10px;padding:16px 18px;margin-top:14px;">
+            <div
+              style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+              <div>
+                <span
+                  style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--forest);">Your
+                  Sent Notes &amp; Handshakes</span>
+                <span style="font-size:0.75rem;color:var(--ink-faint);margin-left:8px;" id="myHandshakesSub">Live status
+                  of collaborative notes you have planted</span>
+              </div>
+              <button type="button" id="btnRefreshHandshakes" class="btn btn-ghost btn-sm"
+                style="font-size:0.75rem;padding:3px 8px;">↻ Refresh</button>
+            </div>
+            <div id="myHandshakesList"
+              style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;">
+              <div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--ink-faint);font-size:0.88rem;">
+                Loading your handshakes...
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Verified Connections Expandable Deck -->
-      <div class="verified-connections-panel" id="verifiedConnectionsPanel" style="display:none;background:color-mix(in srgb, var(--paper) 60%, var(--card));border:1px solid var(--card-edge);border-radius:10px;padding:16px 18px;margin-top:14px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--forest);">Verified Peer Connections</span>
-            <span class="illustrative-badge" style="font-size:0.7rem;padding:2px 6px;">Demo Sandbox</span>
-          </div>
-          <span data-content-key="match.illustrative_example" style="font-size:0.75rem;color:var(--ink-faint);">3 sample collaborator channels demonstrating active cycle matching</span>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;">
-          <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
-            <img src="/avatars/avatar-builders.png" alt="" style="width:32px;height:32px;border-radius:6px;object-fit:contain;background:rgba(31,92,64,0.06);">
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">Elena R.</div>
-              <div style="font-size:0.75rem;color:var(--ink-faint);">Hardware Engineer · Soil Sensor</div>
-              <span class="growth-badge" data-stage="in_sprint" style="margin-top:6px;font-size:0.68rem;padding:2px 6px;">Sprint Forming</span>
-            </div>
-          </div>
-          <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
-            <img src="/avatars/avatar-problem-holders.png" alt="" style="width:32px;height:32px;border-radius:6px;object-fit:contain;background:rgba(31,92,64,0.06);">
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">Rural Water Alliance</div>
-              <div style="font-size:0.75rem;color:var(--ink-faint);">Problem Holder · Real-Time Telemetry</div>
-              <span class="growth-badge" data-stage="sprouting" style="margin-top:6px;font-size:0.68rem;padding:2px 6px;">Open Call Lead</span>
-            </div>
-          </div>
-          <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;">
-            <img src="/avatars/avatar-enablers.png" alt="" style="width:32px;height:32px;border-radius:6px;object-fit:contain;background:rgba(31,92,64,0.06);">
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">Maya L. (Seed Fund)</div>
-              <div style="font-size:0.75rem;color:var(--ink-faint);">Enabler · Deployment Grant Sponsor</div>
-              <span class="growth-badge" data-stage="shipped" style="margin-top:6px;font-size:0.68rem;padding:2px 6px;">Scout Channel</span>
-            </div>
-          </div>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-size:0.8rem;flex-wrap:wrap;gap:8px;">
-          <span style="color:var(--ink-soft);">Verified collaborators receive direct sprint notifications and invitation channels.</span>
-          <a href="apply.html" style="color:var(--forest);font-weight:600;text-decoration:none;">Update Verification Intake →</a>
-        </div>
-      </div>
-
-      <!-- My Handshakes & Notes Outbox Deck -->
-      <div class="my-handshakes-panel" id="myHandshakesPanel" style="display:none;background:color-mix(in srgb, var(--paper) 60%, var(--card));border:1px solid var(--card-edge);border-radius:10px;padding:16px 18px;margin-top:14px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <!-- ============ LARGE-SCALE INTERACTIVE MATCH DECK & MATCHMAKER STUDIO ============ -->
+      <section class="elevated-card reveal"
+        style="border:1.5px solid var(--forest);background:var(--paper);border-radius:14px;padding:24px 28px;margin-bottom:28px;">
+        <div
+          style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:18px;">
           <div>
-            <span style="font-size:0.8rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--forest);">Your Sent Notes &amp; Handshakes</span>
-            <span style="font-size:0.75rem;color:var(--ink-faint);margin-left:8px;" id="myHandshakesSub">Live status of collaborative notes you have planted</span>
+            <span class="tag-chip" style="background:rgba(34,197,94,0.15);color:var(--forest);font-weight:700;">Curated
+              1-on-1 Matching Studio</span>
+            <h2 style="font-family:'Fraunces Var',serif;font-size:1.6rem;margin:8px 0 4px;color:var(--ink);">Match With
+              Intent. Not a Swipe.</h2>
+            <p style="margin:0;font-size:0.92rem;color:var(--ink-soft);max-width:620px;">
+              The founder personally reviews applications, scores compatibility, and curates 1-on-1 introductions
+              between engineers and problem owners.
+            </p>
           </div>
-          <button type="button" id="btnRefreshHandshakes" class="btn btn-ghost btn-sm" style="font-size:0.75rem;padding:3px 8px;">↻ Refresh</button>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <button type="button" class="btn btn-ghost" id="btnRunAiMatch" onclick="runAiMatchAnalysis()">
+              ⚡ Run AI Compatibility Match
+              Run AI Compatibility Match
+            </button>
+            <button type="button" class="btn btn-stamp" onclick="openSquadIntakeModal()">
+              <svg class="icon" aria-hidden="true" style="width:14px;height:14px;">
+                <use href="#icon-sprout" />
+              </svg>
+              Request a Squad Match →
+            </button>
+          </div>
         </div>
-        <div id="myHandshakesList" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:12px;">
-          <div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--ink-faint);font-size:0.88rem;">
-            Loading your handshakes...
+
+        <!-- AI & Algorithmic Compatibility Result Panel -->
+        <div id="aiMatchResultPanel"
+          style="display:none;background:color-mix(in srgb, var(--forest) 7%, var(--card));border:1px solid color-mix(in srgb, var(--forest) 30%, var(--card-edge));border-radius:10px;padding:18px 20px;margin-bottom:16px;">
+        </div>
+
+        <!-- Interactive Carousel Deck -->
+        <div
+          style="background:var(--card);border:1px solid var(--card-edge);border-radius:10px;padding:20px;position:relative;"
+          id="interactiveMatchDeck">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span id="deckCounter"
+              style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--forest);">Collaborator
+              Spotlight 1 of 6</span>
+            <div style="display:flex;gap:6px;">
+              <button type="button" class="btn btn-ghost btn-sm" id="btnDeckPrev" style="padding:4px 10px;">←
+                Prev</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="btnDeckNext" style="padding:4px 10px;">Next
+                →</button>
+            </div>
+          </div>
+
+          <div id="deckCardSpotlight"
+            style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
+            <img id="deckAvatar" src="/avatars/avatar-builders.png" alt="Collaborator Avatar"
+              style="width:68px;height:68px;border-radius:12px;object-fit:contain;background:rgba(31,92,64,0.08);padding:6px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <h3 id="deckName" style="margin:0;font-size:1.25rem;font-family:'Fraunces Var',serif;color:var(--ink);">
+                  Elena R.</h3>
+                <span id="deckDomainBadge" class="tag-chip" data-domain="hardware">Hardware</span>
+                <span id="deckHours" class="hint-small"
+                  style="font-size:0.78rem;color:var(--forest);font-weight:600;">15 hrs/wk · Open to pair</span>
+              </div>
+              <div id="deckTitle" style="font-size:0.85rem;color:var(--ink-faint);margin:2px 0 6px;">Hardware &amp;
+                Embedded Systems Engineer</div>
+              <div id="deckLookingToBuild"
+                style="font-size:0.92rem;color:var(--ink);line-height:1.4;margin-bottom:8px;">
+                <strong>Looking to build:</strong> Building low-power LoRa telemetry nodes for agrarian aquifer
+                monitoring.
+              </div>
+              <div id="deckChips" class="chip-row">
+                <span class="tag-chip skill">Embedded C</span>
+                <span class="tag-chip skill">LoRaWAN</span>
+                <span class="tag-chip skill">PCB Design</span>
+              </div>
+            </div>
+            <div>
+              <button type="button" class="btn btn-stamp" id="btnDeckConnect" onclick="handleDeckConnect()">
+                Request 1-on-1 Intro →
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---- Builders Directory ---- -->
+      <div class="stage-section">
+        <div class="stage-section-head">
+          <div>
+            <h2>Builders Directory</h2>
+            <p class="lede" style="margin-top:6px;margin-bottom:0;">Craftspeople, engineers, and researchers seeking
+              squads to build with. Filter by craft or domain, review what they want to build, and connect directly or
+              send a high-context note.</p>
+          </div>
+          <span class="count" id="builderCount">0 builders available</span>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div
+          style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
+          <div class="filter-row" data-filters-for="#buildersGrid" aria-label="Filter Builders by domain"
+            style="margin-bottom:0;">
+            <button type="button" class="filter-chip" data-domain="all" aria-pressed="true">All Domains</button>
+            <button type="button" class="filter-chip" data-domain="climate" aria-pressed="false">Climate</button>
+            <button type="button" class="filter-chip" data-domain="hardware" aria-pressed="false">Hardware</button>
+            <button type="button" class="filter-chip" data-domain="ai" aria-pressed="false">AI / ML</button>
+            <button type="button" class="filter-chip" data-domain="design" aria-pressed="false">Design</button>
+            <button type="button" class="filter-chip" data-domain="civic" aria-pressed="false">Civic Tech</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex:1;max-width:320px;min-width:220px;">
+            <input type="text" id="builderSearch" placeholder="Search craft, skill, or name..."
+              style="width:100%;padding:7px 12px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font-size:0.85rem;">
+          </div>
+        </div>
+
+        <div class="match-grid" id="buildersGrid"></div>
+        <div class="empty-state" id="buildersEmpty" role="status" style="display:block;">
+          <svg class="icon" aria-hidden="true"
+            style="width:32px;height:32px;margin:0 auto 10px;color:var(--forest);display:block;">
+            <use href="#icon-sprout" />
+          </svg>
+          <p style="margin:0 0 10px;font-size:0.95rem;color:var(--ink);">No builders currently listed or matching this
+            filter.</p>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px;">
+            <button type="button" class="btn btn-ghost btn-sm" id="btnResetFilters">Clear filters</button>
+            <a href="apply.html" class="btn btn-stamp btn-sm">Submit your profile to be the first &rarr;</a>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- ============ LARGE-SCALE INTERACTIVE MATCH DECK & MATCHMAKER STUDIO ============ -->
-  <section class="elevated-card reveal" style="border:1.5px solid var(--forest);background:var(--paper);border-radius:14px;padding:24px 28px;margin-bottom:28px;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:18px;">
+      <div class="stage-cta elevated-card reveal">
+        <h2>Want to be listed in the Builders Directory?</h2>
+        <p class="lede">Submit your verified builder profile to showcase what you want to build and be invited into
+          active problem sprints.</p>
+        <div class="connect-row">
+          <a class="btn btn-stamp" href="apply.html">Submit builder profile →</a>
+          <a class="btn btn-ghost" href="sprint.html">Browse active problem sprints</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SQUAD MATCH INTAKE MODAL (For First-Time / Guest Visitors) ============ -->
+    <div id="squadMatchIntakeModal" class="modal-overlay"
+      style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);z-index:10000;align-items:center;justify-content:center;padding:20px;">
+      <div
+        style="background:var(--card, #141c15);border:1.5px solid var(--forest, #22c55e);border-radius:12px;max-width:560px;width:100%;padding:28px;box-shadow:0 24px 48px rgba(0,0,0,0.7);box-sizing:border-box;max-height:90vh;overflow-y:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+          <div>
+            <span class="tag-chip"
+              style="font-size:0.75rem;margin-bottom:6px;display:inline-block;background:rgba(34,197,94,0.15);color:var(--forest,#22c55e);">Curated
+              1-on-1 Matching</span>
+            <h3 style="margin:0;font-size:1.35rem;font-family:'Fraunces Var',serif;color:var(--ink,#fff);">Request a
+              Squad Match</h3>
+            <p style="margin:4px 0 0;font-size:0.85rem;color:var(--ink-soft,#94a3b8);line-height:1.4;">Tell us what you
+              want to build and what co-builder you need. Our team personally evaluates submissions and facilitates
+              1-on-1 introductions.</p>
+          </div>
+          <button type="button" onclick="closeSquadIntakeModal()"
+            style="background:none;border:none;color:var(--ink-faint,#64748b);font-size:24px;cursor:pointer;padding:0 6px;">&times;</button>
+        </div>
+
+        <form id="squadMatchIntakeForm" onsubmit="submitSquadMatchIntake(event)">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <div>
+              <label
+                style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Your
+                Full Name *</label>
+              <input type="text" id="intakeFullName" required placeholder="e.g. Maya Sharma"
+                style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+            </div>
+            <div>
+              <label
+                style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Your
+                Email *</label>
+              <input type="email" id="intakeEmail" required placeholder="e.g. maya@field.org"
+                style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <div>
+              <label
+                style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Focus
+                Domain *</label>
+              <select id="intakeDomain"
+                style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+                <option value="climate">Climate &amp; Water</option>
+                <option value="hardware">Hardware &amp; IoT</option>
+                <option value="civic">Civic Tech</option>
+                <option value="grid">Grid &amp; Energy</option>
+                <option value="forestry">Forestry &amp; Biodiversity</option>
+                <option value="ai">AI / Computer Vision</option>
+                <option value="health">Open Health</option>
+                <option value="education">Education</option>
+              </select>
+            </div>
+            <div>
+              <label
+                style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Your
+                Primary Role *</label>
+              <select id="intakeRole"
+                style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+                <option value="builder">Technical Builder / Engineer</option>
+                <option value="problem_holder">Problem Statement Holder / Domain Expert</option>
+                <option value="enabler">Enabler / Mentor / Funder</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <div>
+              <label
+                style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Collaboration
+                Intent *</label>
+              <select id="intakeIntent"
+                style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+                <option value="have_problem">Have a problem/idea — need co-builders</option>
+                <option value="join_squad">Have skills — want to join a squad</option>
+                <option value="sponsor">Sponsoring / advising a squad</option>
+              </select>
+            </div>
+            <div>
+              <label
+                style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Primary
+                Craft *</label>
+              <select id="intakeCraft"
+                style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+                <option value="software">Software / Full-Stack</option>
+                <option value="hardware">Hardware / Embedded</option>
+                <option value="ml">ML / Data Science</option>
+                <option value="design">Product / UI Design</option>
+                <option value="research">Field / Domain Research</option>
+                <option value="ops">Operations / GTM</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <div>
+              <label
+                style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Weekly
+                Commitment</label>
+              <select id="intakeHours"
+                style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+                <option value="5-10">5–10 hrs/wk</option>
+                <option value="10-20" selected>10–20 hrs/wk</option>
+                <option value="20+">20+ hrs/wk</option>
+                <option value="<5">&lt; 5 hrs/wk</option>
+              </select>
+            </div>
+            <div>
+              <label
+                style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Timezone
+                Window</label>
+              <select id="intakeTimezone"
+                style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+                <option value="async">Async-First (Global)</option>
+                <option value="apac">APAC / IST</option>
+                <option value="emea">EMEA</option>
+                <option value="americas">Americas</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label
+              style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">What
+              are you looking to build? *</label>
+            <textarea id="intakeDescription" required rows="3"
+              placeholder="Describe the problem, deliverable, or prototype idea you want to tackle..."
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:0.9rem;resize:vertical;"></textarea>
+          </div>
+
+          <div style="margin-bottom:18px;">
+            <label
+              style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">What
+              co-builder or teammates do you need? *</label>
+            <input type="text" id="intakeCoBuilder" required
+              placeholder="e.g. Firmware lead with Embedded C &amp; LoRaWAN telemetry skills"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;gap:10px;align-items:center;">
+            <button type="button" class="btn btn-ghost" onclick="closeSquadIntakeModal()">Cancel</button>
+            <button type="submit" id="btnSubmitIntake" class="btn btn-stamp">
+              Submit Squad Match Request →
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============ 1-ON-1 INTRODUCTION MODAL (For Logged-In Collaborators) ============ -->
+    <div id="directIntroModal" class="modal-overlay"
+      style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);z-index:10000;align-items:center;justify-content:center;padding:20px;">
+      <div
+        style="background:var(--card, #141c15);border:1.5px solid var(--forest, #22c55e);border-radius:12px;max-width:520px;width:100%;padding:28px;box-shadow:0 24px 48px rgba(0,0,0,0.7);box-sizing:border-box;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+          <div>
+            <span class="tag-chip"
+              style="font-size:0.75rem;margin-bottom:6px;display:inline-block;background:rgba(34,197,94,0.15);color:var(--forest,#22c55e);">Curated
+              1-on-1 Introduction</span>
+            <h3 id="directIntroRecipientName"
+              style="margin:0;font-size:1.35rem;font-family:'Fraunces Var',serif;color:var(--ink,#fff);">Connect with
+              Collaborator</h3>
+            <p id="directIntroRecipientSub" style="margin:4px 0 0;font-size:0.85rem;color:var(--ink-soft,#94a3b8);">Send
+              a high-context introduction note. Canopy's curators facilitate verified introductions.</p>
+          </div>
+          <button type="button" onclick="closeDirectIntroModal()"
+            style="background:none;border:none;color:var(--ink-faint,#64748b);font-size:24px;cursor:pointer;padding:0 6px;">&times;</button>
+        </div>
+
+        <form id="directIntroForm" onsubmit="submitDirectIntro(event)">
+          <input type="hidden" id="directIntroRecipientId">
+          <div
+            style="background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:14px;">
+            <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;color:var(--forest);">Looking to
+              build:</div>
+            <div id="directIntroLookingToBuild" style="font-size:0.88rem;color:var(--ink);margin-top:2px;"></div>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label
+              style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">What
+              would you bring to this collaboration? *</label>
+            <textarea id="directIntroNote" required rows="4"
+              placeholder="Mention your relevant skillsets, projects, time commitment (e.g. 10 hrs/wk), or why this challenge matters to you..."
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:0.9rem;resize:vertical;"></textarea>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;gap:10px;align-items:center;">
+            <button type="button" class="btn btn-ghost" onclick="closeDirectIntroModal()">Cancel</button>
+            <button type="submit" id="btnSubmitDirectIntro" class="btn btn-stamp">
+              Send 1-on-1 Handshake →
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
       <div>
-        <span class="tag-chip" style="background:rgba(34,197,94,0.15);color:var(--forest);font-weight:700;">Curated 1-on-1 Matching Studio</span>
-        <h2 style="font-family:'Fraunces Var',serif;font-size:1.6rem;margin:8px 0 4px;color:var(--ink);">Match With Intent. Not a Swipe.</h2>
-        <p style="margin:0;font-size:0.92rem;color:var(--ink-soft);max-width:620px;">
-          The founder personally reviews applications, scores compatibility, and curates 1-on-1 introductions between engineers and problem owners.
-        </p>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-        <button type="button" class="btn btn-ghost" id="btnRunAiMatch" onclick="runAiMatchAnalysis()">
-          ⚡ Run AI Compatibility Match
-        </button>
-        <button type="button" class="btn btn-stamp" onclick="openSquadIntakeModal()">
-          <svg class="icon" aria-hidden="true" style="width:14px;height:14px;"><use href="#icon-sprout"/></svg>
-          Request a Squad Match →
-        </button>
-      </div>
-    </div>
-
-    <!-- AI & Algorithmic Compatibility Result Panel -->
-    <div id="aiMatchResultPanel" style="display:none;background:color-mix(in srgb, var(--forest) 7%, var(--card));border:1px solid color-mix(in srgb, var(--forest) 30%, var(--card-edge));border-radius:10px;padding:18px 20px;margin-bottom:16px;"></div>
-
-    <!-- Interactive Carousel Deck -->
-    <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:10px;padding:20px;position:relative;" id="interactiveMatchDeck">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <span id="deckCounter" style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--forest);">Collaborator Spotlight 1 of 6</span>
-        <div style="display:flex;gap:6px;">
-          <button type="button" class="btn btn-ghost btn-sm" id="btnDeckPrev" style="padding:4px 10px;">← Prev</button>
-          <button type="button" class="btn btn-ghost btn-sm" id="btnDeckNext" style="padding:4px 10px;">Next →</button>
-        </div>
-      </div>
-
-      <div id="deckCardSpotlight" style="display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;">
-        <img id="deckAvatar" src="/avatars/avatar-builders.png" alt="Collaborator Avatar" style="width:68px;height:68px;border-radius:12px;object-fit:contain;background:rgba(31,92,64,0.08);padding:6px;">
-        <div>
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <h3 id="deckName" style="margin:0;font-size:1.25rem;font-family:'Fraunces Var',serif;color:var(--ink);">Elena R.</h3>
-            <span id="deckDomainBadge" class="tag-chip" data-domain="hardware">Hardware</span>
-            <span id="deckHours" class="hint-small" style="font-size:0.78rem;color:var(--forest);font-weight:600;">15 hrs/wk · Open to pair</span>
-          </div>
-          <div id="deckTitle" style="font-size:0.85rem;color:var(--ink-faint);margin:2px 0 6px;">Hardware &amp; Embedded Systems Engineer</div>
-          <div id="deckLookingToBuild" style="font-size:0.92rem;color:var(--ink);line-height:1.4;margin-bottom:8px;">
-            <strong>Looking to build:</strong> Building low-power LoRa telemetry nodes for agrarian aquifer monitoring.
-          </div>
-          <div id="deckChips" class="chip-row">
-            <span class="tag-chip skill">Embedded C</span>
-            <span class="tag-chip skill">LoRaWAN</span>
-            <span class="tag-chip skill">PCB Design</span>
+        <div class="footer-logo">
+          <img src="/canopy-logo.png" alt="Canopy Logo" height="36" style="height:36px;width:auto;display:block;">
+          <div class="footer-logo-text">
+            <span class="footer-logo-name">CANOPY</span>
+            <span class="footer-logo-sub">Build · Connect · Ship</span>
           </div>
         </div>
-        <div>
-          <button type="button" class="btn btn-stamp" id="btnDeckConnect" onclick="handleDeckConnect()">
-            Request 1-on-1 Intro →
-          </button>
+        <div style="margin-top:14px;">
+          <p class="founder-quote"><span data-content-key="home.founder_quote">"I kept hearing the same frustration from
+              brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project
+              at a time."</span><cite>Aarushi Chatterjee, Founder</cite></p>
         </div>
       </div>
-    </div>
-  </section>
-
-    <!-- ---- Builders Directory ---- -->
-  <div class="stage-section">
-    <div class="stage-section-head">
       <div>
-        <h2>Builders Directory</h2>
-        <p class="lede" style="margin-top:6px;margin-bottom:0;">Craftspeople, engineers, and researchers seeking squads to build with. Filter by craft or domain, review what they want to build, and connect directly or send a high-context note.</p>
+        <h5>Ecosystem</h5>
+        <a href="match.html">Build Calls Directory</a>
+        <a href="sprint.html">Active Sprints Board</a>
+        <a href="notebook.html">Open Notebook</a>
+        <a href="/#problem">The Coordination Gap</a>
       </div>
-      <span class="count" id="builderCount">0 builders available</span>
-    </div>
-
-    <!-- Filter & Search Controls -->
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
-      <div class="filter-row" data-filters-for="#buildersGrid" aria-label="Filter Builders by domain" style="margin-bottom:0;">
-        <button type="button" class="filter-chip" data-domain="all" aria-pressed="true">All Domains</button>
-        <button type="button" class="filter-chip" data-domain="climate" aria-pressed="false">Climate</button>
-        <button type="button" class="filter-chip" data-domain="hardware" aria-pressed="false">Hardware</button>
-        <button type="button" class="filter-chip" data-domain="ai" aria-pressed="false">AI / ML</button>
-        <button type="button" class="filter-chip" data-domain="design" aria-pressed="false">Design</button>
-        <button type="button" class="filter-chip" data-domain="civic" aria-pressed="false">Civic Tech</button>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;flex:1;max-width:320px;min-width:220px;">
-        <input type="text" id="builderSearch" placeholder="Search craft, skill, or name..." style="width:100%;padding:7px 12px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font-size:0.85rem;">
-      </div>
-    </div>
-
-    <div class="match-grid" id="buildersGrid"></div>
-<div class="empty-state" id="buildersEmpty" role="status" style="display:block;">
-      <svg class="icon" aria-hidden="true" style="width:32px;height:32px;margin:0 auto 10px;color:var(--forest);display:block;"><use href="#icon-sprout"/></svg>
-      <p style="margin:0 0 10px;font-size:0.95rem;color:var(--ink);">No builders currently listed or matching this filter.</p>
-      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px;">
-        <button type="button" class="btn btn-ghost btn-sm" id="btnResetFilters">Clear filters</button>
-        <a href="apply.html" class="btn btn-stamp btn-sm">Submit your profile to be the first &rarr;</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="stage-cta elevated-card reveal">
-    <h2>Want to be listed in the Builders Directory?</h2>
-    <p class="lede">Submit your verified builder profile to showcase what you want to build and be invited into active problem sprints.</p>
-    <div class="connect-row">
-      <a class="btn btn-stamp" href="apply.html">Submit builder profile →</a>
-      <a class="btn btn-ghost" href="sprint.html">Browse active problem sprints</a>
-    </div>
-  </div>
-</div>
-
-<!-- ============ SQUAD MATCH INTAKE MODAL (For First-Time / Guest Visitors) ============ -->
-<div id="squadMatchIntakeModal" class="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);z-index:10000;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:var(--card, #141c15);border:1.5px solid var(--forest, #22c55e);border-radius:12px;max-width:560px;width:100%;padding:28px;box-shadow:0 24px 48px rgba(0,0,0,0.7);box-sizing:border-box;max-height:90vh;overflow-y:auto;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
       <div>
-        <span class="tag-chip" style="font-size:0.75rem;margin-bottom:6px;display:inline-block;background:rgba(34,197,94,0.15);color:var(--forest,#22c55e);">Curated 1-on-1 Matching</span>
-        <h3 style="margin:0;font-size:1.35rem;font-family:'Fraunces Var',serif;color:var(--ink,#fff);">Request a Squad Match</h3>
-        <p style="margin:4px 0 0;font-size:0.85rem;color:var(--ink-soft,#94a3b8);line-height:1.4;">Tell us what you want to build and what co-builder you need. Our team personally evaluates submissions and facilitates 1-on-1 introductions.</p>
+        <h5>Workspaces</h5>
+        <a href="post-call.html">Post a Build Call</a>
+        <a href="builders.html">Builders Guild</a>
+        <a href="problem-holders.html">Problem Holders</a>
+        <a href="enablers.html">Sponsors &amp; Enablers</a>
       </div>
-      <button type="button" onclick="closeSquadIntakeModal()" style="background:none;border:none;color:var(--ink-faint,#64748b);font-size:24px;cursor:pointer;padding:0 6px;">&times;</button>
+      <div>
+        <h5>Charter &amp; Legal</h5>
+        <a href="terms.html">Community Charter</a>
+        <a href="privacy.html">Data Privacy</a>
+        <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
+        <a href="https://www.linkedin.com/company/canopy-collaborate/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
     </div>
+    <div class="foot-bottom">
+      <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
+      <span>&copy; 2026 Canopy. All rights reserved.</span>
+    </div>
+  </footer>
 
-    <form id="squadMatchIntakeForm" onsubmit="submitSquadMatchIntake(event)">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
-        <div>
-          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Your Full Name *</label>
-          <input type="text" id="intakeFullName" required placeholder="e.g. Maya Sharma" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
-        </div>
-        <div>
-          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Your Email *</label>
-          <input type="email" id="intakeEmail" required placeholder="e.g. maya@field.org" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+  <!-- ============ APPLICATION DRAWER ============ -->
+  <div class="app-drawer-backdrop" id="appDrawerBackdrop"></div>
+  <div class="app-drawer" id="appDrawer">
+    <div class="drawer-drag-handle"></div>
+    <div class="drawer-head">
+      <div>
+        <h3 id="drawerTitle">Groundwater contamination sensor</h3>
+        <p class="sub" id="drawerSub">Domain · Climate · Hardware</p>
+      </div>
+      <button class="modal-close" id="closeDrawer" aria-label="Close drawer">✕</button>
+    </div>
+    <div class="drawer-auth-notice" id="drawerAuthNotice" style="display:none;">
+      <span class="drawer-auth-notice-icon">🌱</span>
+      <div class="drawer-auth-notice-body">
+        <strong>Sign in to send this note</strong>
+        <p>Draft your note below. We'll connect it to your account on sign in.</p>
+      </div>
+      <a href="login.html" class="drawer-auth-login-link btn btn-sm btn-outline">Sign In</a>
+    </div>
+    <form class="drawer-form" id="appDrawerForm">
+      <div class="field">
+        <label for="dNote">Your Angle / Approach *</label>
+        <textarea id="dNote" placeholder="What is your angle or how would you approach this problem?"
+          required></textarea>
+      </div>
+      <div class="field">
+        <label>Relevant Skills</label>
+        <div class="pill-group" data-group="drawer-skills">
+          <button type="button" class="pill" aria-pressed="true">Hardware / Embedded</button>
+          <button type="button" class="pill" aria-pressed="false">AI / Machine Learning</button>
+          <button type="button" class="pill" aria-pressed="false">UI / Product Design</button>
+          <button type="button" class="pill" aria-pressed="false">Full-Stack Dev</button>
+          <button type="button" class="pill" aria-pressed="false">Domain Research</button>
         </div>
       </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
-        <div>
-          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Focus Domain *</label>
-          <select id="intakeDomain" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
-            <option value="climate">Climate &amp; Water</option>
-            <option value="hardware">Hardware &amp; IoT</option>
-            <option value="civic">Civic Tech</option>
-            <option value="grid">Grid &amp; Energy</option>
-            <option value="forestry">Forestry &amp; Biodiversity</option>
-            <option value="ai">AI / Computer Vision</option>
-            <option value="health">Open Health</option>
-            <option value="education">Education</option>
-          </select>
-        </div>
-        <div>
-          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Your Primary Role *</label>
-          <select id="intakeRole" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
-            <option value="builder">Technical Builder / Engineer</option>
-            <option value="problem_holder">Problem Statement Holder / Domain Expert</option>
-            <option value="enabler">Enabler / Mentor / Funder</option>
-          </select>
+      <div class="field">
+        <label>Availability</label>
+        <div class="pill-group" data-group="drawer-avail" data-single="true">
+          <button type="button" class="pill" aria-pressed="true">Full sprint (2–4 weeks)</button>
+          <button type="button" class="pill" aria-pressed="false">Part-time (10–15 hrs/wk)</button>
+          <button type="button" class="pill" aria-pressed="false">Advisory / Mentor</button>
         </div>
       </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
-        <div>
-          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Collaboration Intent *</label>
-          <select id="intakeIntent" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
-            <option value="have_problem">Have a problem/idea — need co-builders</option>
-            <option value="join_squad">Have skills — want to join a squad</option>
-            <option value="sponsor">Sponsoring / advising a squad</option>
-          </select>
-        </div>
-        <div>
-          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Primary Craft *</label>
-          <select id="intakeCraft" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
-            <option value="software">Software / Full-Stack</option>
-            <option value="hardware">Hardware / Embedded</option>
-            <option value="ml">ML / Data Science</option>
-            <option value="design">Product / UI Design</option>
-            <option value="research">Field / Domain Research</option>
-            <option value="ops">Operations / GTM</option>
-          </select>
-        </div>
+      <div class="field">
+        <label for="dLink">Work / Portfolio Link</label>
+        <input type="text" id="dLink" placeholder="GitHub, portfolio, or project URL (optional)">
       </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
-        <div>
-          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Weekly Commitment</label>
-          <select id="intakeHours" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
-            <option value="5-10">5–10 hrs/wk</option>
-            <option value="10-20" selected>10–20 hrs/wk</option>
-            <option value="20+">20+ hrs/wk</option>
-            <option value="<5">&lt; 5 hrs/wk</option>
-          </select>
-        </div>
-        <div>
-          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Timezone Window</label>
-          <select id="intakeTimezone" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
-            <option value="async">Async-First (Global)</option>
-            <option value="apac">APAC / IST</option>
-            <option value="emea">EMEA</option>
-            <option value="americas">Americas</option>
-          </select>
-        </div>
-      </div>
-
-      <div style="margin-bottom:14px;">
-        <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">What are you looking to build? *</label>
-        <textarea id="intakeDescription" required rows="3" placeholder="Describe the problem, deliverable, or prototype idea you want to tackle..." style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:0.9rem;resize:vertical;"></textarea>
-      </div>
-
-      <div style="margin-bottom:18px;">
-        <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">What co-builder or teammates do you need? *</label>
-        <input type="text" id="intakeCoBuilder" required placeholder="e.g. Firmware lead with Embedded C &amp; LoRaWAN telemetry skills" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
-      </div>
-
-      <div style="display:flex;justify-content:flex-end;gap:10px;align-items:center;">
-        <button type="button" class="btn btn-ghost" onclick="closeSquadIntakeModal()">Cancel</button>
-        <button type="submit" id="btnSubmitIntake" class="btn btn-stamp">
-          Submit Squad Match Request →
-        </button>
+      <div class="form-foot">
+        <span class="hint-small script" style="font-size:.85rem;color:var(--forest);">Quick note to challenge
+          leads</span>
+        <button type="submit" class="btn btn-stamp btn-sm">Send Note →</button>
       </div>
     </form>
   </div>
-</div>
 
-<!-- ============ 1-ON-1 INTRODUCTION MODAL (For Logged-In Collaborators) ============ -->
-<div id="directIntroModal" class="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);z-index:10000;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:var(--card, #141c15);border:1.5px solid var(--forest, #22c55e);border-radius:12px;max-width:520px;width:100%;padding:28px;box-shadow:0 24px 48px rgba(0,0,0,0.7);box-sizing:border-box;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
-      <div>
-        <span class="tag-chip" style="font-size:0.75rem;margin-bottom:6px;display:inline-block;background:rgba(34,197,94,0.15);color:var(--forest,#22c55e);">Curated 1-on-1 Introduction</span>
-        <h3 id="directIntroRecipientName" style="margin:0;font-size:1.35rem;font-family:'Fraunces Var',serif;color:var(--ink,#fff);">Connect with Collaborator</h3>
-        <p id="directIntroRecipientSub" style="margin:4px 0 0;font-size:0.85rem;color:var(--ink-soft,#94a3b8);">Send a high-context introduction note. Canopy's curators facilitate verified introductions.</p>
-      </div>
-      <button type="button" onclick="closeDirectIntroModal()" style="background:none;border:none;color:var(--ink-faint,#64748b);font-size:24px;cursor:pointer;padding:0 6px;">&times;</button>
-    </div>
+  <div class="toast" id="toast">🌱 Note planted: we will be in touch soon.</div>
+  <div class="toast" id="toast">Note planted: we will be in touch soon.</div>
 
-    <form id="directIntroForm" onsubmit="submitDirectIntro(event)">
-      <input type="hidden" id="directIntroRecipientId">
-      <div style="background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:14px;">
-        <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;color:var(--forest);">Looking to build:</div>
-        <div id="directIntroLookingToBuild" style="font-size:0.88rem;color:var(--ink);margin-top:2px;"></div>
-      </div>
+  <script type="module" src="/src/main.js"></script>
+  <script type="module">
+    import { calls, matches, auth } from '/src/db.js';
 
-      <div style="margin-bottom:14px;">
-        <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">What would you bring to this collaboration? *</label>
-        <textarea id="directIntroNote" required rows="4" placeholder="Mention your relevant skillsets, projects, time commitment (e.g. 10 hrs/wk), or why this challenge matters to you..." style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:0.9rem;resize:vertical;"></textarea>
-      </div>
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
 
-      <div style="display:flex;justify-content:flex-end;gap:10px;align-items:center;">
-        <button type="button" class="btn btn-ghost" onclick="closeDirectIntroModal()">Cancel</button>
-        <button type="submit" id="btnSubmitDirectIntro" class="btn btn-stamp">
-          Send 1-on-1 Handshake →
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+    function createBuilderCard(profile) {
+      const card = document.createElement('article');
+      card.className = 'elevated-card interactive match-card reveal';
+      const domain = escapeHtml(profile.primaryDomain || 'climate');
+      card.setAttribute('data-domain', domain);
+      const userId = escapeHtml(profile.userId || profile.id);
+      card.setAttribute('data-id', userId);
+      card.setAttribute('data-creator-id', userId);
+      card.tabIndex = 0;
 
-</main>
+      const domainLabel = domain.toUpperCase();
+      const skills = Array.isArray(profile.skillTags) ? profile.skillTags : [];
+      const chips = skills.map(s => `<span class="tag-chip skill">${escapeHtml(s)}</span>`).join('');
 
-<!-- ============ FOOTER ============ -->
-<footer>
-  <div class="wrap">
-    <div>
-      <div class="footer-logo">
-        <img src="/canopy-logo.png" alt="Canopy Logo" height="36" style="height:36px;width:auto;display:block;">
-        <div class="footer-logo-text">
-          <span class="footer-logo-name">CANOPY</span>
-          <span class="footer-logo-sub">Build · Connect · Ship</span>
-        </div>
-      </div>
-      <div style="margin-top:14px;">
-        <p class="founder-quote"><span data-content-key="home.founder_quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."</span><cite>Aarushi Chatterjee, Founder</cite></p>
-      </div>
-    </div>
-    <div>
-      <h5>Ecosystem</h5>
-      <a href="match.html">Build Calls Directory</a>
-      <a href="sprint.html">Active Sprints Board</a>
-      <a href="notebook.html">Open Notebook</a>
-      <a href="/#problem">The Coordination Gap</a>
-    </div>
-    <div>
-      <h5>Workspaces</h5>
-      <a href="post-call.html">Post a Build Call</a>
-      <a href="builders.html">Builders Guild</a>
-      <a href="problem-holders.html">Problem Holders</a>
-      <a href="enablers.html">Sponsors &amp; Enablers</a>
-    </div>
-    <div>
-      <h5>Charter &amp; Legal</h5>
-      <a href="terms.html">Community Charter</a>
-      <a href="privacy.html">Data Privacy</a>
-      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
-      <a href="https://www.linkedin.com/company/canopy-collaborate/" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </div>
-  <div class="foot-bottom">
-    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
-    <span>&copy; 2026 Canopy. All rights reserved.</span>
-  </div>
-</footer>
-
-<!-- ============ APPLICATION DRAWER ============ -->
-<div class="app-drawer-backdrop" id="appDrawerBackdrop"></div>
-<div class="app-drawer" id="appDrawer">
-  <div class="drawer-drag-handle"></div>
-  <div class="drawer-head">
-    <div>
-      <h3 id="drawerTitle">Groundwater contamination sensor</h3>
-      <p class="sub" id="drawerSub">Domain · Climate · Hardware</p>
-    </div>
-    <button class="modal-close" id="closeDrawer" aria-label="Close drawer">✕</button>
-  </div>
-  <div class="drawer-auth-notice" id="drawerAuthNotice" style="display:none;">
-    <span class="drawer-auth-notice-icon">🌱</span>
-    <div class="drawer-auth-notice-body">
-      <strong>Sign in to send this note</strong>
-      <p>Draft your note below. We'll connect it to your account on sign in.</p>
-    </div>
-    <a href="login.html" class="drawer-auth-login-link btn btn-sm btn-outline">Sign In</a>
-  </div>
-  <form class="drawer-form" id="appDrawerForm">
-    <div class="field">
-      <label for="dNote">Your Angle / Approach *</label>
-      <textarea id="dNote" placeholder="What is your angle or how would you approach this problem?" required></textarea>
-    </div>
-    <div class="field">
-      <label>Relevant Skills</label>
-      <div class="pill-group" data-group="drawer-skills">
-        <button type="button" class="pill" aria-pressed="true">Hardware / Embedded</button>
-        <button type="button" class="pill" aria-pressed="false">AI / Machine Learning</button>
-        <button type="button" class="pill" aria-pressed="false">UI / Product Design</button>
-        <button type="button" class="pill" aria-pressed="false">Full-Stack Dev</button>
-        <button type="button" class="pill" aria-pressed="false">Domain Research</button>
-      </div>
-    </div>
-    <div class="field">
-      <label>Availability</label>
-      <div class="pill-group" data-group="drawer-avail" data-single="true">
-        <button type="button" class="pill" aria-pressed="true">Full sprint (2–4 weeks)</button>
-        <button type="button" class="pill" aria-pressed="false">Part-time (10–15 hrs/wk)</button>
-        <button type="button" class="pill" aria-pressed="false">Advisory / Mentor</button>
-      </div>
-    </div>
-    <div class="field">
-      <label for="dLink">Work / Portfolio Link</label>
-      <input type="text" id="dLink" placeholder="GitHub, portfolio, or project URL (optional)">
-    </div>
-    <div class="form-foot">
-      <span class="hint-small script" style="font-size:.85rem;color:var(--forest);">Quick note to challenge leads</span>
-      <button type="submit" class="btn btn-stamp btn-sm">Send Note →</button>
-    </div>
-  </form>
-</div>
-
-<div class="toast" id="toast">🌱 Note planted: we will be in touch soon.</div>
-
-<script type="module" src="/src/main.js"></script>
-<script type="module">
-  import { calls, matches, auth } from '/src/db.js';
-
-  function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
-  function createBuilderCard(profile) {
-    const card = document.createElement('article');
-    card.className = 'elevated-card interactive match-card reveal';
-    const domain = escapeHtml(profile.primaryDomain || 'climate');
-    card.setAttribute('data-domain', domain);
-    const userId = escapeHtml(profile.userId || profile.id);
-    card.setAttribute('data-id', userId);
-    card.setAttribute('data-creator-id', userId);
-    card.tabIndex = 0;
-
-    const domainLabel = domain.toUpperCase();
-    const skills = Array.isArray(profile.skillTags) ? profile.skillTags : [];
-    const chips = skills.map(s => `<span class="tag-chip skill">${escapeHtml(s)}</span>`).join('');
-
-    const socials = profile.socials || {};
-    let socialsHtml = '';
-    if (socials.github) {
-      socialsHtml += `<a href="${escapeHtml(socials.github)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="GitHub" aria-label="GitHub">
+      const socials = profile.socials || {};
+      let socialsHtml = '';
+      if (socials.github) {
+        socialsHtml += `<a href="${escapeHtml(socials.github)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="GitHub" aria-label="GitHub">
         <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
         GitHub
       </a>`;
-    }
-    if (socials.linkedin) {
-      socialsHtml += `<a href="${escapeHtml(socials.linkedin)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="LinkedIn" aria-label="LinkedIn">
+      }
+      if (socials.linkedin) {
+        socialsHtml += `<a href="${escapeHtml(socials.linkedin)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="LinkedIn" aria-label="LinkedIn">
         <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.59 1.59 0 1 0 0-3.18 1.59 1.59 0 0 0 0 3.18m1.39 9.74v-8.37H5.07v8.37h2.78z"/></svg>
         LinkedIn
       </a>`;
-    }
-    if (socials.twitter) {
-      socialsHtml += `<a href="${escapeHtml(socials.twitter)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="X / Twitter" aria-label="X">
+      }
+      if (socials.twitter) {
+        socialsHtml += `<a href="${escapeHtml(socials.twitter)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="X / Twitter" aria-label="X">
         <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         X / Post
       </a>`;
-    }
-    if (socials.portfolio) {
-      socialsHtml += `<a href="${escapeHtml(socials.portfolio)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="Portfolio / Field Log" aria-label="Portfolio">
+      }
+      if (socials.portfolio) {
+        socialsHtml += `<a href="${escapeHtml(socials.portfolio)}" target="_blank" rel="noopener noreferrer" class="builder-social-btn" title="Portfolio / Field Log" aria-label="Portfolio">
         <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         Field Log
       </a>`;
-    }
+      }
 
-    card.innerHTML = `
+      card.innerHTML = `
       <div class="head-row">
         <div class="avatar" data-seed="${userId}" aria-hidden="true"></div>
         <div class="head-title">
@@ -654,184 +810,186 @@
         <button type="button" class="shovel-btn"><svg class="icon" aria-hidden="true"><use href="#icon-sprout"/></svg> Send a note</button>
       </div>
     `;
-    return card;
-  }
+      return card;
+    }
 
-  async function loadLiveBuilders() {
-    try {
-      const sandboxData = await matches.getSandbox();
-      const liveProfiles = sandboxData?.profiles || [];
-      const grid = document.getElementById('buildersGrid');
-      if (!grid) return;
+    async function loadLiveBuilders() {
+      try {
+        const sandboxData = await matches.getSandbox();
+        const liveProfiles = sandboxData?.profiles || [];
+        const grid = document.getElementById('buildersGrid');
+        if (!grid) return;
 
-      grid.innerHTML = '';
+        grid.innerHTML = '';
 
-      if (liveProfiles.length > 0) {
-        liveProfiles.forEach(prof => {
-          const card = createBuilderCard(prof);
-          grid.appendChild(card);
-        });
+        if (liveProfiles.length > 0) {
+          liveProfiles.forEach(prof => {
+            const card = createBuilderCard(prof);
+            grid.appendChild(card);
+          });
 
-        // Sync spotlight deck with database profiles
-        DECK_ITEMS = liveProfiles.map(p => ({
-          id: p.userId || p.id,
-          name: p.displayName || p.fullName || 'Builder',
-          role: p.headline || p.craft || p.primaryDomain || 'Craftsperson',
-          domain: p.primaryDomain || 'general',
-          avatar: p.avatarUrl || '/avatars/avatar-builders.png',
-          hours: p.availabilityHours ? `${p.availabilityHours} hrs/wk · Open to pair` : 'Open to pair',
-          lookingToBuild: p.lookingToBuild || p.bio || 'Exploring new collaborative projects.',
-          skills: Array.isArray(p.skillTags) ? p.skillTags : []
-        }));
-      } else {
+          // Sync spotlight deck with database profiles
+          DECK_ITEMS = liveProfiles.map(p => ({
+            id: p.userId || p.id,
+            name: p.displayName || p.fullName || 'Builder',
+            role: p.headline || p.craft || p.primaryDomain || 'Craftsperson',
+            domain: p.primaryDomain || 'general',
+            avatar: p.avatarUrl || '/avatars/avatar-builders.png',
+            hours: p.availabilityHours ? `${p.availabilityHours} hrs/wk · Open to pair` : 'Open to pair',
+            lookingToBuild: p.lookingToBuild || p.bio || 'Exploring new collaborative projects.',
+            skills: Array.isArray(p.skillTags) ? p.skillTags : []
+          }));
+        } else {
+          DECK_ITEMS = [];
+        }
+
+        currentDeckIdx = 0;
+        updateDeckCard();
+        updateBuildersFilter();
+      } catch (err) {
+        console.warn('[Builders] Could not load live sandbox profiles:', err.message);
         DECK_ITEMS = [];
+        updateDeckCard();
+        updateBuildersFilter();
+      }
+    }
+
+    /* Live Search & Filter in Builders Directory */
+    const builderSearchInput = document.getElementById('builderSearch');
+    const filterChips = document.querySelectorAll('[data-filters-for="#buildersGrid"] .filter-chip');
+    const emptyState = document.getElementById('buildersEmpty');
+    const btnReset = document.getElementById('btnResetFilters');
+
+    function updateBuildersFilter() {
+      const q = builderSearchInput ? builderSearchInput.value.toLowerCase().trim() : '';
+      const activeChips = [...document.querySelectorAll('[data-filters-for="#buildersGrid"] .filter-chip[aria-pressed="true"]')]
+        .map(c => c.getAttribute('data-domain'))
+        .filter(Boolean);
+      const isAll = activeChips.length === 0 || activeChips.includes('all');
+
+      const cards = document.querySelectorAll('#buildersGrid .match-card');
+      let visible = 0;
+      cards.forEach(card => {
+        const cardDomain = card.getAttribute('data-domain') || '';
+        const text = card.textContent.toLowerCase();
+        const domainMatch = isAll || activeChips.includes(cardDomain);
+        const searchMatch = !q || text.includes(q);
+        const show = domainMatch && searchMatch;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      const countEl = document.getElementById('builderCount');
+      if (countEl) {
+        countEl.textContent = `${visible} ${visible === 1 ? 'builder available' : 'builders available'}`;
       }
 
-      currentDeckIdx = 0;
-      updateDeckCard();
-      updateBuildersFilter();
-    } catch (err) {
-      console.warn('[Builders] Could not load live sandbox profiles:', err.message);
-      DECK_ITEMS = [];
-      updateDeckCard();
-      updateBuildersFilter();
-    }
-  }
-
-  /* Live Search & Filter in Builders Directory */
-  const builderSearchInput = document.getElementById('builderSearch');
-  const filterChips = document.querySelectorAll('[data-filters-for="#buildersGrid"] .filter-chip');
-  const emptyState = document.getElementById('buildersEmpty');
-  const btnReset = document.getElementById('btnResetFilters');
-
-  function updateBuildersFilter() {
-    const q = builderSearchInput ? builderSearchInput.value.toLowerCase().trim() : '';
-    const activeChips = [...document.querySelectorAll('[data-filters-for="#buildersGrid"] .filter-chip[aria-pressed="true"]')]
-      .map(c => c.getAttribute('data-domain'))
-      .filter(Boolean);
-    const isAll = activeChips.length === 0 || activeChips.includes('all');
-
-    const cards = document.querySelectorAll('#buildersGrid .match-card');
-    let visible = 0;
-    cards.forEach(card => {
-      const cardDomain = card.getAttribute('data-domain') || '';
-      const text = card.textContent.toLowerCase();
-      const domainMatch = isAll || activeChips.includes(cardDomain);
-      const searchMatch = !q || text.includes(q);
-      const show = domainMatch && searchMatch;
-      card.style.display = show ? '' : 'none';
-      if (show) visible++;
-    });
-
-    const countEl = document.getElementById('builderCount');
-    if (countEl) {
-      countEl.textContent = `${visible} ${visible === 1 ? 'builder available' : 'builders available'}`;
+      if (emptyState) {
+        emptyState.style.display = visible === 0 ? 'block' : 'none';
+        emptyState.classList.toggle('show', visible === 0);
+      }
     }
 
-    if (emptyState) {
-      emptyState.style.display = visible === 0 ? 'block' : 'none';
-      emptyState.classList.toggle('show', visible === 0);
-    }
-  }
+    if (filterChips.length) {
+      filterChips.forEach(chip => {
+        chip.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const domain = chip.getAttribute('data-domain');
+          if (domain === 'all') {
+            filterChips.forEach(c => c.setAttribute('aria-pressed', 'false'));
+            chip.setAttribute('aria-pressed', 'true');
+          } else {
+            const allChip = document.querySelector('[data-filters-for="#buildersGrid"] .filter-chip[data-domain="all"]');
+            if (allChip) allChip.setAttribute('aria-pressed', 'false');
+            const isPressed = chip.getAttribute('aria-pressed') === 'true';
+            chip.setAttribute('aria-pressed', isPressed ? 'false' : 'true');
 
-  if (filterChips.length) {
-    filterChips.forEach(chip => {
-      chip.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const domain = chip.getAttribute('data-domain');
-        if (domain === 'all') {
-          filterChips.forEach(c => c.setAttribute('aria-pressed', 'false'));
-          chip.setAttribute('aria-pressed', 'true');
-        } else {
-          const allChip = document.querySelector('[data-filters-for="#buildersGrid"] .filter-chip[data-domain="all"]');
-          if (allChip) allChip.setAttribute('aria-pressed', 'false');
-          const isPressed = chip.getAttribute('aria-pressed') === 'true';
-          chip.setAttribute('aria-pressed', isPressed ? 'false' : 'true');
-
-          const anyPressed = [...filterChips].some(c => c.getAttribute('data-domain') !== 'all' && c.getAttribute('aria-pressed') === 'true');
-          if (!anyPressed && allChip) {
-            allChip.setAttribute('aria-pressed', 'true');
+            const anyPressed = [...filterChips].some(c => c.getAttribute('data-domain') !== 'all' && c.getAttribute('aria-pressed') === 'true');
+            if (!anyPressed && allChip) {
+              allChip.setAttribute('aria-pressed', 'true');
+            }
           }
-        }
+          updateBuildersFilter();
+        });
+      });
+    }
+
+    if (builderSearchInput) {
+      builderSearchInput.addEventListener('input', updateBuildersFilter);
+    }
+
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        if (builderSearchInput) builderSearchInput.value = '';
+        filterChips.forEach(chip => {
+          const isAll = chip.getAttribute('data-domain') === 'all';
+          chip.setAttribute('aria-pressed', isAll ? 'true' : 'false');
+        });
         updateBuildersFilter();
       });
-    });
-  }
+    }
 
-  if (builderSearchInput) {
-    builderSearchInput.addEventListener('input', updateBuildersFilter);
-  }
+    /* ============ My Handshakes Outbox & Inbox Tracking ============ */
+    const btnToggleMyHandshakes = document.getElementById('btnToggleMyHandshakes');
+    const myHandshakesPanel = document.getElementById('myHandshakesPanel');
+    const myHandshakesList = document.getElementById('myHandshakesList');
+    const myHandshakeCount = document.getElementById('myHandshakeCount');
+    const btnRefreshHandshakes = document.getElementById('btnRefreshHandshakes');
 
-  if (btnReset) {
-    btnReset.addEventListener('click', () => {
-      if (builderSearchInput) builderSearchInput.value = '';
-      filterChips.forEach(chip => {
-        const isAll = chip.getAttribute('data-domain') === 'all';
-        chip.setAttribute('aria-pressed', isAll ? 'true' : 'false');
-      });
-      updateBuildersFilter();
-    });
-  }
-
-  /* ============ My Handshakes Outbox & Inbox Tracking ============ */
-  const btnToggleMyHandshakes = document.getElementById('btnToggleMyHandshakes');
-  const myHandshakesPanel = document.getElementById('myHandshakesPanel');
-  const myHandshakesList = document.getElementById('myHandshakesList');
-  const myHandshakeCount = document.getElementById('myHandshakeCount');
-  const btnRefreshHandshakes = document.getElementById('btnRefreshHandshakes');
-
-  async function renderMyHandshakes() {
-    if (!myHandshakesList) return;
-    const user = auth.getUser();
-    if (!user) {
-      myHandshakesList.innerHTML = `
+    async function renderMyHandshakes() {
+      if (!myHandshakesList) return;
+      const user = auth.getUser();
+      if (!user) {
+        myHandshakesList.innerHTML = `
         <div style="grid-column:1/-1;padding:24px;text-align:center;background:var(--card);border:1px dashed var(--line);border-radius:8px;">
           <p style="font-size:0.92rem;color:var(--ink);font-weight:600;margin-bottom:6px;">Sign in to inspect your collaborative handshakes</p>
           <p style="font-size:0.8rem;color:var(--ink-soft);margin-bottom:14px;">Review real-time status of notes you've dispatched to Call creators.</p>
           <a href="login.html?redirect=match.html" class="btn btn-stamp btn-sm">Log In →</a>
         </div>
       `;
-      if (myHandshakeCount) myHandshakeCount.textContent = '0';
-      return;
-    }
+        if (myHandshakeCount) myHandshakeCount.textContent = '0';
+        return;
+      }
 
-    myHandshakesList.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--ink-faint);font-size:0.85rem;">Checking for updates...</div>`;
+      myHandshakesList.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--ink-faint);font-size:0.85rem;">Checking for updates...</div>`;
 
-    try {
-      const res = await matches.getMyMatches();
-      const all = res.matches || [];
-      if (myHandshakeCount) myHandshakeCount.textContent = String(all.length);
+      try {
+        const res = await matches.getMyMatches();
+        const all = res.matches || [];
+        if (myHandshakeCount) myHandshakeCount.textContent = String(all.length);
 
-      if (!all.length) {
-        myHandshakesList.innerHTML = `
+        if (!all.length) {
+          myHandshakesList.innerHTML = `
           <div style="grid-column:1/-1;padding:22px;text-align:center;background:var(--card);border:1px dashed var(--line);border-radius:8px;">
             <p style="font-size:0.88rem;color:var(--ink);font-weight:600;margin-bottom:4px;">No handshakes planted yet</p>
             <p style="font-size:0.78rem;color:var(--ink-faint);margin-bottom:0;">Pick any Build Call below and click &quot;Grab a shovel&quot; to plant a direct note to collaborate.</p>
           </div>
         `;
-        return;
-      }
-
-      myHandshakesList.innerHTML = all.map(m => {
-        const isOutbound = m.direction === 'outbound';
-        let statusBadge = `<span class="growth-badge" data-stage="seed" style="padding:2px 8px;font-size:0.72rem;background:var(--status-pending-bg);color:var(--status-pending-text);border:1px solid var(--status-pending-border);">⏳ Awaiting Review</span>`;
-        if (m.status === 'connected' || m.status === 'accepted') {
-          statusBadge = `<span class="growth-badge" data-stage="shipped" style="padding:2px 8px;font-size:0.72rem;background:var(--status-success-bg);color:var(--status-success-text);border:1px solid var(--status-success-border);">✅ Connected</span>`;
-        } else if (m.status === 'declined') {
-          statusBadge = `<span class="growth-badge" style="padding:2px 8px;font-size:0.72rem;background:var(--status-resolved-bg);color:var(--status-resolved-text);">Resolved</span>`;
+          return;
         }
 
-        const partnerName = escapeHtml(m.partner?.displayName || 'Collaborator');
-        const partnerRole = escapeHtml(m.partner?.headline || (isOutbound ? 'Build Call Creator' : 'Interested Builder'));
-        const callTitle = m.buildCall ? escapeHtml(m.buildCall.title) : null;
-        const noteSnippet = escapeHtml(m.intentNote || 'Handshake note dispatched.');
-        const contactReveal = (m.status === 'connected' && (m.revealedContact || m.partner?.email))
-          ? `<div style="margin-top:10px;padding:8px 10px;background:rgba(31,92,64,0.08);border-radius:6px;font-size:0.78rem;color:var(--forest);font-weight:600;word-break:break-all;">
+        myHandshakesList.innerHTML = all.map(m => {
+          const isOutbound = m.direction === 'outbound';
+          let statusBadge = `<span class="growth-badge" data-stage="seed" style="padding:2px 8px;font-size:0.72rem;background:var(--status-pending-bg);color:var(--status-pending-text);border:1px solid var(--status-pending-border);">⏳ Awaiting Review</span>`;
+          let statusBadge = `<span class="growth-badge" data-stage="seed" style="padding:2px 8px;font-size:0.72rem;background:var(--status-pending-bg);color:var(--status-pending-text);border:1px solid var(--status-pending-border);">Awaiting Review</span>`;
+          if (m.status === 'connected' || m.status === 'accepted') {
+            statusBadge = `<span class="growth-badge" data-stage="shipped" style="padding:2px 8px;font-size:0.72rem;background:var(--status-success-bg);color:var(--status-success-text);border:1px solid var(--status-success-border);">✅ Connected</span>`;
+            statusBadge = `<span class="growth-badge" data-stage="shipped" style="padding:2px 8px;font-size:0.72rem;background:var(--status-success-bg);color:var(--status-success-text);border:1px solid var(--status-success-border);">Connected</span>`;
+          } else if (m.status === 'declined') {
+            statusBadge = `<span class="growth-badge" style="padding:2px 8px;font-size:0.72rem;background:var(--status-resolved-bg);color:var(--status-resolved-text);">Resolved</span>`;
+          }
+
+          const partnerName = escapeHtml(m.partner?.displayName || 'Collaborator');
+          const partnerRole = escapeHtml(m.partner?.headline || (isOutbound ? 'Build Call Creator' : 'Interested Builder'));
+          const callTitle = m.buildCall ? escapeHtml(m.buildCall.title) : null;
+          const noteSnippet = escapeHtml(m.intentNote || 'Handshake note dispatched.');
+          const contactReveal = (m.status === 'connected' && (m.revealedContact || m.partner?.email))
+            ? `<div style="margin-top:10px;padding:8px 10px;background:rgba(31,92,64,0.08);border-radius:6px;font-size:0.78rem;color:var(--forest);font-weight:600;word-break:break-all;">
               Direct Channel: ${escapeHtml(m.revealedContact || m.partner?.email)}
             </div>`
-          : '';
+            : '';
 
-        return `
+          return `
           <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:8px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;">
             <div>
               <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;">
@@ -843,248 +1001,250 @@
                 ${statusBadge}
               </div>
               ${callTitle ? `<div style="font-size:0.78rem;color:var(--forest);font-weight:600;margin-bottom:6px;">🎯 Call: ${callTitle}</div>` : ''}
+              ${callTitle ? `<div style="font-size:0.78rem;color:var(--forest);font-weight:600;margin-bottom:6px;">Call: ${callTitle}</div>` : ''}
               <p style="font-size:0.8rem;color:var(--ink-soft);font-style:italic;margin:6px 0;line-height:1.35;">&ldquo;${noteSnippet}&rdquo;</p>
             </div>
             ${contactReveal}
           </div>
         `;
-      }).join('');
-    } catch (err) {
-      myHandshakesList.innerHTML = `
+        }).join('');
+      } catch (err) {
+        myHandshakesList.innerHTML = `
         <div style="grid-column:1/-1;padding:16px;text-align:center;color:var(--ink-faint);font-size:0.82rem;">
           Could not load handshakes at this moment.
         </div>
       `;
+      }
     }
-  }
 
-  if (btnToggleMyHandshakes && myHandshakesPanel) {
-    btnToggleMyHandshakes.addEventListener('click', () => {
-      const isExpanded = btnToggleMyHandshakes.getAttribute('aria-expanded') === 'true';
-      btnToggleMyHandshakes.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
-      myHandshakesPanel.style.display = isExpanded ? 'none' : 'block';
-      if (!isExpanded) {
-        const connPanel = document.getElementById('verifiedConnectionsPanel');
-        const connBtn = document.getElementById('btnToggleConnections');
-        if (connPanel && connBtn) {
-          connBtn.setAttribute('aria-expanded', 'false');
-          connPanel.style.display = 'none';
+    if (btnToggleMyHandshakes && myHandshakesPanel) {
+      btnToggleMyHandshakes.addEventListener('click', () => {
+        const isExpanded = btnToggleMyHandshakes.getAttribute('aria-expanded') === 'true';
+        btnToggleMyHandshakes.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+        myHandshakesPanel.style.display = isExpanded ? 'none' : 'block';
+        if (!isExpanded) {
+          const connPanel = document.getElementById('verifiedConnectionsPanel');
+          const connBtn = document.getElementById('btnToggleConnections');
+          if (connPanel && connBtn) {
+            connBtn.setAttribute('aria-expanded', 'false');
+            connPanel.style.display = 'none';
+          }
+          renderMyHandshakes();
         }
-        renderMyHandshakes();
-      }
-    });
-  }
-
-  if (btnRefreshHandshakes) {
-    btnRefreshHandshakes.addEventListener('click', renderMyHandshakes);
-  }
-
-  // Preload count if logged in
-  if (auth.getUser()) {
-    matches.getMyMatches().then(res => {
-      if (res && res.total !== undefined && myHandshakeCount) {
-        myHandshakeCount.textContent = String(res.total);
-      }
-    }).catch(() => {});
-  }
-
-  function restorePendingDraftIfAny() {
-    const raw = sessionStorage.getItem('canopy_pending_note') || sessionStorage.getItem('canopy_shovel_draft');
-    if (!raw) return;
-    try {
-      const draft = JSON.parse(raw);
-      if (!draft || !draft.note) return;
-
-      const user = auth.getUser();
-      if (!user || user.isGuest) return;
-
-      const card = draft.callId ? document.querySelector(`[data-id="${draft.callId}"]`) : null;
-      if (card && card.querySelector('.shovel-btn:not([href])')) {
-        card.querySelector('.shovel-btn:not([href])').click();
-      } else {
-        const firstShovel = document.querySelector('.shovel-btn:not([href])');
-        if (firstShovel) firstShovel.click();
-      }
-
-      setTimeout(() => {
-        const noteEl = document.getElementById('dNote');
-        const linkEl = document.getElementById('dLink');
-        if (noteEl) noteEl.value = draft.note;
-        if (linkEl && draft.link) linkEl.value = draft.link;
-        if (draft.skills && Array.isArray(draft.skills)) {
-          draft.skills.forEach(skill => {
-            [...document.querySelectorAll('[data-group="drawer-skills"] .pill')]
-              .find(p => p.textContent.trim() === skill)
-              ?.setAttribute('aria-pressed', 'true');
-          });
-        }
-        if (draft.availability) {
-          const availPill = [...document.querySelectorAll('[data-group="drawer-avail"] .pill')]
-            .find(p => p.textContent.trim() === draft.availability);
-          if (availPill) availPill.setAttribute('aria-pressed', 'true');
-        }
-        if (typeof showToast === 'function') {
-          showToast('🌱 Welcome back: your note is right where you left it.');
-        }
-      }, 200);
-    } catch (e) {
-      console.error('Draft restore error', e);
+      });
     }
-  }
 
-  restorePendingDraftIfAny();
-  loadLiveBuilders();
+    if (btnRefreshHandshakes) {
+      btnRefreshHandshakes.addEventListener('click', renderMyHandshakes);
+    }
 
-  /* ============================================================
-     INTERACTIVE MATCH DECK & 1-ON-1 SQUAD INTAKE ENGINE
-     ============================================================ */
-  let DECK_ITEMS = [];
-  let currentDeckIdx = 0;
+    // Preload count if logged in
+    if (auth.getUser()) {
+      matches.getMyMatches().then(res => {
+        if (res && res.total !== undefined && myHandshakeCount) {
+          myHandshakeCount.textContent = String(res.total);
+        }
+      }).catch(() => { });
+    }
 
-  function updateDeckCard() {
-    const deckSpotlight = document.getElementById('deckCardSpotlight');
-    const deckCounter = document.getElementById('deckCounter');
-    const btnDeckPrev = document.getElementById('btnDeckPrev');
-    const btnDeckNext = document.getElementById('btnDeckNext');
+    function restorePendingDraftIfAny() {
+      const raw = sessionStorage.getItem('canopy_pending_note') || sessionStorage.getItem('canopy_shovel_draft');
+      if (!raw) return;
+      try {
+        const draft = JSON.parse(raw);
+        if (!draft || !draft.note) return;
 
-    if (!DECK_ITEMS.length) {
-      if (deckCounter) deckCounter.textContent = 'Collaborator Spotlight';
-      if (btnDeckPrev) btnDeckPrev.style.display = 'none';
-      if (btnDeckNext) btnDeckNext.style.display = 'none';
-      if (deckSpotlight) {
-        deckSpotlight.style.display = 'block';
-        deckSpotlight.innerHTML = `
+        const user = auth.getUser();
+        if (!user || user.isGuest) return;
+
+        const card = draft.callId ? document.querySelector(`[data-id="${draft.callId}"]`) : null;
+        if (card && card.querySelector('.shovel-btn:not([href])')) {
+          card.querySelector('.shovel-btn:not([href])').click();
+        } else {
+          const firstShovel = document.querySelector('.shovel-btn:not([href])');
+          if (firstShovel) firstShovel.click();
+        }
+
+        setTimeout(() => {
+          const noteEl = document.getElementById('dNote');
+          const linkEl = document.getElementById('dLink');
+          if (noteEl) noteEl.value = draft.note;
+          if (linkEl && draft.link) linkEl.value = draft.link;
+          if (draft.skills && Array.isArray(draft.skills)) {
+            draft.skills.forEach(skill => {
+              [...document.querySelectorAll('[data-group="drawer-skills"] .pill')]
+                .find(p => p.textContent.trim() === skill)
+                ?.setAttribute('aria-pressed', 'true');
+            });
+          }
+          if (draft.availability) {
+            const availPill = [...document.querySelectorAll('[data-group="drawer-avail"] .pill')]
+              .find(p => p.textContent.trim() === draft.availability);
+            if (availPill) availPill.setAttribute('aria-pressed', 'true');
+          }
+          if (typeof showToast === 'function') {
+            showToast('🌱 Welcome back: your note is right where you left it.');
+            showToast('Welcome back: your note is right where you left it.');
+          }
+        }, 200);
+      } catch (e) {
+        console.error('Draft restore error', e);
+      }
+    }
+
+    restorePendingDraftIfAny();
+    loadLiveBuilders();
+
+    /* ============================================================
+       INTERACTIVE MATCH DECK & 1-ON-1 SQUAD INTAKE ENGINE
+       ============================================================ */
+    let DECK_ITEMS = [];
+    let currentDeckIdx = 0;
+
+    function updateDeckCard() {
+      const deckSpotlight = document.getElementById('deckCardSpotlight');
+      const deckCounter = document.getElementById('deckCounter');
+      const btnDeckPrev = document.getElementById('btnDeckPrev');
+      const btnDeckNext = document.getElementById('btnDeckNext');
+
+      if (!DECK_ITEMS.length) {
+        if (deckCounter) deckCounter.textContent = 'Collaborator Spotlight';
+        if (btnDeckPrev) btnDeckPrev.style.display = 'none';
+        if (btnDeckNext) btnDeckNext.style.display = 'none';
+        if (deckSpotlight) {
+          deckSpotlight.style.display = 'block';
+          deckSpotlight.innerHTML = `
           <div style="text-align:center;padding:16px 8px;color:var(--ink-soft);">
             <p style="margin:0 0 12px;font-size:0.92rem;">No spotlight collaborators listed yet. Verified builder profiles will appear here as builders join.</p>
             <a href="apply.html" class="btn btn-stamp btn-sm">Submit Builder Profile &rarr;</a>
           </div>
         `;
-      }
-      return;
-    }
-
-    if (btnDeckPrev) btnDeckPrev.style.display = '';
-    if (btnDeckNext) btnDeckNext.style.display = '';
-
-    const item = DECK_ITEMS[currentDeckIdx];
-    if (!item) return;
-
-    const counter = document.getElementById('deckCounter');
-    if (counter) counter.textContent = `Collaborator Spotlight ${currentDeckIdx + 1} of ${DECK_ITEMS.length}`;
-
-    const avatar = document.getElementById('deckAvatar');
-    if (avatar) avatar.src = item.avatar;
-
-    const name = document.getElementById('deckName');
-    if (name) name.textContent = item.name;
-
-    const domainBadge = document.getElementById('deckDomainBadge');
-    if (domainBadge) {
-      domainBadge.textContent = item.domain.toUpperCase();
-      domainBadge.setAttribute('data-domain', item.domain);
-    }
-
-    const hours = document.getElementById('deckHours');
-    if (hours) hours.textContent = item.hours;
-
-    const title = document.getElementById('deckTitle');
-    if (title) title.textContent = item.role;
-
-    const looking = document.getElementById('deckLookingToBuild');
-    if (looking) looking.innerHTML = `<strong>Looking to build:</strong> ${escapeHtml(item.lookingToBuild)}`;
-
-    const chips = document.getElementById('deckChips');
-    if (chips) {
-      chips.innerHTML = item.skills.map(s => `<span class="tag-chip skill">${escapeHtml(s)}</span>`).join('');
-    }
-  }
-
-  const btnDeckPrev = document.getElementById('btnDeckPrev');
-  const btnDeckNext = document.getElementById('btnDeckNext');
-  if (btnDeckPrev) {
-    btnDeckPrev.addEventListener('click', () => {
-      currentDeckIdx = (currentDeckIdx - 1 + DECK_ITEMS.length) % DECK_ITEMS.length;
-      updateDeckCard();
-    });
-  }
-  if (btnDeckNext) {
-    btnDeckNext.addEventListener('click', () => {
-      currentDeckIdx = (currentDeckIdx + 1) % DECK_ITEMS.length;
-      updateDeckCard();
-    });
-  }
-
-  window.handleDeckConnect = function() {
-    const item = DECK_ITEMS[currentDeckIdx];
-    if (!item) return;
-    openDirectIntro(item.id, item.name, item.role, item.lookingToBuild);
-  };
-
-  window.runAiMatchAnalysis = async function() {
-    const btn = document.getElementById('btnRunAiMatch');
-    const panel = document.getElementById('aiMatchResultPanel');
-    if (!btn || !panel) return;
-
-    const origText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Analyzing Synergy...';
-
-    try {
-      const m = window.mythosClient;
-      const mythosStatus = document.body?.dataset?.mythosStatus || 'standalone';
-
-      if (m && mythosStatus === 'expired') {
-        m.relaunch();
+        }
         return;
       }
 
-      let consentId;
-      let fetcher = fetch.bind(window);
+      if (btnDeckPrev) btnDeckPrev.style.display = '';
+      if (btnDeckNext) btnDeckNext.style.display = '';
 
-      if (m && mythosStatus === 'mythos') {
-        const capRes = await fetch('/api/mythos/capabilities').then(r => r.json()).catch(() => ({ llmEnabled: false }));
-        const chargeOpts = capRes.llmEnabled
-          ? { kind: 'llm', reason: 'AI Squad Compatibility Match' }
-          : { usd: capRes.fixedAnalysisUsd || 0.15, reason: 'Squad Compatibility Analysis' };
-        const confirmation = await m.confirmCharge(chargeOpts);
-        if (!confirmation?.approved) {
-          btn.disabled = false;
-          btn.textContent = origText;
+      const item = DECK_ITEMS[currentDeckIdx];
+      if (!item) return;
+
+      const counter = document.getElementById('deckCounter');
+      if (counter) counter.textContent = `Collaborator Spotlight ${currentDeckIdx + 1} of ${DECK_ITEMS.length}`;
+
+      const avatar = document.getElementById('deckAvatar');
+      if (avatar) avatar.src = item.avatar;
+
+      const name = document.getElementById('deckName');
+      if (name) name.textContent = item.name;
+
+      const domainBadge = document.getElementById('deckDomainBadge');
+      if (domainBadge) {
+        domainBadge.textContent = item.domain.toUpperCase();
+        domainBadge.setAttribute('data-domain', item.domain);
+      }
+
+      const hours = document.getElementById('deckHours');
+      if (hours) hours.textContent = item.hours;
+
+      const title = document.getElementById('deckTitle');
+      if (title) title.textContent = item.role;
+
+      const looking = document.getElementById('deckLookingToBuild');
+      if (looking) looking.innerHTML = `<strong>Looking to build:</strong> ${escapeHtml(item.lookingToBuild)}`;
+
+      const chips = document.getElementById('deckChips');
+      if (chips) {
+        chips.innerHTML = item.skills.map(s => `<span class="tag-chip skill">${escapeHtml(s)}</span>`).join('');
+      }
+    }
+
+    const btnDeckPrev = document.getElementById('btnDeckPrev');
+    const btnDeckNext = document.getElementById('btnDeckNext');
+    if (btnDeckPrev) {
+      btnDeckPrev.addEventListener('click', () => {
+        currentDeckIdx = (currentDeckIdx - 1 + DECK_ITEMS.length) % DECK_ITEMS.length;
+        updateDeckCard();
+      });
+    }
+    if (btnDeckNext) {
+      btnDeckNext.addEventListener('click', () => {
+        currentDeckIdx = (currentDeckIdx + 1) % DECK_ITEMS.length;
+        updateDeckCard();
+      });
+    }
+
+    window.handleDeckConnect = function () {
+      const item = DECK_ITEMS[currentDeckIdx];
+      if (!item) return;
+      openDirectIntro(item.id, item.name, item.role, item.lookingToBuild);
+    };
+
+    window.runAiMatchAnalysis = async function () {
+      const btn = document.getElementById('btnRunAiMatch');
+      const panel = document.getElementById('aiMatchResultPanel');
+      if (!btn || !panel) return;
+
+      const origText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Analyzing Synergy...';
+
+      try {
+        const m = window.mythosClient;
+        const mythosStatus = document.body?.dataset?.mythosStatus || 'standalone';
+
+        if (m && mythosStatus === 'expired') {
+          m.relaunch();
           return;
         }
-        consentId = confirmation.consentId;
-        fetcher = m.fetch.bind(m);
-      }
 
-      const activeRoleBtn = document.querySelector('.role-pick-btn[aria-pressed="true"]');
-      const role = activeRoleBtn?.getAttribute('data-role') || 'builder';
-      const activeDomainChip = document.querySelector('[data-filters-for="#buildersGrid"] .filter-chip[aria-pressed="true"]');
-      const rawDomain = activeDomainChip?.getAttribute('data-domain');
-      const domain = (rawDomain && rawDomain !== 'all') ? rawDomain : 'climate';
-      const searchQ = document.getElementById('builderSearch')?.value?.trim() || '';
+        let consentId;
+        let fetcher = fetch.bind(window);
 
-      const res = await fetcher('/api/mythos/match-ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          scope: 'builders',
-          consentId,
-          builderProfile: {
-            role,
-            primaryDomain: domain,
-            skills: searchQ ? searchQ.split(/\s+/) : ['Systems', 'Hardware', 'Field Testing']
-          },
-          ideaBrief: { domain }
-        })
-      });
+        if (m && mythosStatus === 'mythos') {
+          const capRes = await fetch('/api/mythos/capabilities').then(r => r.json()).catch(() => ({ llmEnabled: false }));
+          const chargeOpts = capRes.llmEnabled
+            ? { kind: 'llm', reason: 'AI Squad Compatibility Match' }
+            : { usd: capRes.fixedAnalysisUsd || 0.15, reason: 'Squad Compatibility Analysis' };
+          const confirmation = await m.confirmCharge(chargeOpts);
+          if (!confirmation?.approved) {
+            btn.disabled = false;
+            btn.textContent = origText;
+            return;
+          }
+          consentId = confirmation.consentId;
+          fetcher = m.fetch.bind(m);
+        }
 
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Match analysis failed.');
-      }
+        const activeRoleBtn = document.querySelector('.role-pick-btn[aria-pressed="true"]');
+        const role = activeRoleBtn?.getAttribute('data-role') || 'builder';
+        const activeDomainChip = document.querySelector('[data-filters-for="#buildersGrid"] .filter-chip[aria-pressed="true"]');
+        const rawDomain = activeDomainChip?.getAttribute('data-domain');
+        const domain = (rawDomain && rawDomain !== 'all') ? rawDomain : 'climate';
+        const searchQ = document.getElementById('builderSearch')?.value?.trim() || '';
 
-      const r = data.result || {};
-      const topHtml = (r.topMatches || []).slice(0, 3).map(tm => `
+        const res = await fetcher('/api/mythos/match-ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            scope: 'builders',
+            consentId,
+            builderProfile: {
+              role,
+              primaryDomain: domain,
+              skills: searchQ ? searchQ.split(/\s+/) : ['Systems', 'Hardware', 'Field Testing']
+            },
+            ideaBrief: { domain }
+          })
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Match analysis failed.');
+        }
+
+        const r = data.result || {};
+        const topHtml = (r.topMatches || []).slice(0, 3).map(tm => `
         <div style="background:var(--paper);border:1px solid var(--card-edge);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
           <div>
             <div style="font-weight:600;font-size:0.9rem;color:var(--ink);">${escapeHtml(tm.title)}</div>
@@ -1094,8 +1254,8 @@
         </div>
       `).join('');
 
-      panel.style.display = 'block';
-      panel.innerHTML = `
+        panel.style.display = 'block';
+        panel.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
           <div style="display:flex;align-items:center;gap:10px;">
             <span style="font-family:'Fraunces Var',serif;font-size:1.35rem;font-weight:700;color:var(--forest);">${r.compatibilityScore || 88}% Synergy</span>
@@ -1110,157 +1270,160 @@
         </div>
         ${topHtml ? `<div style="display:grid;gap:8px;">${topHtml}</div>` : ''}
       `;
-    } catch (err) {
-      panel.style.display = 'block';
-      panel.innerHTML = `<p style="margin:0;color:var(--coral);font-size:0.88rem;">${escapeHtml(err.message || 'Could not complete compatibility match.')}</p>`;
-    } finally {
-      btn.disabled = false;
-      btn.textContent = origText;
-    }
-  };
-
-  // 1. Guest Squad Match Intake Modal
-  window.openSquadIntakeModal = function() {
-    document.getElementById('squadMatchIntakeModal').style.display = 'flex';
-  };
-
-  window.closeSquadIntakeModal = function() {
-    document.getElementById('squadMatchIntakeModal').style.display = 'none';
-  };
-
-  window.submitSquadMatchIntake = async function(e) {
-    e.preventDefault();
-    const btn = document.getElementById('btnSubmitIntake');
-    btn.disabled = true;
-    btn.textContent = 'Submitting Request...';
-
-    const payload = {
-      fullName: document.getElementById('intakeFullName').value.trim(),
-      email: document.getElementById('intakeEmail').value.trim(),
-      domain: document.getElementById('intakeDomain').value,
-      role: document.getElementById('intakeRole').value,
-      intent: document.getElementById('intakeIntent')?.value || 'have_problem',
-      craft: document.getElementById('intakeCraft')?.value || 'software',
-      weeklyHours: document.getElementById('intakeHours')?.value || '10-20',
-      timezone: document.getElementById('intakeTimezone')?.value || 'async',
-      projectDescription: document.getElementById('intakeDescription').value.trim(),
-      coBuilderNeeded: document.getElementById('intakeCoBuilder').value.trim(),
-      skillsWanted: document.getElementById('intakeCoBuilder').value.trim()
+      } catch (err) {
+        panel.style.display = 'block';
+        panel.innerHTML = `<p style="margin:0;color:var(--coral);font-size:0.88rem;">${escapeHtml(err.message || 'Could not complete compatibility match.')}</p>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = origText;
+      }
     };
 
-    try {
-      const res = await fetch('/api/matches/intake', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json().catch(() => ({}));
+    // 1. Guest Squad Match Intake Modal
+    window.openSquadIntakeModal = function () {
+      document.getElementById('squadMatchIntakeModal').style.display = 'flex';
+    };
 
-      if (res.ok) {
-        alert('🌱 Squad Match Request Received! Our founding team will review your project and introduce matching co-builders via email.');
-        document.getElementById('squadMatchIntakeForm').reset();
-        closeSquadIntakeModal();
-      } else {
-        alert(data.error || 'Failed to submit squad match request.');
+    window.closeSquadIntakeModal = function () {
+      document.getElementById('squadMatchIntakeModal').style.display = 'none';
+    };
+
+    window.submitSquadMatchIntake = async function (e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmitIntake');
+      btn.disabled = true;
+      btn.textContent = 'Submitting Request...';
+
+      const payload = {
+        fullName: document.getElementById('intakeFullName').value.trim(),
+        email: document.getElementById('intakeEmail').value.trim(),
+        domain: document.getElementById('intakeDomain').value,
+        role: document.getElementById('intakeRole').value,
+        intent: document.getElementById('intakeIntent')?.value || 'have_problem',
+        craft: document.getElementById('intakeCraft')?.value || 'software',
+        weeklyHours: document.getElementById('intakeHours')?.value || '10-20',
+        timezone: document.getElementById('intakeTimezone')?.value || 'async',
+        projectDescription: document.getElementById('intakeDescription').value.trim(),
+        coBuilderNeeded: document.getElementById('intakeCoBuilder').value.trim(),
+        skillsWanted: document.getElementById('intakeCoBuilder').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/matches/intake', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok) {
+          alert('🌱 Squad Match Request Received! Our founding team will review your project and introduce matching co-builders via email.');
+          alert('Squad Match Request Received! Our founding team will review your project and introduce matching co-builders via email.');
+          document.getElementById('squadMatchIntakeForm').reset();
+          closeSquadIntakeModal();
+        } else {
+          alert(data.error || 'Failed to submit squad match request.');
+        }
+      } catch (err) {
+        alert('Network error submitting request. Please retry shortly.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Submit Squad Match Request →';
       }
-    } catch (err) {
-      alert('Network error submitting request. Please retry shortly.');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Submit Squad Match Request →';
-    }
-  };
+    };
 
-  // 2. Direct 1-on-1 Introduction Modal (Logged-In or Guest Redirect)
-  window.openDirectIntro = function(recipientId, name, role, lookingToBuild) {
-    const user = auth.getUser();
-    if (!user || user.isGuest) {
-      // First-time guest: open Squad Match Intake with recipient context pre-filled
-      openSquadIntakeModal();
-      const coBuilderInput = document.getElementById('intakeCoBuilder');
-      if (coBuilderInput) {
-        coBuilderInput.value = `Pairing with ${name} (${role})`;
+    // 2. Direct 1-on-1 Introduction Modal (Logged-In or Guest Redirect)
+    window.openDirectIntro = function (recipientId, name, role, lookingToBuild) {
+      const user = auth.getUser();
+      if (!user || user.isGuest) {
+        // First-time guest: open Squad Match Intake with recipient context pre-filled
+        openSquadIntakeModal();
+        const coBuilderInput = document.getElementById('intakeCoBuilder');
+        if (coBuilderInput) {
+          coBuilderInput.value = `Pairing with ${name} (${role})`;
+        }
+        return;
       }
-      return;
-    }
 
-    document.getElementById('directIntroRecipientId').value = recipientId;
-    document.getElementById('directIntroRecipientName').textContent = `Connect with ${name}`;
-    document.getElementById('directIntroRecipientSub').textContent = `${role} · Canopy Collaborator`;
-    document.getElementById('directIntroLookingToBuild').textContent = lookingToBuild || 'Active Sprint Project';
-    document.getElementById('directIntroNote').value = '';
-    document.getElementById('directIntroModal').style.display = 'flex';
-  };
+      document.getElementById('directIntroRecipientId').value = recipientId;
+      document.getElementById('directIntroRecipientName').textContent = `Connect with ${name}`;
+      document.getElementById('directIntroRecipientSub').textContent = `${role} · Canopy Collaborator`;
+      document.getElementById('directIntroLookingToBuild').textContent = lookingToBuild || 'Active Sprint Project';
+      document.getElementById('directIntroNote').value = '';
+      document.getElementById('directIntroModal').style.display = 'flex';
+    };
 
-  window.closeDirectIntroModal = function() {
-    document.getElementById('directIntroModal').style.display = 'none';
-  };
+    window.closeDirectIntroModal = function () {
+      document.getElementById('directIntroModal').style.display = 'none';
+    };
 
-  window.submitDirectIntro = async function(e) {
-    e.preventDefault();
-    const recipientId = document.getElementById('directIntroRecipientId').value;
-    const intentNote = document.getElementById('directIntroNote').value.trim();
-    const btn = document.getElementById('btnSubmitDirectIntro');
+    window.submitDirectIntro = async function (e) {
+      e.preventDefault();
+      const recipientId = document.getElementById('directIntroRecipientId').value;
+      const intentNote = document.getElementById('directIntroNote').value.trim();
+      const btn = document.getElementById('btnSubmitDirectIntro');
 
-    if (!recipientId || !intentNote) return;
+      if (!recipientId || !intentNote) return;
 
-    btn.disabled = true;
-    btn.textContent = 'Dispatching Handshake...';
+      btn.disabled = true;
+      btn.textContent = 'Dispatching Handshake...';
 
-    try {
-      const res = await matches.requestHandshake({
-        recipientId,
-        intentNote
-      });
+      try {
+        const res = await matches.requestHandshake({
+          recipientId,
+          intentNote
+        });
 
-      alert('✓ Handshake invitation dispatched! The curator will facilitate your 1-on-1 introduction.');
-      closeDirectIntroModal();
-      if (typeof renderMyHandshakes === 'function') renderMyHandshakes();
-    } catch (err) {
-      alert(err.message || 'Failed to dispatch handshake.');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Send 1-on-1 Handshake →';
-    }
-  };
+        alert('✓ Handshake invitation dispatched! The curator will facilitate your 1-on-1 introduction.');
+        alert('Handshake invitation dispatched! The curator will facilitate your 1-on-1 introduction.');
+        closeDirectIntroModal();
+        if (typeof renderMyHandshakes === 'function') renderMyHandshakes();
+      } catch (err) {
+        alert(err.message || 'Failed to dispatch handshake.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send 1-on-1 Handshake →';
+      }
+    };
 
     // Dynamic click delegation for "Send a note" on builder cards
-  const buildersGridEl = document.getElementById('buildersGrid');
-  if (buildersGridEl) {
-    buildersGridEl.addEventListener('click', (e) => {
-      const btn = e.target.closest('.shovel-btn');
-      if (!btn) return;
-      e.preventDefault();
-      e.stopPropagation();
-      const card = btn.closest('.match-card');
-      if (!card) return;
-      const recipientId = btn.getAttribute('data-recipient-id') || card.getAttribute('data-user-id') || card.getAttribute('data-id');
-      const name = card.querySelector('.name')?.textContent || 'Collaborator';
-      const sub = card.querySelector('.sub')?.textContent || 'Builder';
-      const tagline = card.querySelector('.builder-tagline')?.textContent?.replace('Looking to build:', '').trim() || '';
-      openDirectIntro(recipientId, name, sub, tagline);
-    });
-  }
-
-  // Hook all shovel-btns on match cards to open the 1-on-1 intro modal
-  document.querySelectorAll('#buildersGrid .match-card').forEach(card => {
-    const btn = card.querySelector('.shovel-btn');
-    const name = card.querySelector('.name')?.textContent || 'Collaborator';
-    const sub = card.querySelector('.sub')?.textContent || 'Builder';
-    const tagline = card.querySelector('.builder-tagline')?.textContent?.replace('Looking to build:', '').trim() || '';
-    const recipientId = btn?.getAttribute('data-recipient-id') || card.getAttribute('data-user-id');
-
-    if (btn) {
-      btn.addEventListener('click', (e) => {
+    const buildersGridEl = document.getElementById('buildersGrid');
+    if (buildersGridEl) {
+      buildersGridEl.addEventListener('click', (e) => {
+        const btn = e.target.closest('.shovel-btn');
+        if (!btn) return;
         e.preventDefault();
         e.stopPropagation();
+        const card = btn.closest('.match-card');
+        if (!card) return;
+        const recipientId = btn.getAttribute('data-recipient-id') || card.getAttribute('data-user-id') || card.getAttribute('data-id');
+        const name = card.querySelector('.name')?.textContent || 'Collaborator';
+        const sub = card.querySelector('.sub')?.textContent || 'Builder';
+        const tagline = card.querySelector('.builder-tagline')?.textContent?.replace('Looking to build:', '').trim() || '';
         openDirectIntro(recipientId, name, sub, tagline);
       });
     }
-  });
 
-  updateDeckCard();
+    // Hook all shovel-btns on match cards to open the 1-on-1 intro modal
+    document.querySelectorAll('#buildersGrid .match-card').forEach(card => {
+      const btn = card.querySelector('.shovel-btn');
+      const name = card.querySelector('.name')?.textContent || 'Collaborator';
+      const sub = card.querySelector('.sub')?.textContent || 'Builder';
+      const tagline = card.querySelector('.builder-tagline')?.textContent?.replace('Looking to build:', '').trim() || '';
+      const recipientId = btn?.getAttribute('data-recipient-id') || card.getAttribute('data-user-id');
 
-</script>
+      if (btn) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openDirectIntro(recipientId, name, sub, tagline);
+        });
+      }
+    });
+
+    updateDeckCard();
+
+  </script>
 </body>
+
 </html>

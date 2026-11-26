@@ -20,7 +20,8 @@
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Canopy: If we can find love online, why not teammates? Match with intent. Sprint with a team. Ship something real.">
+  <meta property="og:image:alt"
+    content="Canopy: If we can find love online, why not teammates? Match with intent. Sprint with a team. Ship something real.">
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Canopy - Find your teammates, not just your matches">
@@ -46,36 +47,58 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-      animation: rpFadeIn 0.28s var(--ease-out, cubic-bezier(.23,1,.32,1)) both;
+      animation: rpFadeIn 0.28s var(--ease-out, cubic-bezier(.23, 1, .32, 1)) both;
     }
+
     @keyframes rpFadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
+
     @media (prefers-reduced-motion: reduce) {
-      .rp-backdrop, .rp-sheet { animation: none !important; }
+
+      .rp-backdrop,
+      .rp-sheet {
+        animation: none !important;
+      }
     }
+
     .rp-sheet {
       background: var(--card, #fcf8ea);
       border: 1px solid var(--card-edge, #e4dabb);
       border-radius: 20px;
-      box-shadow: 0 32px 80px -16px rgba(0,0,0,0.45), 0 2px 0 var(--card-edge, #e4dabb);
+      box-shadow: 0 32px 80px -16px rgba(0, 0, 0, 0.45), 0 2px 0 var(--card-edge, #e4dabb);
       max-width: 520px;
       width: 100%;
       padding: 36px 32px 28px;
       position: relative;
-      animation: rpSlideUp 0.32s var(--ease-out, cubic-bezier(.23,1,.32,1)) both;
+      animation: rpSlideUp 0.32s var(--ease-out, cubic-bezier(.23, 1, .32, 1)) both;
     }
+
     @keyframes rpSlideUp {
-      from { transform: translateY(28px) scale(0.97); opacity: 0; }
-      to   { transform: translateY(0) scale(1); opacity: 1; }
+      from {
+        transform: translateY(28px) scale(0.97);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
     }
+
     .rp-logo-row {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 20px;
     }
+
     .rp-logo-name {
       font-family: 'Fraunces Var', serif;
       font-weight: 700;
@@ -83,6 +106,7 @@
       color: var(--forest, #1f5c40);
       letter-spacing: -.02em;
     }
+
     .rp-title {
       font-family: 'Fraunces Var', serif;
       font-size: clamp(1.45rem, 3.4vw, 1.85rem);
@@ -92,17 +116,20 @@
       letter-spacing: -.02em;
       line-height: 1.15;
     }
+
     .rp-desc {
       font-size: 0.96rem;
       color: var(--ink-soft, #5c5744);
       margin: 0 0 24px;
       line-height: 1.5;
     }
+
     .rp-roles {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
+
     .rp-card {
       display: flex;
       align-items: center;
@@ -114,29 +141,34 @@
       cursor: pointer;
       text-align: left;
       width: 100%;
-      transition: border-color 0.18s ease, background 0.18s ease, transform 0.16s var(--ease-out, cubic-bezier(.23,1,.32,1)), box-shadow 0.16s ease;
+      transition: border-color 0.18s ease, background 0.18s ease, transform 0.16s var(--ease-out, cubic-bezier(.23, 1, .32, 1)), box-shadow 0.16s ease;
       font-family: inherit;
     }
+
     .rp-card:hover {
       border-color: var(--forest, #1f5c40);
       background: color-mix(in srgb, var(--forest, #1f5c40) 5%, var(--card, #fcf8ea));
       transform: translateY(-2px);
-      box-shadow: 0 6px 18px -4px var(--shadow, rgba(38,32,16,.22));
+      box-shadow: 0 6px 18px -4px var(--shadow, rgba(38, 32, 16, .22));
     }
+
     .rp-card:focus-visible {
       outline: 3px solid var(--sun, #e3b23f);
       outline-offset: 2px;
     }
+
     .rp-card[aria-pressed="true"] {
       border-color: var(--forest, #1f5c40);
       background: color-mix(in srgb, var(--forest, #1f5c40) 9%, var(--card, #fcf8ea));
       box-shadow: 0 0 0 3px color-mix(in srgb, var(--forest, #1f5c40) 20%, transparent);
     }
+
     .rp-card-explore {
       justify-content: center;
       padding: 12px 18px;
       background: transparent;
     }
+
     .rp-card-icon {
       width: 44px;
       height: 44px;
@@ -146,16 +178,34 @@
       justify-content: center;
       flex-shrink: 0;
     }
-    .rp-icon-builder  { background: color-mix(in srgb, var(--forest, #1f5c40) 14%, var(--card, #fcf8ea)); color: var(--forest, #1f5c40); }
-    .rp-icon-problem  { background: color-mix(in srgb, var(--coral, #cf5f45) 14%, var(--card, #fcf8ea)); color: var(--coral, #cf5f45); }
-    .rp-icon-enabler  { background: color-mix(in srgb, var(--sun, #e3b23f) 18%, var(--card, #fcf8ea)); color: #a07320; }
-    .rp-card-icon svg { width: 22px; height: 22px; }
+
+    .rp-icon-builder {
+      background: color-mix(in srgb, var(--forest, #1f5c40) 14%, var(--card, #fcf8ea));
+      color: var(--forest, #1f5c40);
+    }
+
+    .rp-icon-problem {
+      background: color-mix(in srgb, var(--coral, #cf5f45) 14%, var(--card, #fcf8ea));
+      color: var(--coral, #cf5f45);
+    }
+
+    .rp-icon-enabler {
+      background: color-mix(in srgb, var(--sun, #e3b23f) 18%, var(--card, #fcf8ea));
+      color: #a07320;
+    }
+
+    .rp-card-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
     .rp-card-body {
       flex: 1;
       display: flex;
       flex-direction: column;
       gap: 3px;
     }
+
     .rp-card-title {
       font-family: 'Fraunces Var', serif;
       font-size: 1.05rem;
@@ -163,21 +213,25 @@
       color: var(--ink, #26241a);
       line-height: 1.2;
     }
+
     .rp-card-sub {
       font-size: 0.83rem;
       color: var(--ink-soft, #5c5744);
       line-height: 1.45;
     }
+
     .rp-card-arrow {
       font-size: 1.1rem;
       color: var(--ink-faint, #716b58);
       flex-shrink: 0;
       transition: transform 0.16s ease, color 0.16s ease;
     }
+
     .rp-card:hover .rp-card-arrow {
       transform: translateX(3px);
       color: var(--forest, #1f5c40);
     }
+
     .rp-footnote {
       margin: 18px 0 0;
       font-size: 0.76rem;
@@ -185,22 +239,38 @@
       text-align: center;
       line-height: 1.5;
     }
+
     /* Dark mode */
     :root[data-theme="dark"] .rp-sheet {
       background: var(--card, #182620);
       border-color: var(--card-edge, #26382e);
     }
+
     :root[data-theme="dark"] .rp-card {
       background: var(--paper, #101c16);
     }
+
     /* Mobile */
     @media (max-width: 520px) {
-      .rp-sheet { padding: 28px 20px 24px; border-radius: 16px; }
-      .rp-card  { gap: 10px; padding: 13px 14px; }
-      .rp-card-icon { width: 38px; height: 38px; }
-      .rp-card-sub  { display: none; }
+      .rp-sheet {
+        padding: 28px 20px 24px;
+        border-radius: 16px;
+      }
+
+      .rp-card {
+        gap: 10px;
+        padding: 13px 14px;
+      }
+
+      .rp-card-icon {
+        width: 38px;
+        height: 38px;
+      }
+
+      .rp-card-sub {
+        display: none;
+      }
     }
-  
   </style>
 
 </head>
@@ -212,7 +282,8 @@
        Shows once per browser session (stored in sessionStorage).
        Personalises the hero h1 copy and CTA labels for the visit.
        ============================================================ -->
-  <div id="rolePickerBackdrop" class="rp-backdrop" aria-modal="true" role="dialog" aria-labelledby="rpTitle" aria-describedby="rpDesc" style="display:none;">
+  <div id="rolePickerBackdrop" class="rp-backdrop" aria-modal="true" role="dialog" aria-labelledby="rpTitle"
+    aria-describedby="rpDesc" style="display:none;">
     <div class="rp-sheet" role="document">
 
       <!-- Logo mark -->
@@ -229,43 +300,49 @@
 
           <button type="button" class="rp-card" data-role="builder" aria-pressed="false">
             <div class="rp-card-icon rp-icon-builder" aria-hidden="true">
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="4" y="20" width="8" height="8" rx="1"/>
-                <rect x="12" y="12" width="8" height="16" rx="1"/>
-                <rect x="20" y="4" width="8" height="24" rx="1"/>
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <rect x="4" y="20" width="8" height="8" rx="1" />
+                <rect x="12" y="12" width="8" height="16" rx="1" />
+                <rect x="20" y="4" width="8" height="24" rx="1" />
               </svg>
             </div>
             <div class="rp-card-body">
               <span class="rp-card-title">I&rsquo;m a Builder</span>
-              <span class="rp-card-sub">Engineer, designer, researcher, or maker looking for a real problem to work on with a real team.</span>
+              <span class="rp-card-sub">Engineer, designer, researcher, or maker looking for a real problem to work on
+                with a real team.</span>
             </div>
             <span class="rp-card-arrow" aria-hidden="true">&rarr;</span>
           </button>
 
           <button type="button" class="rp-card" data-role="problem-holder" aria-pressed="false">
             <div class="rp-card-icon rp-icon-problem" aria-hidden="true">
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="16" cy="16" r="12"/>
-                <path d="M16 10v6l4 2"/>
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="16" cy="16" r="12" />
+                <path d="M16 10v6l4 2" />
               </svg>
             </div>
             <div class="rp-card-body">
               <span class="rp-card-title">I hold a Problem</span>
-              <span class="rp-card-sub">Researcher, NGO, founder, or domain expert with a challenge that needs a technical team to crack it.</span>
+              <span class="rp-card-sub">Researcher, NGO, founder, or domain expert with a challenge that needs a
+                technical team to crack it.</span>
             </div>
             <span class="rp-card-arrow" aria-hidden="true">&rarr;</span>
           </button>
 
           <button type="button" class="rp-card" data-role="enabler" aria-pressed="false">
             <div class="rp-card-icon rp-icon-enabler" aria-hidden="true">
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 4 L28 10 L28 22 L16 28 L4 22 L4 10 Z"/>
-                <circle cx="16" cy="16" r="4"/>
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M16 4 L28 10 L28 22 L16 28 L4 22 L4 10 Z" />
+                <circle cx="16" cy="16" r="4" />
               </svg>
             </div>
             <div class="rp-card-body">
               <span class="rp-card-title">I&rsquo;m an Enabler</span>
-              <span class="rp-card-sub">Funder, mentor, institution, or domain sponsor looking to back high-signal sprint teams.</span>
+              <span class="rp-card-sub">Funder, mentor, institution, or domain sponsor looking to back high-signal
+                sprint teams.</span>
             </div>
             <span class="rp-card-arrow" aria-hidden="true">&rarr;</span>
           </button>
@@ -281,14 +358,21 @@
 
       <!-- High-intent Confirmation & Routing Card (UX Overhaul Section 3) -->
       <div id="rpConfirmationState" style="display:none; text-align:center; padding:6px 0 14px;">
-        <div id="rpConfirmIcon" style="font-size:2.2rem; margin-bottom:8px;">🌿</div>
-        <h3 id="rpConfirmTitle" style="font-family:'Fraunces Var',serif; font-size:1.35rem; color:var(--ink); margin:0 0 6px;">Welcome!</h3>
+        <div id="rpConfirmIcon"
+          style="font-size:0.82rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--forest); margin-bottom:8px;">
+          CANOPY</div>
+        <h3 id="rpConfirmTitle"
+          style="font-family:'Fraunces Var',serif; font-size:1.35rem; color:var(--ink); margin:0 0 6px;">Welcome!</h3>
         <p id="rpConfirmDesc" style="font-size:0.92rem; color:var(--ink-soft); line-height:1.55; margin:0 0 20px;"></p>
-        
+
         <div style="display:flex; flex-direction:column; gap:10px;">
-          <a id="rpPrimaryCta" href="sprint.html" class="btn btn-stamp btn-block" style="text-align:center; padding:12px 18px; text-decoration:none; font-weight:700;"></a>
-          <a id="rpSecondaryCta" href="apply.html" class="btn btn-ghost btn-block" style="text-align:center; padding:10px 18px; text-decoration:none; border:1.5px solid var(--card-edge);"></a>
-          <button type="button" id="rpCloseToHome" style="background:none; border:none; color:var(--forest); font-size:0.85rem; font-weight:600; cursor:pointer; text-decoration:underline; padding:8px 0; margin-top:4px;">Or continue browsing homepage &rarr;</button>
+          <a id="rpPrimaryCta" href="sprint.html" class="btn btn-stamp btn-block"
+            style="text-align:center; padding:12px 18px; text-decoration:none; font-weight:700;"></a>
+          <a id="rpSecondaryCta" href="apply.html" class="btn btn-ghost btn-block"
+            style="text-align:center; padding:10px 18px; text-decoration:none; border:1.5px solid var(--card-edge);"></a>
+          <button type="button" id="rpCloseToHome"
+            style="background:none; border:none; color:var(--forest); font-size:0.85rem; font-weight:600; cursor:pointer; text-decoration:underline; padding:8px 0; margin-top:4px;">Or
+            continue browsing homepage &rarr;</button>
         </div>
       </div>
 
@@ -321,7 +405,8 @@
             style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign
             Up</a>
         </div>
-        <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html" title="Submit a problem statement, challenge, or opportunity to recruit collaborators">Submit a Problem</a>
+        <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html"
+          title="Submit a problem statement, challenge, or opportunity to recruit collaborators">Submit a Problem</a>
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -388,10 +473,13 @@
     <section class="hero">
       <div class="wrap hero-grid">
         <div class="reveal in-view">
-          <div id="privateBetaBanner" data-content-key="home.private_beta_banner" style="display:none;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:color-mix(in srgb, var(--forest) 12%, var(--card));border:1px solid color-mix(in srgb, var(--forest) 28%, transparent);color:var(--forest);font-size:0.82rem;font-weight:600;margin-bottom:14px;"></div>
-          <span class="eyebrow">✎ a field application sandbox</span>
+          <div id="privateBetaBanner" data-content-key="home.private_beta_banner"
+            style="display:none;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:color-mix(in srgb, var(--forest) 12%, var(--card));border:1px solid color-mix(in srgb, var(--forest) 28%, transparent);color:var(--forest);font-size:0.82rem;font-weight:600;margin-bottom:14px;">
+          </div>
+          <span class="eyebrow">a field application sandbox</span>
           <h1 data-content-key="home.hero.headline">If we can find love online,<br>why not <em>teammates?</em></h1>
-          <p class="hero-sub" data-content-key="home.hero.subheadline">Canopy is where builders, problem holders, and enablers come together and turn ideas into
+          <p class="hero-sub" data-content-key="home.hero.subheadline">Canopy is where builders, problem holders, and
+            enablers come together and turn ideas into
             things that actually ship.</p>
           <p class="hero-sub" style="margin-top:10px;font-size:1.02rem;">Across AI, hardware, design, research, and
             everything between.</p>
@@ -589,15 +677,20 @@
           <!-- Community Role Hub with Dedicated Page Navigation -->
           <div class="role-hub-row reveal">
             <a href="builders.html" class="role-hub-link">
-              <img src="/avatars/avatar-builders.png" alt="Illustration of a builder writing code and shaping prototypes" loading="lazy" decoding="async">
+              <img src="/avatars/avatar-builders.png"
+                alt="Illustration of a builder writing code and shaping prototypes" loading="lazy" decoding="async">
               <span>For Builders: Ship with a Team</span>
             </a>
             <a href="problem-holders.html" class="role-hub-link">
-              <img src="/avatars/avatar-problem-holders.png" alt="Illustration of a problem holder articulating a real-world challenge" loading="lazy" decoding="async">
+              <img src="/avatars/avatar-problem-holders.png"
+                alt="Illustration of a problem holder articulating a real-world challenge" loading="lazy"
+                decoding="async">
               <span>For Problem Holders: Post a Challenge</span>
             </a>
             <a href="enablers.html" class="role-hub-link">
-              <img src="/avatars/avatar-enablers.png" alt="Illustration of an enabler providing resources and institutional backing" loading="lazy" decoding="async">
+              <img src="/avatars/avatar-enablers.png"
+                alt="Illustration of an enabler providing resources and institutional backing" loading="lazy"
+                decoding="async">
               <span>For Enablers: Scout &amp; Support</span>
             </a>
           </div>
@@ -661,7 +754,8 @@
       <section class="section finale" id="connect">
         <div class="wrap">
           <div style="display:flex;justify-content:center;margin-bottom:20px;">
-            <img src="/avatars/avatar-built-connection.png" alt="Illustration representing collaborative connection and shared growth" loading="lazy" decoding="async"
+            <img src="/avatars/avatar-built-connection.png"
+              alt="Illustration representing collaborative connection and shared growth" loading="lazy" decoding="async"
               style="width:120px;height:auto;object-fit:contain;" class="reveal">
           </div>
           <h2>It grew this far because someone kept watering it. Want in?</h2>
@@ -692,8 +786,10 @@
           </div>
         </div>
         <div style="margin-top:14px;">
-          <p class="founder-quote"><span data-content-key="home.founder_quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to
-            close that gap: one Build Call, one sprint, one shipped project at a time."</span><cite>Aarushi Chatterjee,
+          <p class="founder-quote"><span data-content-key="home.founder_quote">"I kept hearing the same frustration from
+              brilliant people. So I started Canopy to
+              close that gap: one Build Call, one sprint, one shipped project at a time."</span><cite>Aarushi
+              Chatterjee,
               Founder</cite></p>
         </div>
       </div>
@@ -725,7 +821,7 @@
     </div>
   </footer>
 
-  <div class="toast" id="toast">🌱 Application planted: we will be in touch soon.</div>
+  <div class="toast" id="toast">Application planted: we will be in touch soon.</div>
 
   <script type="module" src="/src/main.js"></script>
 
@@ -736,13 +832,13 @@
     (function () {
       var SESSION_KEY = 'canopy_role';
       var BODY_CLASS_MAP = {
-        'builder':      'rp-view-builder',
-        'problem-holder':'rp-view-problem',
-        'enabler':      'rp-view-enabler',
-        'exploring':    ''
+        'builder': 'rp-view-builder',
+        'problem-holder': 'rp-view-problem',
+        'enabler': 'rp-view-enabler',
+        'exploring': ''
       };
       var UNIFIED_COPY = {
-        eyebrow: '✎ a field application sandbox',
+        eyebrow: 'a field application sandbox',
         h1: 'If we can find love online,<br>why not <em>teammates?</em>',
         sub: 'Canopy is where builders, problem holders, and enablers come together and turn ideas into things that actually ship.',
         sub2: 'Across AI, hardware, design, research, and everything between.',
@@ -759,24 +855,24 @@
       function applyRole(role, animate) {
         document.documentElement.setAttribute('data-rp-role', role);
         var cls = BODY_CLASS_MAP[role];
-        Object.values(BODY_CLASS_MAP).forEach(function(c){ if(c) document.body.classList.remove(c); });
+        Object.values(BODY_CLASS_MAP).forEach(function (c) { if (c) document.body.classList.remove(c); });
         if (cls) document.body.classList.add(cls);
 
         var copy = HERO_COPY[role] || HERO_COPY['exploring'];
         var eyebrow = document.querySelector('.hero .eyebrow');
-        var h1      = document.querySelector('.hero h1');
-        var sub     = document.querySelectorAll('.hero .hero-sub');
-        var cta1    = document.querySelector('.hero-ctas .btn-stamp');
-        var cta2    = document.querySelector('.hero-ctas .btn-ghost');
+        var h1 = document.querySelector('.hero h1');
+        var sub = document.querySelectorAll('.hero .hero-sub');
+        var cta1 = document.querySelector('.hero-ctas .btn-stamp');
+        var cta2 = document.querySelector('.hero-ctas .btn-ghost');
 
         if (animate) {
-          [eyebrow, h1, cta1, cta2].concat(Array.from(sub)).forEach(function(el){
+          [eyebrow, h1, cta1, cta2].concat(Array.from(sub)).forEach(function (el) {
             if (el) { el.style.transition = 'opacity 0.22s ease'; el.style.opacity = '0'; }
           });
         }
 
         function setContent() {
-          if (eyebrow) eyebrow.textContent = '✎ a field application sandbox';
+          if (eyebrow) eyebrow.textContent = 'a field application sandbox';
           if (h1) {
             h1.innerHTML = 'If we can find love online,<br>why not <em>teammates?</em>';
           }
@@ -792,7 +888,7 @@
         if (animate) {
           setTimeout(function () {
             setContent();
-            [eyebrow, h1, cta1, cta2].concat(Array.from(sub)).forEach(function(el){
+            [eyebrow, h1, cta1, cta2].concat(Array.from(sub)).forEach(function (el) {
               if (el) el.style.opacity = '1';
             });
           }, 180);
@@ -809,7 +905,7 @@
       }
 
       function handleRoleChoice(role) {
-        try { sessionStorage.setItem(SESSION_KEY, role); } catch(e) {}
+        try { sessionStorage.setItem(SESSION_KEY, role); } catch (e) { }
         applyRole(role, true);
 
         // If user picked a specific intent role, show guided confirmation card
@@ -826,19 +922,19 @@
           var icon = document.getElementById('rpConfirmIcon');
 
           if (role === 'builder') {
-            if (icon) icon.textContent = '🛠️';
+            if (icon) icon.textContent = 'BUILDER TRACK';
             if (title) title.textContent = 'Welcome, Builder!';
             if (desc) desc.textContent = 'Explore active technical squads or apply to match with complementary teammates.';
             if (pri) { pri.textContent = 'Browse Active Squads →'; pri.href = 'sprint.html'; }
             if (sec) { sec.textContent = 'Apply as a Builder (60s)'; sec.href = 'apply.html?role=builder'; }
           } else if (role === 'problem-holder') {
-            if (icon) icon.textContent = '🎯';
+            if (icon) icon.textContent = 'PROBLEM HOLDER';
             if (title) title.textContent = 'Welcome, Problem Holder!';
             if (desc) desc.textContent = 'Submit your domain challenge to recruit a technical sprint team to build a working prototype.';
             if (pri) { pri.textContent = 'Submit a Problem / Challenge →'; pri.href = 'post-call.html'; }
             if (sec) { sec.textContent = 'Browse Open Challenges'; sec.href = 'match.html'; }
           } else if (role === 'enabler') {
-            if (icon) icon.textContent = '🌱';
+            if (icon) icon.textContent = 'ENABLER TRACK';
             if (title) title.textContent = 'Welcome, Enabler!';
             if (desc) desc.textContent = 'Support high-signal builders with domain mentorship, pilot resources, or deployment grants.';
             if (pri) { pri.textContent = 'Explore Open Notebook →'; pri.href = 'notebook.html'; }
@@ -854,7 +950,7 @@
 
       // Restore from sessionStorage (no flicker on back-nav)
       var saved = null;
-      try { saved = sessionStorage.getItem(SESSION_KEY); } catch(e) {}
+      try { saved = sessionStorage.getItem(SESSION_KEY); } catch (e) { }
       if (saved && HERO_COPY[saved]) {
         applyRole(saved, false);
       }
@@ -869,13 +965,13 @@
           // Trap focus inside overlay
           var focusable = backdrop.querySelectorAll('button, [href], input, [tabindex]:not([tabindex="-1"])');
           var first = focusable[0], last = focusable[focusable.length - 1];
-          backdrop.addEventListener('keydown', function(e) {
+          backdrop.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') { handleRoleChoice('exploring'); return; }
             if (e.key !== 'Tab') return;
             if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
-            else            { if (document.activeElement === last)  { e.preventDefault(); first.focus(); } }
+            else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
           });
-          setTimeout(function() { if (focusable[0]) focusable[0].focus(); }, 50);
+          setTimeout(function () { if (focusable[0]) focusable[0].focus(); }, 50);
         }
 
         // Wire up role buttons
@@ -895,7 +991,7 @@
         }
 
         // Close on backdrop click (outside sheet)
-        backdrop.addEventListener('click', function(e) {
+        backdrop.addEventListener('click', function (e) {
           if (e.target === backdrop) handleRoleChoice('exploring');
         });
       });

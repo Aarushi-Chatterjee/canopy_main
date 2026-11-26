@@ -1,690 +1,762 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sandbox Access - Canopy</title>
-<meta name="description" content="Access your Canopy sandbox account, verify your collaborator pass, and track active sprints and teammates.">
-<meta name="robots" content="noindex, nofollow">
-<link rel="canonical" href="/login.html">
-<link rel="icon" type="image/png" href="/favicon.png">
-<link rel="apple-touch-icon" href="/favicon.png">
-<link rel="stylesheet" href="/src/style.css">
-<style>
-  /* Bespoke Field Pass Card styling */
-  .field-pass-card {
-    max-width: 600px;
-    margin: 28px auto 0;
-    padding: 36px 32px 32px;
-    border-radius: 16px;
-    background: var(--card);
-    border: 1px solid var(--card-edge);
-    box-shadow: 0 1px 0 rgba(255,255,255,.4) inset, 0 20px 44px -16px var(--shadow), 0 3px 0 var(--card-edge);
-    position: relative;
-    overflow: hidden;
-  }
-  .field-pass-card::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--forest), var(--leaf), var(--sun));
-  }
-  .field-pass-stamp {
-    position: absolute;
-    top: 18px; right: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    border: 1px dashed var(--leaf);
-    font-size: 0.65rem;
-    font-family: 'Jost Var', sans-serif;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--forest);
-    transform: rotate(2deg);
-    opacity: 0.85;
-    pointer-events: none;
-  }
-  .pass-segmented {
-    display: flex;
-    background: color-mix(in srgb, var(--paper) 70%, var(--card));
-    border: 1px solid var(--card-edge);
-    border-radius: 8px;
-    padding: 4px;
-    margin-bottom: 24px;
-    gap: 4px;
-  }
-  .pass-tab-btn {
-    flex: 1;
-    background: none;
-    border: none;
-    padding: 9px 12px;
-    border-radius: 6px;
-    font-family: 'Jost Var', sans-serif;
-    font-size: 0.86rem;
-    font-weight: 600;
-    color: var(--ink-soft);
-    cursor: pointer;
-    transition: background 180ms cubic-bezier(0.23, 1, 0.32, 1), color 180ms ease, transform 140ms ease;
-  }
-  .pass-tab-btn:hover {
-    color: var(--ink);
-  }
-  .pass-tab-btn:active {
-    transform: scale(0.97);
-  }
-  .pass-tab-btn.active {
-    background: var(--card);
-    color: var(--forest);
-    box-shadow: 0 2px 8px -2px var(--shadow);
-  }
-  .pass-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  @media (max-width: 580px) {
-    .pass-grid-2 {
-      grid-template-columns: 1fr;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sandbox Access - Canopy</title>
+  <meta name="description"
+    content="Access your Canopy sandbox account, verify your collaborator pass, and track active sprints and teammates.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="/login.html">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="stylesheet" href="/src/style.css">
+  <style>
+    /* Bespoke Field Pass Card styling */
+    .field-pass-card {
+      max-width: 600px;
+      margin: 28px auto 0;
+      padding: 36px 32px 32px;
+      border-radius: 16px;
+      background: var(--card);
+      border: 1px solid var(--card-edge);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset, 0 20px 44px -16px var(--shadow), 0 3px 0 var(--card-edge);
+      position: relative;
+      overflow: hidden;
     }
-  }
-  .pass-section-header {
-    font-size: 0.74rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--forest);
-    margin: 8px 0 2px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .pass-section-header::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: color-mix(in srgb, var(--card-edge) 85%, transparent);
-  }
-  .pass-input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .pass-input-group label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-faint);
-  }
-  .pass-input-group input,
-  .pass-input-group select {
-    width: 100%;
-    padding: 10px 13px;
-    border: 1px solid var(--card-edge);
-    border-radius: 6px;
-    background: var(--paper);
-    color: var(--ink);
-    font-size: 0.92rem;
-    font-family: inherit;
-    transition: border-color 160ms ease, box-shadow 160ms ease;
-    box-sizing: border-box;
-  }
-  .pass-input-group input:focus,
-  .pass-input-group select:focus {
-    outline: none;
-    border-color: var(--forest);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--forest) 15%, transparent);
-  }
-  .btn-google {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 11px 16px;
-    background: var(--paper);
-    border: 1px solid var(--card-edge);
-    border-radius: 6px;
-    font-family: 'Jost Var', sans-serif;
-    font-size: 0.94rem;
-    font-weight: 600;
-    color: var(--ink);
-    cursor: pointer;
-    transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 140ms ease;
-    box-shadow: 0 2px 6px -2px var(--shadow);
-  }
-  .btn-google:hover {
-    border-color: var(--forest);
-    box-shadow: 0 4px 12px -2px var(--shadow);
-    transform: translateY(-1px);
-  }
-  .btn-google:active {
-    transform: scale(0.98);
-  }
-  .auth-divider {
-    display: flex;
-    align-items: center;
-    margin: 18px 0 16px;
-    color: var(--ink-faint);
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-  }
-  .auth-divider::before,
-  .auth-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--card-edge);
-  }
-  .auth-divider span {
-    padding: 0 14px;
-  }
-</style>
+
+    .field-pass-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--forest), var(--leaf), var(--sun));
+    }
+
+    .field-pass-stamp {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px dashed var(--leaf);
+      font-size: 0.65rem;
+      font-family: 'Jost Var', sans-serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--forest);
+      transform: rotate(2deg);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .pass-segmented {
+      display: flex;
+      background: color-mix(in srgb, var(--paper) 70%, var(--card));
+      border: 1px solid var(--card-edge);
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 24px;
+      gap: 4px;
+    }
+
+    .pass-tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-family: 'Jost Var', sans-serif;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: background 180ms cubic-bezier(0.23, 1, 0.32, 1), color 180ms ease, transform 140ms ease;
+    }
+
+    .pass-tab-btn:hover {
+      color: var(--ink);
+    }
+
+    .pass-tab-btn:active {
+      transform: scale(0.97);
+    }
+
+    .pass-tab-btn.active {
+      background: var(--card);
+      color: var(--forest);
+      box-shadow: 0 2px 8px -2px var(--shadow);
+    }
+
+    .pass-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 580px) {
+      .pass-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pass-section-header {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--forest);
+      margin: 8px 0 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pass-section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: color-mix(in srgb, var(--card-edge) 85%, transparent);
+    }
+
+    .pass-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .pass-input-group label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-faint);
+    }
+
+    .pass-input-group input,
+    .pass-input-group select {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1px solid var(--card-edge);
+      border-radius: 6px;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 0.92rem;
+      font-family: inherit;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+      box-sizing: border-box;
+    }
+
+    .pass-input-group input:focus,
+    .pass-input-group select:focus {
+      outline: none;
+      border-color: var(--forest);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--forest) 15%, transparent);
+    }
+
+    .btn-google {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 11px 16px;
+      background: var(--paper);
+      border: 1px solid var(--card-edge);
+      border-radius: 6px;
+      font-family: 'Jost Var', sans-serif;
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 140ms ease;
+      box-shadow: 0 2px 6px -2px var(--shadow);
+    }
+
+    .btn-google:hover {
+      border-color: var(--forest);
+      box-shadow: 0 4px 12px -2px var(--shadow);
+      transform: translateY(-1px);
+    }
+
+    .btn-google:active {
+      transform: scale(0.98);
+    }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      margin: 18px 0 16px;
+      color: var(--ink-faint);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--card-edge);
+    }
+
+    .auth-divider span {
+      padding: 0 14px;
+    }
+  </style>
 </head>
+
 <body class="interior-page">
 
-<!-- ============ HEADER ============ -->
-<header>
-  <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
-    <a class="logo" href="/" aria-label="Canopy home">
-      <div class="logo-main">
-        <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
-        CANOPY
+  <!-- ============ HEADER ============ -->
+  <header>
+    <div class="header-inner wrap" style="padding-left:0;padding-right:0;">
+      <a class="logo" href="/" aria-label="Canopy home">
+        <div class="logo-main">
+          <img src="/canopy-logo.png" alt="Canopy Logo" height="34" style="height:34px;width:auto;display:block;">
+          CANOPY
+        </div>
+        <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
+      </a>
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="/#problem">About</a>
+        <a href="match.html">Match</a>
+        <a href="sprint.html">Sprint</a>
+        <a href="notebook.html">Notebook</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
+          <a class="nav-auth-link" href="login.html"
+            style="font-size:0.88rem;font-weight:600;color:var(--forest);text-decoration:none;padding:6px 10px;border-radius:6px;background:color-mix(in srgb, var(--forest) 8%, transparent);">Log
+            In</a>
+          <a class="nav-auth-link" href="login.html?tab=signup"
+            style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign
+            Up</a>
+        </div>
+        <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html"
+          title="Post a challenge, problem statement, or opportunity to recruit collaborators">Post a Call</a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
-      <span class="logo-tagline">BUILD · CONNECT · SHIP</span>
-    </a>
-    <nav class="primary-nav" aria-label="Primary">
-      <a href="/#problem">About</a>
-      <a href="match.html">Match</a>
-      <a href="sprint.html">Sprint</a>
-      <a href="notebook.html">Notebook</a>
-    </nav>
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div id="navAuthArea" style="display:flex;align-items:center;gap:10px;">
-        <a class="nav-auth-link" href="login.html" style="font-size:0.88rem;font-weight:600;color:var(--forest);text-decoration:none;padding:6px 10px;border-radius:6px;background:color-mix(in srgb, var(--forest) 8%, transparent);">Log In</a>
-        <a class="nav-auth-link" href="login.html?tab=signup" style="font-size:0.88rem;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:6px 10px;border-radius:6px;transition:color .16s ease;">Sign Up</a>
+    </div>
+  </header>
+
+  <!-- ============ THREE-LINE CORNER DRAWER ============ -->
+  <div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+  <aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
+    <div class="nav-drawer-header">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <img src="/canopy-logo.png" alt="Canopy Logo" style="width:24px;height:24px;object-fit:contain;">
+        <span class="nav-drawer-logo">Canopy</span>
       </div>
-      <a class="btn btn-ghost btn-sm" id="navPostCall" href="post-call.html" title="Post a challenge, problem statement, or opportunity to recruit collaborators">Post a Call</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation drawer" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- ============ THREE-LINE CORNER DRAWER ============ -->
-<div class="nav-drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
-<aside class="nav-drawer" id="navDrawer" aria-label="Navigation drawer" aria-hidden="true">
-  <div class="nav-drawer-header">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <img src="/canopy-logo.png" alt="Canopy Logo" style="width:24px;height:24px;object-fit:contain;">
-      <span class="nav-drawer-logo">Canopy</span>
-    </div>
-    <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
-  </div>
-
-  <div class="nav-drawer-section">
-    <span class="nav-drawer-section-label">Navigation</span>
-    <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
-    <a href="sprint.html" class="nav-drawer-link">Active Sprints</a>
-    <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
-    <a href="/#problem" class="nav-drawer-link">About Canopy</a>
-  </div>
-
-  <div class="nav-drawer-divider"></div>
-
-  <div class="nav-drawer-cta-group">
-    <a href="post-call.html" class="btn btn-stamp btn-block nav-drawer-cta">
-      <span>Post a Build Call</span>
-      <span style="font-size:0.85rem;opacity:0.85;">↗</span>
-    </a>
-    <a href="apply.html" class="btn btn-ghost btn-block nav-drawer-cta" style="border:1px solid var(--line);">
-      Apply to Canopy
-    </a>
-    <div id="drawerAuthArea" style="margin-top:6px;text-align:center;">
-      <a href="login.html" class="nav-drawer-link-subtle" style="color:var(--forest);font-weight:700;">Sign In / Dashboard →</a>
-    </div>
-  </div>
-
-  <div class="nav-drawer-footer">
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      <span>Theme</span>
-    </button>
-    <div style="display:flex;gap:12px;">
-      <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
-      <a href="terms.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Terms</a>
-    </div>
-  </div>
-</aside>
-
-<main id="top">
-<div class="stage" style="padding-top:40px;padding-bottom:80px;">
-  <div class="stage-head reveal" style="text-align:center;max-width:540px;margin:0 auto 16px;">
-    <span class="kicker" style="font-size:1.1rem;color:var(--coral);">Field Station Authentication</span>
-    <h1 style="font-size:clamp(1.9rem,3.4vw,2.5rem);margin-top:6px;">Enter the Sandbox</h1>
-    <p class="lede" style="margin:8px auto 0;font-size:0.96rem;">Sign in to track sprints, matches, and notebook drafts.</p>
-  </div>
-
-  <!-- The Field Pass Card -->
-  <div class="field-pass-card reveal">
-    <div class="field-pass-stamp" id="passStatusStamp">Field Station Pass · Entry Gate</div>
-
-    <!-- Tab Toggle -->
-    <div class="pass-segmented" role="tablist">
-      <button type="button" id="tabSignIn" class="pass-tab-btn active" role="tab" aria-selected="true">Sign In</button>
-      <button type="button" id="tabSignUp" class="pass-tab-btn" role="tab" aria-selected="false">Create Account</button>
+      <button class="nav-drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
     </div>
 
-    <div id="loginAlert" style="display:none;" role="alert"></div>
+    <div class="nav-drawer-section">
+      <span class="nav-drawer-section-label">Navigation</span>
+      <a href="match.html" class="nav-drawer-link">Match Sandbox</a>
+      <a href="sprint.html" class="nav-drawer-link">Active Sprints</a>
+      <a href="notebook.html" class="nav-drawer-link">Lab Notebook</a>
+      <a href="/#problem" class="nav-drawer-link">About Canopy</a>
+    </div>
 
-    <!-- Sign In Form -->
-    <form id="signInForm" style="display:flex;flex-direction:column;gap:16px;">
-      <!-- Google Sign In Button -->
-      <button type="button" class="btn-google googleAuthBtn" style="width:100%;margin-bottom:2px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/>
-          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+    <div class="nav-drawer-divider"></div>
+
+    <div class="nav-drawer-cta-group">
+      <a href="post-call.html" class="btn btn-stamp btn-block nav-drawer-cta">
+        <span>Post a Build Call</span>
+        <span style="font-size:0.85rem;opacity:0.85;">↗</span>
+      </a>
+      <a href="apply.html" class="btn btn-ghost btn-block nav-drawer-cta" style="border:1px solid var(--line);">
+        Apply to Canopy
+      </a>
+      <div id="drawerAuthArea" style="margin-top:6px;text-align:center;">
+        <a href="login.html" class="nav-drawer-link-subtle" style="color:var(--forest);font-weight:700;">Sign In /
+          Dashboard →</a>
+      </div>
+    </div>
+
+    <div class="nav-drawer-footer">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle bright / dark theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5" />
+          <path
+            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
         </svg>
-        <span>Continue with Google</span>
+        <span>Theme</span>
       </button>
-
-      <div class="auth-divider">
-        <span>or with email</span>
-      </div>
-
-      <div class="pass-input-group">
-        <label for="loginEmail">Email Address</label>
-        <input type="email" id="loginEmail" required placeholder="your.name@domain.org" autocomplete="email">
-      </div>
-
-      <div class="pass-input-group">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <label for="loginPassword">Password</label>
-          <button type="button" id="forgotPwdLink" style="background:none;border:none;padding:0;font-size:0.75rem;color:var(--forest);cursor:pointer;text-decoration:underline;">Forgot password?</button>
-        </div>
-        <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
-      </div>
-
-      <button type="submit" id="signInSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;">Sign In →</button>
-    </form>
-
-    <!-- Unified Sign Up & Builder Intake Form (hidden by default) -->
-    <form id="signUpForm" style="display:none;flex-direction:column;gap:14px;">
-      <!-- Google Sign Up Button -->
-      <button type="button" class="btn-google googleAuthBtn" style="width:100%;margin-bottom:2px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z"/>
-          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-        </svg>
-        <span>Sign up with Google</span>
-      </button>
-
-      <div class="auth-divider">
-        <span>or with email</span>
-      </div>
-
-      <!-- Part 1: Credentials -->
-      <div class="pass-section-header">1. Account Details</div>
-      <div class="pass-grid-2">
-        <div class="pass-input-group">
-          <label for="regDisplayName">Full Name</label>
-          <input type="text" id="regDisplayName" required placeholder="e.g. Elena Rostova" autocomplete="name">
-        </div>
-        <div class="pass-input-group">
-          <label for="regEmail">Email Address</label>
-          <input type="email" id="regEmail" required placeholder="your.name@domain.org" autocomplete="email">
-        </div>
-      </div>
-
-      <div class="pass-grid-2">
-        <div class="pass-input-group">
-          <label for="regPassword">Password (min. 8 chars)</label>
-          <input type="password" id="regPassword" required minlength="8" placeholder="••••••••" autocomplete="new-password">
-        </div>
-        <div class="pass-input-group">
-          <label for="regRole">Role</label>
-          <select id="regRole">
-            <option value="builder" selected>Builder (Engineering, Design, AI)</option>
-            <option value="problem_holder">Problem Holder (Org, Lab, Field)</option>
-            <option value="enabler">Enabler (Funder, Mentor)</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Part 2: Craft & Domain -->
-      <div class="pass-section-header">2. Craft &amp; Domain</div>
-      <div class="pass-grid-2">
-        <div class="pass-input-group">
-          <label for="regCraft">Headline / Craft</label>
-          <input type="text" id="regCraft" required placeholder="e.g. Firmware &amp; Telemetry Engineer">
-        </div>
-        <div class="pass-input-group">
-          <label for="regDomain">Domain Focus</label>
-          <select id="regDomain">
-            <option value="climate" selected>Climate &amp; Ecology</option>
-            <option value="hardware">Open Hardware &amp; IoT</option>
-            <option value="ai">AI &amp; Data</option>
-            <option value="civic">Civic Tech</option>
-            <option value="design">Product Design</option>
-            <option value="health">Public Health &amp; Water</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="pass-input-group">
-        <label for="regTagline">What are you building or exploring?</label>
-        <input type="text" id="regTagline" placeholder="e.g. Low-power LoRa telemetry nodes">
-      </div>
-
-      <div class="pass-grid-2">
-        <div class="pass-input-group">
-          <label for="regSkills">Skills (comma-separated)</label>
-          <input type="text" id="regSkills" placeholder="e.g. Embedded C, LoRaWAN, Python">
-        </div>
-        <div class="pass-input-group">
-          <label for="regHours">Weekly Availability</label>
-          <select id="regHours">
-            <option value="10" selected>10 hrs / week</option>
-            <option value="5">5 hrs / week</option>
-            <option value="15">15 hrs / week</option>
-            <option value="20">20+ hrs / week</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Part 3: Proof & Direct Links -->
-      <div class="pass-section-header">3. Links (Optional)</div>
-      <div class="pass-grid-2">
-        <div class="pass-input-group">
-          <label for="regGithub">GitHub Profile</label>
-          <input type="url" id="regGithub" placeholder="https://github.com/username">
-        </div>
-        <div class="pass-input-group">
-          <label for="regLinkedin">LinkedIn Profile</label>
-          <input type="url" id="regLinkedin" placeholder="https://linkedin.com/in/username">
-        </div>
-      </div>
-
-      <div class="pass-input-group">
-        <label for="regPortfolio">Website / Portfolio</label>
-        <input type="url" id="regPortfolio" placeholder="https://yourdomain.org">
-      </div>
-
-      <button type="submit" id="signUpSubmitBtn" class="btn btn-stamp" style="width:100%;justify-content:center;margin-top:8px;padding:12px;font-size:0.96rem;">Create Account →</button>
-    </form>
-
-    <!-- OTP Section (hidden by default) -->
-    <div id="otpSection" style="display:none;margin-top:20px;padding-top:20px;border-top:1px dashed var(--line);">
-      <h4 style="font-size:1.02rem;margin-bottom:6px;color:var(--ink);">Enter 6-Digit Verification Code</h4>
-      <p style="font-size:0.84rem;color:var(--ink-soft);margin-bottom:12px;" id="otpNotice">A verification code has been dispatched to your email.</p>
-      
-      <div class="pass-input-group" style="margin-bottom:12px;">
-        <label for="otpEmailInput">Verification Email</label>
-        <input type="email" id="otpEmailInput" placeholder="your.name@domain.org" style="width:100%;padding:9px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
-      </div>
-
-      <div style="display:flex;gap:10px;margin-bottom:10px;">
-        <input type="text" id="otpInput" maxlength="6" placeholder="e.g. 123456" style="flex:1;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;text-align:center;">
-        <button type="button" id="verifyBtn" class="btn btn-stamp btn-sm">Verify Pass</button>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;padding-top:4px;">
-        <button type="button" id="resendOtpBtn" style="background:none;border:none;padding:0;color:var(--forest);font-weight:600;cursor:pointer;text-decoration:underline;">Resend verification code</button>
-        <button type="button" id="hideOtpBtn" style="background:none;border:none;padding:0;color:var(--ink-faint);cursor:pointer;">Dismiss</button>
+      <div style="display:flex;gap:12px;">
+        <a href="privacy.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Privacy</a>
+        <a href="terms.html" style="font-size:0.78rem;color:var(--ink-faint);text-decoration:none;">Terms</a>
       </div>
     </div>
+  </aside>
 
-    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;">
-      <span class="script" style="color:var(--forest);font-size:0.98rem;">high-context, human collaboration</span>
-      <a href="apply.html" style="color:var(--ink-soft);text-decoration:none;font-weight:600;">Need an intake form?</a>
-    </div>
-  </div>
+  <main id="top">
+    <div class="stage" style="padding-top:40px;padding-bottom:80px;">
+      <div class="stage-head reveal" style="text-align:center;max-width:540px;margin:0 auto 16px;">
+        <span class="kicker" style="font-size:1.1rem;color:var(--coral);">Field Station Authentication</span>
+        <h1 style="font-size:clamp(1.9rem,3.4vw,2.5rem);margin-top:6px;">Enter the Sandbox</h1>
+        <p class="lede" style="margin:8px auto 0;font-size:0.96rem;">Sign in to track sprints, matches, and notebook
+          drafts.</p>
+      </div>
 
-  <p style="text-align:center;margin-top:18px;font-size:0.82rem;color:var(--ink-faint);">
-    No ad trackers. No algorithmic feeds. Code and projects belong to the teams that ship them.
-  </p>
-</div>
-</main>
+      <!-- The Field Pass Card -->
+      <div class="field-pass-card reveal">
+        <div class="field-pass-stamp" id="passStatusStamp">Field Station Pass · Entry Gate</div>
 
-<div class="toast" id="toast">🌱 Welcome to Canopy.</div>
+        <!-- Tab Toggle -->
+        <div class="pass-segmented" role="tablist">
+          <button type="button" id="tabSignIn" class="pass-tab-btn active" role="tab" aria-selected="true">Sign
+            In</button>
+          <button type="button" id="tabSignUp" class="pass-tab-btn" role="tab" aria-selected="false">Create
+            Account</button>
+        </div>
 
-<!-- ============ FOOTER ============ -->
-<footer>
-  <div class="wrap">
-    <div>
-      <div class="footer-logo">
-        <img src="/canopy-logo.png" alt="Canopy Logo" height="36" style="height:36px;width:auto;display:block;">
-        <div class="footer-logo-text">
-          <span class="footer-logo-name">CANOPY</span>
-          <span class="footer-logo-sub">Build · Connect · Ship</span>
+        <div id="loginAlert" style="display:none;" role="alert"></div>
+
+        <!-- Sign In Form -->
+        <form id="signInForm" style="display:flex;flex-direction:column;gap:16px;">
+          <!-- Google Sign In Button -->
+          <button type="button" class="btn-google googleAuthBtn" style="width:100%;margin-bottom:2px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#4285F4"
+                d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z" />
+              <path fill="#34A853"
+                d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z" />
+              <path fill="#FBBC05"
+                d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" />
+              <path fill="#EA4335"
+                d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" />
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+
+          <div class="auth-divider">
+            <span>or with email</span>
+          </div>
+
+          <div class="pass-input-group">
+            <label for="loginEmail">Email Address</label>
+            <input type="email" id="loginEmail" required placeholder="your.name@domain.org" autocomplete="email">
+          </div>
+
+          <div class="pass-input-group">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <label for="loginPassword">Password</label>
+              <button type="button" id="forgotPwdLink"
+                style="background:none;border:none;padding:0;font-size:0.75rem;color:var(--forest);cursor:pointer;text-decoration:underline;">Forgot
+                password?</button>
+            </div>
+            <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
+          </div>
+
+          <button type="submit" id="signInSubmitBtn" class="btn btn-stamp"
+            style="width:100%;justify-content:center;margin-top:8px;">Sign In →</button>
+        </form>
+
+        <!-- Unified Sign Up & Builder Intake Form (hidden by default) -->
+        <form id="signUpForm" style="display:none;flex-direction:column;gap:14px;">
+          <!-- Google Sign Up Button -->
+          <button type="button" class="btn-google googleAuthBtn" style="width:100%;margin-bottom:2px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#4285F4"
+                d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z" />
+              <path fill="#34A853"
+                d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.36 24 12 24z" />
+              <path fill="#FBBC05"
+                d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" />
+              <path fill="#EA4335"
+                d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.36 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" />
+            </svg>
+            <span>Sign up with Google</span>
+          </button>
+
+          <div class="auth-divider">
+            <span>or with email</span>
+          </div>
+
+          <!-- Part 1: Credentials -->
+          <div class="pass-section-header">1. Account Details</div>
+          <div class="pass-grid-2">
+            <div class="pass-input-group">
+              <label for="regDisplayName">Full Name</label>
+              <input type="text" id="regDisplayName" required placeholder="e.g. Elena Rostova" autocomplete="name">
+            </div>
+            <div class="pass-input-group">
+              <label for="regEmail">Email Address</label>
+              <input type="email" id="regEmail" required placeholder="your.name@domain.org" autocomplete="email">
+            </div>
+          </div>
+
+          <div class="pass-grid-2">
+            <div class="pass-input-group">
+              <label for="regPassword">Password (min. 8 chars)</label>
+              <input type="password" id="regPassword" required minlength="8" placeholder="••••••••"
+                autocomplete="new-password">
+            </div>
+            <div class="pass-input-group">
+              <label for="regRole">Role</label>
+              <select id="regRole">
+                <option value="builder" selected>Builder (Engineering, Design, AI)</option>
+                <option value="problem_holder">Problem Holder (Org, Lab, Field)</option>
+                <option value="enabler">Enabler (Funder, Mentor)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Part 2: Craft & Domain -->
+          <div class="pass-section-header">2. Craft &amp; Domain</div>
+          <div class="pass-grid-2">
+            <div class="pass-input-group">
+              <label for="regCraft">Headline / Craft</label>
+              <input type="text" id="regCraft" required placeholder="e.g. Firmware &amp; Telemetry Engineer">
+            </div>
+            <div class="pass-input-group">
+              <label for="regDomain">Domain Focus</label>
+              <select id="regDomain">
+                <option value="climate" selected>Climate &amp; Ecology</option>
+                <option value="hardware">Open Hardware &amp; IoT</option>
+                <option value="ai">AI &amp; Data</option>
+                <option value="civic">Civic Tech</option>
+                <option value="design">Product Design</option>
+                <option value="health">Public Health &amp; Water</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pass-input-group">
+            <label for="regTagline">What are you building or exploring?</label>
+            <input type="text" id="regTagline" placeholder="e.g. Low-power LoRa telemetry nodes">
+          </div>
+
+          <div class="pass-grid-2">
+            <div class="pass-input-group">
+              <label for="regSkills">Skills (comma-separated)</label>
+              <input type="text" id="regSkills" placeholder="e.g. Embedded C, LoRaWAN, Python">
+            </div>
+            <div class="pass-input-group">
+              <label for="regHours">Weekly Availability</label>
+              <select id="regHours">
+                <option value="10" selected>10 hrs / week</option>
+                <option value="5">5 hrs / week</option>
+                <option value="15">15 hrs / week</option>
+                <option value="20">20+ hrs / week</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Part 3: Proof & Direct Links -->
+          <div class="pass-section-header">3. Links (Optional)</div>
+          <div class="pass-grid-2">
+            <div class="pass-input-group">
+              <label for="regGithub">GitHub Profile</label>
+              <input type="url" id="regGithub" placeholder="https://github.com/username">
+            </div>
+            <div class="pass-input-group">
+              <label for="regLinkedin">LinkedIn Profile</label>
+              <input type="url" id="regLinkedin" placeholder="https://linkedin.com/in/username">
+            </div>
+          </div>
+
+          <div class="pass-input-group">
+            <label for="regPortfolio">Website / Portfolio</label>
+            <input type="url" id="regPortfolio" placeholder="https://yourdomain.org">
+          </div>
+
+          <button type="submit" id="signUpSubmitBtn" class="btn btn-stamp"
+            style="width:100%;justify-content:center;margin-top:8px;padding:12px;font-size:0.96rem;">Create Account
+            →</button>
+        </form>
+
+        <!-- OTP Section (hidden by default) -->
+        <div id="otpSection" style="display:none;margin-top:20px;padding-top:20px;border-top:1px dashed var(--line);">
+          <h4 style="font-size:1.02rem;margin-bottom:6px;color:var(--ink);">Enter 6-Digit Verification Code</h4>
+          <p style="font-size:0.84rem;color:var(--ink-soft);margin-bottom:12px;" id="otpNotice">A verification code has
+            been dispatched to your email.</p>
+
+          <div class="pass-input-group" style="margin-bottom:12px;">
+            <label for="otpEmailInput">Verification Email</label>
+            <input type="email" id="otpEmailInput" placeholder="your.name@domain.org"
+              style="width:100%;padding:9px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
+          </div>
+
+          <div style="display:flex;gap:10px;margin-bottom:10px;">
+            <input type="text" id="otpInput" maxlength="6" placeholder="e.g. 123456"
+              style="flex:1;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;text-align:center;">
+            <button type="button" id="verifyBtn" class="btn btn-stamp btn-sm">Verify Pass</button>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;padding-top:4px;">
+            <button type="button" id="resendOtpBtn"
+              style="background:none;border:none;padding:0;color:var(--forest);font-weight:600;cursor:pointer;text-decoration:underline;">Resend
+              verification code</button>
+            <button type="button" id="hideOtpBtn"
+              style="background:none;border:none;padding:0;color:var(--ink-faint);cursor:pointer;">Dismiss</button>
+          </div>
+        </div>
+
+        <div
+          style="margin-top:20px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;">
+          <span class="script" style="color:var(--forest);font-size:0.98rem;">high-context, human collaboration</span>
+          <a href="apply.html" style="color:var(--ink-soft);text-decoration:none;font-weight:600;">Need an intake
+            form?</a>
         </div>
       </div>
-      <div style="margin-top:14px;">
-        <p class="founder-quote"><span data-content-key="home.founder_quote">"I kept hearing the same frustration from brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project at a time."</span><cite>Aarushi Chatterjee, Founder</cite></p>
+
+      <p style="text-align:center;margin-top:18px;font-size:0.82rem;color:var(--ink-faint);">
+        No ad trackers. No algorithmic feeds. Code and projects belong to the teams that ship them.
+      </p>
+    </div>
+  </main>
+
+  <div class="toast" id="toast">🌱 Welcome to Canopy.</div>
+  <div class="toast" id="toast">Welcome to Canopy.</div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
+      <div>
+        <div class="footer-logo">
+          <img src="/canopy-logo.png" alt="Canopy Logo" height="36" style="height:36px;width:auto;display:block;">
+          <div class="footer-logo-text">
+            <span class="footer-logo-name">CANOPY</span>
+            <span class="footer-logo-sub">Build · Connect · Ship</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <p class="founder-quote"><span data-content-key="home.founder_quote">"I kept hearing the same frustration from
+              brilliant people. So I started Canopy to close that gap: one Build Call, one sprint, one shipped project
+              at a time."</span><cite>Aarushi Chatterjee, Founder</cite></p>
+        </div>
+      </div>
+      <div>
+        <h5>Ecosystem</h5>
+        <a href="match.html">Build Calls Directory</a>
+        <a href="sprint.html">Active Sprints Board</a>
+        <a href="notebook.html">Lab Notebook</a>
+        <a href="/#problem">The Coordination Gap</a>
+      </div>
+      <div>
+        <h5>Workspaces</h5>
+        <a href="post-call.html">Post a Build Call</a>
+        <a href="builders.html">Builders Guild</a>
+        <a href="problem-holders.html">Problem Holders</a>
+        <a href="enablers.html">Sponsors &amp; Enablers</a>
+      </div>
+      <div>
+        <h5>Charter &amp; Legal</h5>
+        <a href="terms.html">Community Charter</a>
+        <a href="privacy.html">Data Privacy</a>
+        <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
+        <a href="https://www.linkedin.com/company/canopy-collaborate/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
-    <div>
-      <h5>Ecosystem</h5>
-      <a href="match.html">Build Calls Directory</a>
-      <a href="sprint.html">Active Sprints Board</a>
-      <a href="notebook.html">Lab Notebook</a>
-      <a href="/#problem">The Coordination Gap</a>
+    <div class="foot-bottom">
+      <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
+      <span>&copy; 2026 Canopy. All rights reserved.</span>
     </div>
-    <div>
-      <h5>Workspaces</h5>
-      <a href="post-call.html">Post a Build Call</a>
-      <a href="builders.html">Builders Guild</a>
-      <a href="problem-holders.html">Problem Holders</a>
-      <a href="enablers.html">Sponsors &amp; Enablers</a>
-    </div>
-    <div>
-      <h5>Charter &amp; Legal</h5>
-      <a href="terms.html">Community Charter</a>
-      <a href="privacy.html">Data Privacy</a>
-      <a href="mailto:canopy.connect.collaborate@gmail.com">canopy.connect.collaborate@gmail.com</a>
-      <a href="https://www.linkedin.com/company/canopy-collaborate/" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
-  </div>
-  <div class="foot-bottom">
-    <span>Canopy: Connect. Collaborate. Ship things that matter.</span>
-    <span>&copy; 2026 Canopy. All rights reserved.</span>
-  </div>
-</footer>
+  </footer>
 
-<script type="module" src="/src/main.js"></script>
-<script type="module">
-  import { auth } from '/src/db.js';
-  const tabSignIn = document.getElementById('tabSignIn');
-  const tabSignUp = document.getElementById('tabSignUp');
-  const signInForm = document.getElementById('signInForm');
-  const signUpForm = document.getElementById('signUpForm');
-  const otpSection = document.getElementById('otpSection');
-  const otpNotice = document.getElementById('otpNotice');
-  const otpInput = document.getElementById('otpInput');
-  const otpEmailInput = document.getElementById('otpEmailInput');
-  const verifyBtn = document.getElementById('verifyBtn');
-  const resendOtpBtn = document.getElementById('resendOtpBtn');
-  const hideOtpBtn = document.getElementById('hideOtpBtn');
-  const toast = document.getElementById('toast');
-  const passStatusStamp = document.getElementById('passStatusStamp');
+  <script type="module" src="/src/main.js"></script>
+  <script type="module">
+    import { auth } from '/src/db.js';
+    const tabSignIn = document.getElementById('tabSignIn');
+    const tabSignUp = document.getElementById('tabSignUp');
+    const signInForm = document.getElementById('signInForm');
+    const signUpForm = document.getElementById('signUpForm');
+    const otpSection = document.getElementById('otpSection');
+    const otpNotice = document.getElementById('otpNotice');
+    const otpInput = document.getElementById('otpInput');
+    const otpEmailInput = document.getElementById('otpEmailInput');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const resendOtpBtn = document.getElementById('resendOtpBtn');
+    const hideOtpBtn = document.getElementById('hideOtpBtn');
+    const toast = document.getElementById('toast');
+    const passStatusStamp = document.getElementById('passStatusStamp');
 
-  let pendingEmail = localStorage.getItem('canopy_pending_email') || '';
-  if (otpEmailInput && pendingEmail) {
-    otpEmailInput.value = pendingEmail;
-  }
+    let pendingEmail = localStorage.getItem('canopy_pending_email') || '';
+    if (otpEmailInput && pendingEmail) {
+      otpEmailInput.value = pendingEmail;
+    }
 
-  // Attach Google Authentication handler to all Google buttons across both tabs
-  document.querySelectorAll('.googleAuthBtn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      btn.disabled = true;
-      btn.style.opacity = '0.7';
-      const origText = btn.innerHTML;
-      btn.innerHTML = 'Connecting to Google Station...';
-      try {
-        const searchParams = new URLSearchParams(window.location.search);
-        await auth.signInWithGoogle(searchParams.get('redirect'));
-      } catch (err) {
-        btn.disabled = false;
-        btn.style.opacity = '1';
-        btn.innerHTML = origText;
-        showToast('⚠️ Unable to initiate Google Sign-In: ' + err.message);
-      }
+    // Attach Google Authentication handler to all Google buttons across both tabs
+    document.querySelectorAll('.googleAuthBtn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        btn.style.opacity = '0.7';
+        const origText = btn.innerHTML;
+        btn.innerHTML = 'Connecting to Google Station...';
+        try {
+          const searchParams = new URLSearchParams(window.location.search);
+          await auth.signInWithGoogle(searchParams.get('redirect'));
+        } catch (err) {
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          btn.innerHTML = origText;
+          showToast('⚠️ Unable to initiate Google Sign-In: ' + err.message);
+          showToast('Unable to initiate Google Sign-In: ' + err.message);
+        }
+      });
     });
-  });
 
-  // Handle OAuth Redirect Callback (#access_token=... or ?code=...)
-  async function checkOAuthCallback() {
-    const hash = window.location.hash.substring(1);
-    const searchParams = new URLSearchParams(window.location.search);
-    let payload = null;
+    // Handle OAuth Redirect Callback (#access_token=... or ?code=...)
+    async function checkOAuthCallback() {
+      const hash = window.location.hash.substring(1);
+      const searchParams = new URLSearchParams(window.location.search);
+      let payload = null;
 
-    const hashParams = hash ? new URLSearchParams(hash) : null;
-    const oauthError = hashParams?.get('error_description') || hashParams?.get('error') || searchParams.get('error_description') || searchParams.get('error');
-    if (oauthError) {
-      if (loginAlert) {
-        loginAlert.className = 'status-alert status-alert-error';
-        loginAlert.innerHTML = `<div><strong>OAuth Provider Error:</strong> ${oauthError}</div>`;
-        loginAlert.style.display = 'flex';
-      }
-      showToast('⚠️ Google authentication rejected: ' + oauthError);
-      window.history.replaceState({}, document.title, window.location.pathname);
-      return;
-    }
-
-    if (hashParams) {
-      const accessToken = hashParams.get('access_token');
-      if (accessToken) {
-        payload = { access_token: accessToken };
-      }
-    }
-
-    if (!payload && searchParams.get('code')) {
-      payload = { code: searchParams.get('code') };
-    }
-
-    if (payload) {
-      if (passStatusStamp) passStatusStamp.textContent = 'Verifying Google Authentication...';
-      showToast('🌱 Verifying Google authentication credentials...');
-      try {
-        const res = await auth.handleOAuthCallback(payload);
-        if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
-        showToast('🌱 Authentication successful: Welcome to Canopy.');
-        window.dispatchEvent(new Event('canopy:auth-changed'));
-        const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
-        const targetDest = resolveRedirectDest(isStaff);
-        setTimeout(() => { window.location.href = targetDest; }, 800);
-      } catch (err) {
+      const hashParams = hash ? new URLSearchParams(hash) : null;
+      const oauthError = hashParams?.get('error_description') || hashParams?.get('error') || searchParams.get('error_description') || searchParams.get('error');
+      if (oauthError) {
         if (loginAlert) {
           loginAlert.className = 'status-alert status-alert-error';
-          loginAlert.innerHTML = `<div><strong>OAuth Failed:</strong> ${err.message}</div>`;
+          loginAlert.innerHTML = `<div><strong>OAuth Provider Error:</strong> ${oauthError}</div>`;
           loginAlert.style.display = 'flex';
         }
-        showToast('⚠️ Google authentication failed: ' + err.message);
+        showToast('⚠️ Google authentication rejected: ' + oauthError);
+        showToast('Google authentication rejected: ' + oauthError);
+        window.history.replaceState({}, document.title, window.location.pathname);
+        return;
+      }
+
+      if (hashParams) {
+        const accessToken = hashParams.get('access_token');
+        if (accessToken) {
+          payload = { access_token: accessToken };
+        }
+      }
+
+      if (!payload && searchParams.get('code')) {
+        payload = { code: searchParams.get('code') };
+      }
+
+      if (payload) {
+        if (passStatusStamp) passStatusStamp.textContent = 'Verifying Google Authentication...';
+        showToast('🌱 Verifying Google authentication credentials...');
+        showToast('Verifying Google authentication credentials...');
+        try {
+          const res = await auth.handleOAuthCallback(payload);
+          if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
+          showToast('🌱 Authentication successful: Welcome to Canopy.');
+          showToast('Authentication successful: Welcome to Canopy.');
+          window.dispatchEvent(new Event('canopy:auth-changed'));
+          const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
+          const targetDest = resolveRedirectDest(isStaff);
+          setTimeout(() => { window.location.href = targetDest; }, 800);
+        } catch (err) {
+          if (loginAlert) {
+            loginAlert.className = 'status-alert status-alert-error';
+            loginAlert.innerHTML = `<div><strong>OAuth Failed:</strong> ${err.message}</div>`;
+            loginAlert.style.display = 'flex';
+          }
+          showToast('⚠️ Google authentication failed: ' + err.message);
+          showToast('Google authentication failed: ' + err.message);
+        }
       }
     }
-  }
 
-  function resolveRedirectDest(isStaff) {
+    function resolveRedirectDest(isStaff) {
+      const params = new URLSearchParams(window.location.search);
+      const redirectParam = params.get('redirect');
+      const restoreDraft = params.get('restoreDraft');
+      const defaultDest = isStaff ? 'admin.html' : 'match.html';
+      let dest = defaultDest;
+      if (redirectParam && !redirectParam.includes('://') && !redirectParam.startsWith('//')) {
+        dest = redirectParam;
+      }
+      if (restoreDraft && !dest.includes('restoreDraft=')) {
+        dest += (dest.includes('?') ? '&' : '?') + 'restoreDraft=1';
+      }
+      return dest;
+    }
+
+    checkOAuthCallback();
+
+    // Check active session status to show authentic user state
+    auth.getCurrentUser().then(user => {
+      if (user && (user.isVerified || user.is_verified)) {
+        if (passStatusStamp) passStatusStamp.textContent = `Pass · ${user.displayName || 'Collaborator'} (Verified)`;
+      }
+    }).catch(() => { });
+
+    function setMode(mode) {
+      if (mode === 'signup') {
+        tabSignUp.classList.add('active');
+        tabSignUp.setAttribute('aria-selected', 'true');
+        tabSignIn.classList.remove('active');
+        tabSignIn.setAttribute('aria-selected', 'false');
+        signUpForm.style.display = 'flex';
+        signInForm.style.display = 'none';
+        if (passStatusStamp) passStatusStamp.textContent = 'New Collaborator · Intake';
+      } else {
+        tabSignIn.classList.add('active');
+        tabSignIn.setAttribute('aria-selected', 'true');
+        tabSignUp.classList.remove('active');
+        tabSignUp.setAttribute('aria-selected', 'false');
+        signInForm.style.display = 'flex';
+        signUpForm.style.display = 'none';
+        if (passStatusStamp) passStatusStamp.textContent = 'Field Station Pass · Sign In';
+      }
+    }
+
+    tabSignIn.addEventListener('click', () => setMode('signin'));
+    tabSignUp.addEventListener('click', () => setMode('signup'));
+
+    // Check URL query parameters for default tab and verification
     const params = new URLSearchParams(window.location.search);
-    const redirectParam = params.get('redirect');
-    const restoreDraft = params.get('restoreDraft');
-    const defaultDest = isStaff ? 'admin.html' : 'match.html';
-    let dest = defaultDest;
-    if (redirectParam && !redirectParam.includes('://') && !redirectParam.startsWith('//')) {
-      dest = redirectParam;
-    }
-    if (restoreDraft && !dest.includes('restoreDraft=')) {
-      dest += (dest.includes('?') ? '&' : '?') + 'restoreDraft=1';
-    }
-    return dest;
-  }
-
-  checkOAuthCallback();
-
-  // Check active session status to show authentic user state
-  auth.getCurrentUser().then(user => {
-    if (user && (user.isVerified || user.is_verified)) {
-      if (passStatusStamp) passStatusStamp.textContent = `Pass · ${user.displayName || 'Collaborator'} (Verified)`;
-    }
-  }).catch(() => {});
-
-  function setMode(mode) {
-    if (mode === 'signup') {
-      tabSignUp.classList.add('active');
-      tabSignUp.setAttribute('aria-selected', 'true');
-      tabSignIn.classList.remove('active');
-      tabSignIn.setAttribute('aria-selected', 'false');
-      signUpForm.style.display = 'flex';
-      signInForm.style.display = 'none';
-      if (passStatusStamp) passStatusStamp.textContent = 'New Collaborator · Intake';
+    if (params.get('tab') === 'signup') {
+      setMode('signup');
     } else {
-      tabSignIn.classList.add('active');
-      tabSignIn.setAttribute('aria-selected', 'true');
-      tabSignUp.classList.remove('active');
-      tabSignUp.setAttribute('aria-selected', 'false');
-      signInForm.style.display = 'flex';
-      signUpForm.style.display = 'none';
-      if (passStatusStamp) passStatusStamp.textContent = 'Field Station Pass · Sign In';
+      setMode('signin');
     }
-  }
 
-  tabSignIn.addEventListener('click', () => setMode('signin'));
-  tabSignUp.addEventListener('click', () => setMode('signup'));
+    const urlEmail = params.get('email');
+    if (urlEmail) {
+      pendingEmail = urlEmail.trim();
+      localStorage.setItem('canopy_pending_email', pendingEmail);
+      if (otpEmailInput) otpEmailInput.value = pendingEmail;
+      const loginEmailInput = document.getElementById('loginEmail');
+      if (loginEmailInput) loginEmailInput.value = pendingEmail;
+    }
+    if (params.get('verify') === 'true') {
+      otpSection.style.display = 'block';
+    }
 
-  // Check URL query parameters for default tab and verification
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('tab') === 'signup') {
-    setMode('signup');
-  } else {
-    setMode('signin');
-  }
+    const signInSubmitBtn = document.getElementById('signInSubmitBtn');
+    const signUpSubmitBtn = document.getElementById('signUpSubmitBtn');
 
-  const urlEmail = params.get('email');
-  if (urlEmail) {
-    pendingEmail = urlEmail.trim();
-    localStorage.setItem('canopy_pending_email', pendingEmail);
-    if (otpEmailInput) otpEmailInput.value = pendingEmail;
-    const loginEmailInput = document.getElementById('loginEmail');
-    if (loginEmailInput) loginEmailInput.value = pendingEmail;
-  }
-  if (params.get('verify') === 'true') {
-    otpSection.style.display = 'block';
-  }
+    function showToast(msg) {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    }
 
-  const signInSubmitBtn = document.getElementById('signInSubmitBtn');
-  const signUpSubmitBtn = document.getElementById('signUpSubmitBtn');
+    const loginAlert = document.getElementById('loginAlert');
+    const forgotPwdLink = document.getElementById('forgotPwdLink');
 
-  function showToast(msg) {
-    if (!toast) return;
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 4000);
-  }
-
-  const loginAlert = document.getElementById('loginAlert');
-  const forgotPwdLink = document.getElementById('forgotPwdLink');
-
-  if (forgotPwdLink) {
-    forgotPwdLink.addEventListener('click', () => {
-      const email = document.getElementById('loginEmail').value.trim();
-      if (!loginAlert) return;
-      loginAlert.className = 'status-alert status-alert-pending';
-      loginAlert.style.display = 'block';
-      loginAlert.innerHTML = `
+    if (forgotPwdLink) {
+      forgotPwdLink.addEventListener('click', () => {
+        const email = document.getElementById('loginEmail').value.trim();
+        if (!loginAlert) return;
+        loginAlert.className = 'status-alert status-alert-pending';
+        loginAlert.style.display = 'block';
+        loginAlert.innerHTML = `
         <div style="font-size:13px;line-height:1.5;">
           <div style="font-weight:700;color:var(--forest);margin-bottom:6px;">🔑 Reset Passcode</div>
+          <div style="font-weight:700;color:var(--forest);margin-bottom:6px;">Reset Passcode</div>
           <p style="margin:0 0 8px 0;color:var(--ink-light);">Enter your verified email to dispatch a 6-digit reset code.</p>
           <div style="display:flex;gap:8px;margin-bottom:8px;">
             <input type="email" id="resetEmailInput" value="${email}" placeholder="your.email@domain.com" style="flex:1;padding:8px 10px;font-size:13px;border:1px solid var(--border);border-radius:6px;background:var(--paper);color:var(--ink);" />
@@ -695,31 +767,32 @@
         </div>
       `;
 
-      const resetEmailInput = document.getElementById('resetEmailInput');
-      const sendResetCodeBtn = document.getElementById('sendResetCodeBtn');
-      const resetErrorMsg = document.getElementById('resetErrorMsg');
-      const cancelResetBtn = document.getElementById('cancelResetBtn');
+        const resetEmailInput = document.getElementById('resetEmailInput');
+        const sendResetCodeBtn = document.getElementById('sendResetCodeBtn');
+        const resetErrorMsg = document.getElementById('resetErrorMsg');
+        const cancelResetBtn = document.getElementById('cancelResetBtn');
 
-      cancelResetBtn.addEventListener('click', () => {
-        loginAlert.style.display = 'none';
-      });
+        cancelResetBtn.addEventListener('click', () => {
+          loginAlert.style.display = 'none';
+        });
 
-      sendResetCodeBtn.addEventListener('click', async () => {
-        const targetEmail = resetEmailInput.value.trim();
-        if (!targetEmail || !targetEmail.includes('@')) {
-          resetErrorMsg.textContent = 'Please enter a valid email address.';
-          resetErrorMsg.style.display = 'block';
-          return;
-        }
-        sendResetCodeBtn.disabled = true;
-        sendResetCodeBtn.textContent = 'Sending...';
-        resetErrorMsg.style.display = 'none';
+        sendResetCodeBtn.addEventListener('click', async () => {
+          const targetEmail = resetEmailInput.value.trim();
+          if (!targetEmail || !targetEmail.includes('@')) {
+            resetErrorMsg.textContent = 'Please enter a valid email address.';
+            resetErrorMsg.style.display = 'block';
+            return;
+          }
+          sendResetCodeBtn.disabled = true;
+          sendResetCodeBtn.textContent = 'Sending...';
+          resetErrorMsg.style.display = 'none';
 
-        try {
-          await auth.requestPasswordReset(targetEmail);
-          loginAlert.innerHTML = `
+          try {
+            await auth.requestPasswordReset(targetEmail);
+            loginAlert.innerHTML = `
             <div style="font-size:13px;line-height:1.5;">
               <div style="font-weight:700;color:var(--forest);margin-bottom:6px;">✉️ Code Dispatched</div>
+              <div style="font-weight:700;color:var(--forest);margin-bottom:6px;">Code Dispatched</div>
               <p style="margin:0 0 8px 0;color:var(--ink-light);">A 6-digit reset code was dispatched to <strong>${targetEmail}</strong>.</p>
               <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
                 <input type="text" id="resetTokenInput" placeholder="6-digit code (e.g. 123456)" maxlength="6" style="padding:8px 10px;font-size:13px;border:1px solid var(--border);border-radius:6px;background:var(--paper);color:var(--ink);" />
@@ -732,279 +805,298 @@
             </div>
           `;
 
-          const resetTokenInput = document.getElementById('resetTokenInput');
-          const resetNewPassInput = document.getElementById('resetNewPassInput');
-          const resetConfirmPassInput = document.getElementById('resetConfirmPassInput');
-          const confirmResetBtn = document.getElementById('confirmResetBtn');
-          const confirmErrorMsg = document.getElementById('confirmErrorMsg');
-          const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
+            const resetTokenInput = document.getElementById('resetTokenInput');
+            const resetNewPassInput = document.getElementById('resetNewPassInput');
+            const resetConfirmPassInput = document.getElementById('resetConfirmPassInput');
+            const confirmResetBtn = document.getElementById('confirmResetBtn');
+            const confirmErrorMsg = document.getElementById('confirmErrorMsg');
+            const cancelConfirmBtn = document.getElementById('cancelConfirmBtn');
 
-          cancelConfirmBtn.addEventListener('click', () => {
-            loginAlert.style.display = 'none';
-          });
+            cancelConfirmBtn.addEventListener('click', () => {
+              loginAlert.style.display = 'none';
+            });
 
-          confirmResetBtn.addEventListener('click', async () => {
-            const token = resetTokenInput.value.trim();
-            const newPass = resetNewPassInput.value;
-            const confirmPass = resetConfirmPassInput ? resetConfirmPassInput.value : newPass;
+            confirmResetBtn.addEventListener('click', async () => {
+              const token = resetTokenInput.value.trim();
+              const newPass = resetNewPassInput.value;
+              const confirmPass = resetConfirmPassInput ? resetConfirmPassInput.value : newPass;
 
-            if (!token || token.length < 6) {
-              confirmErrorMsg.textContent = 'Please enter the complete 6-digit code.';
-              confirmErrorMsg.style.display = 'block';
-              return;
-            }
-            if (!newPass || newPass.length < 8) {
-              confirmErrorMsg.textContent = 'Passcode must be at least 8 characters.';
-              confirmErrorMsg.style.display = 'block';
-              return;
-            }
-            if (newPass !== confirmPass) {
-              confirmErrorMsg.textContent = 'Passcodes do not match.';
-              confirmErrorMsg.style.display = 'block';
-              return;
-            }
+              if (!token || token.length < 6) {
+                confirmErrorMsg.textContent = 'Please enter the complete 6-digit code.';
+                confirmErrorMsg.style.display = 'block';
+                return;
+              }
+              if (!newPass || newPass.length < 8) {
+                confirmErrorMsg.textContent = 'Passcode must be at least 8 characters.';
+                confirmErrorMsg.style.display = 'block';
+                return;
+              }
+              if (newPass !== confirmPass) {
+                confirmErrorMsg.textContent = 'Passcodes do not match.';
+                confirmErrorMsg.style.display = 'block';
+                return;
+              }
 
-            confirmResetBtn.disabled = true;
-            confirmResetBtn.textContent = 'Updating...';
-            confirmErrorMsg.style.display = 'none';
+              confirmResetBtn.disabled = true;
+              confirmResetBtn.textContent = 'Updating...';
+              confirmErrorMsg.style.display = 'none';
 
-            try {
-              await auth.confirmPasswordReset(targetEmail, token, newPass);
-              loginAlert.className = 'status-alert status-alert-accepted';
-              loginAlert.innerHTML = `
+              try {
+                await auth.confirmPasswordReset(targetEmail, token, newPass);
+                loginAlert.className = 'status-alert status-alert-accepted';
+                loginAlert.innerHTML = `
                 <div style="font-size:13px;line-height:1.5;">
                   <div style="font-weight:700;color:var(--forest);margin-bottom:4px;">✅ Passcode Updated</div>
+                  <div style="font-weight:700;color:var(--forest);margin-bottom:4px;">Passcode Updated</div>
                   <p style="margin:0;color:var(--ink-light);">Your passcode was successfully updated. Sign in with your new passcode below.</p>
                 </div>
               `;
-              document.getElementById('loginEmail').value = targetEmail;
-              document.getElementById('loginPassword').value = newPass;
-              showToast('🌱 Passcode updated. You may now access your terminal.');
-            } catch (err) {
-              confirmResetBtn.disabled = false;
-              confirmResetBtn.textContent = 'Set New Passcode';
-              confirmErrorMsg.textContent = err.message || 'Passcode reset failed.';
-              confirmErrorMsg.style.display = 'block';
-            }
-          });
-        } catch (err) {
-          sendResetCodeBtn.disabled = false;
-          sendResetCodeBtn.textContent = 'Dispatch Code';
-          resetErrorMsg.textContent = err.message || 'Could not dispatch reset code.';
-          resetErrorMsg.style.display = 'block';
-        }
+                document.getElementById('loginEmail').value = targetEmail;
+                document.getElementById('loginPassword').value = newPass;
+                showToast('🌱 Passcode updated. You may now access your terminal.');
+                showToast('Passcode updated. You may now access your terminal.');
+              } catch (err) {
+                confirmResetBtn.disabled = false;
+                confirmResetBtn.textContent = 'Set New Passcode';
+                confirmErrorMsg.textContent = err.message || 'Passcode reset failed.';
+                confirmErrorMsg.style.display = 'block';
+              }
+            });
+          } catch (err) {
+            sendResetCodeBtn.disabled = false;
+            sendResetCodeBtn.textContent = 'Dispatch Code';
+            resetErrorMsg.textContent = err.message || 'Could not dispatch reset code.';
+            resetErrorMsg.style.display = 'block';
+          }
+        });
       });
-    });
-  }
-
-  signInForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (loginAlert) loginAlert.style.display = 'none';
-    const email = document.getElementById('loginEmail').value.trim();
-    const pwd = document.getElementById('loginPassword').value;
-
-    if (!email || !pwd) {
-      showToast('⚠️ Please provide both email and passcode.');
-      return;
     }
 
-    const origText = signInSubmitBtn.innerHTML;
-    signInSubmitBtn.disabled = true;
-    signInSubmitBtn.innerHTML = 'Connecting to Station...';
+    signInForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (loginAlert) loginAlert.style.display = 'none';
+      const email = document.getElementById('loginEmail').value.trim();
+      const pwd = document.getElementById('loginPassword').value;
 
-    try {
-      const res = await auth.signIn(email, pwd);
-      if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
-      window.dispatchEvent(new Event('canopy:auth-changed'));
-      const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
-      const targetDest = resolveRedirectDest(isStaff);
-      setTimeout(() => { window.location.href = targetDest; }, 900);
-    } catch (err) {
-      if (err.verificationRequired || /verification|verify/i.test(err.message)) {
-        pendingEmail = email;
-        localStorage.setItem('canopy_pending_email', email);
-        if (otpEmailInput) otpEmailInput.value = email;
-        otpSection.style.display = 'block';
-        if (passStatusStamp) passStatusStamp.textContent = 'Verification Required';
-        if (otpNotice) otpNotice.textContent = err.message || 'Verification is required. Enter your 6-digit code or request a new one below.';
-        showToast('⚠️ Verification required for ' + email);
-        otpSection.scrollIntoView({ behavior: 'smooth' });
-        signInSubmitBtn.disabled = false;
-        signInSubmitBtn.innerHTML = origText;
+      if (!email || !pwd) {
+        showToast('⚠️ Please provide both email and passcode.');
+        showToast('Please provide both email and passcode.');
         return;
       }
 
-      if (loginAlert) {
-        loginAlert.className = 'status-alert status-alert-error';
-        loginAlert.innerHTML = `
+      const origText = signInSubmitBtn.innerHTML;
+      signInSubmitBtn.disabled = true;
+      signInSubmitBtn.innerHTML = 'Connecting to Station...';
+
+      try {
+        const res = await auth.signIn(email, pwd);
+        if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
+        window.dispatchEvent(new Event('canopy:auth-changed'));
+        const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
+        const targetDest = resolveRedirectDest(isStaff);
+        setTimeout(() => { window.location.href = targetDest; }, 900);
+      } catch (err) {
+        if (err.verificationRequired || /verification|verify/i.test(err.message)) {
+          pendingEmail = email;
+          localStorage.setItem('canopy_pending_email', email);
+          if (otpEmailInput) otpEmailInput.value = email;
+          otpSection.style.display = 'block';
+          if (passStatusStamp) passStatusStamp.textContent = 'Verification Required';
+          if (otpNotice) otpNotice.textContent = err.message || 'Verification is required. Enter your 6-digit code or request a new one below.';
+          showToast('⚠️ Verification required for ' + email);
+          showToast('Verification required for ' + email);
+          otpSection.scrollIntoView({ behavior: 'smooth' });
+          signInSubmitBtn.disabled = false;
+          signInSubmitBtn.innerHTML = origText;
+          return;
+        }
+
+        if (loginAlert) {
+          loginAlert.className = 'status-alert status-alert-error';
+          loginAlert.innerHTML = `
           <div>
             <strong>Authentication failed:</strong> <span class="err-desc"></span>
             <br><small style="color:var(--ink-soft);">Please check your email address or re-enter your passcode.</small>
             <br><button type="button" class="btn-retry" onclick="document.getElementById('loginPassword').focus();">↻ Try Again</button>
           </div>
         `;
-        const errSpan = loginAlert.querySelector('.err-desc');
-        if (errSpan) errSpan.textContent = err.message || 'Invalid credentials or network unreachable.';
-        loginAlert.style.display = 'flex';
+          const errSpan = loginAlert.querySelector('.err-desc');
+          if (errSpan) errSpan.textContent = err.message || 'Invalid credentials or network unreachable.';
+          loginAlert.style.display = 'flex';
+        }
+        showToast('⚠️ ' + (err.message || 'Authentication failed.'));
+        showToast(err.message || 'Authentication failed.');
+        document.getElementById('loginPassword').value = '';
+        signInSubmitBtn.disabled = false;
+        signInSubmitBtn.innerHTML = origText;
       }
-      showToast('⚠️ ' + (err.message || 'Authentication failed.'));
-      document.getElementById('loginPassword').value = '';
-      signInSubmitBtn.disabled = false;
-      signInSubmitBtn.innerHTML = origText;
-    }
-  });
+    });
 
-  signUpForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (loginAlert) loginAlert.style.display = 'none';
-    pendingEmail = document.getElementById('regEmail').value.trim();
-    const pwd = document.getElementById('regPassword').value;
-    const displayName = document.getElementById('regDisplayName').value.trim();
-    const role = document.getElementById('regRole').value;
-    const craft = document.getElementById('regCraft').value.trim();
-    const primaryDomain = document.getElementById('regDomain').value;
-    const tagline = document.getElementById('regTagline').value.trim();
-    const skillsRaw = document.getElementById('regSkills').value.trim();
-    const hoursPerWeek = document.getElementById('regHours').value;
-    const github = document.getElementById('regGithub').value.trim();
-    const linkedin = document.getElementById('regLinkedin').value.trim();
-    const portfolio = document.getElementById('regPortfolio').value.trim();
+    signUpForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (loginAlert) loginAlert.style.display = 'none';
+      pendingEmail = document.getElementById('regEmail').value.trim();
+      const pwd = document.getElementById('regPassword').value;
+      const displayName = document.getElementById('regDisplayName').value.trim();
+      const role = document.getElementById('regRole').value;
+      const craft = document.getElementById('regCraft').value.trim();
+      const primaryDomain = document.getElementById('regDomain').value;
+      const tagline = document.getElementById('regTagline').value.trim();
+      const skillsRaw = document.getElementById('regSkills').value.trim();
+      const hoursPerWeek = document.getElementById('regHours').value;
+      const github = document.getElementById('regGithub').value.trim();
+      const linkedin = document.getElementById('regLinkedin').value.trim();
+      const portfolio = document.getElementById('regPortfolio').value.trim();
 
-    if (!pendingEmail || !pendingEmail.includes('@')) {
-      showToast('⚠️ Please enter a valid email address.');
-      return;
-    }
-
-    if (!pwd || pwd.length < 8) {
-      showToast('⚠️ Passcode must be at least 8 characters long.');
-      return;
-    }
-
-    if (!displayName) {
-      showToast('⚠️ Please provide your full name or handle.');
-      document.getElementById('regDisplayName').focus();
-      return;
-    }
-
-    if (!craft) {
-      showToast('⚠️ Please state your primary craft or technical focus.');
-      document.getElementById('regCraft').focus();
-      return;
-    }
-
-    const skillTags = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
-
-    const origText = signUpSubmitBtn.innerHTML;
-    signUpSubmitBtn.disabled = true;
-    signUpSubmitBtn.innerHTML = 'Creating Pass & Dispatching Token...';
-
-    try {
-      const res = await auth.signUp(pendingEmail, pwd, {
-        displayName,
-        role,
-        craft,
-        primaryDomain,
-        tagline: tagline || craft,
-        skillTags,
-        hoursPerWeek: Number(hoursPerWeek) || 10,
-        github,
-        linkedin,
-        portfolio
-      });
-      localStorage.setItem('canopy_pending_email', pendingEmail);
-      if (otpEmailInput) otpEmailInput.value = pendingEmail;
-      otpSection.style.display = 'block';
-      if (passStatusStamp) passStatusStamp.textContent = 'Code Dispatched · Verification Required';
-      if (res.verificationNotice) {
-        otpNotice.textContent = res.verificationNotice;
+      if (!pendingEmail || !pendingEmail.includes('@')) {
+        showToast('⚠️ Please enter a valid email address.');
+        showToast('Please enter a valid email address.');
+        return;
       }
-      showToast('🌱 Verification token dispatched to your inbox.');
-      signUpSubmitBtn.disabled = false;
-      signUpSubmitBtn.innerHTML = origText;
-      otpSection.scrollIntoView({ behavior: 'smooth' });
-    } catch (err) {
-      if (loginAlert) {
-        loginAlert.className = 'status-alert status-alert-error';
-        loginAlert.innerHTML = `
+
+      if (!pwd || pwd.length < 8) {
+        showToast('⚠️ Passcode must be at least 8 characters long.');
+        showToast('Passcode must be at least 8 characters long.');
+        return;
+      }
+
+      if (!displayName) {
+        showToast('⚠️ Please provide your full name or handle.');
+        showToast('Please provide your full name or handle.');
+        document.getElementById('regDisplayName').focus();
+        return;
+      }
+
+      if (!craft) {
+        showToast('⚠️ Please state your primary craft or technical focus.');
+        showToast('Please state your primary craft or technical focus.');
+        document.getElementById('regCraft').focus();
+        return;
+      }
+
+      const skillTags = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+      const origText = signUpSubmitBtn.innerHTML;
+      signUpSubmitBtn.disabled = true;
+      signUpSubmitBtn.innerHTML = 'Creating Pass & Dispatching Token...';
+
+      try {
+        const res = await auth.signUp(pendingEmail, pwd, {
+          displayName,
+          role,
+          craft,
+          primaryDomain,
+          tagline: tagline || craft,
+          skillTags,
+          hoursPerWeek: Number(hoursPerWeek) || 10,
+          github,
+          linkedin,
+          portfolio
+        });
+        localStorage.setItem('canopy_pending_email', pendingEmail);
+        if (otpEmailInput) otpEmailInput.value = pendingEmail;
+        otpSection.style.display = 'block';
+        if (passStatusStamp) passStatusStamp.textContent = 'Code Dispatched · Verification Required';
+        if (res.verificationNotice) {
+          otpNotice.textContent = res.verificationNotice;
+        }
+        showToast('🌱 Verification token dispatched to your inbox.');
+        showToast('Verification token dispatched to your inbox.');
+        signUpSubmitBtn.disabled = false;
+        signUpSubmitBtn.innerHTML = origText;
+        otpSection.scrollIntoView({ behavior: 'smooth' });
+      } catch (err) {
+        if (loginAlert) {
+          loginAlert.className = 'status-alert status-alert-error';
+          loginAlert.innerHTML = `
           <div>
             <strong>Registration failed:</strong> <span class="err-desc"></span>
             <br><button type="button" class="btn-retry" onclick="document.getElementById('signUpSubmitBtn').click();">↻ Retry Registration</button>
           </div>
         `;
-        const errSpan = loginAlert.querySelector('.err-desc');
-        if (errSpan) errSpan.textContent = err.message || 'Unable to register.';
-        loginAlert.style.display = 'flex';
+          const errSpan = loginAlert.querySelector('.err-desc');
+          if (errSpan) errSpan.textContent = err.message || 'Unable to register.';
+          loginAlert.style.display = 'flex';
+        }
+        showToast('⚠️ ' + (err.message || 'Registration failed.'));
+        showToast(err.message || 'Registration failed.');
+        signUpSubmitBtn.disabled = false;
+        signUpSubmitBtn.innerHTML = origText;
       }
-      showToast('⚠️ ' + (err.message || 'Registration failed.'));
-      signUpSubmitBtn.disabled = false;
-      signUpSubmitBtn.innerHTML = origText;
-    }
-  });
+    });
 
-  verifyBtn.addEventListener('click', async () => {
-    const targetEmail = (otpEmailInput?.value || pendingEmail || localStorage.getItem('canopy_pending_email') || '').trim();
-    if (!targetEmail || !targetEmail.includes('@')) {
-      showToast('⚠️ Please enter the email address to verify.');
-      if (otpEmailInput) otpEmailInput.focus();
-      return;
-    }
-
-    const token = otpInput.value.trim();
-    if (!token || token.length < 6) {
-      showToast('⚠️ Please enter the 6-digit verification code.');
-      otpInput.focus();
-      return;
-    }
-
-    const origText = verifyBtn.innerHTML;
-    verifyBtn.disabled = true;
-    verifyBtn.innerHTML = 'Verifying...';
-
-    try {
-      const res = await auth.verifyOtp(targetEmail, token);
-      localStorage.removeItem('canopy_pending_email');
-      if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
-      showToast('🌱 Pass successfully verified! Accessing Canopy...');
-      window.dispatchEvent(new Event('canopy:auth-changed'));
-      const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
-      const targetDest = resolveRedirectDest(isStaff);
-      setTimeout(() => { window.location.href = targetDest; }, 900);
-    } catch (err) {
-      showToast('⚠️ ' + (err.message || 'Verification failed.'));
-      verifyBtn.disabled = false;
-      verifyBtn.innerHTML = origText;
-    }
-  });
-
-  if (resendOtpBtn) {
-    resendOtpBtn.addEventListener('click', async () => {
+    verifyBtn.addEventListener('click', async () => {
       const targetEmail = (otpEmailInput?.value || pendingEmail || localStorage.getItem('canopy_pending_email') || '').trim();
       if (!targetEmail || !targetEmail.includes('@')) {
-        showToast('⚠️ Please enter a valid email address to resend the code.');
+        showToast('⚠️ Please enter the email address to verify.');
+        showToast('Please enter the email address to verify.');
         if (otpEmailInput) otpEmailInput.focus();
         return;
       }
-      resendOtpBtn.disabled = true;
-      const origResendText = resendOtpBtn.textContent;
-      resendOtpBtn.textContent = 'Dispatching...';
+
+      const token = otpInput.value.trim();
+      if (!token || token.length < 6) {
+        showToast('⚠️ Please enter the 6-digit verification code.');
+        showToast('Please enter the 6-digit verification code.');
+        otpInput.focus();
+        return;
+      }
+
+      const origText = verifyBtn.innerHTML;
+      verifyBtn.disabled = true;
+      verifyBtn.innerHTML = 'Verifying...';
+
       try {
-        const res = await auth.resendVerification(targetEmail);
-        showToast('🌱 ' + (res.message || 'Fresh verification code dispatched.'));
-        if (otpNotice) otpNotice.textContent = res.message || `A fresh 6-digit verification code was sent to ${targetEmail}.`;
+        const res = await auth.verifyOtp(targetEmail, token);
+        localStorage.removeItem('canopy_pending_email');
+        if (passStatusStamp) passStatusStamp.textContent = 'Pass · Verified & Active';
+        showToast('🌱 Pass successfully verified! Accessing Canopy...');
+        showToast('Pass successfully verified! Accessing Canopy...');
+        window.dispatchEvent(new Event('canopy:auth-changed'));
+        const isStaff = res.user?.access?.roles?.some(r => ['owner', 'admin'].includes(r));
+        const targetDest = resolveRedirectDest(isStaff);
+        setTimeout(() => { window.location.href = targetDest; }, 900);
       } catch (err) {
-        showToast('⚠️ ' + (err.message || 'Failed to dispatch verification code.'));
-      } finally {
-        resendOtpBtn.disabled = false;
-        resendOtpBtn.textContent = origResendText;
+        showToast('⚠️ ' + (err.message || 'Verification failed.'));
+        showToast(err.message || 'Verification failed.');
+        verifyBtn.disabled = false;
+        verifyBtn.innerHTML = origText;
       }
     });
-  }
 
-  if (hideOtpBtn) {
-    hideOtpBtn.addEventListener('click', () => {
-      otpSection.style.display = 'none';
-    });
-  }
-</script>
+    if (resendOtpBtn) {
+      resendOtpBtn.addEventListener('click', async () => {
+        const targetEmail = (otpEmailInput?.value || pendingEmail || localStorage.getItem('canopy_pending_email') || '').trim();
+        if (!targetEmail || !targetEmail.includes('@')) {
+          showToast('⚠️ Please enter a valid email address to resend the code.');
+          showToast('Please enter a valid email address to resend the code.');
+          if (otpEmailInput) otpEmailInput.focus();
+          return;
+        }
+        resendOtpBtn.disabled = true;
+        const origResendText = resendOtpBtn.textContent;
+        resendOtpBtn.textContent = 'Dispatching...';
+        try {
+          const res = await auth.resendVerification(targetEmail);
+          showToast('🌱 ' + (res.message || 'Fresh verification code dispatched.'));
+          showToast(res.message || 'Fresh verification code dispatched.');
+          if (otpNotice) otpNotice.textContent = res.message || `A fresh 6-digit verification code was sent to ${targetEmail}.`;
+        } catch (err) {
+          showToast('⚠️ ' + (err.message || 'Failed to dispatch verification code.'));
+          showToast(err.message || 'Failed to dispatch verification code.');
+        } finally {
+          resendOtpBtn.disabled = false;
+          resendOtpBtn.textContent = origResendText;
+        }
+      });
+    }
+
+    if (hideOtpBtn) {
+      hideOtpBtn.addEventListener('click', () => {
+        otpSection.style.display = 'none';
+      });
+    }
+  </script>
 </body>
+
 </html>

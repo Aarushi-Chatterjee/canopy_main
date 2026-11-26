@@ -174,7 +174,7 @@ router.post('/', requireAuth, async (req, res) => {
 
     res.status(201).json({
       call: savedCall,
-      message: '🌱 Build Call submitted successfully. It is queued in pending review for curator approval before public broadcast.'
+      message: 'Build Call submitted successfully. It is queued in pending review for curator approval before public broadcast.'
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Failed to create build call.' });
