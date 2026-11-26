@@ -78,6 +78,37 @@ function scorePair(source, target) {
     }
   }
 
+  // Intent segregation (Supply vs Demand)
+  const intentA = String(source.intent || '').toLowerCase();
+  const intentB = String(target.intent || '').toLowerCase();
+  if (intentA && intentB && intentA !== intentB) {
+    if ((intentA === 'have_problem' && intentB === 'join_squad') || (intentA === 'join_squad' && intentB === 'have_problem')) {
+      score += 12;
+      reasons.push('Balanced Supply/Demand intent (Problem Lead + Squad Builder)');
+    } else if (intentA === 'sponsor' || intentB === 'sponsor') {
+      score += 10;
+      reasons.push('Aligned sponsor & execution intent');
+    }
+  }
+
+  // Primary craft complementarity
+  const craftA = String(source.craft || '').toLowerCase();
+  const craftB = String(target.craft || '').toLowerCase();
+  if (craftA && craftB && craftA !== craftB) {
+    score += 10;
+    reasons.push(`Complementary craft (${craftA} + ${craftB})`);
+  }
+
+  // Weekly hours & timezone alignment
+  if (source.weeklyHours && target.weeklyHours && source.weeklyHours === target.weeklyHours) {
+    score += 6;
+    reasons.push(`Matched cadence (${source.weeklyHours})`);
+  }
+  if (source.timezone && target.timezone && (source.timezone === target.timezone || source.timezone === 'async' || target.timezone === 'async')) {
+    score += 5;
+    reasons.push('Compatible working window');
+  }
+
   return {
     score: Math.min(99, score),
     archetypeMatch,
@@ -91,6 +122,10 @@ function computeMatchSynergy(builderProfile = {}, ideaBrief = {}, pool = {}) {
   const source = {
     domain: builderProfile.primaryDomain || builderProfile.domain || ideaBrief.domain || 'climate',
     role: builderProfile.role || 'builder',
+    craft: builderProfile.craft || '',
+    intent: builderProfile.intent || '',
+    weeklyHours: builderProfile.weeklyHours || '',
+    timezone: builderProfile.timezone || '',
     skills: builderProfile.skills || builderProfile.skillTags || []
   };
 
@@ -100,6 +135,10 @@ function computeMatchSynergy(builderProfile = {}, ideaBrief = {}, pool = {}) {
     const scored = scorePair(source, {
       domain: p.primaryDomain,
       role: p.role || 'builder',
+      craft: p.craft,
+      intent: p.intent,
+      weeklyHours: p.weeklyHours || p.availabilityHours,
+      timezone: p.timezone,
       skills: p.skillTags || p.skills
     });
     candidates.push({
@@ -163,3 +202,4 @@ module.exports = {
   scorePair,
   computeMatchSynergy
 };
+

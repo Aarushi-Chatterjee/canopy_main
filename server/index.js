@@ -324,6 +324,11 @@ app.get(['/api/health', '/health'], async (req, res) => {
 });
 
 // Mythos Billable Action Charge & AI Matchmaking Endpoints
+app.get('/api/mythos/capabilities', (req, res) => {
+  const llmEnabled = Boolean(process.env.PRODUCER_OPENAI_API_KEY || process.env.OPENAI_API_KEY);
+  res.json({ llmEnabled, fixedAnalysisUsd: 0.15 });
+});
+
 app.post('/api/mythos/charge', async (req, res, next) => {
   try {
     const session = await mythos.getSession(req);

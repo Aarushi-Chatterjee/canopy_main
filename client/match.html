@@ -381,6 +381,49 @@
         </div>
       </div>
 
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+        <div>
+          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Collaboration Intent *</label>
+          <select id="intakeIntent" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+            <option value="have_problem">Have a problem/idea — need co-builders</option>
+            <option value="join_squad">Have skills — want to join a squad</option>
+            <option value="sponsor">Sponsoring / advising a squad</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Primary Craft *</label>
+          <select id="intakeCraft" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+            <option value="software">Software / Full-Stack</option>
+            <option value="hardware">Hardware / Embedded</option>
+            <option value="ml">ML / Data Science</option>
+            <option value="design">Product / UI Design</option>
+            <option value="research">Field / Domain Research</option>
+            <option value="ops">Operations / GTM</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+        <div>
+          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Weekly Commitment</label>
+          <select id="intakeHours" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+            <option value="5-10">5–10 hrs/wk</option>
+            <option value="10-20" selected>10–20 hrs/wk</option>
+            <option value="20+">20+ hrs/wk</option>
+            <option value="<5">&lt; 5 hrs/wk</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">Timezone Window</label>
+          <select id="intakeTimezone" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.9rem;">
+            <option value="async">Async-First (Global)</option>
+            <option value="apac">APAC / IST</option>
+            <option value="emea">EMEA</option>
+            <option value="americas">Americas</option>
+          </select>
+        </div>
+      </div>
+
       <div style="margin-bottom:14px;">
         <label style="display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:5px;">What are you looking to build? *</label>
         <textarea id="intakeDescription" required rows="3" placeholder="Describe the problem, deliverable, or prototype idea you want to tackle..." style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:0.9rem;resize:vertical;"></textarea>
@@ -999,10 +1042,11 @@
       let fetcher = fetch.bind(window);
 
       if (m && mythosStatus === 'mythos') {
-        const confirmation = await m.confirmCharge({
-          kind: 'llm',
-          reason: 'AI Squad Compatibility Match'
-        });
+        const capRes = await fetch('/api/mythos/capabilities').then(r => r.json()).catch(() => ({ llmEnabled: false }));
+        const chargeOpts = capRes.llmEnabled
+          ? { kind: 'llm', reason: 'AI Squad Compatibility Match' }
+          : { usd: capRes.fixedAnalysisUsd || 0.15, reason: 'Squad Compatibility Analysis' };
+        const confirmation = await m.confirmCharge(chargeOpts);
         if (!confirmation?.approved) {
           btn.disabled = false;
           btn.textContent = origText;
@@ -1094,8 +1138,13 @@
       email: document.getElementById('intakeEmail').value.trim(),
       domain: document.getElementById('intakeDomain').value,
       role: document.getElementById('intakeRole').value,
+      intent: document.getElementById('intakeIntent')?.value || 'have_problem',
+      craft: document.getElementById('intakeCraft')?.value || 'software',
+      weeklyHours: document.getElementById('intakeHours')?.value || '10-20',
+      timezone: document.getElementById('intakeTimezone')?.value || 'async',
       projectDescription: document.getElementById('intakeDescription').value.trim(),
-      coBuilderNeeded: document.getElementById('intakeCoBuilder').value.trim()
+      coBuilderNeeded: document.getElementById('intakeCoBuilder').value.trim(),
+      skillsWanted: document.getElementById('intakeCoBuilder').value.trim()
     };
 
     try {

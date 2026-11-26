@@ -271,7 +271,7 @@ router.patch('/:id/decline', requireAuth, async (req, res) => {
 // POST /api/matches/intake — Guest "Request a Squad Match" Intake
 router.post('/intake', async (req, res) => {
   try {
-    const { fullName, email, domain, role, projectDescription, coBuilderNeeded, skillsWanted } = req.body;
+    const { fullName, email, domain, role, intent, craft, weeklyHours, timezone, projectDescription, coBuilderNeeded, skillsWanted } = req.body;
     if (!fullName || !email || !projectDescription) {
       return res.status(400).json({ error: 'Name, email, and project description are required.' });
     }
@@ -299,6 +299,10 @@ router.post('/intake', async (req, res) => {
         email: email.trim().toLowerCase(),
         domain: (domain || 'climate').toLowerCase(),
         role: role || 'builder',
+        intent: intent || 'join_squad',
+        craft: craft || '',
+        weeklyHours: weeklyHours || '',
+        timezone: timezone || '',
         projectDescription: projectDescription.trim(),
         coBuilderNeeded: (coBuilderNeeded || 'Technical Co-Builder').trim(),
         skillsWanted: skillsList,

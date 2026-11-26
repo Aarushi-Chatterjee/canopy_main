@@ -159,6 +159,54 @@
         <input type="text" id="appLink" placeholder="GitHub or portfolio URL" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
       </div>
 
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
+        <div class="field">
+          <label for="appIntent" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Collaboration Intent</label>
+          <select id="appIntent" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
+            <option value="join_squad">Have skills — want to join a squad</option>
+            <option value="have_problem">Have a problem/idea — need co-builders</option>
+            <option value="sponsor">Sponsoring / advising a squad</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="appCraft" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Primary Craft</label>
+          <select id="appCraft" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
+            <option value="software">Software / Full-Stack</option>
+            <option value="hardware">Hardware / Embedded</option>
+            <option value="ml">ML / Data Science</option>
+            <option value="design">Product / UI Design</option>
+            <option value="research">Field / Domain Research</option>
+            <option value="ops">Operations / GTM</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
+        <div class="field">
+          <label for="appHours" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Weekly Commitment</label>
+          <select id="appHours" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
+            <option value="5-10">5–10 hrs/wk</option>
+            <option value="10-20" selected>10–20 hrs/wk (Core Sprint)</option>
+            <option value="20+">20+ hrs/wk (Sprint Lead)</option>
+            <option value="<5">&lt; 5 hrs/wk (Advisory)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="appTimezone" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Timezone Window</label>
+          <select id="appTimezone" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.92rem;">
+            <option value="async">Async-First (Global)</option>
+            <option value="apac">APAC / IST (UTC+5:30 to +10)</option>
+            <option value="emea">EMEA (UTC+0 to +3)</option>
+            <option value="americas">Americas (UTC-8 to -3)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="appSkills" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">Core Skill Tags (comma-separated)</label>
+        <input type="text" id="appSkills" placeholder="e.g. Python, LoRaWAN, React, PCB Design" style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;">
+      </div>
+
       <div class="field">
         <label for="appNote" style="font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink-faint);">What You Build</label>
         <textarea id="appNote" required rows="3" placeholder="Skills, tools, or projects..." style="width:100%;padding:10px 12px;border:1px solid var(--card-edge);border-radius:6px;background:var(--paper);color:var(--ink);font-size:0.95rem;font-family:inherit;"></textarea>
@@ -384,8 +432,14 @@
           }
 
           // 2. Submit application
-          await db.submitApplication({ fullName: name, name, email, role, domain, link, proofOfWorkLink: link, motivationNote: note, note });
-          db.saveProfile({ name, email, role, domain });
+          const intent = document.getElementById('appIntent')?.value || 'join_squad';
+          const craft = document.getElementById('appCraft')?.value || 'software';
+          const weeklyHours = document.getElementById('appHours')?.value || '10-20';
+          const timezone = document.getElementById('appTimezone')?.value || 'async';
+          const skillsRaw = document.getElementById('appSkills')?.value || '';
+          const skills = skillsRaw.split(',').map(s => s.trim()).filter(Boolean);
+          await db.submitApplication({ fullName: name, name, email, role, domain, intent, craft, weeklyHours, timezone, skills, link, proofOfWorkLink: link, motivationNote: note, note });
+          db.saveProfile({ name, email, role, domain, intent, craft, weeklyHours, timezone, skills });
           sessionStorage.removeItem(DRAFT_KEY);
 
           // 3. Render inline OTP verification card
@@ -458,8 +512,14 @@
       }
 
       try {
-        await db.submitApplication({ fullName: name, name, email, role, domain, link, proofOfWorkLink: link, motivationNote: note, note });
-        db.saveProfile({ name, email, role, domain });
+        const intent = document.getElementById('appIntent')?.value || 'join_squad';
+        const craft = document.getElementById('appCraft')?.value || 'software';
+        const weeklyHours = document.getElementById('appHours')?.value || '10-20';
+        const timezone = document.getElementById('appTimezone')?.value || 'async';
+        const skillsRaw = document.getElementById('appSkills')?.value || '';
+        const skills = skillsRaw.split(',').map(s => s.trim()).filter(Boolean);
+        await db.submitApplication({ fullName: name, name, email, role, domain, intent, craft, weeklyHours, timezone, skills, link, proofOfWorkLink: link, motivationNote: note, note });
+        db.saveProfile({ name, email, role, domain, intent, craft, weeklyHours, timezone, skills });
         sessionStorage.removeItem(DRAFT_KEY);
         if (toast) {
           toast.textContent = '🌱 Application received: queued for curator review.';
