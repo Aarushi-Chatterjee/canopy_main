@@ -49,6 +49,8 @@ const { isConfigured, supabase } = require('./config/supabase');
 const { requireDatabaseReady } = require('./middleware/readiness');
 const { mythos, MythosError } = require('./lib/mythos');
 const { mythosExpress } = require('@mythos-work/sdk/express');
+const { computeMatchSynergy } = require('./lib/matching-algo');
+const { profiles: profilesRepo, buildCalls: callsRepo, sprints: sprintsRepo } = require('./repositories');
 
 /* ============================================================================
    SECTION 2: APP INITIALIZATION & CORS POLICIES
@@ -346,24 +348,57 @@ app.post('/api/mythos/charge', async (req, res, next) => {
 app.post('/api/mythos/match-ai', async (req, res, next) => {
   try {
     const session = await mythos.getSession(req);
-    const { builderProfile, ideaBrief } = req.body || {};
-    const prompt = `Evaluate builder synergy for: ${JSON.stringify(builderProfile || {})} on: ${JSON.stringify(ideaBrief || {})}`;
+    const { builderProfile, ideaBrief, consentId } = req.body || {};
+
+    // 1. Run deterministic multi-factor synergy algorithm against live DB
+    const [profiles, calls, sprints] = await Promise.all([
+      profilesRepo.find().catch(() => []),
+      callsRepo.find(c => c.status === 'open').catch(() => []),
+      sprintsRepo.find().catch(() => [])
+    ]);
+    const algoResult = computeMatchSynergy(builderProfile, ideaBrief, { profiles, calls, sprints });
+
     const apiKey = process.env.PRODUCER_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
 
     if (session && apiKey) {
+      // Mythos LLM usage-based billing (applies Producer margin)
+      const prompt = `You are Canopy's Squad Matchmaker. Analyze this compatibility report and return a concise 2-sentence recommendation.\nProfile: ${JSON.stringify(builderProfile || {})}\nBrief: ${JSON.stringify(ideaBrief || {})}\nAlgorithm Score: ${algoResult.compatibilityScore}%\nTop Matches: ${JSON.stringify(algoResult.topMatches.slice(0, 3))}`;
       const client = await mythos.llm(req, { apiKey });
       const completion = await client.chat.completions.create({
         model: 'gpt-4o-mini',
         messages: [{ role: 'user', content: prompt }]
       });
       const billing = mythos.billing(completion);
-      return res.json({ success: true, mode: 'mythos', completion, billing });
+      const aiSummary = completion?.choices?.[0]?.message?.content || '';
+      return res.json({
+        success: true,
+        mode: 'mythos',
+        billing,
+        result: { ...algoResult, aiSummary }
+      });
+    }
+
+    if (session && consentId) {
+      // Mythos fixed-price fallback if no OpenAI key is configured yet
+      const meter = await mythos.charge(req, {
+        usd: 0.15,
+        reason: 'ai-matchmaking-analysis',
+        consentId
+      });
+      return res.json({
+        success: true,
+        mode: 'mythos',
+        charged: true,
+        meter,
+        result: algoResult
+      });
     }
 
     return res.json({
       success: true,
       mode: session ? 'mythos' : 'standalone',
-      result: { compatibilityScore: 94, archetypeMatch: 'Systems Builder + Field Specialist' }
+      charged: false,
+      result: algoResult
     });
   } catch (err) {
     if (err instanceof MythosError) {

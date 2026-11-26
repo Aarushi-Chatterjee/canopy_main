@@ -237,12 +237,18 @@
         </p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button type="button" class="btn btn-ghost" id="btnRunAiMatch" onclick="runAiMatchAnalysis()">
+          ⚡ Run AI Compatibility Match
+        </button>
         <button type="button" class="btn btn-stamp" onclick="openSquadIntakeModal()">
           <svg class="icon" aria-hidden="true" style="width:14px;height:14px;"><use href="#icon-sprout"/></svg>
           Request a Squad Match →
         </button>
       </div>
     </div>
+
+    <!-- AI & Algorithmic Compatibility Result Panel -->
+    <div id="aiMatchResultPanel" style="display:none;background:color-mix(in srgb, var(--forest) 7%, var(--card));border:1px solid color-mix(in srgb, var(--forest) 30%, var(--card-edge));border-radius:10px;padding:18px 20px;margin-bottom:16px;"></div>
 
     <!-- Interactive Carousel Deck -->
     <div style="background:var(--card);border:1px solid var(--card-edge);border-radius:10px;padding:20px;position:relative;" id="interactiveMatchDeck">
@@ -969,6 +975,103 @@
     const item = DECK_ITEMS[currentDeckIdx];
     if (!item) return;
     openDirectIntro(item.id, item.name, item.role, item.lookingToBuild);
+  };
+
+  window.runAiMatchAnalysis = async function() {
+    const btn = document.getElementById('btnRunAiMatch');
+    const panel = document.getElementById('aiMatchResultPanel');
+    if (!btn || !panel) return;
+
+    const origText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Analyzing Synergy...';
+
+    try {
+      const m = window.mythosClient;
+      const mythosStatus = document.body?.dataset?.mythosStatus || 'standalone';
+
+      if (m && mythosStatus === 'expired') {
+        m.relaunch();
+        return;
+      }
+
+      let consentId;
+      let fetcher = fetch.bind(window);
+
+      if (m && mythosStatus === 'mythos') {
+        const confirmation = await m.confirmCharge({
+          kind: 'llm',
+          reason: 'AI Squad Compatibility Match'
+        });
+        if (!confirmation?.approved) {
+          btn.disabled = false;
+          btn.textContent = origText;
+          return;
+        }
+        consentId = confirmation.consentId;
+        fetcher = m.fetch.bind(m);
+      }
+
+      const activeRoleBtn = document.querySelector('.role-pick-btn[aria-pressed="true"]');
+      const role = activeRoleBtn?.getAttribute('data-role') || 'builder';
+      const activeDomainChip = document.querySelector('[data-filters-for="#buildersGrid"] .filter-chip[aria-pressed="true"]');
+      const rawDomain = activeDomainChip?.getAttribute('data-domain');
+      const domain = (rawDomain && rawDomain !== 'all') ? rawDomain : 'climate';
+      const searchQ = document.getElementById('builderSearch')?.value?.trim() || '';
+
+      const res = await fetcher('/api/mythos/match-ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          consentId,
+          builderProfile: {
+            role,
+            primaryDomain: domain,
+            skills: searchQ ? searchQ.split(/\s+/) : ['Systems', 'Hardware', 'Field Testing']
+          },
+          ideaBrief: { domain }
+        })
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Match analysis failed.');
+      }
+
+      const r = data.result || {};
+      const topHtml = (r.topMatches || []).slice(0, 3).map(tm => `
+        <div style="background:var(--paper);border:1px solid var(--card-edge);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <div>
+            <div style="font-weight:600;font-size:0.9rem;color:var(--ink);">${escapeHtml(tm.title)}</div>
+            <div style="font-size:0.78rem;color:var(--ink-faint);">${escapeHtml(tm.subtitle || tm.kind)} · ${escapeHtml((tm.domain || '').toUpperCase())}</div>
+          </div>
+          <span class="tag-chip" style="background:rgba(34,197,94,0.14);color:var(--forest);font-weight:700;">${tm.score}% match</span>
+        </div>
+      `).join('');
+
+      panel.style.display = 'block';
+      panel.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-family:'Fraunces Var',serif;font-size:1.35rem;font-weight:700;color:var(--forest);">${r.compatibilityScore || 88}% Synergy</span>
+            <span class="tag-chip skill">${escapeHtml(r.archetypeMatch || 'Squad Match')}</span>
+            <span style="font-size:0.75rem;color:var(--ink-faint);text-transform:uppercase;">Mode: ${escapeHtml(data.mode || 'standalone')}</span>
+          </div>
+          <button type="button" onclick="document.getElementById('aiMatchResultPanel').style.display='none'" style="background:none;border:none;color:var(--ink-faint);cursor:pointer;font-size:16px;">✕</button>
+        </div>
+        ${r.aiSummary ? `<p style="margin:0 0 10px;font-size:0.9rem;color:var(--ink);line-height:1.45;">${escapeHtml(r.aiSummary)}</p>` : ''}
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">
+          ${(r.reasons || []).map(rs => `<span class="tag-chip">${escapeHtml(rs)}</span>`).join('')}
+        </div>
+        ${topHtml ? `<div style="display:grid;gap:8px;">${topHtml}</div>` : ''}
+      `;
+    } catch (err) {
+      panel.style.display = 'block';
+      panel.innerHTML = `<p style="margin:0;color:var(--coral);font-size:0.88rem;">${escapeHtml(err.message || 'Could not complete compatibility match.')}</p>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = origText;
+    }
   };
 
   // 1. Guest Squad Match Intake Modal
